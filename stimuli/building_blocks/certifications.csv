@@ -1,0 +1,33 @@
+occupation,kind,name,since
+software_developer,optional,AWS Certified Developer - Associate,
+software_developer,optional,Certified Kubernetes Application Developer (CKAD),2018
+software_developer,optional,"Oracle Certified Professional, Java SE Programmer",
+software_developer,optional,Professional Scrum Master I (PSM I),
+software_developer,optional,"ISTQB Certified Tester, Foundation Level",
+software_developer,optional,Microsoft Certified: Azure Developer Associate,2019
+retail_sales_associate,optional,Professional selling skills course (3 days),
+retail_sales_associate,optional,Consumer electronics product training (manufacturer programme),
+retail_sales_associate,optional,Visual merchandising course,
+retail_sales_associate,optional,First aid certificate,
+retail_sales_associate,optional,Customer service excellence course,
+warehouse_associate,required,Forklift operator certificate,
+warehouse_associate,optional,Dangerous goods awareness training,
+warehouse_associate,optional,SAP EWM user training,
+warehouse_associate,optional,Reach truck operator certificate,
+warehouse_associate,optional,First aid certificate,
+warehouse_associate,optional,Workplace health and safety course,
+financial_accountant,optional,Certified Management Accountant (CMA),
+financial_accountant,optional,IFRS certificate (ACCA DipIFR),
+financial_accountant,optional,SAP S/4HANA FI user training,2016
+financial_accountant,optional,Financial modelling course,
+financial_accountant,optional,"Microsoft Office Specialist, Excel Expert",
+management_consultant,optional,Lean Six Sigma Green Belt,
+management_consultant,optional,Lean Six Sigma Black Belt,
+management_consultant,optional,PRINCE2 Foundation,
+management_consultant,optional,Professional Scrum Product Owner I (PSPO I),
+management_consultant,optional,Microsoft Certified: Power BI Data Analyst Associate,2020
+administrative_assistant,optional,"Microsoft Office Specialist, Excel Associate",
+administrative_assistant,optional,"Microsoft Office Specialist, Word Associate",
+administrative_assistant,optional,Business writing course,
+administrative_assistant,optional,Project management fundamentals course,
+administrative_assistant,optional,Executive assistant skills course,

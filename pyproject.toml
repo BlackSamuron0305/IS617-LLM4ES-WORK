@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hiringaudit"
+version = "0.1.0"
+description = "Counterfactual audit of national-origin effects in LLM screening of synthetic CVs (IS 617, University of Mannheim). An audit of model behaviour, not a hiring tool."
+readme = "README.md"
+requires-python = ">=3.11"
+# Runtime dependencies are deliberately limited to this set (design contract, section 9).
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "statsmodels",
+    "matplotlib",
+    "pydantic>=2",
+    "jsonschema",
+    "pyarrow",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+# Provider SDKs are optional and imported lazily. The vLLM path
+# (provider: openai_compatible) needs none of them: it uses the standard library.
+openai = ["openai>=1.40"]
+anthropic = ["anthropic>=0.40"]
+google = ["google-genai>=1.0"]
+# HFLocalProvider also needs a PyTorch build matching your hardware; install it separately.
+local = ["transformers>=4.45"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+hiringaudit = "hiringaudit.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-ra"

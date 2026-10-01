@@ -1,0 +1,111 @@
+occupation,kind,skill
+software_developer,required,Python
+software_developer,required,Java
+software_developer,required,SQL
+software_developer,required,REST APIs
+software_developer,required,Git
+software_developer,nice,Docker
+software_developer,nice,Kubernetes
+software_developer,nice,GitLab CI
+software_developer,nice,PostgreSQL
+software_developer,nice,AWS
+software_developer,nice,Kafka
+software_developer,nice,Spring Boot
+software_developer,nice,FastAPI
+software_developer,nice,Terraform
+software_developer,nice,pytest
+software_developer,tools,Linux
+software_developer,tools,Jira
+software_developer,tools,Confluence
+software_developer,tools,IntelliJ IDEA
+software_developer,tools,Visual Studio Code
+software_developer,tools,Postman
+software_developer,tools,Bash scripting
+retail_sales_associate,required,Customer advice and sales
+retail_sales_associate,required,Cash register and card payments
+retail_sales_associate,required,Returns and exchanges
+retail_sales_associate,required,Shelf replenishment
+retail_sales_associate,nice,Consumer electronics product knowledge
+retail_sales_associate,nice,Merchandise management system
+retail_sales_associate,nice,Visual merchandising
+retail_sales_associate,nice,Stock counting
+retail_sales_associate,nice,Complaint handling
+retail_sales_associate,nice,Accessory and warranty sales
+retail_sales_associate,nice,Online order pick-up
+retail_sales_associate,tools,POS software
+retail_sales_associate,tools,Microsoft Excel
+retail_sales_associate,tools,Barcode scanners
+retail_sales_associate,tools,Handheld stock-check devices
+retail_sales_associate,tools,Loyalty programme software
+retail_sales_associate,tools,Microsoft Teams
+warehouse_associate,required,Order picking
+warehouse_associate,required,Goods receipt and inspection
+warehouse_associate,required,Handheld scanner operation
+warehouse_associate,required,Forklift operation
+warehouse_associate,required,SAP EWM
+warehouse_associate,nice,Inventory counting
+warehouse_associate,nice,Dangerous goods handling
+warehouse_associate,nice,Returns processing
+warehouse_associate,nice,Loading and load securing
+warehouse_associate,nice,Reach truck operation
+warehouse_associate,nice,Pallet truck operation
+warehouse_associate,tools,Microsoft Excel (basic)
+warehouse_associate,tools,Label printers
+warehouse_associate,tools,Carrier booking portals
+warehouse_associate,tools,Parcel weighing scales
+warehouse_associate,tools,Stretch-wrap machines
+warehouse_associate,tools,Microsoft Outlook
+financial_accountant,required,General ledger accounting
+financial_accountant,required,Month-end and year-end closing
+financial_accountant,required,IFRS
+financial_accountant,required,Tax returns
+financial_accountant,required,SAP FI
+financial_accountant,required,MS Excel (advanced)
+financial_accountant,nice,Group consolidation
+financial_accountant,nice,Accounts payable and receivable
+financial_accountant,nice,Intercompany reconciliation
+financial_accountant,nice,Fixed asset accounting
+financial_accountant,nice,Power BI
+financial_accountant,nice,Cash flow forecasting
+financial_accountant,tools,Oracle NetSuite
+financial_accountant,tools,Microsoft Power Query
+financial_accountant,tools,Microsoft PowerPoint
+financial_accountant,tools,SharePoint
+financial_accountant,tools,CaseWare
+financial_accountant,tools,Microsoft Outlook
+management_consultant,required,Process analysis and optimisation
+management_consultant,required,Workstream leadership
+management_consultant,required,Stakeholder management
+management_consultant,required,Excel modelling
+management_consultant,required,PowerPoint storylining
+management_consultant,nice,Lean management
+management_consultant,nice,SQL
+management_consultant,nice,Power BI
+management_consultant,nice,Change management
+management_consultant,nice,Supply chain analytics
+management_consultant,nice,Business case development
+management_consultant,nice,Procurement analytics
+management_consultant,tools,Microsoft Visio
+management_consultant,tools,Tableau
+management_consultant,tools,Miro
+management_consultant,tools,Microsoft Project
+management_consultant,tools,Alteryx
+management_consultant,tools,Python (pandas)
+administrative_assistant,required,Office organisation
+administrative_assistant,required,Appointment and travel management
+administrative_assistant,required,MS Outlook
+administrative_assistant,required,MS Word
+administrative_assistant,required,MS Excel
+administrative_assistant,required,Business correspondence
+administrative_assistant,nice,Document management systems
+administrative_assistant,nice,SAP (basic user)
+administrative_assistant,nice,Minute-taking
+administrative_assistant,nice,Invoice processing
+administrative_assistant,nice,Event organisation
+administrative_assistant,nice,MS PowerPoint
+administrative_assistant,tools,Microsoft Teams
+administrative_assistant,tools,Zoom
+administrative_assistant,tools,Google Workspace
+administrative_assistant,tools,Adobe Acrobat
+administrative_assistant,tools,SharePoint
+administrative_assistant,tools,Touch typing

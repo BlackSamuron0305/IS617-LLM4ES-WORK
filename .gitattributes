@@ -1,0 +1,8 @@
+# Stimuli, prompts and configs are hashed (SHA-256). Pin LF line endings so a
+# Windows checkout with core.autocrlf=true cannot change their bytes.
+stimuli/** text eol=lf
+prompts/** text eol=lf
+config/** text eol=lf
+data/** text eol=lf
+*.py text eol=lf
+tests/fixtures/** text eol=lf

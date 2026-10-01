@@ -1,0 +1,21 @@
+occupation,level,degree,years,institution_kind,preceding_bachelor
+software_developer,advanced,M.Sc. Computer Science,2,computing,B.Sc. Computer Science | B.Sc. Information Systems
+software_developer,relevant,B.Sc. Computer Science,4,computing,
+software_developer,relevant,B.Sc. Information Systems,4,computing,
+retail_sales_associate,advanced,Advanced Diploma in Retail Management,3,college,
+retail_sales_associate,relevant,Diploma in Retail and Sales,2,college,
+retail_sales_associate,relevant,Diploma in Business (Sales and Marketing),2,college,
+warehouse_associate,advanced,Advanced Diploma in Logistics and Supply Chain Management,3,college,
+warehouse_associate,relevant,Diploma in Logistics and Warehouse Operations,2,college,
+warehouse_associate,relevant,Diploma in Supply Chain Operations,2,college,
+financial_accountant,advanced,M.Sc. Accounting and Finance,2,business,B.Sc. Accounting | B.Sc. Business Administration (major in Accounting)
+financial_accountant,relevant,B.Sc. Accounting,4,business,
+financial_accountant,relevant,B.Sc. Business Administration (major in Accounting),4,business,
+management_consultant,advanced,M.Sc. Industrial Engineering and Management,2,engineering,B.Sc. Industrial Engineering
+management_consultant,advanced,MBA,2,business,B.Sc. Business Administration | B.Sc. Economics | B.Sc. Industrial Engineering
+management_consultant,relevant,B.Sc. Business Administration,4,business,
+management_consultant,relevant,B.Sc. Economics,4,business,
+management_consultant,relevant,B.Sc. Industrial Engineering,4,engineering,
+administrative_assistant,advanced,Advanced Diploma in Office Management,3,college,
+administrative_assistant,relevant,Diploma in Office Administration,2,college,
+administrative_assistant,relevant,Diploma in Business Administration,2,college,

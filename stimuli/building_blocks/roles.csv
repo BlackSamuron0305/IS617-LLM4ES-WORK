@@ -1,0 +1,67 @@
+occupation,kind,title,profile_phrase,employers
+software_developer,junior,Junior Software Developer,,
+software_developer,junior,Junior Backend Developer,,
+software_developer,mid,Software Developer,,
+software_developer,mid,Backend Developer,,
+software_developer,mid,Software Engineer,,
+software_developer,senior,Senior Backend Developer,,
+software_developer,senior,Senior Software Engineer,,
+software_developer,senior,Lead Software Developer,,
+software_developer,unrelated,IT Support Specialist,an IT support specialist,Brightwater Medical Devices | Parkline Facility Services
+software_developer,unrelated,IT Systems Administrator,an IT systems administrator,Meadowlark Foods | Hollybrook Packaging
+software_developer,unrelated,Software Tester (Manual Testing),a manual software tester,Stonecrest Trading | Ironbridge Engineering
+retail_sales_associate,junior,Junior Sales Associate,,
+retail_sales_associate,junior,Sales Assistant,,
+retail_sales_associate,mid,Sales Associate,,
+retail_sales_associate,mid,Retail Sales Associate,,
+retail_sales_associate,mid,Sales Advisor,,
+retail_sales_associate,senior,Senior Sales Associate,,
+retail_sales_associate,senior,Deputy Department Manager,,
+retail_sales_associate,senior,Team Lead Sales Floor,,
+retail_sales_associate,unrelated,Call Centre Agent,a call centre agent,Clearline Telecom Services | Brightcall Customer Care
+retail_sales_associate,unrelated,Warehouse Assistant,a warehouse assistant,Fastlane Distribution | Parcelbridge Logistics
+retail_sales_associate,unrelated,Kitchen Assistant,a kitchen assistant,Grandview Hotels | Greenleaf Catering
+warehouse_associate,junior,Warehouse Assistant,,
+warehouse_associate,junior,Picker and Packer,,
+warehouse_associate,mid,Warehouse Associate,,
+warehouse_associate,mid,Warehouse Logistics Specialist,,
+warehouse_associate,mid,Warehouse Operative,,
+warehouse_associate,senior,Shift Lead Warehouse,,
+warehouse_associate,senior,Senior Warehouse Associate,,
+warehouse_associate,senior,Warehouse Team Coordinator,,
+warehouse_associate,unrelated,Delivery Driver,a delivery driver,Quickstep Couriers | Doorstep Delivery Services
+warehouse_associate,unrelated,Kitchen Assistant,a kitchen assistant,Grandview Hotels | Greenleaf Catering
+warehouse_associate,unrelated,Cleaning Operative,a cleaning operative,Brightshine Cleaning Services | Sparkwell Facility Care
+financial_accountant,junior,Junior Accountant,,
+financial_accountant,junior,Accounting Assistant,,
+financial_accountant,mid,Financial Accountant,,
+financial_accountant,mid,General Ledger Accountant,,
+financial_accountant,mid,Accountant,,
+financial_accountant,senior,Senior Financial Accountant,,
+financial_accountant,senior,Senior Accountant,,
+financial_accountant,senior,Team Lead General Ledger,,
+financial_accountant,unrelated,Office Administrator,an office administrator,Parkline Facility Services | Penwood Office Supplies
+financial_accountant,unrelated,Sales Assistant,a sales assistant,Clearline Telecom Services | Toolcraft Home Improvement
+financial_accountant,unrelated,Customer Service Representative,a customer service representative,Brightcall Customer Care | Grandview Hotels
+management_consultant,junior,Junior Consultant,,
+management_consultant,junior,Business Analyst,,
+management_consultant,mid,Consultant,,
+management_consultant,mid,Operations Consultant,,
+management_consultant,mid,Business Consultant,,
+management_consultant,senior,Senior Consultant,,
+management_consultant,senior,Project Manager,,
+management_consultant,senior,Engagement Manager,,
+management_consultant,unrelated,Marketing Assistant,a marketing assistant,Stonecrest Trading | Clearline Telecom Services
+management_consultant,unrelated,Event Coordinator,an event coordinator,Grandview Hotels | Brightday Event Services
+management_consultant,unrelated,Customer Service Representative,a customer service representative,Brightcall Customer Care | Penwood Office Supplies
+administrative_assistant,junior,Junior Office Assistant,,
+administrative_assistant,junior,Office Clerk,,
+administrative_assistant,mid,Administrative Assistant,,
+administrative_assistant,mid,Team Assistant,,
+administrative_assistant,mid,Office Assistant,,
+administrative_assistant,senior,Executive Assistant,,
+administrative_assistant,senior,Senior Team Assistant,,
+administrative_assistant,senior,Office Manager,,
+administrative_assistant,unrelated,Retail Sales Associate,a retail sales associate,Maplecourt Department Store | Toolcraft Home Improvement
+administrative_assistant,unrelated,Restaurant Server,a restaurant server,Grandview Hotels | Copper Kettle Restaurant
+administrative_assistant,unrelated,Warehouse Assistant,a warehouse assistant,Fastlane Distribution | Parcelbridge Logistics

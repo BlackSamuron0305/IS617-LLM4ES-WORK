@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Secrets: never commit keys. Copy .env.example to .env and fill it locally.
+.env
+.env.*
+!.env.example
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# LaTeX build artefacts
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.synctex.gz
+
+# --- Run outputs policy (see README, "Outputs and the raw-vs-processed policy") ---
+# Mock runs are synthetic, regenerable in seconds, and must never be mistaken for
+# results, so they are NOT committed. By convention every mock run id starts with
+# "mock" (config/mock.yaml sets experiment_id: mock_pipeline_test).
+data/raw/mock*/
+data/processed/mock*/
+results/mock*/
+#
+# Real-run raw outputs (data/raw/<run_id>/) are deliberately NOT ignored: they are
+# the primary evidence and are committed. Do not add an ignore rule for them.
+# Processed tables are regenerable from raw but are small and are committed too.

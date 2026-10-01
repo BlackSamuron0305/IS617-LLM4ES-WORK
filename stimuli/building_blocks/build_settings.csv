@@ -1,0 +1,6 @@
+setting,value,description
+seed,20261001,fixed seed of the one-off build of stimuli/cvs.csv
+reference_date,2024-06,the month that 'present' means (YYYY-MM); nothing is dated later
+availability,One month's notice,design constant: identical in every CV
+languages,English (C1),design constant: identical in every CV (English only)
+school,Secondary school certificate,school-leaving line that ends EDUCATION in every CV

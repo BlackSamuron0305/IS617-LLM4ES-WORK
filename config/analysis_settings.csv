@@ -1,0 +1,34 @@
+setting,value,type,description
+version,1,int,format version of this file (not an analysis setting)
+alpha,0.05,float,significance level of the confirmatory tests
+fdr_q,0.05,float,false discovery rate of the Benjamini-Hochberg families
+primary_outcome,overall_fit,str,primary outcome (A1); interview is the key secondary outcome (R2)
+confirmatory_condition,baseline,str,prompt condition analysed confirmatorily
+neutrality_condition,neutrality,str,prompt condition with the neutrality paragraph
+fc_condition,forced_choice,str,forced-choice prompt condition
+primary_arm,primary,str,arm of the confirmatory estimates; rows from other arms are robustness outputs only
+sesoi.overall_fit,1.0,float,smallest effect size of interest (fit points) for every overall_fit contrast and for sigma_A; OPEN DECISION for the team (A2); lead default 2026-09-30 after review H4
+sesoi.interview,5.0,float,SESOI for interview (percentage points)
+sesoi.fc_logit,0.2007,float,SESOI for forced choice on the logit scale (choice share 0.45-0.55 = +-0.2007)
+sesoi.h1d_points,1.0,float,SESOI for H1d: predicted fit difference across the covariate's interdecile range
+sesoi_is_final,false,bool,false until the team has fixed the SESOIs (A2)
+contested_codes,SOM | DJI | COM,list,Arab League members whose Arab identity is contested; 22-origin and 19-origin sigma_A must agree for the headline RQ1 label (review H5)
+host_adjustment,fixed_effect,str,"host-national status (setting 2026-10-01): primary estimators include a common host-national fixed effect; the only allowed value (pre-specified); the host effect itself is a secondary, descriptive estimate (host_effect.csv, unblinded only)"
+host_exclusion_required_for_robust,true,bool,"sensitivity HX (host-national clones excluded, no adjustment; 22 and 19 origins) is a required check of the 'robust' label, like R1"
+positive_control_direction,negative,str,one-sided manipulation check (review M1): detected iff PC < 0 and CI < 0
+manski_support_robust,observed,str,"worst-case (Manski) bounds of the robust label use OBSERVED support: CV-specific min / max of the valid responses of the same base CV (review M2; round 2, N3); all non-ok calls count, including terminal api_error"
+manski_support_descriptive,logical,str,"logical support (scale limits: fit 0/100, interview 0/100 pp) is reported with its width descriptively"
+manski_logical_if_differential_missing,true,bool,logical support becomes decision-relevant only if the differential-missingness test rejects for that model x condition
+endorsement_threshold,0.9,float,principle probe: endorsement share at which a model counts as endorsing neutrality
+control_accuracy_threshold,0.8,float,principle probe: minimum accuracy on the control items
+covariates_path,config/country_covariates.csv,str,"H1d covariates (review M9): primary REML meta-regression with Knapp-Hartung on centred log GDP pc PPP; pre-registered sensitivity slopes: + wb_sub_saharan, sub-Saharan indicator alone, income group (ordinal), excluding fallback-year origins"
+seed,20261013,int,seed of every resampling procedure (changing it changes p-values and intervals)
+n_boot,999,int,CV-cluster bootstrap replicates
+n_perm,10000,int,H1a within-CV permutations
+n_perm_secondary,2000,int,"robustness, interaction, missingness and placebo permutation tests"
+n_boot_bt,299,int,Bradley-Terry / RQ4 bootstrap replicates
+n_perm_bt,199,int,Bradley-Terry within-Arab swap randomisation (exploratory)
+n_cal,500,int,calibration simulations for the sphericity-free sigma_A bound (review M3)
+n_boot_cal,100,int,inner bootstrap replicates per calibration simulation
+n_boot_vc,200,int,CV bootstrap for 80% upper limits of variance components (review M14)
+concordance_splits,100,int,random split-halves of the profile-concordance check

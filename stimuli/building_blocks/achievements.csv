@@ -1,0 +1,103 @@
+occupation,qualification_tier,achievement
+software_developer,strong,"Delivered an event-driven order platform that handles about 200,000 messages per day"
+software_developer,strong,Cut monthly cloud hosting costs by about 25% by right-sizing services
+software_developer,strong,Shortened the release cycle from monthly to weekly by automating deployments
+software_developer,strong,Brought a delayed payment-integration project back on schedule as technical lead
+software_developer,strong,"Mentored four junior developers, two of whom moved into mid-level roles"
+software_developer,strong,Halved the number of production incidents within a year through better monitoring
+software_developer,adequate,"Automated partner data imports, saving about ten hours of manual work per week"
+software_developer,adequate,Resolved a recurring production incident by redesigning a slow database query
+software_developer,adequate,Delivered a shipping-provider integration two weeks ahead of schedule
+software_developer,adequate,Received the team's quarterly award for reliable on-call support
+software_developer,adequate,Reduced the run time of the nightly batch jobs from three hours to 40 minutes
+software_developer,adequate,Wrote the API documentation that became the template for the team's other services
+software_developer,borderline,Shipped a first production feature within three months of joining the team
+software_developer,borderline,Fixed more than 40 reported bugs in the customer portal
+software_developer,borderline,Automated a weekly status report with a short Python script
+software_developer,borderline,"Received positive feedback from the team lead for clear, well-documented code"
+software_developer,borderline,Completed an internal training programme on secure coding
+retail_sales_associate,strong,Raised the mobile phones department's revenue by 15% in one year
+retail_sales_associate,strong,Achieved the highest accessory sales in the store for six consecutive months
+retail_sales_associate,strong,"Trained eight new sales associates, all of whom passed their probation"
+retail_sales_associate,strong,Reduced stock discrepancies in the department by about 30% through weekly spot checks
+retail_sales_associate,strong,Named employee of the year by store management
+retail_sales_associate,strong,Introduced a queue routine that cut checkout waiting times at peak hours
+retail_sales_associate,adequate,Reached the monthly accessory sales target in ten of twelve months
+retail_sales_associate,adequate,Received consistently high scores in mystery-shopper visits
+retail_sales_associate,adequate,Sold the most extended warranties in the team during a seasonal campaign
+retail_sales_associate,adequate,Was asked to train two new colleagues at the checkout
+retail_sales_associate,adequate,Helped set up the store's click-and-collect counter
+retail_sales_associate,adequate,Recorded no till differences over a full year
+retail_sales_associate,borderline,Completed the store's product training for phones and laptops in the first month
+retail_sales_associate,borderline,Received positive customer feedback in a mystery-shopper visit
+retail_sales_associate,borderline,Reached the accessory sales target in the most recent quarter
+retail_sales_associate,borderline,Covered extra shifts during the busiest sales season
+retail_sales_associate,borderline,Kept the till balanced without differences since joining the store
+warehouse_associate,strong,Reduced picking errors on the shift by about 40% with double-checks for high-value items
+warehouse_associate,strong,Shortened average picking routes by about 15% with a new shelf layout
+warehouse_associate,strong,Led the shift through the peak season without any lost-time accidents
+warehouse_associate,strong,Trained twelve new warehouse associates on scanners and safety rules
+warehouse_associate,strong,Cut the backlog of unprocessed returns from two weeks to two days
+warehouse_associate,strong,Rated the site's best shift lead in the annual staff review
+warehouse_associate,adequate,Consistently exceeded the shift picking target of 150 order lines
+warehouse_associate,adequate,Worked without a recorded safety incident since joining the warehouse
+warehouse_associate,adequate,Found and corrected a recurring stock-booking error in goods receipt
+warehouse_associate,adequate,Was chosen to train new colleagues on the handheld scanners
+warehouse_associate,adequate,Achieved the highest count accuracy on the shift in the annual stocktake
+warehouse_associate,adequate,Helped clear a backlog of incoming containers during the peak season
+warehouse_associate,borderline,Reached the standard picking rate within the first month
+warehouse_associate,borderline,Completed forklift and safety training in the first weeks
+warehouse_associate,borderline,Covered extra shifts during the peak season
+warehouse_associate,borderline,Received positive feedback from the shift lead for accuracy
+warehouse_associate,borderline,Made no picking errors in the most recent quarterly review
+financial_accountant,strong,Shortened the month-end closing from eight to five working days
+financial_accountant,strong,Led the first IFRS 16 lease accounting implementation for the group
+financial_accountant,strong,Completed three consecutive annual audits without material findings
+financial_accountant,strong,Built a consolidation model that replaced manual spreadsheets for four subsidiaries
+financial_accountant,strong,Trained two accounting assistants who later took over the payables process
+financial_accountant,strong,Identified duplicate supplier payments and recovered the full amounts
+financial_accountant,adequate,Cleared a backlog of about 300 unreconciled bank items within two months
+financial_accountant,adequate,"Automated four recurring reconciliations, saving about a day of work each month"
+financial_accountant,adequate,Prepared the fixed asset schedules for the annual audit without adjustments
+financial_accountant,adequate,Reduced overdue customer balances by about 20% through regular follow-up
+financial_accountant,adequate,Documented the closing procedures used by the accounting team
+financial_accountant,adequate,Took over the payroll reconciliation and completed it on time every month
+financial_accountant,borderline,Completed the company's SAP FI training in the first month
+financial_accountant,borderline,Reconciled all assigned bank accounts on time every month
+financial_accountant,borderline,Helped prepare supporting documents for the annual audit
+financial_accountant,borderline,Reduced the number of unmatched supplier invoices in the assigned accounts
+financial_accountant,borderline,Received positive feedback from the finance manager for accurate postings
+management_consultant,strong,Led a procurement programme that cut a client's indirect spend by 12%
+management_consultant,strong,Delivered a lean programme that raised output on a client's main production line by 20%
+management_consultant,strong,Won two follow-on projects through strong client relationships
+management_consultant,strong,Developed a supply chain diagnostic that the firm now offers as a standard service
+management_consultant,strong,Promoted to project manager ahead of the usual timeline
+management_consultant,strong,"Coached five junior consultants, three of whom were promoted"
+management_consultant,adequate,Built a Power BI dashboard that the client adopted for weekly management meetings
+management_consultant,adequate,Identified slow-moving stock worth about 10% of a client's inventory
+management_consultant,adequate,Received top ratings from client management in two project reviews
+management_consultant,adequate,Designed a spare-parts planning process that reduced stock-outs at a client site
+management_consultant,adequate,Co-authored a proposal that won a six-month operations project
+management_consultant,adequate,Ran a series of workshops that mapped 25 core client processes
+management_consultant,borderline,Completed the firm's analyst training programme with distinction
+management_consultant,borderline,Built the Excel model used in a client cost-reduction business case
+management_consultant,borderline,Prepared steering committee slides that the project manager used unchanged
+management_consultant,borderline,Collected and cleaned the data for a supplier analysis on a tight deadline
+management_consultant,borderline,Received positive feedback from the client for clear process maps
+administrative_assistant,strong,Organised the move of a 60-person office without interrupting daily operations
+administrative_assistant,strong,Introduced a digital filing system that cut document search times by about half
+administrative_assistant,strong,Planned the annual company conference for 150 participants within budget
+administrative_assistant,strong,Reduced office supply costs by about 15% by consolidating suppliers
+administrative_assistant,strong,Set up an onboarding checklist that is used for all new office staff
+administrative_assistant,strong,Recognised by the managing director for running a complex board meeting schedule
+administrative_assistant,adequate,Cut the time needed to process incoming invoices with a shared tracking sheet
+administrative_assistant,adequate,Organised a team event for 40 colleagues
+administrative_assistant,adequate,Cleared a backlog of about 500 unfiled documents within one month
+administrative_assistant,adequate,Took over travel management for the whole department
+administrative_assistant,adequate,Set up a meeting-room booking calendar used by the whole office
+administrative_assistant,adequate,Received positive feedback from managers for reliable minute-taking
+administrative_assistant,borderline,Learned the document management system and took over filing within the first month
+administrative_assistant,borderline,Handled the central e-mail inbox alone while colleagues were on leave
+administrative_assistant,borderline,Received positive feedback from visitors for a friendly reception
+administrative_assistant,borderline,Kept the office supply stock complete without shortages
+administrative_assistant,borderline,Prepared meeting minutes that were circulated without corrections
