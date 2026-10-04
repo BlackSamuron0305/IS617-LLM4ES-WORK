@@ -23,8 +23,8 @@ Keep to the allocated time.
 
 | slide | content | rubric | seconds |
 |---|---|---|---|
-| 1 | title | | 15 |
-| 2 | what prior studies found, all with one pooled "Arab" group | motivation | 60 |
+| 1 | title (working title of 2026-10-04: "Which Arab?") | | 15 |
+| 2 | the documented bias (human employers, LLM text, LLM hiring), always for one pooled group | motivation | 60 |
 | 3 | one label, 22 nationalities; three reasons to look inside | motivation | 60 |
 | 4 | research question and its three parts | research question | 45 |
 | 5 | the design: same CV, one line changes | research question | 60 |
@@ -32,6 +32,22 @@ Keep to the allocated time.
 | 7-11 | backup: run plan, the 29 nationality conditions, prompts, scope and limits, sources | Q&A | |
 
 That is 4:45 of 5:00.
+
+## Framing (team, 2026-10-04)
+
+The same line of argument as `paper/proposal/proposal.tex`:
+
+- Starting point: a documented bias against Arabs and Muslims, in every study for one
+  pooled group (slide 2).
+- Question: does a model see some of the 22 Arab League nationalities more favourably than
+  others?
+- Hiring and promotion are the measuring tool, not the claim.
+- Arab is not the same as Muslim. The CVs state no religion, so the project measures how
+  nationalities are treated, not bias against Islam (notes of slides 2 and 10).
+- Two studies that found no penalty or the reverse in newer models (Hoffmann et al. 2026,
+  Arcuschin et al. 2026) were taken off the slides and out of the proposal. They are kept
+  in the notes of slide 2 and in `qa_prep.md`, question 3, because they may come up in the
+  questions.
 
 ## To do before 13.10
 
