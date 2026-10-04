@@ -3,12 +3,13 @@
 % (AI-usage rule in CLAUDE.md). Nothing here is to be pasted into paper/.
 %
 % Build (PowerShell, from research/; acl.sty and acl_natbib.bst live in ../paper/):
-%   $env:BSTINPUTS = '../paper;'; latexmk -pdf framing_outline.tex; latexmk -c framing_outline.tex
+%   $env:BSTINPUTS = '../paper/final_paper;'; latexmk -pdf framing_outline.tex; latexmk -c framing_outline.tex
+% Design facts follow the redesign of 2026-10-04 (experiment/README.md).
 % Bibliography: research/references.bib. Evidence behind every line:
 % research/literature_review.md section 6 and research/literature_matrix.csv.
 \documentclass[11pt]{article}
 
-\usepackage[preprint]{../paper/acl}
+\usepackage[preprint]{../paper/final_paper/acl}
 
 \usepackage{times}
 \usepackage{latexsym}
@@ -27,7 +28,7 @@
 \newcommand{\slot}[1]{\textbf{#1}}
 \newcommand{\para}[1]{\smallskip\noindent\textbf{#1}}
 
-\title{Beyond ``Arab'' as a Single Category: A Counterfactual Audit of National-Origin Bias in LLM Hiring\\[4pt]
+\title{Which Arab? How LLMs Treat Candidates from the 22 Arab League Countries in Hiring and Promotion\\[4pt]
 \large Framing outline: research question, abstract, introduction}
 
 \author{
@@ -53,8 +54,8 @@
   \end{itemize}
 \item \slot{3 Why the Arab world.} Nationality is an open sorting criterion in these labour markets. Qatar, low-income workers: Egyptian QR1,454 vs Nepali QR853 a month \citep{gardner2013portrait}\vF. Jordan: segmentation ``based not on education or initial skills but rather on nationality'' \citep{razzaz2017challenging}\vF. Gulf states expelled workers by Arab nationality in 1990--91 \citep{kapiszewski2006arab}\vF. LLM recruiting tools are being built for this market \citep{albaroudi2026addressing}\vF. Limit: differences \emph{among} Arab nationalities at equal qualifications are barely studied.
 \item \slot{4 Gap.} ``Arab'' is always one pooled group. No LLM hiring study found that varies individual Arab nationalities with qualifications fixed (tentative).
-\item \slot{5 What we do.} Identical synthetic CVs; only the \texttt{Nationality:} line changes. 22 Arab League nationalities, 3 benchmarks (German, Polish, Turkish), not stated, 8 placebo nationalities. CVs and jobs set in 8 Arab countries. Open-weight models. Baseline vs neutrality instruction; independent scoring and forced choice. Outcomes: interview yes/no, fit score 0--100.
-\item \slot{6 Results.} Empty until real data exist. One label per model: meaningful spread, trivial spread, undetermined, null, inconclusive.
+\item \slot{5 What we do.} 20 synthetic jobs with one CV each; only the \texttt{Nationality:} line changes. 22 Arab League nationalities, 2 benchmarks (German, Turkish), not stated, 4 placebo nationalities. Every job set in each of the 22 Arab League countries. Four open-weight models. Rate one applicant (fit score 0--100, interview yes/no); choose between two with the same CV, with and without a lottery option; both again with an ignore-nationality paragraph; hiring and promotion.
+\item \slot{6 Results.} Empty until real data exist. The analysis is not fixed yet.
 \item \slot{7 Takeaway.} Decided by the data. Either: spread among Arab nationalities exceeds noise and placebo spread, so the pooled category hides differences. Or: bounded null, a single category is adequate for these models.
 \end{itemize}
 \end{abstract}
@@ -85,8 +86,8 @@ An LLM hiring study splits Arab nationalities & None found. & \citealp{albaroudi
 
 \begin{itemize}
 \item \slot{Working wording} (project brief; the team finalises it): ``Do LLMs used as simulated recruiters evaluate otherwise-identical synthetic applicants differently when only the applicant's stated national origin changes, and does a single `Arab'/`MENA' category hide systematic differences among individual Arab national origins?''
-\item \slot{Primary, RQ1.} Same CV, 22 Arab League nationality signals. Is there spread? How large against a smallest effect of interest (1 point on the 0--100 fit score)? Larger than the spread among 8 unrelated placebo nationalities? The same across models?
-\item \slot{Secondary.} RQ2: Arab average vs German, Polish, Turkish, not stated. RQ3: effect of a neutrality instruction. RQ4 (exploratory): independent scoring vs forced choice. SQ1: stated principle vs behaviour.
+\item \slot{Primary.} Same CV, 22 Arab League nationalities. Do ratings and choices differ? By more than across the 4 unrelated placebo nationalities? The same across models?
+\item \slot{Secondary.} Arab League nationalities vs German, Turkish and no stated nationality. Local vs foreign applicants. Effect of the ignore-nationality paragraph. Hiring vs promotion. Hypotheses and analysis are not written yet.
 \item \slot{The argument in one line.} Known: a penalty for the pooled group. Pooled because, from outside, the origins look alike (shared names, language, religion). Open: does a model still separate them when the only cue is the nationality itself?
 \item \slot{Terms.} Our set is the 22 Arab League nationalities, not ``MENA''. MENA in cited work is a different set: it includes Turkish applicants in \citet{quillian2023trends}\vF, and Iranian and Israeli respondents in the US census test, where Somali and Sudanese respondents mostly do not take the label \citep{mathews2017national}\vF. Report prior work under its own label.
 \end{itemize}
@@ -139,13 +140,13 @@ Each paragraph: the point, the evidence, and what not to overstate. Table~\ref{t
 \begin{itemize}
 \item Gap: no study found in which an LLM makes a hiring decision and national origin varies across more than one Arab country (searches of 29--30.09 and 04.10.2026; coverage in the literature review). Nearest: 18 Arab nationalities pooled into Arab vs non-Arab \citep{albaroudi2026addressing}\vF. Wording: ``to our knowledge''.
 \item Design, in one breath: see abstract slot 5.
-\item What ``systematic difference'' means here: above decoder noise (permutation test), above the spread of placebo nationalities, and still there without Somalia, Djibouti and Comoros.
+\item What counts as a difference: more spread than across the placebo nationalities. The exact test is not fixed yet. Comoros, Djibouti and Somalia stay in every comparison and are pointed out.
 \item Why a nationality line and not names: names cannot carry the country (P4).
 \end{itemize}
 
 \para{P7. Contribution and scope.}
 \begin{itemize}
-\item Contribution candidates (team wording; novelty is tentative): first split of the Arab category by nationality in LLM hiring decisions; spread judged against noise and placebo spread; effect of a neutrality instruction on the spread, not only on the mean.
+\item Contribution candidates (team wording; novelty is tentative): first split of the Arab category by nationality in LLM hiring decisions; spread judged against placebo spread; effect of an ignore-nationality paragraph on the spread, not only on the mean.
 \item Not claimed as new: that LLMs penalise Arab applicants; that LLMs tell Arab countries apart in general; that origin matters in human hiring.
 \item Scope: an audit, not a hiring tool. Synthetic applicants and employers. Explicit nationality cue only, no names. The fit score is not a hiring probability. Open-weight models at pinned revisions.
 \end{itemize}

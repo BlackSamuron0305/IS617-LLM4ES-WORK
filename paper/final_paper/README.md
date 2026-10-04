@@ -15,6 +15,9 @@ The criteria below are copied from the course
 - `acl.sty` and `acl_natbib.bst` are the ACL template. They must stay next to `paper.tex`.
   Formatting rules: <https://acl-org.github.io/ACLPUB/formatting.html>.
 - Build: `.\build.ps1` compiles `paper.pdf`, warns above 5 pages and removes the build files.
+- The blue blocks in the PDF are team notes (`\teamnote` in `paper.tex`): facts and
+  reminders, not report text. Replace each with your own wording. `\shownotesfalse` near
+  the top of `paper.tex` hides them all. They must be gone before submission.
 
 ## Criteria (50 points)
 

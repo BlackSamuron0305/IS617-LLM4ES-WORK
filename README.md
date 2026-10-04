@@ -1,6 +1,7 @@
-# Beyond "Arab" as a Single Category (working title)
+# Which Arab? (working title)
 
-A counterfactual audit of national-origin bias in LLM hiring. Team project for IS 617
+How LLMs treat candidates from the 22 Arab League countries in hiring and promotion.
+An audit of model behaviour with identical synthetic CVs. Team project for IS 617
 (LLM4ESS), University of Mannheim, HWS26. Course repository:
 <https://github.com/dess-mannheim/LLM4ESS>.
 

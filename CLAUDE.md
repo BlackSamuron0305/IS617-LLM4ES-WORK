@@ -6,7 +6,7 @@ Project context for IS 617 (LLM4ESS) team project. Read this before doing anythi
 
 IS 617 — Large Language Models for the Economic and Social Sciences, University of Mannheim, HWS26.
 Course repo: https://github.com/dess-mannheim/LLM4ESS
-Team of 3. Deliverable: 4–5 page short paper, ACL template, plus three presentations.
+Team of 3 (Laith Sandouk, Aleksander Kasak, Nico Fedotov). Deliverable: 4–5 page short paper, ACL template, plus three presentations.
 
 **Pivot (2026-09-29).** The team replaced the earlier outcome-bias / trading-records
 study with the hiring audit below. The old project's files were deleted on
@@ -45,13 +45,21 @@ are in `research/old_design/`.
 
 ## The research question
 
-Working title: *Beyond "Arab" as a Single Category: A Counterfactual Audit of
-National-Origin Bias in LLM Hiring.*
+Working title (chosen by the team on 2026-10-04): *Which Arab? How LLMs Treat Candidates
+from the 22 Arab League Countries in Hiring and Promotion.* The earlier title was
+*Beyond "Arab" as a Single Category*.
 
 > Do LLMs used as simulated recruiters evaluate otherwise-identical synthetic
 > applicants differently when only the applicant's stated national origin changes
 > — and does a single "Arab"/"MENA" category hide systematic differences among
 > individual Arab national origins?
+
+The proposal of 2026-10-04 (`paper/proposal/proposal.tex`) splits this into five
+research questions: (1) differences among the 22 nationalities, against placebo
+nationalities; (2) whether they follow a country's economic and political position;
+(3) whether the country of the job matters, local versus foreign; (4) whether they
+remain with the ignore-nationality paragraph and the lottery option; (5) hiring versus
+promotion, and across models.
 
 The main contribution under test is **within-Arab heterogeneity**. "Arab vs
 European" is a secondary benchmark only. This is an **audit** of model behaviour,
@@ -108,6 +116,14 @@ explicitly, as the removed one did.
 LLM-written text, and the report requires a per-task declaration of AI use. Claude
 does design, code, analysis and internal research documents. Claude does **not**
 write report or presentation prose. Never paste generated text into `paper/`.
+One exception, since 2026-10-04: when asked to put something into the paper, add it as
+a visible `\teamnote{...}{...}` in `paper/final_paper/paper.tex` (blue bullet notes with
+the facts, marked "not report text"), so the change shows in the PDF. The team rewrites
+each note in its own words; notes are hidden with `\shownotesfalse` and must be gone
+before submission. Comment-only edits are not enough: the user cannot see them.
+`paper/proposal/proposal.tex` (a plan sent to the professor for feedback, not a graded
+deliverable) was drafted by Claude on 2026-10-04 at Laith's explicit request; it has to
+be listed when AI use is declared.
 
 **No fabricated results or citations.** Output of mock or test runs is labelled as
 such and is never reported as a result. Every citation carries a verification level in
