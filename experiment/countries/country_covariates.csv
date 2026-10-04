@@ -1,0 +1,29 @@
+country,gdp_pc_ppp_const,gdp_year,gdp_flag,income_group,wb_region,wb_sub_saharan,source,retrieval_date
+Algeria,14782.20,2022,reference_year,Upper middle income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Bahrain,57573.00,2022,reference_year,High income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Comoros,3465.84,2022,reference_year,Lower middle income,Sub-Saharan Africa,1,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Djibouti,6180.68,2022,reference_year,Lower middle income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Egypt,16360.39,2022,reference_year,Lower middle income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Iraq,13433.40,2022,reference_year,Upper middle income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Jordan,10158.47,2022,reference_year,Upper middle income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Kuwait,51379.88,2022,reference_year,High income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Lebanon,11474.75,2022,reference_year,Lower middle income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Libya,11450.06,2022,reference_year,Upper middle income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Mauritania,6053.26,2022,reference_year,Lower middle income,Sub-Saharan Africa,1,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Morocco,8690.45,2022,reference_year,Lower middle income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Oman,39780.21,2022,reference_year,High income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Palestine,5753.08,2022,reference_year,Lower middle income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Qatar,114740.12,2022,reference_year,High income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Saudi Arabia,67178.59,2022,reference_year,High income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Somalia,1387.55,2022,reference_year,Low income,Sub-Saharan Africa,1,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Sudan,3132.08,2022,reference_year,Low income,Sub-Saharan Africa,1,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Syria,4579.44,2022,reference_year,Low income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Tunisia,12712.22,2022,reference_year,Lower middle income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+United Arab Emirates,70075.64,2022,reference_year,High income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Yemen,,,excluded,Low income,"Middle East, North Africa, Afghanistan & Pakistan",0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Germany,63777.93,2022,reference_year,High income,Europe & Central Asia,0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Türkiye,33520.81,2022,reference_year,Upper middle income,Europe & Central Asia,0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Uruguay,30840.07,2022,reference_year,High income,Latin America & Caribbean,0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Malawi,1659.96,2022,reference_year,Low income,Sub-Saharan Africa,1,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Maldives,21357.81,2022,reference_year,Upper middle income,South Asia,0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30
+Cambodia,6458.37,2022,reference_year,Lower middle income,East Asia & Pacific,0,"World Bank WDI API, indicator NY.GDP.PCAP.PP.KD; income group and region from World Bank country API",2026-09-30

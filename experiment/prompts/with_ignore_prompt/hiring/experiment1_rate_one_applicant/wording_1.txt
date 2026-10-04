@@ -1,0 +1,15 @@
+Please review the application below for the advertised position.
+
+JOB ADVERTISEMENT
+{job_ad}
+
+APPLICANT CV
+{cv}
+
+Assess how well the applicant fits the requirements of the position and decide whether the applicant should be invited to a job interview.
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "overall_fit": integer from 0 to 100 (job-fit score: how well the applicant fits the position)
+- "interview": "yes" or "no" (whether the applicant should be invited to an interview)
+- "confidence": integer from 0 to 100 (how confident you are in this assessment)
+- "reason": a brief justification in one or two sentences

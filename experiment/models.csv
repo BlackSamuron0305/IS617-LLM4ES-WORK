@@ -1,0 +1,5 @@
+alias,model_id,revision,extra_body,notes
+qwen3-8b,Qwen/Qwen3-8B,,"{""chat_template_kwargs"": {""enable_thinking"": false}}",
+llama-3.1-8b-instruct,meta-llama/Llama-3.1-8B-Instruct,,,
+gemma-3-12b-it,google/gemma-3-12b-it,,,"Gemma's chat template has no separate system role; the template prepends the system prompt to the first user turn. Same text reaches the model, but note it when comparing models."
+mistral-small-3.2-24b-instruct,mistralai/Mistral-Small-3.2-24B-Instruct-2506,,,Mistral recommends `vllm serve ... --tokenizer-mode mistral --config-format mistral --load-format mistral`. Needs roughly 55 GB GPU memory in bf16.

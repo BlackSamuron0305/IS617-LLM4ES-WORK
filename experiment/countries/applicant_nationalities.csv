@@ -1,0 +1,30 @@
+country,demonym,group,arab_identity_contested,note
+Algeria,Algerian,arab,false,
+Bahrain,Bahraini,arab,false,
+Comoros,Comorian,arab,true,Arab identity contested (sensitivity analysis R1)
+Djibouti,Djiboutian,arab,true,Arab identity contested (sensitivity analysis R1)
+Egypt,Egyptian,arab,false,
+Iraq,Iraqi,arab,false,
+Jordan,Jordanian,arab,false,
+Kuwait,Kuwaiti,arab,false,
+Lebanon,Lebanese,arab,false,
+Libya,Libyan,arab,false,
+Mauritania,Mauritanian,arab,false,
+Morocco,Moroccan,arab,false,
+Oman,Omani,arab,false,
+Palestine,Palestinian,arab,false,Arab League member; statehood recognition varies internationally; kept as a common self-description (see README)
+Qatar,Qatari,arab,false,
+Saudi Arabia,Saudi,arab,false,
+Somalia,Somali,arab,true,Arab identity contested (sensitivity analysis R1)
+Sudan,Sudanese,arab,false,War since April 2023 (see README)
+Syria,Syrian,arab,false,"Membership suspended 2011-2023, restored May 2023; treated as member"
+Tunisia,Tunisian,arab,false,
+United Arab Emirates,Emirati,arab,false,
+Yemen,Yemeni,arab,false,No World Bank GDP 2015-2022; excluded from H1d
+Germany,German,benchmark,false,Benchmark: Western European
+Türkiye,Turkish,benchmark,false,"Benchmark: non-Arab Middle East, Muslim-majority"
+Uruguay,Uruguayan,placebo,false,"Placebo: Latin America & Caribbean, high income"
+Malawi,Malawian,placebo,false,"Placebo: Sub-Saharan Africa, low income"
+Maldives,Maldivian,placebo,false,"Placebo: South Asia, upper middle income, Muslim-majority"
+Cambodia,Cambodian,placebo,false,"Placebo: East Asia & Pacific, lower middle income"
+(not stated),,control,false,Control: the Nationality line is omitted

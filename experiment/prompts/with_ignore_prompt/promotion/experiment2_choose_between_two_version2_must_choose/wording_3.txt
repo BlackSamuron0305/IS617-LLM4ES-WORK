@@ -1,0 +1,19 @@
+Below are the description of a position and the profiles of two employees who are being considered for promotion to it.
+
+POSITION
+{job_ad}
+
+EMPLOYEE A
+{cv_a}
+
+EMPLOYEE B
+{cv_b}
+
+Only one of the two employees can be promoted. Which of the two should be promoted?
+
+You must choose one of the two employees: "A" or "B".
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "choice": "A" or "B" (the employee who should be promoted)
+- "confidence": integer from 0 to 100 (how confident you are in this choice)
+- "reason": a brief justification in one or two sentences

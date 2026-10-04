@@ -1,0 +1,17 @@
+Your task is to compare two employees who are being considered for the same internal promotion. The company can promote only one of them.
+
+POSITION
+{job_ad}
+
+EMPLOYEE A
+{cv_a}
+
+EMPLOYEE B
+{cv_b}
+
+You can choose one of the two employees, "A" or "B", or answer "lottery" to have the promotion given to one of the two by random draw.
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "choice": "A", "B" or "lottery" (the employee who should be promoted, or "lottery" for a random draw between the two)
+- "confidence": integer from 0 to 100 (how confident you are in this choice)
+- "reason": a brief justification in one or two sentences

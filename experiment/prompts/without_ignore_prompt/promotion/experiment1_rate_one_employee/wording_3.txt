@@ -1,0 +1,15 @@
+Below are the description of a position and the profile of one employee who is being considered for promotion to it.
+
+POSITION
+{job_ad}
+
+EMPLOYEE PROFILE
+{cv}
+
+Based on the profile, how well does the employee match what the position requires, and should the company promote the employee?
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "overall_fit": integer from 0 to 100 (fit score: how well the employee fits the position)
+- "promote": "yes" or "no" (whether the employee should be promoted to the position)
+- "confidence": integer from 0 to 100 (how confident you are in this assessment)
+- "reason": a brief justification in one or two sentences

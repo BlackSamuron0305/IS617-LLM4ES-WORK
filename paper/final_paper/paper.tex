@@ -45,6 +45,24 @@
 \label{sec:data}
 % Rubric [10]: Describe your data sources including descriptive statistics and plots.
 % Carefully document all references to data sources.
+%
+% TODO (team writes, own words): why the CVs carry an applicant reference instead of a
+% name, with one example. Notes and sources: research/old_design/design_decisions.md, D03.
+%
+% TODO (team writes, own words): point out the nationalities whose Arab identity is
+% contested (Comoros, Djibouti, Somalia; column arab_identity_contested in
+% experiment/countries/applicant_nationalities.csv) as especially interesting cases.
+%
+% TODO (team writes, own words): describe the materials. The facts are in the READMEs
+% under experiment/. Checklist:
+%   - jobs: 20, in four skill levels (experiment/jobs/)
+%   - CVs: 20, one per job, middle qualification level, no names of places, schools or
+%     companies (experiment/cvs/)
+%   - countries: every job is set once in each of the 22 Arab League countries
+%   - nationalities: 22 Arab, 2 benchmark, 4 placebo, 1 "not stated"
+%     (experiment/countries/)
+%   - all materials are synthetic (ETHICS.md)
+%   - descriptive statistics and plots of the collected answers (rubric)
 
 \section{Methods}
 \label{sec:methods}
@@ -52,6 +70,19 @@
 % variables, etc. Detail the statistical analyses and other methods you will apply to
 % assess your research question(s). Carefully document all references to methods and
 % packages used.
+%
+% TODO (team writes, own words): describe the experiment setup. The facts are in
+% experiment/README.md and experiment/prompts/README.md. Checklist:
+%   - one run = a main prompt, then a follow-up message with the job ad and the CV(s)
+%   - experiment 1: rate one person (fit score 0-100, yes/no)
+%   - experiment 2: choose between two people with the same CV; two versions
+%     (A, B or lottery / A or B)
+%   - experiment 3: experiments 1 and 2 again with the ignore-nationality paragraph
+%   - two scenarios: hiring and promotion
+%   - three wordings used in rotation; how the pairs of nationalities are drawn
+%   - the models, their exact versions and the settings used
+%   - which part of the plan was actually run (see Limitations)
+%   - how the answers are analysed (not decided as of 2026-10-04)
 
 \section{Results}
 \label{sec:results}
@@ -64,6 +95,10 @@
 % limitations and alternative explanations for your results.
 
 \section*{Limitations}
+% TODO (team writes, own words): the full plan (experiment/README.md: four blocks,
+% 128,480 runs per model) was not run completely because of hardware and time limits.
+% State exactly which blocks and which models were run, and what that means for the
+% conclusions. Fill this in only after the runs: as of 2026-10-04 nothing has been run.
 
 \section*{Author Contributions}
 % Rubric: after the conclusion; does not count towards the page limit; as detailed as
@@ -72,6 +107,10 @@
 \section*{Use of AI Tools}
 % Rubric: note which tasks have been assisted by AI tools (including identifying the
 % tools) at the end of the report.
+%
+% To declare, as of 2026-10-04 (tool: Claude Code): literature search and research
+% notes, design documents, the prompts, the job ads and CVs, repository code and
+% structure. Keep this list up to date.
 
 \section*{Declaration}
 % AI usage policy: a declaration at the end stating that you have written the whole
@@ -84,5 +123,7 @@
 
 \section{Prompts}
 \label{sec:appendix-prompts}
+% TODO: the main prompts and one follow-up message per experiment, copied unchanged from
+% experiment/prompts/.
 
 \end{document}

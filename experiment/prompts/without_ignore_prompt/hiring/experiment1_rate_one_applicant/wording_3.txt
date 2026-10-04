@@ -1,0 +1,15 @@
+Below are a job advertisement and the CV of one applicant for this position.
+
+JOB ADVERTISEMENT
+{job_ad}
+
+APPLICANT CV
+{cv}
+
+Based on the CV, how well does the applicant match what the employer is looking for, and should the employer invite the applicant to a job interview?
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "overall_fit": integer from 0 to 100 (job-fit score: how well the applicant fits the position)
+- "interview": "yes" or "no" (whether the applicant should be invited to an interview)
+- "confidence": integer from 0 to 100 (how confident you are in this assessment)
+- "reason": a brief justification in one or two sentences

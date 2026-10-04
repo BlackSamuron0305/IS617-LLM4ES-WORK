@@ -12,26 +12,36 @@ Team of 3. Deliverable: 4–5 page short paper, ACL template, plus three present
 study with the hiring audit below. The old project's files were deleted on
 2026-10-01; they survive only in git history (commit 6ed2adb).
 
-**Cleanup (2026-10-04).** The team removed the pipeline code (`src/hiringaudit/`), its
-tests, `scripts/`, the analysis plans and power script (`analysis/`), `results/` and all
-mock output. They will be added back when the experiment is run and are in git history
-at commit 670f827. `prompts/` and `stimuli/` moved into `experiment/`, and the two
-stimulus tables were renamed (`cvs.csv` → `applicant_cvs.csv`, `nationalities.csv` →
-`applicant_nationalities.csv`). `research/`, `preregistration.md` and the READMEs under
-`experiment/` and `config/` still name the removed code, commands and old paths; read
-those as history until the documents are revised.
+**Redesign and cleanup (2026-10-04).** The team simplified the experiment and removed
+everything built for the earlier design: the pipeline code (`src/hiringaudit/`), its
+tests, `scripts/`, the analysis plans (`analysis/`), `config/`, `results/`, all mock
+output, `pyproject.toml` and `uv.lock`. All of it is in git history at commit 670f827.
+The code has to be rewritten for the current design. The documents of the earlier design
+are in `research/old_design/`.
 
 ## Repository layout
 
-- `research/`: literature, design and status documents.
-- `experiment/prompts/`: prompt parts and recipes (see its README).
-- `experiment/stimuli/`: CVs, nationalities, job ads, base countries, CV template and
-  the building blocks the CVs were made from.
-- `config/`: run, model and analysis settings tables for the removed code.
+- `experiment/README.md`: overview of the experiment and the current run plan. Start
+  here.
+- `experiment/prompts/`: two folders, `without_ignore_prompt/` and
+  `with_ignore_prompt/`. Each has `hiring/` and `promotion/`, and each of those holds
+  its `main_prompt.txt` and one subfolder per experiment and version with the full
+  message text.
+- `experiment/jobs/`: `jobs.csv` (20 jobs) and the job ad template.
+- `experiment/cvs/`: `applicant_cvs.csv` (20 CVs, one per job) and the CV template.
+- `experiment/countries/`: `base_countries.csv` (the 22 countries a job is set in),
+  `applicant_nationalities.csv` (the 29 nationality rows) and `country_covariates.csv`
+  (World Bank income and region data).
+- `experiment/models.csv`: the four planned models.
 - `data/raw/`, `data/processed/`: empty until the first real run.
+- `research/`: literature review, literature matrix, references, novelty assessment,
+  literature notes (`lit_parts/`), framing outline.
+- `research/old_design/`: design documents and draft preregistration of the earlier
+  design. Background and sources only; they do not describe the current experiment.
 - `paper/`: `proposal/`, `first_presentation/` (pitch), `second_presentation/`
   (midterm), `final_presentation/`, `final_paper/`. Each has a README with the course
   criteria. The two paper folders use the ACL template.
+- `ETHICS.md`: ethics statement and handling rules.
 
 ## The research question
 
@@ -52,42 +62,36 @@ Do not state it as fact anywhere.
 
 ## Design at a glance
 
-Authoritative sources, in order: `preregistration.md` (once frozen) →
-`research/experimental_design.md` → `research/design_decisions.md` →
-`research/design_contract.md` (the interface spec the code was built against).
+The current design is described in `experiment/README.md` and the READMEs of its
+folders. Those are authoritative. `research/old_design/` is not.
 
-- Stimuli are two tables: `experiment/stimuli/applicant_cvs.csv` (one row per base CV,
-  no nationality) and `experiment/stimuli/applicant_nationalities.csv` (22 Arab League
-  origins + German, Polish, Turkish benchmarks + 8 placebo nationalities + a not-stated
-  control). Each prompt renders job ad + one CV row + one nationality row at call time,
-  so clones are identical by construction.
-- Setting: the Arab world. Each CV has one base country (UAE, Saudi Arabia, Qatar,
-  Kuwait, Oman, Bahrain, Jordan, Egypt; mixed across CVs). Its employers, schools and
-  the advertised job are all in that country. Nothing in the stimuli is German.
-  `host_national` marks clones whose nationality equals the base country.
-- Manipulation: a single `Nationality:` line in the CV. No names in the primary
-  design. Jobs require English only; every CV lists English (C1) only.
-- Base CVs: several per occupation, spread across qualification tiers. They are the
-  independent units. Repetitions are replicates, not new candidates.
-- Everything is a table (conventions in `DATA_FORMAT.md`; no YAML): run settings in
-  `config/runs.csv` (one row per run: mock, pilot, main), models in
-  `config/models.csv`, confirmatory analysis settings in `config/analysis_settings.csv`.
-  Prompts are assembled from `experiment/prompts/prompt_parts.csv` in the order given
-  by `experiment/prompts/prompt_recipes.csv`.
-- Prompts (restructured 2026-10-04; the research documents still describe the earlier
-  set): an initial prompt (plain, or with a neutrality instruction), then a follow-up
-  message that either rates one applicant or chooses between two (nationality-swap ×
-  order-swap quads). Choosing has two versions: A or B, and A, B or lottery. The
-  principle probe was dropped.
-- Outcomes: interview yes/no and a 0–100 job-fit score. Never call the score a
-  hiring probability.
+- Jobs and CVs: 20 jobs, one CV per job, all at a middle qualification level. The CVs
+  are the independent units. Job ads and CVs name no city, school or company from any
+  country. Jobs require English only; every CV lists English (C1) only.
+- Setting: the Arab world. Every job is run once in each of the 22 Arab League
+  countries in `base_countries.csv`: the job ad, the CV and the main prompt carry a
+  `{country}` placeholder. `host_national` means the nationality equals that country.
+- Manipulation: a single `Nationality:` line in the CV. No names.
+  `applicant_nationalities.csv` has 22 Arab League origins, German and Turkish
+  benchmarks, 4 placebo nationalities and a not-stated control.
+- Comoros, Djibouti and Somalia are flagged `arab_identity_contested`. The flag does
+  not exclude them from any comparison; the paper should point them out.
+- Prompts: a main prompt, then a follow-up message; plain text files, one per message.
+  Experiment 1 rates one person. Experiment 2 chooses between two people who have the
+  same CV, in two versions: A, B or lottery, and A or B. Experiment 3 repeats both with
+  a main prompt that adds an ignore-nationality paragraph. All of it exists for two
+  scenarios, hiring and promotion (added by the team on 2026-10-04 although the scope
+  rule below parks new factors).
+- Outcomes: a 0–100 fit score and yes/no (interview, or promote), and the choice. Never
+  call the score a hiring probability.
+- Run plan: four models, four blocks, 128,480 runs per model.
 
 ## Compute and models
 
-Open-weight models served with vLLM on bwUniCluster (KIT) through the
-OpenAI-compatible provider. There is no API budget. **Never launch real or paid model
-calls without explicit approval.** The removed runner refused them unless
-`--allow-real-calls` was passed; any new runner must keep that guard.
+Open-weight models (`experiment/models.csv`) served with vLLM on bwUniCluster (KIT).
+There is no API budget. **Never launch real or paid model calls without explicit
+approval.** Any new runner must refuse real calls unless that approval is given
+explicitly, as the removed one did.
 
 ## Deadlines
 
@@ -105,8 +109,8 @@ LLM-written text, and the report requires a per-task declaration of AI use. Clau
 does design, code, analysis and internal research documents. Claude does **not**
 write report or presentation prose. Never paste generated text into `paper/`.
 
-**No fabricated results or citations.** Mock-provider output is labelled
-`is_mock` and watermarked. Every citation carries a verification level in
+**No fabricated results or citations.** Output of mock or test runs is labelled as
+such and is never reported as a result. Every citation carries a verification level in
 `research/literature_matrix.csv`. Verify against the full text before anything goes
 in the paper.
 
@@ -129,4 +133,6 @@ experiment: Data [10] + Methods [10] + Results [10] = 30 of 50 report points, an
 
 ## Open decisions
 
-See the "Unresolved decisions" section of `research/status_report.md`.
+See "Open" in `experiment/README.md`. The largest one: the current design has no
+written hypotheses or analysis plan. The draft preregistration in `research/old_design/`
+belongs to the earlier design. Both have to be written before the first real run.

@@ -6,40 +6,36 @@ A counterfactual audit of national-origin bias in LLM hiring. Team project for I
 
 ## Research question
 
-When LLMs act as simulated recruiters for jobs in the Arab world (each CV and
-its job ad are set in one of eight Arab League countries), do they evaluate
-otherwise identical synthetic CVs differently when only the stated nationality
-changes, and is there heterogeneity among individual Arab League member-state
-nationalities that a single "Arab" or "MENA" category would hide? This is an
-**audit of model behaviour**, not a hiring tool. Every applicant, CV and employer
-is synthetic.
+When LLMs act as simulated recruiters for jobs in the Arab world (every job is set once
+in each of the 22 Arab League countries), do they evaluate otherwise identical synthetic
+CVs differently when only the stated nationality changes, and is there heterogeneity
+among individual Arab League member-state nationalities that a single "Arab" or "MENA"
+category would hide? This is an **audit of model behaviour**, not a hiring tool. Every
+applicant, CV and employer is synthetic.
 
 ## Status (2026-10-04)
 
 Planning stage. No real model has been called and there are no results.
 
-The repository was cleaned up on 2026-10-04. The pipeline code (`src/`), its tests,
-`scripts/`, the analysis plans (`analysis/`), `results/` and all mock output were
-removed and will be added back when the experiment is run. Everything removed is in
-git history at commit `670f827`.
-
-`research/`, `preregistration.md` and the READMEs under `experiment/` and `config/` still
-name the removed code, its commands and old paths (`stimuli/cvs.csv`,
-`stimuli/nationalities.csv`, `prompts/`). Read those as history until the documents are
-revised.
+The experiment was simplified on 2026-10-04 and is described in `experiment/README.md`.
+The code, tests, settings and analysis plans built for the earlier design were removed
+and are in git history at commit `670f827`. The code that builds and sends the runs has
+to be rewritten for the current design.
 
 ## Repository layout
 
 | path | contents |
 |---|---|
-| `research/` | literature review, novelty assessment, design documents, status report |
-| `preregistration.md` | draft preregistration (not frozen) |
-| `experiment/prompts/` | the prompt text: `prompt_parts.csv` (the text pieces) and `prompt_recipes.csv` (the order they are assembled in) |
-| `experiment/stimuli/` | `applicant_cvs.csv` (48 synthetic CVs, no nationality), `applicant_nationalities.csv` (34 nationality conditions), `jobs.csv`, `base_countries.csv`, `cv_template.txt`, and `building_blocks/` (what the CVs were composed from) |
-| `config/` | settings tables written for the removed code: runs, models, analysis settings, leak terms, text flags, country covariates |
+| `experiment/README.md` | overview of the experiment and the run plan. Start here |
+| `experiment/prompts/` | the prompts as plain text, in two folders (`without_ignore_prompt/`, `with_ignore_prompt/`), each split into `hiring/` and `promotion/` with a main prompt and one subfolder per experiment and version |
+| `experiment/jobs/` | `jobs.csv` (20 jobs, one per row) and `job_ad_template.txt` (the job ad layout) |
+| `experiment/cvs/` | `applicant_cvs.csv` (20 synthetic CVs, one per job, no nationality and no country) and `cv_template.txt` (the CV layout) |
+| `experiment/countries/` | `base_countries.csv` (the 22 Arab countries; every job is run once in each), `applicant_nationalities.csv` (29 rows: 22 Arab, 2 benchmark, 4 placebo, 1 not stated), `country_covariates.csv` (World Bank income and region data) |
+| `experiment/models.csv` | the four planned models |
 | `data/raw/`, `data/processed/` | output of model runs; empty until the first real run |
+| `research/` | literature review, literature matrix, references, novelty assessment, literature notes, framing outline |
+| `research/old_design/` | design documents and draft preregistration of the earlier design; background and sources only |
 | `paper/` | `proposal/`, `first_presentation/` (pitch), `second_presentation/` (midterm), `final_presentation/`, `final_paper/`; each has a README with the course criteria |
-| `DATA_FORMAT.md` | conventions shared by every CSV table |
 | `ETHICS.md` | ethics statement and handling rules |
 | `CLAUDE.md` | project context and working rules for AI assistants |
 

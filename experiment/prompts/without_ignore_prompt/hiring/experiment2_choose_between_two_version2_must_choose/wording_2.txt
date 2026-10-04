@@ -1,0 +1,17 @@
+Your task is to compare two job applications for the same position. The employer can interview only one applicant.
+
+JOB ADVERTISEMENT
+{job_ad}
+
+CANDIDATE A
+{cv_a}
+
+CANDIDATE B
+{cv_b}
+
+You must choose one of the two candidates: "A" or "B".
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "choice": "A" or "B" (the candidate who should be invited)
+- "confidence": integer from 0 to 100 (how confident you are in this choice)
+- "reason": a brief justification in one or two sentences

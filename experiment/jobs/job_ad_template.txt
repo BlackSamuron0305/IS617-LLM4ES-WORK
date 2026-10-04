@@ -1,0 +1,15 @@
+Position: {{TITLE}}
+Employer: {{EMPLOYER}}
+Location: {{LOCATION}}
+
+About us:
+{{ABOUT}}
+
+Your tasks:
+{{TASKS}}
+
+Your profile:
+{{REQUIREMENTS}}
+
+What we offer:
+{{OFFER}}
