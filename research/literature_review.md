@@ -5,11 +5,13 @@ Internal working document. **Not paper prose**: the team writes the paper and th
 presentations themselves (AI-usage rule in `CLAUDE.md`). Do not paste from here.
 
 Companion files:
-- `research/literature_matrix.csv`: 125 sources, one row each, with a `strand` column.
-- `research/references.bib`: the same 125 keys. `verification` and `strand` are custom
+- `research/literature_matrix.csv`: 193 sources, one row each, with a `strand` column
+  (125 from the first passes, 68 added on 2026-10-04; see §6).
+- `research/references.bib`: the same 193 keys. `verification` and `strand` are custom
   fields that BibTeX styles ignore, and `annote` holds remarks.
 - `research/novelty_assessment.md`: the stress-tested novelty verdict.
-- Full search logs from the two parts: `lit_parts/L1_notes.md` and `lit_parts/L2_notes.md`.
+- Full search logs from the two parts (`lit_parts/L1_notes.md`, `lit_parts/L2_notes.md`)
+  were removed on 2026-10-04; they are in git history (commit 670f827).
 
 **Verification levels.**
 - `fulltext`: the relevant sections of the source were read.
@@ -22,17 +24,18 @@ findings are not LLM findings.
 
 | strand | n | fulltext | abstract | metadata |
 |---|---|---|---|---|
-| llm_hiring | 27 | 8 | 18 | 1 |
+| llm_hiring | 30 | 11 | 18 | 1 |
 | audit_method | 20 | 3 | 16 | 1 |
-| human_audit | 19 | 3 | 15 | 1 |
-| arab_mena_llm | 16 | 2 | 14 | 0 |
+| human_audit | 68 | 26 | 41 | 1 |
+| arab_mena_llm | 26 | 13 | 13 | 0 |
 | nationality_llm | 13 | 5 | 8 | 0 |
 | intervention | 8 | 3 | 5 | 0 |
-| principle_behaviour | 8 | 1 | 7 | 0 |
-| fairness_theory | 14 | 0 | 10 | 4 |
-| **total** | **125** | **25** | **93** | **7** |
+| principle_behaviour | 8 | 2 | 6 | 0 |
+| fairness_theory | 20 | 6 | 10 | 4 |
+| **total** | **193** | **69** | **117** | **7** |
 
-93 of the 125 sources are at abstract level. Check any claim that goes beyond an
+Counts include the 2026-10-04 additions (§6); the strand headings in §2 still give the
+counts of the first passes. 117 of the 193 sources are at abstract level. Check any claim that goes beyond an
 abstract against the full text before it enters the paper.
 
 ---
@@ -112,7 +115,7 @@ than one individual Arab nationality**.
 - **Arabic.** Only 4 general-web queries were run. No Arabic bibliographic database or Arabic-language journal index was searched. **Arabic-language scholarship is effectively not covered.**
 - **German.** Seven web queries across the three passes. They surfaced news and HUMAN field experiments only. German-language grey literature (e.g. the Antidiskriminierungsstelle reports) was not searched systematically.
 - **Venues.** FAccT, AIES, EMNLP 2026 and the ACL 2026 workshops were not browsed issue by issue. SSRN was searched only through the web engine. Preprints and workshop papers from the last few weeks may be missing.
-- **Depth.** 93 of the 125 sources are at abstract level. For the papers flagged medium or high threat, the part researchers read the full text (Lippens, MENAValues, Mao & Zhao, Mazeika). Bai, Hofmann, Gu and Shen are abstract-level.
+- **Depth.** 117 of the 193 sources are at abstract level. For the papers flagged medium or high threat, the part researchers read the full text (Lippens, MENAValues, Mao & Zhao, Mazeika). Bai, Hofmann, Gu and Shen are abstract-level.
 
 ---
 
@@ -129,7 +132,7 @@ Each strand ends with **cannot answer** and **implies for us**.
   - `gaebler2024auditing` and `an2025measuring` favour women.
   - `rozado2026gender`: female-named candidates are chosen 56.9% of the time in pairs, but isolated ratings show a negligible effect.
   - Group rankings shift across templates (`an2024large`).
-- **Only two LLM hiring studies have an explicit Arab group, and both pool it into one name category.**
+- **Only two LLM CV-screening studies have an explicit Arab group, and both pool it into one name category.** (Added 2026-10-04: `bai2025explicitly` has a third pooled Arabic/Muslim-name group, in a relative job-assignment task, and `albaroudi2026addressing` pools 18 Arab nationalities into Arab vs non-Arab; see §6.)
   - `lippens2024computer`: GPT-3.5, Flemish vacancies, 34,560 vacancy–CV combinations.
     - One pooled Arab name group: −1.41 points (SE 0.21), discrimination ratio 0.85 at a cutoff of 75.
     - Turkish: −1.75. Eastern Europeans carry the largest penalty.
@@ -230,7 +233,7 @@ Each strand ends with **cannot answer** and **implies for us**.
   - `carlsson2007evidence`: every fourth employer discriminates.
   - `arai2016reverse`: Arabic-named men are penalised more than women.
   - `blommaert2014discrimination`: Dutch-named applicants are 60% more likely to get a positive reaction.
-  - `adida2010identifying`: a religion contrast.
+  - `adida2010identifying`: a religion contrast among applicants of **Senegalese** origin. It is not an Arab-name audit (corrected 2026-10-04).
   - `bartkoski2018meta`: "Arab" targets draw more discrimination than "Muslim" targets, and primary studies conflate the two.
 - **Citizenship:** `quillian2026racialized` finds that lacking citizenship or holding a foreign degree carries large penalties, while place of birth has little independent effect.
 - **Country context:** `quillian2019countries` places Germany among the lower-discrimination countries.
@@ -238,7 +241,7 @@ Each strand ends with **cannot answer** and **implies for us**.
 
 **Cannot answer.**
 - Anything about LLMs. Human effect sizes are not a benchmark that LLMs "should" match.
-- Human studies signal origin through names, language, photos or religion, not through an explicit nationality line on a CV with a work-authorisation line.
+- Human studies signal origin through names, language, photos or religion, and only rarely through an explicit nationality or birth-country line (four do: `duguet2010young`, `vernby2019immigrants`, `valfort2015discriminations`, `busetta2018immigrants`; corrected 2026-10-04).
 - In the German GEMM arm, groups other than German and Turkish had "around n = 100" applications each (verified in `koopmans2019taste`), so origin-level human estimates are noisy.
 
 **Implies for us.**
@@ -256,12 +259,12 @@ Each strand ends with **cannot answer** and **implies for us**.
 
 **What it shows.**
 - **Pooled anti-Arab and anti-Muslim bias is well established in generation and red-teaming:**
-  - `saeed2024desert`: negative bias toward Arabs in 79% of cases.
+  - `saeed2024desert`: Arabs rather than Westerners are named the "loser group" in 79% of model-by-category cells, under prompts that force that choice (not 79% of responses; corrected 2026-10-04).
   - `saeed2026surfacing`: Arabs cast in terrorism and religion roles in 89% or more of cases.
   - `abid2021persistent`: Muslim–violence association; positive adjectives cut violent completions from 66% to 20%.
   - `aly2025argan`: Arabs and Egyptians among the most negative targets in Modern Standard Arabic prompts.
   - `shahid2026orientalism`: "Said-washing", where a model disclaims generalising and then reproduces the structure it disclaimed.
-  - `mohammad2026mirage`: a 9–22 pp asymmetry in agentic decisions (including hiring screens) for Muslim vs matched non-Muslim cases. Prompt mitigations fix completions but not decisions.
+  - `mohammad2026mirage`: **no usable results.** The full text labels its numbers as illustrative placeholders (checked 2026-10-04), so the 9–22 pp figure quoted here before is withdrawn. Benchmark design only.
 - **Culture and values:**
   - `naous2024beer`: Western defaults in Arabic contexts.
   - `zahraei2025menavalues`: 14 Arab League states plus Iran and Turkey. Algeria is worst served and Palestine best, about a 19.8% gap. Under Arabic prompts, models **collapse Arab countries into one cluster**.
@@ -321,7 +324,7 @@ origins, in a German setting.
   - `salinas2024whats`: numeric anchors help, but qualitative detail can increase disparities.
 - **Related:**
   - `bui2025dialects`: naming the attribute amplifies bias.
-  - `mohammad2026mirage` and `aizaz2026persona`: mitigations change surface outputs, not decision or status patterns.
+  - `aizaz2026persona`: fairness instructions change surface outputs, not status patterns. (`mohammad2026mirage` was cited here until 2026-10-04; its numbers are placeholders.)
 
 **Cannot answer.**
 - The effect of an instruction on *nationality* effects.
@@ -439,7 +442,7 @@ The "Status" column refers to `design_contract.md` v0.2 (A-numbers) and the meth
 | 15 | Mitigation studies report only means or max–min gaps (`tamkin2023evaluating`, `huijzer2025discrimination`) | Report the change in **dispersion** (H3a) as well as the mean | Adopted. A possible secondary novelty. |
 | 16 | Explanations may amplify bias (`tan2026small`); biases are often unverbalized (`arcuschin2026blind`, `karvonen2025robustly`) | Keep the `reason` field identical across conditions; text flags are exploratory and undercount | Adopted. Caution in interpretation. |
 | 17 | Language markers leak ethnicity (`tan2026small`, `leininger2026fairness`, `rao2025invisible`) | Languages constant, no Arabic; language-line robustness arm (A13) | Adopted. |
-| 18 | Religion channel: "Muslim by default" (`distasio2021muslim`), `mohammad2026mirage`, `abid2021persistent` | Religion is part of the total effect; `mentions_religion` exploratory; religion cue arm parked | Adopted. |
+| 18 | Religion channel: "Muslim by default" (`distasio2021muslim`), `abid2021persistent`, `valfort2020anti` | Religion is part of the total effect; `mentions_religion` exploratory; religion cue arm parked | Adopted. |
 | 19 | The principle–behaviour gap is a crowded construct (`gu2025alignment`, `shen2025value`, `bai2025explicitly`, `hofmann2024dialect`, `mazeika2025utility`) | Present the probe as a stated-vs-revealed **application**; no new "index"; control items and reverse keying (A11) | Framing action. |
 | 20 | Positive controls and equivalence tests make nulls defensible (`pavlopoulos2026minimal`); models often fail validity checks (`castleman2026measuring`) | Positive-control clone (A7); SESOIs (A2) | Adopted. |
 | 21 | Recent models reverse the human direction (`gao2026can`, `gaebler2024auditing`, `an2025measuring`, `rozado2026gender`) | Two-sided tests; log model vintage | Adopted. |
@@ -458,3 +461,55 @@ The "Status" column refers to `design_contract.md` v0.2 (A-numbers) and the meth
 6. "First Come, First Hired?" (MIT Computational Law Report, position bias): still 403, unverified, and not included.
 7. Arabic-language databases: not searched. Name this as a coverage limit, or search them if time allows.
 8. Every `abstract`-level source used for a specific number in the paper needs a full-text check.
+
+---
+
+## 6. Premise check and Arab-world setting pass (2026-10-04)
+
+Three parallel parts, 68 sources added (L3: 34, L4: 13, L5: 21; three sources found by
+two parts were merged). Search logs, access failures and unverified leads are in
+`lit_parts/L3_notes.md`, `L4_notes.md` and `L5_notes.md`. Sections 1 to 5 above were
+not rewritten, apart from the corrections in 6.2.
+
+- **L3:** HUMAN field experiments on Arab / Middle Eastern / North African applicants (French-language sources searched for the first time).
+- **L4:** LLM evidence on Arab / MENA / Muslim groups (HAL and French queries for the first time; FAccT and AIES 2025; arXiv postings to 2026-10-05).
+- **L5:** whether HUMANS tell Arab national origins apart, and Arab-world labour markets. First search for the Arab-world setting.
+
+### 6.1 What the evidence supports
+
+| premise | verdict | main sources |
+|---|---|---|
+| Human employers penalise applicants with Arab / North African / Middle Eastern names | **Holds for Western labour markets.** Large on average, but sizes vary a lot (I² = 87% in the pooled estimate), there are nulls, and MENA is often not the lowest group when several are tested | `lippens2023state`, `quillian2023trends`, `arnoult2021discrimination`, `thijssen2021ethnic`, `booth2012does`, `adamovic2023glass`, `vernby2019immigrants`; nulls: `challe2024cyclical`, `baert2017does`, `foroni2016discrimination` |
+| The same inside Arab labour markets | **No field experiment found** with applicant nationality as the treatment. Audits inside Arab countries vary gender only (`krafft2025employers`). The only one in the region with an ethnic treatment is from Israel (`ariel2015ethnic`) | L3 and L5 notes |
+| LLMs penalise Arab applicants in hiring decisions | **Weak and mixed.** One small GPT-3.5 penalty (`lippens2024computer`), one job-assignment result (`bai2025explicitly`), one null (`hoffmann2026evaluating`), and reversals in newer models, especially with explicit group labels (`bunel2026customer`, `arcuschin2026blind`, `huijzer2025discrimination`) | L4 notes §1–2 |
+| LLMs reproduce Arab / Muslim stereotypes in generated text | **Holds, but dated and pooled** (2020–2023 models). Newer models often over-protect: refusals cluster on Muslim targets | `abid2021persistent`, `hemmatian2023muslim`, `shieh2026intersectional`, `cheng2023marked`, `saeed2024desert`; `plazadelarco2024divine`, `khorramrouz2026characterizing` |
+| Prior work pools Arab / MENA into one category | **Holds** in both literatures. Only `vernby2019immigrants` (Iraq, Somalia), `koopmans2019taste` and `distasio2024same` separate more than one Arab origin | L3 notes §3 |
+| Names cannot tell Arab origins apart | **Holds for human raters, on thin evidence:** 34% of Moroccan names are assigned to Morocco (`martiniello2022signaling`, one Arab origin). A dedicated classifier recovers the country from transliterated names at 67% against a 44% baseline (`mubarak2015classifying`) | L5 notes |
+| Humans treat Arab national origins differently | **Mixed, leaning to lumping inside the Arab world.** Differentiation for a few pairs in Western settings (Iraq above Somalia: `vernby2019immigrants`, `ahmad2026name`) and in Gulf state policy (`kapiszewski2006arab`, grey). No significant nationality differences among Qatari citizens (`shockley2024sharing`); Arab expatriates treat "Arab" as one in-group (`blaydes2023arab`); Gulf wage studies pool "Arab" themselves (`alfarhan2019migrant`) | L5 notes §1–4 |
+| An LLM hiring study varies several individual Arab nationalities | **Still none found.** Nearest: `albaroudi2026addressing` pools 18 Arab nationalities into Arab vs non-Arab | L4 notes §3 |
+
+### 6.2 Corrections applied to earlier entries
+
+- `mohammad2026mirage`: the numbers are illustrative placeholders (captions re-checked on arXiv). All uses of its figures were withdrawn (§2.4, §2.6, §4 row 18, `novelty_assessment.md` §3 row 13).
+- `adida2010identifying`: applicants are of Senegalese origin. It is not an Arab-name audit (§2.3).
+- `saeed2024desert`: the 79% is a share of model-by-category cells under a forced choice, not of responses (§2.4).
+- `bai2025explicitly`: has a pooled Arabic/Muslim-name group in a job-assignment task (§2.1).
+- `arcuschin2026blind`: now read in full; every detected race/ethnicity bias is pro-minority.
+- `huijzer2025discrimination`: Moroccan effect negative under GPT-3.5, positive under GPT-4o. The paper misdescribes Lippens 2024; do not copy.
+- `kamruzzaman2024nation`: now published at EMNLP 2025.
+- `lippens2023state`: the Arab/Maghrebi/Middle Eastern estimate rests on 31 effects and 69,311 observations, I² = 87.37%.
+- §2.3: four human studies do put nationality or birth country on the CV.
+
+### 6.3 Consequences for the framing
+
+- **The premise is Western, the setting is not.** Every hiring field experiment on Arab applicants is from Europe, North America, Australia or Israel. The CVs and jobs are set in eight Arab countries. The introduction needs a bridge and must not present the Western callback gap as evidence about Arab labour markets.
+- **Do not write "LLMs discriminate against Arab applicants" as settled.** The decision evidence is one small penalty, one null and several reversals. Safe: stereotypes in generated text are documented; evidence on decisions is sparse and mixed.
+- **A null is a live outcome.** Inside the Arab world the human evidence leans to treating Arab origins as one group, so "a single category is adequate for these models" would agree with it.
+- **"MENA" is not our set.** MENA in the cited work is a different set: it includes Turkish applicants in `quillian2023trends`, and Iranian and Israeli respondents in the US census test, where Somali and Sudanese respondents mostly do not take the label (`mathews2017national`: 0.0% and 8.0%). This supports the 19-origin co-requirement and argues against calling the 22 Arab League nationalities "MENA".
+- **The names result supports the design.** If raters cannot place an Arabic name in a country, name-based audits cannot separate Arab origins; an explicit nationality line can.
+
+### 6.4 Still not covered
+
+Google Scholar and Semantic Scholar; Arabic-language journals; books, where most
+qualitative within-Arab evidence probably sits; FAccT and AIES 2026 proceedings; Dutch,
+Italian and Spanish-language queries; the Bilon 2025 full text.

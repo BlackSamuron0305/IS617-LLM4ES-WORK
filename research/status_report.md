@@ -62,7 +62,7 @@ as such.
 
 | Area | State | Where |
 |---|---|---|
-| Literature review | 125 sources, all confirmed to exist (25 read in full, 93 abstract, 7 metadata only); keys consistent across matrix, bib and all docs | `research/literature_review.md`, `literature_matrix.csv`, `references.bib` |
+| Literature review | 193 sources, all confirmed to exist (69 read in full, 117 abstract, 7 metadata only; 68 added on 2026-10-04); keys consistent across matrix, bib and all docs | `research/literature_review.md`, `literature_matrix.csv`, `references.bib` |
 | Novelty audit | Falsification searches in English, German, Arabic on arXiv, OpenAlex, ACL Anthology, Semantic Scholar (partly rate-limited), web | `research/novelty_assessment.md` |
 | Causal design | Potential-outcomes estimands, variables, hypotheses, threats, 40 traced design decisions | `research/experimental_design.md`, `variables.md`, `hypotheses.md`, `threats_to_validity.md`, `design_decisions.md` |
 | Statistics | Analysis plan, model specs, multiple-testing hierarchy, simulation power script | `analysis/*.md`, `analysis/power_analysis.py` |

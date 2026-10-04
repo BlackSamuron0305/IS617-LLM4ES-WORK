@@ -12,6 +12,27 @@ Team of 3. Deliverable: 4–5 page short paper, ACL template, plus three present
 study with the hiring audit below. The old project's files were deleted on
 2026-10-01; they survive only in git history (commit 6ed2adb).
 
+**Cleanup (2026-10-04).** The team removed the pipeline code (`src/hiringaudit/`), its
+tests, `scripts/`, the analysis plans and power script (`analysis/`), `results/` and all
+mock output. They will be added back when the experiment is run and are in git history
+at commit 670f827. `prompts/` and `stimuli/` moved into `experiment/`, and the two
+stimulus tables were renamed (`cvs.csv` → `applicant_cvs.csv`, `nationalities.csv` →
+`applicant_nationalities.csv`). `research/`, `preregistration.md` and the READMEs under
+`experiment/` and `config/` still name the removed code, commands and old paths; read
+those as history until the documents are revised.
+
+## Repository layout
+
+- `research/`: literature, design and status documents.
+- `experiment/prompts/`: prompt parts and recipes (see its README).
+- `experiment/stimuli/`: CVs, nationalities, job ads, base countries, CV template and
+  the building blocks the CVs were made from.
+- `config/`: run, model and analysis settings tables for the removed code.
+- `data/raw/`, `data/processed/`: empty until the first real run.
+- `paper/`: `proposal/`, `first_presentation/` (pitch), `second_presentation/`
+  (midterm), `final_presentation/`, `final_paper/`. Each has a README with the course
+  criteria. The two paper folders use the ACL template.
+
 ## The research question
 
 Working title: *Beyond "Arab" as a Single Category: A Counterfactual Audit of
@@ -35,11 +56,11 @@ Authoritative sources, in order: `preregistration.md` (once frozen) →
 `research/experimental_design.md` → `research/design_decisions.md` →
 `research/design_contract.md` (the interface spec the code was built against).
 
-- Stimuli are two tables: `stimuli/cvs.csv` (one row per base CV, no nationality)
-  and `stimuli/nationalities.csv` (22 Arab League origins + German, Polish,
-  Turkish benchmarks + 8 placebo nationalities + a not-stated control). Each prompt
-  renders job ad + one CV row + one nationality row at call time, so clones are
-  identical by construction; `validate-stimuli` checks every combination.
+- Stimuli are two tables: `experiment/stimuli/applicant_cvs.csv` (one row per base CV,
+  no nationality) and `experiment/stimuli/applicant_nationalities.csv` (22 Arab League
+  origins + German, Polish, Turkish benchmarks + 8 placebo nationalities + a not-stated
+  control). Each prompt renders job ad + one CV row + one nationality row at call time,
+  so clones are identical by construction.
 - Setting: the Arab world. Each CV has one base country (UAE, Saudi Arabia, Qatar,
   Kuwait, Oman, Bahrain, Jordan, Egypt; mixed across CVs). Its employers, schools and
   the advertised job are all in that country. Nothing in the stimuli is German.
@@ -51,19 +72,22 @@ Authoritative sources, in order: `preregistration.md` (once frozen) →
 - Everything is a table (conventions in `DATA_FORMAT.md`; no YAML): run settings in
   `config/runs.csv` (one row per run: mock, pilot, main), models in
   `config/models.csv`, confirmatory analysis settings in `config/analysis_settings.csv`.
-  Prompts are assembled from `prompts/prompt_parts.csv` in the order given by
-  `prompts/prompt_recipes.csv`. Commands take `--run mock|pilot|main`.
-- Prompt conditions: baseline, neutrality instruction, forced choice
-  (nationality-swap × order-swap quads), principle probe (secondary).
+  Prompts are assembled from `experiment/prompts/prompt_parts.csv` in the order given
+  by `experiment/prompts/prompt_recipes.csv`.
+- Prompts (restructured 2026-10-04; the research documents still describe the earlier
+  set): an initial prompt (plain, or with a neutrality instruction), then a follow-up
+  message that either rates one applicant or chooses between two (nationality-swap ×
+  order-swap quads). Choosing has two versions: A or B, and A, B or lottery. The
+  principle probe was dropped.
 - Outcomes: interview yes/no and a 0–100 job-fit score. Never call the score a
   hiring probability.
 
 ## Compute and models
 
 Open-weight models served with vLLM on bwUniCluster (KIT) through the
-OpenAI-compatible provider. There is no API budget. API providers are wired up but
-optional. **Never launch real or paid model calls without explicit approval.** The
-runner refuses unless `--allow-real-calls` is passed.
+OpenAI-compatible provider. There is no API budget. **Never launch real or paid model
+calls without explicit approval.** The removed runner refused them unless
+`--allow-real-calls` was passed; any new runner must keep that guard.
 
 ## Deadlines
 

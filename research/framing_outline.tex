@@ -1,0 +1,165 @@
+% Internal framing outline for the abstract, research question and introduction.
+% NOT paper text: telegraphic notes with sources, for the team to write from
+% (AI-usage rule in CLAUDE.md). Nothing here is to be pasted into paper/.
+%
+% Build (PowerShell, from research/; acl.sty and acl_natbib.bst live in ../paper/):
+%   $env:BSTINPUTS = '../paper;'; latexmk -pdf framing_outline.tex; latexmk -c framing_outline.tex
+% Bibliography: research/references.bib. Evidence behind every line:
+% research/literature_review.md section 6 and research/literature_matrix.csv.
+\documentclass[11pt]{article}
+
+\usepackage[preprint]{../paper/acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+
+\setlist[itemize]{leftmargin=1.1em,itemsep=1pt,topsep=2pt,parsep=0pt}
+
+% Verification level of a cited source (research/literature_matrix.csv).
+\newcommand{\vF}{\textsuperscript{F}} % relevant sections of the full text read
+\newcommand{\vA}{\textsuperscript{A}} % abstract only: check the full text before use
+\newcommand{\slot}[1]{\textbf{#1}}
+\newcommand{\para}[1]{\smallskip\noindent\textbf{#1}}
+
+\title{Beyond ``Arab'' as a Single Category: A Counterfactual Audit of National-Origin Bias in LLM Hiring\\[4pt]
+\large Framing outline: research question, abstract, introduction}
+
+\author{
+  Internal working notes, 2026-10-04 \\
+  AI-assisted (Claude). Notes, not paper text. \\
+  The team writes the abstract and the introduction in its own words.
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\textit{Not an abstract.} The seven slots an abstract has to fill, as notes.
+\vF~=~full text read, \vA~=~abstract only.
+\begin{itemize}
+\item \slot{1 Context.} LLMs proposed for CV screening. Audits so far: mostly US race and gender, signalled by names.
+\item \slot{2 Motivation: the documented effects.}
+  \begin{itemize}
+  \item Human employers, Western labour markets: about 41\% fewer callbacks for Arab, North African and Middle Eastern names (pooled ratio 0.59) \citep{lippens2023state}\vF.
+  \item LLMs, generated text: Muslims tied to violence in 66\% of GPT-3 completions \citep{abid2021persistent}\vA. Arabs, not Westerners, named the ``loser group'' in 79\% of model-by-topic cells \citep{saeed2024desert}\vA. MENA names 78\% under-represented in generated workplace stories \citep{shieh2026intersectional}\vF.
+  \item LLMs, hiring: Arab names $-1.41$ points on a 1--100 scale, selection ratio 0.85, GPT-3.5 \citep{lippens2024computer}\vF. GPT-4 sends Arabic names to the lower-status job more often \citep{bai2025explicitly}\vA.
+  \item Newer models: one null, some reversals. So the hiring effect is open, which is a reason to test it.
+  \end{itemize}
+\item \slot{3 Why the Arab world.} Nationality is an open sorting criterion in these labour markets. Qatar, low-income workers: Egyptian QR1,454 vs Nepali QR853 a month \citep{gardner2013portrait}\vF. Jordan: segmentation ``based not on education or initial skills but rather on nationality'' \citep{razzaz2017challenging}\vF. Gulf states expelled workers by Arab nationality in 1990--91 \citep{kapiszewski2006arab}\vF. LLM recruiting tools are being built for this market \citep{albaroudi2026addressing}\vF. Limit: differences \emph{among} Arab nationalities at equal qualifications are barely studied.
+\item \slot{4 Gap.} ``Arab'' is always one pooled group. No LLM hiring study found that varies individual Arab nationalities with qualifications fixed (tentative).
+\item \slot{5 What we do.} Identical synthetic CVs; only the \texttt{Nationality:} line changes. 22 Arab League nationalities, 3 benchmarks (German, Polish, Turkish), not stated, 8 placebo nationalities. CVs and jobs set in 8 Arab countries. Open-weight models. Baseline vs neutrality instruction; independent scoring and forced choice. Outcomes: interview yes/no, fit score 0--100.
+\item \slot{6 Results.} Empty until real data exist. One label per model: meaningful spread, trivial spread, undetermined, null, inconclusive.
+\item \slot{7 Takeaway.} Decided by the data. Either: spread among Arab nationalities exceeds noise and placebo spread, so the pooled category hides differences. Or: bounded null, a single category is adequate for these models.
+\end{itemize}
+\end{abstract}
+
+\begin{table*}[t]
+\small
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}p{4.2cm}p{6.2cm}p{4.6cm}@{}}
+\toprule
+\textbf{Premise} & \textbf{What the check found} & \textbf{Main sources} \\
+\midrule
+Human employers penalise Arab / MENA names & Holds for Western labour markets. Large on average, very uneven, some nulls. & \citealp{lippens2023state}; \citealp{quillian2023trends}; \citealp{arnoult2021discrimination} \\
+The same inside Arab labour markets & No field experiment found. Audits there vary gender only. & \citealp{krafft2025employers} \\
+LLMs penalise Arab applicants in hiring decisions & Weak and mixed: one small penalty, one null, reversals in newer models. & \citealp{lippens2024computer}; \citealp{hoffmann2026evaluating}; \citealp{bunel2026customer} \\
+LLMs stereotype Arabs and Muslims in generated text & Holds, but mostly 2020--2023 models, and pooled. & \citealp{abid2021persistent}; \citealp{shieh2026intersectional} \\
+Prior work pools Arab / MENA & Holds in both literatures. & \citealp{lippens2023state}; \citealp{lippens2024computer} \\
+Names cannot tell Arab origins apart & Holds for human raters, on thin evidence (one study, one Arab origin). & \citealp{martiniello2022signaling} \\
+Humans treat Arab origins differently & Mixed. A few pairs in Western settings; inside the Arab world mostly one group. & \citealp{vernby2019immigrants}; \citealp{shockley2024sharing}; \citealp{blaydes2023arab} \\
+An LLM hiring study splits Arab nationalities & None found. & \citealp{albaroudi2026addressing} (pooled) \\
+\bottomrule
+\end{tabular}
+\caption{Literature check of 2026-10-04: what each premise of the introduction can carry. 68 sources added; details in \texttt{research/literature\_review.md}, section~6.}
+\label{tab:check}
+\end{table*}
+
+\section{Research question}
+
+\begin{itemize}
+\item \slot{Working wording} (project brief; the team finalises it): ``Do LLMs used as simulated recruiters evaluate otherwise-identical synthetic applicants differently when only the applicant's stated national origin changes, and does a single `Arab'/`MENA' category hide systematic differences among individual Arab national origins?''
+\item \slot{Primary, RQ1.} Same CV, 22 Arab League nationality signals. Is there spread? How large against a smallest effect of interest (1 point on the 0--100 fit score)? Larger than the spread among 8 unrelated placebo nationalities? The same across models?
+\item \slot{Secondary.} RQ2: Arab average vs German, Polish, Turkish, not stated. RQ3: effect of a neutrality instruction. RQ4 (exploratory): independent scoring vs forced choice. SQ1: stated principle vs behaviour.
+\item \slot{The argument in one line.} Known: a penalty for the pooled group. Pooled because, from outside, the origins look alike (shared names, language, religion). Open: does a model still separate them when the only cue is the nationality itself?
+\item \slot{Terms.} Our set is the 22 Arab League nationalities, not ``MENA''. MENA in cited work is a different set: it includes Turkish applicants in \citet{quillian2023trends}\vF, and Iranian and Israeli respondents in the US census test, where Somali and Sudanese respondents mostly do not take the label \citep{mathews2017national}\vF. Report prior work under its own label.
+\end{itemize}
+
+\section{Introduction: paragraph plan}
+
+Each paragraph: the point, the evidence, and what not to overstate. Table~\ref{tab:check} sums up what each premise can carry.
+
+\para{P1. LLMs in hiring; what audits cover.}
+\begin{itemize}
+\item Point: many LLM screening audits; almost all vary race and gender by name.
+\item Evidence: about 361,000 r\'esum\'es, five models \citep{an2025measuring}\vA; \citet{gaebler2024auditing}\vF; \citet{armstrong2024silicon}\vF. Nationality in 13.2\% of 189 LLM-bias papers, gender in 79.9\% \citep{ghosh2025bias}\vA\ (not hiring-specific).
+\item Careful: direction is unstable; newer models often show no gap or the reverse \citep{gao2026can}\vA.
+\end{itemize}
+
+\para{P2. The premise: human employers.}
+\begin{itemize}
+\item Point: discrimination against applicants with Arab, North African or Middle Eastern names is well documented and large on average, in Western labour markets.
+\item Evidence: meta-analysis, pooled Arab/Maghrebi/Middle Eastern callback ratio 0.59 [0.55, 0.64], 31 effects \citep{lippens2023state}\vF. Higher after 2000 than in the 1990s, six Western countries \citep{quillian2023trends}\vF. France: 22.8\% vs 33.3\% callbacks, 9,600 applications \citep{arnoult2021discrimination}\vF\ (grey literature). Netherlands: 31\% vs 46\% \citep{thijssen2021ethnic}\vF. Australia: 22\% vs 35\% \citep{booth2012does}\vF. Sweden: Iraq-born 10\% vs 21\% \citep{vernby2019immigrants}\vF.
+\item Careful: (a) all Western; no field experiment with applicant nationality found inside an Arab country. (b) Sizes vary a lot ($I^2 = 87\%$) and there are nulls \citep{challe2024cyclical,baert2017does}. (c) Not always the lowest group: Chinese names in \citet{booth2012does}, Eastern European in \citet{lippens2023understanding}. (d) The signal is almost always a name. So: ``well documented in Western labour markets'', not ``everywhere'' and not ``the most''.
+\end{itemize}
+
+\para{P3. The premise: LLMs.}
+\begin{itemize}
+\item Point: stereotypes in generated text are documented; evidence on decisions is sparse and mixed.
+\item Evidence, text: Muslim--violence completions in GPT-3 \citep{abid2021persistent}\vA, persisting with names in later GPT models \citep{hemmatian2023muslim}\vF. MENA names 78\% under-represented in generated workplace stories \citep{shieh2026intersectional}\vF. Middle-Eastern personas conflated with religion \citep{cheng2023marked}\vF.
+\item Evidence, decisions: GPT-3.5, pooled Arab names, $-1.41$ points on a 1--100 scale, ratio 0.85 at a cut-off \citep{lippens2024computer}\vF. GPT-4 sends Arabic/Muslim names to the lower-status job more often \citep{bai2025explicitly}\vA\ (detail read in the arXiv version). Gemini 2.0 Flash, pooled Arabic male names: about zero \citep{hoffmann2026evaluating}\vF.
+\item Against: 18 LLMs recommend less discrimination against a real origin (Moroccan) than against a fictional group \citep{bunel2026customer}\vF. Every race or ethnicity bias detected in hiring, loans and admissions favours the minority \citep{arcuschin2026blind}\vF.
+\item Careful: do not write ``LLMs discriminate against Arab applicants'' as settled. Newer models reverse most where the group is named explicitly, which is our cue. Expectations stay two-sided.
+\end{itemize}
+
+\para{P4. The single category.}
+\begin{itemize}
+\item Point: both literatures pool. Pooling is natural, because from outside the origins are hard to tell apart.
+\item Evidence, pooling: raters assign 34\% of Moroccan names to Morocco \citep{martiniello2022signaling}\vF. A standard name classifier puts eleven Arab countries in one class \citep{ye2017nationality}\vF. Meta-analyses pool \citep{lippens2023state,quillian2023trends}; so do Gulf wage studies \citep{alfarhan2019migrant}\vA.
+\item Evidence that origin can matter (humans): Germany, Iraqi and Moroccan below Turkish \citep{koopmans2019taste}\vF. Origin-country traits predict callbacks across 22 origins \citep{distasio2024same}\vA. Sweden: Iraq 10\% vs Somalia 5\% \citep{vernby2019immigrants}\vF. Gulf state policy: expulsions by Arab nationality, 1990--91 \citep{kapiszewski2006arab}\vF\ (grey literature).
+\item Evidence that it may not (humans, inside the Arab world): no significant nationality differences among Qatari citizens \citep{shockley2024sharing}\vF. Arab expatriates in Kuwait and Qatar treat ``fellow Arabs'' as one group \citep{blaydes2023arab}\vF.
+\item LLMs outside hiring do separate Arab countries: values, 14 Arab states \citep{zahraei2025menavalues}\vF; sentiment by demonym \citep{venkit2023nationality}\vF. The critique of ``one Arab culture'' \citep{keleg2025arabs}\vA.
+\item Careful: the human evidence points both ways, so the question is open in both directions. The Iraq--Somalia gap mixes origin with race. Outcomes in the two Gulf studies are residency and migration attitudes, not hiring.
+\end{itemize}
+
+\para{P5. Why the Arab world.}
+\begin{itemize}
+\item Point: there, nationality openly sorts workers, so a nationality line on a CV is realistic and what a model does with it matters.
+\item Evidence: pay by nationality among low-income workers in Qatar, Egyptian QR1,454 vs Nepali QR853 a month \citep{gardner2013portrait}\vF\ (plain averages, no controls). Jordan: segmentation by nationality, strong demand for Egyptian workers \citep{razzaz2017challenging}\vF\ (ILO report). Gulf: Arab share of foreign workers from 72\% (1975) to 32\% (2002/4); expulsions by Arab nationality in 1990--91 \citep{kapiszewski2006arab}\vF\ (UN paper). Kuwait, nine nationality groups: about a third of earnings inequality left unexplained \citep{alqudsi1991relative}\vA. An LLM recruiting pipeline for the Saudi market \citep{albaroudi2026addressing}\vF.
+\item Careful: most of this compares Arab vs Asian vs Western workers, or is state policy. Differences among Arab nationalities at equal qualifications are barely studied; no field experiment exists. Say ``nationality matters in these labour markets'', not ``Arab nationalities are known to be treated differently''. Three of the sources are reports, not journal articles.
+\end{itemize}
+
+\para{P6. Gap and this paper.}
+\begin{itemize}
+\item Gap: no study found in which an LLM makes a hiring decision and national origin varies across more than one Arab country (searches of 29--30.09 and 04.10.2026; coverage in the literature review). Nearest: 18 Arab nationalities pooled into Arab vs non-Arab \citep{albaroudi2026addressing}\vF. Wording: ``to our knowledge''.
+\item Design, in one breath: see abstract slot 5.
+\item What ``systematic difference'' means here: above decoder noise (permutation test), above the spread of placebo nationalities, and still there without Somalia, Djibouti and Comoros.
+\item Why a nationality line and not names: names cannot carry the country (P4).
+\end{itemize}
+
+\para{P7. Contribution and scope.}
+\begin{itemize}
+\item Contribution candidates (team wording; novelty is tentative): first split of the Arab category by nationality in LLM hiring decisions; spread judged against noise and placebo spread; effect of a neutrality instruction on the spread, not only on the mean.
+\item Not claimed as new: that LLMs penalise Arab applicants; that LLMs tell Arab countries apart in general; that origin matters in human hiring.
+\item Scope: an audit, not a hiring tool. Synthetic applicants and employers. Explicit nationality cue only, no names. The fit score is not a hiring probability. Open-weight models at pinned revisions.
+\end{itemize}
+
+\section{Open points for the team}
+
+\begin{itemize}
+\item \slot{Western premise, Arab-world setting.} All hiring field experiments on Arab applicants are from Europe, North America, Australia or Israel. Our CVs and jobs are in eight Arab countries. The bridge is P5 (nationality openly sorts workers there). A second one, if wanted: Western defaults of LLMs in Arab contexts \citep{naous2024beer}\vA. Do not present the Western callback gap as evidence about Arab labour markets.
+\item \slot{A null is a live outcome.} Inside the Arab world the human evidence leans to one group. ``A single category is adequate for these models'' would agree with it. Write P4 so that either result reads as an answer.
+\item \slot{Novelty.} Tentative. One paper is still unread in full \citep{bilon2025sociodemographic}\vA: its abstract reports only U.S. vs non-U.S.
+\item \slot{One withdrawn source.} MIRAGE (Mohammad and Sheikh 2026): its numbers are placeholders. Do not cite them.
+\item \slot{Before any number goes into the paper:} every source marked \vA\ needs a full-text check.
+\end{itemize}
+
+\bibliography{references}
+
+\end{document}

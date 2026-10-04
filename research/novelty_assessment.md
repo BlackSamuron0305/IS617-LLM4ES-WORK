@@ -77,7 +77,7 @@ Ranked by closeness to our exact experiment. HUMAN rows are analogues, not LLM e
 | 10 | Bilon 2025 (`bilon2025sociodemographic`, abstract) | ChatGPT hiring scores, 24,000 evaluations, with a national-origin factor | Abstract reports only **U.S. vs non-U.S.**; country levels **unverified** (full text 403) | Low, **unresolved** |
 | 11 | Busetta et al. 2025 (`busetta2025artificial`, abstract) | Vignette hiring experiment across 6 LLMs; sex, ethnicity, education, age | No nationality factor per the abstract; ethnicity levels not stated | Low |
 | 12 | Leyva-Vazquez & Smarandache 2026 (`leyvavazquez2026prestige`, abstract) | Candidate evaluations with name origin, institution prestige and a 2-level country factor | Two countries, none Arab | Low |
-| 13 | MIRAGE 2026 (`mohammad2026mirage`, abstract) | Muslim vs matched non-Muslim cases in agentic decisions including hiring screens (9–22 pp asymmetry) | Religion, not national origin; no Arab-country levels | Low |
+| 13 | MIRAGE 2026 (`mohammad2026mirage`, fulltext) | Benchmark design: Muslim vs matched non-Muslim cases in agentic decisions including hiring screens. **Its numbers are illustrative placeholders (full text checked 2026-10-04); the 9–22 pp figure is withdrawn** | Religion, not national origin; no Arab-country levels; no results | None |
 | 14 | Venkit et al. 2023 (`venkit2023nationality`, fulltext) | GPT-2 stories for 193 demonyms; Libya, Sudan and Tunisia among the five most negative | Generation sentiment only; old model | Low |
 | 15 | Sakunkoo & Sakunkoo 2025 (`sakunkoo2025thrones`, abstract) | Disaggregates "Asian" in LLM status rankings | Different group and task; shows the disaggregation logic is established | Low |
 | 16 | Tamkin et al. 2023 (`tamkin2023evaluating`, fulltext) | The template for RQ3: "Illegal / Ignore demographics" instructions cut discrimination to near zero | No nationality; no within-group dispersion | Low (RQ3 only) |
@@ -92,11 +92,14 @@ Ranked by closeness to our exact experiment. HUMAN rows are analogues, not LLM e
   - This is absence of evidence under the stated coverage, not proof of absence.
   - The only unresolved candidate is Bilon 2025, whose abstract describes a U.S. vs non-U.S. contrast. A second full-text retry (Unpaywall, Semantic Scholar, Crossref, CORE, web, publisher, author site) found no open copy.
   - Two near-misses raised by the adversarial review were checked in full text and do not change the verdict: Hoffmann et al. 2026 pools Arabic-sounding names into one group, and Nakano et al. 2024 swaps location strings across four non-Arab countries.
+  - **Re-checked on 2026-10-04** (part L4: French-language sources and HAL for the first time, FAccT and AIES 2025, arXiv postings to 2026-10-05; `literature_review.md` §6): still **0** studies meeting (a)+(b)+(c). Two new near-misses, both pooled:
+    - `albaroudi2026addressing` (HITHIRE; Saudi context, Llama 3.1): 18 Arab nationalities occur in 350 real CVs but are coded Arab vs non-Arab; observational; the direction is reported both ways. Cite as prior work.
+    - `bai2025explicitly`: one pooled Arabic/Muslim-name group in a relative job-assignment task.
 - **C1 is supported, but overstated as written.**
   - Across 189 bias papers, 79.9% study gender and 13.2% nationality (`ghosh2025bias`; not hiring-specific).
   - In hiring audits, when national origin appears it is pooled (Lippens; Hoffmann, Arabic-sounding names), two-level (ABLEIST: US/India; Rao: UK/India; Leyva-Vazquez: two countries), four non-Arab countries (Nakano: US, India, Nigeria, Poland), or U.S. vs non-U.S. (Bilon, per the abstract).
   - Safer version: "LLM hiring audits mostly vary gender and race; when national origin appears, it is a pooled regional or ethnic category or a handful of countries."
-- **C2 is supported, with one qualification.** Saeed 2024 and 2026, Naous, ArGAN, Abid, Elsafoury, Shahid and MIRAGE are stereotype, safety or discourse studies. However, MENAValues and Elsafoury **do** resolve individual Arab countries. The accurate contrast is therefore "not in allocative decisions about individuals with qualifications held fixed", **not** "never at country level".
+- **C2 is supported, with one qualification.** Saeed 2024 and 2026, Naous, ArGAN, Abid, Elsafoury and Shahid are stereotype, safety or discourse studies (MIRAGE has no usable results). However, MENAValues and Elsafoury **do** resolve individual Arab countries. The accurate contrast is therefore "not in allocative decisions about individuals with qualifications held fixed", **not** "never at country level".
 
 ## 5. Strongest current novelty claim (one sentence; content for the team to phrase)
 

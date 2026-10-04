@@ -23,7 +23,7 @@ settings are snapshotted into each run's `run_manifest.json` and hashed
 | `run` | the name used on the command line (`--run mock`) |
 | `experiment_id`, `run_id`, `description` | `run_id` empty = `<experiment_id>__<hash of the inputs>`; mock run ids must start with `mock` |
 | `models` | aliases of `models.csv` |
-| `occupations`, `base_cvs`, `nationalities` | `all`, `pilot` (rows marked pilot in `stimuli/jobs.csv` / `stimuli/cvs.csv`) or a list; `base_cvs` may list `occupation:cv_id` items |
+| `occupations`, `base_cvs`, `nationalities` | `all`, `pilot` (rows marked pilot in `experiment/stimuli/jobs.csv` / `experiment/stimuli/applicant_cvs.csv`) or a list; `base_cvs` may list `occupation:cv_id` items |
 | `include_placebo` | placebo nationalities in baseline independent evaluation of the primary arm ONLY (review H5) |
 | `positive_control` | one positive-control clone per base CV, baseline only (A7) |
 | `prompt_variants` | wording variants (A3), crossed with every independent-evaluation cell |
@@ -90,7 +90,7 @@ The API model ids are placeholders from memory: pin exact dated ids before a run
 ## `leak_terms.csv`
 
 The stimulus validator forbids these origin cues (adversarial review M6), in
-addition to every demonym and country name of `stimuli/nationalities.csv`
+addition to every demonym and country name of `experiment/stimuli/applicant_nationalities.csv`
 (case-sensitive). Matching is whole-word.
 
 | column | values |
@@ -102,7 +102,7 @@ addition to every demonym and country name of `stimuli/nationalities.csv`
 | `allowed_on_cv_line` | label of the one CV line on which the term is allowed (`visa` on `Work authorization: ...; no visa sponsorship required`) |
 | `note` | why the term is listed |
 
-The place names of a CV's (or job ad's) own base country (`stimuli/base_countries.csv`:
+The place names of a CV's (or job ad's) own base country (`experiment/stimuli/base_countries.csv`:
 name, aliases, cities) are masked before scanning, so "Riyadh, Saudi Arabia"
 passes in a CV set in Saudi Arabia while "Saudi" alone, any other country and
 any other city stay forbidden. This is a list-based check: it catches the listed
@@ -120,7 +120,7 @@ awareness), `mentions_conflict`).
 | column | values |
 |---|---|
 | `flag` | the flag the row belongs to |
-| `pattern_type` | `regex` (Python regex, case-insensitive, wrapped in `\b...\b` unless it contains `\b`); `all_demonyms` / `all_country_names` (every demonym / country name of `stimuli/nationalities.csv`; a demonym that starts a country name, "Saudi" in "Saudi Arabia", is matched only outside it); `exclude` (a demonym or country name those two skip: "German" collides with the language, the eight base countries are named in every Location line and job ad) |
+| `pattern_type` | `regex` (Python regex, case-insensitive, wrapped in `\b...\b` unless it contains `\b`); `all_demonyms` / `all_country_names` (every demonym / country name of `experiment/stimuli/applicant_nationalities.csv`; a demonym that starts a country name, "Saudi" in "Saudi Arabia", is matched only outside it); `exclude` (a demonym or country name those two skip: "German" collides with the language, the eight base countries are named in every Location line and job ad) |
 | `pattern`, `note` | the pattern (empty for `all_*`); a note |
 
 CAUTION: the flags are crude case-insensitive matches with no negation handling

@@ -7,8 +7,8 @@ evaluates real people.
 
 ## 1. Synthetic applicants and employers
 
-- Every CV was built from curated component pools (`stimuli/building_blocks/*.csv`,
-  `scripts/build_cv_table.py`) into one table (`stimuli/cvs.csv`). No real CV,
+- Every CV was built from curated component pools (`experiment/stimuli/building_blocks/*.csv`,
+  `scripts/build_cv_table.py`) into one table (`experiment/stimuli/applicant_cvs.csv`). No real CV,
   applicant, employee or employer record was used or adapted.
 - Applicants carry an applicant reference number instead of a name. There are no
   photos, dates of birth, gender markers or religion fields.

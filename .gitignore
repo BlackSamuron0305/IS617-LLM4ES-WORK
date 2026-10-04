@@ -20,20 +20,28 @@ venv/
 .DS_Store
 Thumbs.db
 
-# LaTeX build artefacts
-paper/*.aux
-paper/*.bbl
-paper/*.blg
-paper/*.fdb_latexmk
-paper/*.fls
-paper/*.log
-paper/*.out
-paper/*.synctex.gz
+# LaTeX build artefacts (paper folders and research/)
+paper/**/*.aux
+paper/**/*.bbl
+paper/**/*.blg
+paper/**/*.fdb_latexmk
+paper/**/*.fls
+paper/**/*.log
+paper/**/*.out
+paper/**/*.synctex.gz
+research/*.aux
+research/*.bbl
+research/*.blg
+research/*.fdb_latexmk
+research/*.fls
+research/*.log
+research/*.out
+research/*.synctex.gz
 
-# --- Run outputs policy (see README, "Outputs and the raw-vs-processed policy") ---
+# --- Run outputs policy (see data/README.md) ---
 # Mock runs are synthetic, regenerable in seconds, and must never be mistaken for
 # results, so they are NOT committed. By convention every mock run id starts with
-# "mock" (config/mock.yaml sets experiment_id: mock_pipeline_test).
+# "mock".
 data/raw/mock*/
 data/processed/mock*/
 results/mock*/
