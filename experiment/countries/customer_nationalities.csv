@@ -1,0 +1,29 @@
+country,demonym,group,arab_identity_contested,identity_document,residence_status,eu_high_risk_list,eu_list_since,note
+Algeria,Algerian,arab,false,Algerian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",yes,2025-08-05,
+Bahrain,Bahraini,arab,false,Bahraini passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Comoros,Comorian,arab,true,Comorian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,Arab identity contested
+Djibouti,Djiboutian,arab,true,Djiboutian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,Arab identity contested
+Egypt,Egyptian,arab,false,Egyptian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Iraq,Iraqi,arab,false,Iraqi passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Jordan,Jordanian,arab,false,Jordanian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Kuwait,Kuwaiti,arab,false,Kuwaiti passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Lebanon,Lebanese,arab,false,Lebanese passport,"Settlement permit (Niederlassungserlaubnis), unlimited",yes,2025-08-05,
+Libya,Libyan,arab,false,Libyan passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Mauritania,Mauritanian,arab,false,Mauritanian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Morocco,Moroccan,arab,false,Moroccan passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Oman,Omani,arab,false,Omani passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Palestine,Palestinian,arab,false,Palestinian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,Arab League member; statehood recognition varies internationally; kept as a common self-description (see README)
+Qatar,Qatari,arab,false,Qatari passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Saudi Arabia,Saudi,arab,false,Saudi passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Somalia,Somali,arab,true,Somali passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,Arab identity contested
+Sudan,Sudanese,arab,false,Sudanese passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,War since April 2023 (see README)
+Syria,Syrian,arab,false,Syrian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",yes,2016-09-23,"Arab League membership suspended 2011-2023, restored May 2023; treated as member"
+Tunisia,Tunisian,arab,false,Tunisian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+United Arab Emirates,Emirati,arab,false,Emirati passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,
+Yemen,Yemeni,arab,false,Yemeni passport,"Settlement permit (Niederlassungserlaubnis), unlimited",yes,2016-09-23,No World Bank GDP value 2015-2022
+Germany,German,benchmark,false,German identity card,German citizen,no,,"Benchmark: the citizen. Identity card instead of a passport, no residence permit"
+Türkiye,Turkish,benchmark,false,Turkish passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,"Benchmark: non-Arab Middle East, Muslim-majority; the usual comparison group in German studies"
+Uruguay,Uruguayan,placebo,false,Uruguayan passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,"Placebo: Latin America & Caribbean, high income"
+Malawi,Malawian,placebo,false,Malawian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,"Placebo: Sub-Saharan Africa, low income"
+Maldives,Maldivian,placebo,false,Maldivian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,"Placebo: South Asia, upper middle income, Muslim-majority"
+Cambodia,Cambodian,placebo,false,Cambodian passport,"Settlement permit (Niederlassungserlaubnis), unlimited",no,,"Placebo: East Asia & Pacific, lower middle income"

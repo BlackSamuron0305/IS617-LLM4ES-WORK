@@ -1,44 +1,48 @@
 # Which Arab? (working title)
 
-How LLMs treat candidates from the 22 Arab League countries in hiring and promotion.
-An audit of model behaviour with identical synthetic CVs. Team project for IS 617
-(LLM4ESS), University of Mannheim, HWS26. Course repository:
+How LLMs rate bank customers from the 22 Arab League countries in money-laundering
+checks. An audit of model behaviour with identical synthetic customer files. Team project
+for IS 617 (LLM4ESS), University of Mannheim, HWS26. Course repository:
 <https://github.com/dess-mannheim/LLM4ESS>.
 
 ## Research question
 
-When LLMs act as simulated recruiters for jobs in the Arab world (every job is set once
-in each of the 22 Arab League countries), do they evaluate otherwise identical synthetic
-CVs differently when only the stated nationality changes, and is there heterogeneity
-among individual Arab League member-state nationalities that a single "Arab" or "MENA"
-category would hide? This is an **audit of model behaviour**, not a hiring tool. Every
-applicant, CV and employer is synthetic.
+A bank has to check every new customer for money-laundering risk and has to record the
+customer's nationality. When an LLM is given the bank's policy and a customer file, does
+its risk rating change when only the stated nationality changes, and is there
+heterogeneity among the 22 Arab League nationalities that a single "Arab" category would
+hide? This is an **audit of model behaviour**, not a tool for checking customers. Every
+customer, the bank and every employer is synthetic.
 
-## Status (2026-10-04)
+## Status (2026-10-08)
 
 Planning stage. No real model has been called and there are no results.
 
-The experiment was simplified on 2026-10-04 and is described in `experiment/README.md`.
-The code, tests, settings and analysis plans built for the earlier design were removed
-and are in git history at commit `670f827`. The code that builds and sends the runs has
-to be rewritten for the current design.
+The project moved from hiring to bank customer checks on 2026-10-08. The experiment is
+described in `experiment/README.md`. The hiring design of 2026-10-04 is in
+`research/old_design/hiring_2026-10-04/`. The code that sends the runs and reads the
+answers does not exist yet; `scripts/build_runs.py` builds and checks the prompts only.
 
 ## Repository layout
 
 | path | contents |
 |---|---|
 | `experiment/README.md` | overview of the experiment and the run plan. Start here |
-| `experiment/prompts/` | the prompts as plain text, in two folders (`without_ignore_prompt/`, `with_ignore_prompt/`), each split into `hiring/` and `promotion/` with a main prompt and one subfolder per experiment and version |
-| `experiment/jobs/` | `jobs.csv` (20 jobs, one per row) and `job_ad_template.txt` (the job ad layout) |
-| `experiment/cvs/` | `applicant_cvs.csv` (20 synthetic CVs, one per job, no nationality and no country) and `cv_template.txt` (the CV layout) |
-| `experiment/countries/` | `base_countries.csv` (the 22 Arab countries; every job is run once in each), `applicant_nationalities.csv` (29 rows: 22 Arab, 2 benchmark, 4 placebo, 1 not stated), `country_covariates.csv` (World Bank income and region data) |
+| `experiment/policy/` | the invented bank's policy and the paragraph on nationality added in the second version |
+| `experiment/customers/` | `customers.csv` (20 synthetic customer files) and `customer_file_template.txt` (the file layout) |
+| `experiment/countries/` | `customer_nationalities.csv` (28 rows: 22 Arab League, 2 benchmark, 4 placebo; with the EU high-risk list status), `country_covariates.csv` (World Bank income and region data) |
+| `experiment/prompts/` | the main prompt and three wordings of the task |
 | `experiment/models.csv` | the four planned models |
+| `scripts/build_runs.py` | puts the prompts together, checks them and prints the counts; calls no model |
 | `data/raw/`, `data/processed/` | output of model runs; empty until the first real run |
 | `research/` | literature review, literature matrix, references, novelty assessment, literature notes, framing outline |
-| `research/old_design/` | design documents and draft preregistration of the earlier design; background and sources only |
+| `research/scenario_reviews/` | the review notes that led from hiring to the bank scenario |
+| `research/old_design/` | documents and materials of the two earlier hiring designs; background and sources only |
 | `paper/` | `proposal/`, `first_presentation/` (pitch), `second_presentation/` (midterm), `final_presentation/`, `final_paper/`; each has a README with the course criteria |
 | `ETHICS.md` | ethics statement and handling rules |
 | `CLAUDE.md` | project context and working rules for AI assistants |
+
+Check the experiment files: `python scripts/build_runs.py --example`
 
 ## Deadlines
 

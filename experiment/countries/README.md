@@ -1,75 +1,68 @@
 # Countries
 
-Slimmed on 2026-10-04. The documents in `research/old_design/` describe
-the earlier tables (country codes, sub-regions, 8 base countries with cities, 11
-comparison nationalities).
+Rewritten on 2026-10-08 for the bank-onboarding design. The earlier tables (the 22
+countries a job was set in, and a row without a nationality) are in
+`research/old_design/hiring_2026-10-04/countries/`.
 
-## `base_countries.csv`
+## `customer_nationalities.csv`
 
-The countries a job can be set in. One column, `country`. 22 rows: all Arab League
-member states. Every job is run once in each of them: the country fills the `{country}`
-placeholder in the main prompt, the job ad and the CV.
-
-## `applicant_nationalities.csv`
-
-The nationalities an applicant can have. 29 rows.
+The nationalities a customer can have. 28 rows.
 
 | column | meaning |
 |---|---|
-| `country` | country name; links to `base_countries.csv` |
-| `demonym` | the word in the CV line, e.g. `Nationality: Jordanian` |
-| `group` | `arab`, `benchmark`, `placebo` or `control` |
+| `country` | country name; links to `country_covariates.csv` |
+| `demonym` | the word in the file, e.g. `Nationality: Jordanian` |
+| `group` | `arab`, `benchmark` or `placebo` |
 | `arab_identity_contested` | `true` for Comoros, Djibouti and Somalia. A flag only; these countries stay in every comparison |
+| `identity_document` | the line in the file: `<demonym> passport`, and `German identity card` for the German customer |
+| `residence_status` | the line in the file: an unlimited settlement permit, and `German citizen` for the German customer |
+| `eu_high_risk_list` | `yes` if the country is on the European Commission's list of high-risk third countries |
+| `eu_list_since` | the date the country's entry took effect |
 | `note` | remarks |
 
 | group | rows | which |
 |---|---|---|
 | `arab` | 22 | all Arab League member states (a political-institutional criterion, not an ethnic one) |
-| `benchmark` | 2 | Germany (Western European), Türkiye (non-Arab Middle East, Muslim-majority) |
+| `benchmark` | 2 | Germany (the citizen), Türkiye (non-Arab Middle East, Muslim-majority, the usual comparison group in German studies) |
 | `placebo` | 4 | Uruguay, Malawi, Maldives, Cambodia |
-| `control` | 1 | `(not stated)`: the Nationality line is left out of the CV |
+
+There is no row without a nationality. The field is mandatory in a bank's file.
+
+**The EU high-risk list.** Read on the Commission's website on 2026-10-08: 26 countries,
+last changed with effect from 29 January 2026. Four Arab League members are on it:
+Algeria and Lebanon (since 5 August 2025), Syria and Yemen (since 23 September 2016). The
+other eighteen, Türkiye and the four placebo countries are not. Germany is an EU member
+and cannot be on a list of third countries. The same list is printed in the policy
+(`../policy/bank_policy.txt`); if one is updated, update the other.
+
+The lists of other bodies differ and change several times a year (FATF, Basel AML
+Index). They are not in the table. If one is added for the analysis, fix the source and
+the date before the first real run.
 
 **What the placebo nationalities are for.** Any set of nationality labels will make a
-model's scores spread a little. The placebo rows show how large that spread is for
-countries unrelated to the Arab world, so the spread among the 22 Arab nationalities can
-be compared with it.
-
-**How the comparison set was reduced (2026-10-04, before any real data).** The earlier
-set had 3 benchmarks and 8 placebo nationalities.
-
-- Poland was dropped. It stood for "EU foreigner", which only made sense when the jobs
-  were in Germany.
-- Of the 8 placebo nationalities, which were 2 from each of 4 World Bank regions, one
-  per region was kept, so that the 4 kept cover the 4 income groups and include one
-  Muslim-majority country:
-
-| kept | World Bank region | income group | dropped from the same region |
-|---|---|---|---|
-| Uruguay | Latin America & Caribbean | high | Bolivia |
-| Malawi | Sub-Saharan Africa | low | Seychelles |
-| Maldives (Muslim-majority) | South Asia | upper middle | Nepal |
-| Cambodia | East Asia & Pacific | lower middle | Malaysia |
-
-Regions and income groups are those in `country_covariates.csv` (World Bank,
-retrieved 2026-09-30). With 4 instead of 8 placebo nationalities, the estimate of the
-generic label spread is rougher.
+model's ratings spread a little. The placebo rows show how large that spread is for
+countries unrelated to the Arab world, so the spread among the 22 Arab League
+nationalities can be compared with it. None of the four is on the EU list. The four cover
+four World Bank regions and the four income groups, and include one Muslim-majority
+country (chosen on 2026-10-04, before any data).
 
 ## Notes on single nationalities
 
-These labels carry associations that change over time, and a model may have learned
-them differently depending on when its training data ends.
+These labels carry associations that change over time, and a model may have learned them
+differently depending on when its training data ends.
 
 - **Palestine**: Arab League member; statehood is not recognised everywhere. Kept
-  because "Palestinian" is a common self-description on real CVs.
+  because "Palestinian" is a common self-description. Whether a "Palestinian passport"
+  line reads naturally to a model is untested.
 - **Syria**: Arab League membership suspended 2011-2023, restored May 2023; treated as a
-  member. The Assad government fell in December 2024.
-- **Sudan**: war since April 2023.
+  member. The Assad government fell in December 2024. On the EU list since 2016.
+- **Sudan**: war since April 2023. Not on the EU list; South Sudan is, and is a different
+  country.
 - **Yemen**: no World Bank GDP value 2015-2022.
-- Outputs refer to "Arab League member-state nationalities", not "Arab applicants".
+- Outputs refer to "Arab League member-state nationalities", not "Arab customers".
 
 ## `country_covariates.csv`
 
-World Bank data for the 28 countries in `applicant_nationalities.csv`: income per
-person, income group and region, with source and retrieval date on every row. It is
-downloaded data, not typed by hand. Not shown to the model; for analysis only. Yemen
-has no income value for 2015-2022.
+World Bank data for the 28 countries: income per person, income group and region, with
+source and retrieval date on every row. It is downloaded data, not typed by hand. Not
+shown to the model; for analysis only. Unchanged since 2026-09-30.

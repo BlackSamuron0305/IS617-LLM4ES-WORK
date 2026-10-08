@@ -1,6 +1,9 @@
 % IS 617 report: 4-5 pages + unlimited references and appendices, ACL template.
 % The "% Rubric" comments quote the course grading rubric (points in brackets);
 % see README.md in this folder. They are comments and do not appear in the PDF.
+%
+% The notes were rewritten on 2026-10-08, when the project moved from hiring to bank
+% customer checks. The notes for the hiring design are in git history (commit 272792d).
 \documentclass[11pt]{article}
 
 \usepackage[preprint]{acl}
@@ -25,11 +28,10 @@
 \newcommand{\teamnote}[2]{\ifshownotes\par\medskip\noindent{\small\color{blue}%
   \textbf{Notes: #1} (not report text; rewrite in your own words)\par #2\par}\medskip\fi}
 
-\title{Which Arab? How LLMs Treat Candidates from the 22 Arab League Countries in Hiring and Promotion}
+\title{Which Arab? How LLMs Rate Bank Customers from the 22 Arab League Countries in Money-Laundering Checks}
 
 \author{
   Laith Sandouk \and Aleksander Kasak \and Nico Fedotov \\
-
   University of Mannheim \\
   \texttt{\{laith.sandouk, aleksander.kasak, nico.fedotov\}@students.uni-mannheim.de}
 }
@@ -38,11 +40,14 @@
 \maketitle
 
 \teamnote{title}{%
-Other title options, none of which assumes a result:
+The title above is a working title proposed by Claude Code on 2026-10-08 at Laith's
+request. The team has to confirm or replace it. Other options, none of which assumes a
+result:
 \begin{itemize}
-  \item Same CV, Different Passport: Auditing LLM Recruiters Across the Arab World
-  \item One Label, 22 Nationalities: Do LLM Recruiters Tell Arab Applicants Apart?
-  \item Is ``Arab'' One Category? A Nationality-Swap Audit of LLM Recruiters
+  \item Same File, Different Passport: Auditing LLMs in Bank Customer Checks
+  \item One Label, 22 Nationalities: Do LLMs Tell Arab Bank Customers Apart?
+  \item Which Passport Is High Risk? A Nationality-Swap Audit of LLMs in
+        Anti-Money-Laundering Checks
 \end{itemize}}
 
 \begin{abstract}
@@ -50,32 +55,35 @@ Other title options, none of which assumes a result:
 % research questions and an overview of methods and results.
 \teamnote{abstract}{%
 At most 250 words. The rubric asks for the research questions, the methods and the
-results. In all notes, (F) after a source means the full text was read and (A) means
-only the abstract was read: check the full text before citing a number from it.
+results. In all notes, (F) after a source means the full text or the cited passages were
+read and (A) means only the abstract was read: check the full text before citing a
+number from it. (press) is a press report and (vendor) a company's own statement.
 \begin{itemize}
-  \item Context: LLMs are proposed for screening job applications. Audits so far mostly
-        vary race and gender through names.
-  \item Why Arab applicants: human employers in Western countries give about 41\% fewer
-        callbacks to Arab, North African and Middle Eastern names. LLMs repeat
-        stereotypes about Arabs and Muslims in what they write. In hiring tasks the
-        evidence is thin and mixed. Numbers and sources: introduction notes.
-  \item Why inside the Arab world: nationality openly sorts workers there, and LLM
-        recruiting tools are being built for these markets.
-  \item Gap: every study treats ``Arab'' as one group. To our knowledge, none lets an
-        LLM decide on applicants while single Arab nationalities are varied.
-  \item Questions (from the proposal; hypotheses are not written yet): (1) With the CV
-        held fixed, do a model's ratings and choices differ across the 22 Arab League
-        nationalities, and by more than across unrelated nationalities? (2) Local
-        versus foreign applicants. (3) Does a paragraph telling the model to ignore
-        nationality change this? (4) Do hiring and promotion, and the four models, agree?
-  \item Method: 20 synthetic jobs with one CV each; every job placed in each of the 22
-        Arab League countries; one \texttt{Nationality:} line with 29 conditions; rate
-        one applicant (score 0--100, interview yes/no); choose between two applicants
-        with the same CV; four open-weight models.
-  \item Results: nothing has been run as of 2026-10-04. Write this part last, and only
+  \item Context: banks must check every new customer for money-laundering risk. AI
+        systems are being sold for this check, and EU law regulates their use in it.
+  \item Why Arab customers: LLMs repeat stereotypes about Arabs and Muslims in what they
+        write. Banks in Europe answered enquiries from Arabic-sounding names far less
+        often. Numbers and sources: introduction notes.
+  \item Why this task: the nationality cannot be left out of the file (the bank must
+        record it), and the rules say how far it may count (they speak of residence, not
+        of the passport).
+  \item Gap: every study treats ``Arab'' as one group. We found no study in which an LLM
+        rates bank customers while their nationality is varied; this rests on a few web
+        searches only.
+  \item Questions (from the proposal of 2026-10-08; hypotheses are not written yet):
+        (1) with the customer file held fixed, do a model's ratings differ across the 22
+        Arab League nationalities, and by more than across unrelated nationalities?
+        (2) Do the differences follow the EU list of high-risk countries? (3) Arab League
+        nationalities against German, Turkish and placebo nationalities. (4) Does a
+        paragraph saying that nationality is not a risk factor change this? (5) Do the
+        four models agree?
+  \item Method: 20 synthetic customer files; 28 nationalities, changed in the nationality
+        and passport lines only; a one-page bank policy in two versions; risk score
+        0--100, rating, enhanced checks, recommendation; four open-weight models.
+  \item Results: nothing has been run as of 2026-10-08. Write this part last, and only
         from the blocks that were run.
-  \item Last sentence: what follows. The data decide: either the single category hides
-        differences, or it is adequate for these models.
+  \item Last sentence: what follows. The data decide: the models separate the
+        nationalities, lump them together, or follow the list.
 \end{itemize}}
 \end{abstract}
 
@@ -86,121 +94,117 @@ only the abstract was read: check the full text before citing a number from it.
 
 \teamnote{motivation, step by step}{%
 \begin{itemize}
-  \item \textbf{1. LLMs in hiring.} Many audits of LLMs that screen CVs; almost all vary
-        race and gender through names. Nationality is rare: it appears in 13.2\% of 189
-        papers on LLM bias, gender in 79.9\% (not specific to hiring). Sources:
-        \texttt{gaebler2024auditing} (F), \texttt{armstrong2024silicon} (F),
-        \texttt{an2025measuring} (A), \texttt{ghosh2025bias} (A).
-  \item \textbf{2. Human employers.} Meta-analysis of field experiments: callback ratio
-        0.59 for Arab, Maghrebi and Middle Eastern applicants, about 41\% fewer positive
-        callbacks, from 31 effects. Higher after 2000 than in the 1990s in six Western
-        countries. France: 22.8\% vs 33.3\% callbacks (9,600 applications; a report, not
-        a journal article). Netherlands: 31\% vs 46\%. Australia: 22\% vs 35\%. Sweden,
-        Iraq-born: 10\% vs 21\%. Sources: \texttt{lippens2023state} (F),
-        \texttt{quillian2023trends} (F), \texttt{arnoult2021discrimination} (F),
-        \texttt{thijssen2021ethnic} (F), \texttt{booth2012does} (F),
-        \texttt{vernby2019immigrants} (F).
-  \item \textbf{3. LLMs.} In generated text: Muslims tied to violence in 66\% of GPT-3
-        completions; Arabs rather than Westerners named the ``loser group'' in 79\% of
-        model-by-topic comparisons (the prompt forces a choice); MENA names 78\%
-        under-represented in generated workplace stories. In hiring tasks: Arab names
-        1.41 points lower on a 1--100 scale in GPT-3.5 (selection ratio 0.85 at a
-        cut-off); GPT-4 sends Arabic names to the lower-status job more often; no effect
-        in Gemini 2.0 Flash; some newer models favour the minority. Sources:
-        \texttt{abid2021persistent} (A), \texttt{saeed2024desert} (A),
-        \texttt{shieh2026intersectional} (F), \texttt{lippens2024computer} (F),
-        \texttt{bai2025explicitly} (A), \texttt{hoffmann2026evaluating} (F),
-        \texttt{bunel2026customer} (F), \texttt{arcuschin2026blind} (F).
-  \item \textbf{4. One category.} All of these treat ``Arab'' as one group. A name cannot
-        do better: raters assigned 34\% of Moroccan names to Morocco. Among human
-        employers, origin can matter (Germany: Iraqi and Moroccan below Turkish; Sweden:
-        Iraq-born 10\%, Somalia-born 5\%). Inside the Arab world the little evidence
-        points the other way: no significant nationality differences among Qatari
-        citizens; Arab expatriates in Kuwait and Qatar treat fellow Arabs as one group.
-        Sources: \texttt{martiniello2022signaling} (F), \texttt{koopmans2019taste} (F),
-        \texttt{vernby2019immigrants} (F), \texttt{shockley2024sharing} (F),
-        \texttt{blaydes2023arab} (F).
-  \item \textbf{5. Why the Arab world.} Nationality openly sorts workers there. Qatar,
-        low-income workers: Egyptian QR1,454 vs Nepali QR853 a month (plain averages).
-        Jordan: segmentation ``based not on education or initial skills but rather on
-        nationality''. Gulf states expelled workers by Arab nationality in 1990--91. An
-        LLM recruiting pipeline exists for the Saudi market; it codes nationality as
-        Arab vs non-Arab. Sources: \texttt{gardner2013portrait} (F),
-        \texttt{razzaz2017challenging} (F, ILO report), \texttt{kapiszewski2006arab}
-        (F, UN paper), \texttt{albaroudi2026addressing} (F).
-  \item \textbf{6. Gap and what we do.} No study was found in which an LLM decides on
-        applicants while single Arab nationalities are varied (searches of 29--30.09 and
-        04.10.2026; \texttt{research/novelty\_assessment.md}). Write ``to our
-        knowledge''. Then the question and one sentence on the design.
+  \item \textbf{1. LLMs in decisions about people.} Audits mostly vary race and gender,
+        often through names. Nationality is rare: it appears in 13.2\% of 189 papers on
+        LLM bias, gender in 79.9\%. In finance: one line stating the applicant's race on
+        a mortgage file; GPT-4 Turbo recommended approval 8.5 percentage points less
+        often and an interest rate 35 basis points higher for Black applicants. Sources:
+        \texttt{ghosh2025bias} (A), \texttt{bowen2025measuring} (F, sections 1--4).
+  \item \textbf{2. LLMs and Arabs.} In generated text: Muslims tied to violence in 66 of
+        100 GPT-3 completions; MENA names 78\% under-represented in generated workplace
+        stories; Middle Eastern personas described through religion. Models also tell
+        Arab countries apart: Libyan, Sudanese and Tunisian among the five most negative
+        demonyms in GPT-2 text; additional scrutiny suggested for applicants from Iraq,
+        Sudan and Somalia in simulated immigration decisions, while most country effects
+        in the choices were not significant; the values of some Arab countries
+        represented much better than others. Sources: \texttt{abid2021persistent} (F),
+        \texttt{shieh2026intersectional} (F), \texttt{cheng2023marked} (F),
+        \texttt{venkit2023nationality} (F), \texttt{mao2025gatekeepers} (F),
+        \texttt{zahraei2025menavalues} (F).
+  \item \textbf{3. Banks.} Field experiment, 1,218 e-mails to banks in seven European
+        countries, asking only for contact details: 55.2\% replies to domestic-sounding
+        names, 31.6\% to Arabic-sounding names; loan enquiries 59.8\% vs 35.1\%. The
+        Netherlands Institute for Human Rights ruled in 2024 that ING discriminated
+        against two customers whose payments were blocked and checked because of names
+        that did not sound Dutch. Campaigners say HSBC closed dozens of accounts of
+        Syrian nationals living in the UK from 2014. Sources:
+        \texttt{stefan2018ethnical} (F; the list of countries is in an appendix that was
+        not read, so do not write that Germany is among them),
+        \texttt{nltimes2024ing} (press), \texttt{mee2016hsbc} (press).
+  \item \textbf{4. One category.} All of these treat ``Arab'' or ``Arabic-sounding'' as
+        one group. A name cannot do better: raters assigned 34\% of Moroccan names to
+        Morocco. Source: \texttt{martiniello2022signaling} (F).
+  \item \textbf{5. Why a bank's customer check.} A German bank must record name, place
+        and date of birth, nationality and address of every customer, and rate the
+        money-laundering risk. So the nationality is always in the file. Sources:
+        \texttt{gwg2017} (F, sections 11 and 15, annex 2).
+  \item \textbf{6. The yardstick.} European guidelines: country risk is about where the
+        customer is based or resident, the main places of business, and relevant links.
+        The word ``nationality'' does not occur in the 225 pages of the final report. An
+        isolated risk factor does not necessarily move a customer into a higher category.
+        The Commission's list of high-risk third countries has 26 entries; four are Arab
+        League members: Algeria, Lebanon (since 5 August 2025), Syria, Yemen (since
+        23 September 2016). German law applies the list to relationships and transactions
+        involving such a country or a person resident there. No disadvantage on account
+        of nationality when opening a payment account. No blanket refusal of categories
+        of customers. Sources: \texttt{eba2021riskfactors} (F, guidelines 2.9 and 3.3,
+        word search), \texttt{ec2026highrisk} (F, read 8 October 2026),
+        \texttt{gwg2017} (F), \texttt{zkg2016} (F, section 3),
+        \texttt{eba2023derisking} (F, paragraphs 9--10).
+  \item \textbf{7. AI in this task.} EU regulation 2024/1624, Article 76(5), applies from
+        10 July 2027: decisions ``resulting from automated processes [\ldots] or from
+        processes involving AI systems'' are allowed if accepting or refusing a customer
+        is ``subject to meaningful human intervention'' and the customer can get an
+        explanation. Vendors sell AI agents for customer checks and screening alerts;
+        one says 10 of the top 20 banks use its agents. ECB: strong increase in AI use
+        cases in banks between 2023 and 2024; for credit scoring and fraud detection
+        mainly decision trees. Sources: \texttt{eu2024amlr} (F, Articles 76(5) and 90),
+        \texttt{workfusion2026agents} (vendor), \texttt{sardine2026agentic} (vendor),
+        \texttt{ecb2025ai} (F).
+  \item \textbf{8. Gap and what we do.} No study was found in which an LLM rates bank
+        customers while their nationality is varied. This rests on a few web searches of
+        8 October 2026, not on a systematic search: write ``to our knowledge'' only after
+        one has been done. Then the question and one sentence on the design.
 \end{itemize}}
 
-\teamnote{research questions (as in the proposal of 2026-10-04)}{%
+\teamnote{research questions (as in the proposal of 2026-10-08)}{%
 \begin{itemize}
   \item Framing: the 22 countries differ in wealth, stability and how their citizens are
-        seen abroad (high-income Gulf states; middle-income Egypt, Jordan, Morocco;
-        countries marked by war and displacement such as Syria, Yemen, Sudan, Libya,
-        Somalia). Does a model carry that into decisions about individuals?
-  \item RQ1 (main): do scores and decisions differ across the 22 Arab League
-        nationalities with everything else identical, and more than across the placebo
-        nationalities?
-  \item RQ2: do the differences follow a country's economic and political position
-        (income group, armed conflict)? The conflict classification is not fixed yet.
-  \item RQ3: does the place of the job matter: local versus foreign, and the same
-        foreign nationality in a Gulf country versus a North African one?
-  \item RQ4: do the differences remain with the ignore-nationality paragraph, and when a
-        lottery is allowed?
-  \item RQ5: same patterns in hiring and promotion, and across models?
-\end{itemize}}
-
-\teamnote{why the scenario is realistic}{%
-\begin{itemize}
-  \item Many Arabs work in another Arab country. Gulf states: Arabs from other countries
-        were 72\% of the foreign population in 1975, 56\% in 1985 and 32\% in 2002/4.
-        Jordan: Jordanian, Egyptian and Syrian workers in one labour market. Sources:
-        \texttt{kapiszewski2006arab} (F, UN paper), \texttt{razzaz2017challenging}
-        (F, ILO report).
-  \item Politics has singled out single Arab nationalities: 1990--91, more than 1.5
-        million people expelled from Gulf states, among them up to one million Yemenis
-        from Saudi Arabia, 200,000 Jordanians and 150,000 Palestinians. Source:
-        \texttt{kapiszewski2006arab} (F).
-  \item Models hold country-specific associations: Libyan, Sudanese and Tunisian among
-        the five most negative demonyms in GPT-2 text; GPT models suggest additional
-        scrutiny for applicants from Iraq, Sudan and Somalia in simulated immigration
-        decisions; models represent the values of some Arab countries much better than
-        others. Sources: \texttt{venkit2023nationality} (F),
-        \texttt{mao2025gatekeepers} (F), \texttt{zahraei2025menavalues} (F).
-  \item No source yet for Arabs working in Egypt or in North African countries. Find one
-        before writing that.
+        seen abroad. Does a model carry that into a decision about an individual
+        customer?
+  \item RQ1 (main): do risk ratings and recommendations differ across the 22 Arab League
+        nationalities with the file otherwise identical, and more than across the
+        placebo nationalities?
+  \item RQ2: do the differences follow the EU list of high-risk countries (four of the
+        22), or a country's economic and political position?
+  \item RQ3: are Arab League nationalities as a group rated differently from German,
+        Turkish and placebo nationalities?
+  \item RQ4: do the differences remain when the policy says that nationality is not a
+        risk factor?
+  \item RQ5: do the four models agree?
 \end{itemize}}
 
 \teamnote{why it matters (rubric: science, technology, society)}{%
 \begin{itemize}
-  \item Science: bias audits report one number for ``Arab''. If single nationalities
-        differ, that number hides it. If they do not, pooling is justified for these
-        models. Either result answers the question.
-  \item Technology: LLM screening tools are proposed for Arab labour markets
-        (\texttt{albaroudi2026addressing}, F). How they react to a nationality line is
-        untested.
-  \item Society: nationality already sorts workers in these markets (step 5). A screener
-        that ranks nationalities would repeat that at scale. This last sentence is our
-        own argument and has no source.
+  \item Science: bias audits report one number for ``Arab''. Here there is an official
+        yardstick for the 22 countries, so three outcomes can be told apart: the model
+        follows the list, lumps all 22 together, or draws its own lines.
+  \item Technology: AI agents are sold for customer checks (step 7), and EU law expects
+        AI systems in this decision. How language models react to the nationality in a
+        customer file is untested, as far as we found.
+  \item Society: an account is needed for wages, rent and daily life. A higher risk
+        rating means more checks, delays or a refusal. This last sentence is our own
+        argument and has no source.
 \end{itemize}}
 
 \teamnote{do not overstate}{%
 \begin{itemize}
-  \item Not ``LLMs discriminate against Arab applicants'' as a fact: one small penalty,
-        one null, some reversals.
-  \item The callback numbers are from Western countries. No field experiment with
-        applicant nationality was found inside an Arab country.
-  \item Not ``Arab nationalities are treated differently in Arab countries'': that is
-        barely studied. Say that nationality matters in these labour markets.
-  \item Say ``Arab League nationalities'', not ``MENA'' and not ``Arab applicants''. MENA
-        in other studies includes Turkey or Iran.
-  \item The claim to be first is tentative. One paper is still unread in full
-        (\texttt{bilon2025sociodemographic}).
+  \item Not ``banks use LLMs to decide on customers'': what the products do, which
+        models they use and which fields the model sees is not public. We test open
+        models in the task the products are sold for.
+  \item Not ``LLMs discriminate against Arab customers'' as a fact. Nothing has been run.
+        Explicit origin labels can also make models more cautious
+        (\texttt{bunel2026customer}, F).
+  \item A higher rating for a listed country is not automatically wrong in practice.
+        Our argument is narrower: for a customer who lives and works in Germany and has
+        no payments abroad, the written rules give the passport no weight.
+  \item The legal texts were read in single sections only (see the literature matrix).
+        Nobody on the team is a lawyer. Do not present the policy as legal advice.
+  \item Say ``Arab League nationalities'', not ``MENA'' and not ``Arab customers''.
+  \item The claim to be first needs a systematic search that has not been done.
   \item Do not cite numbers from \texttt{mohammad2026mirage}: they are placeholders.
-  \item This is an audit of model behaviour, not a hiring tool. The score is not a
-        hiring probability.
+  \item This is an audit of model behaviour, not a tool for checking customers. The risk
+        score is not a probability.
 \end{itemize}}
 
 \section{Related Work}
@@ -212,41 +216,41 @@ only the abstract was read: check the full text before citing a number from it.
 \teamnote{what each strand teaches us}{%
 The rubric asks for what is relevant to our work, not for a list of papers.
 \begin{itemize}
-  \item \textbf{LLM hiring audits.} Mostly US race and gender through names
-        (\texttt{gaebler2024auditing}, F; \texttt{armstrong2024silicon}, F). The
-        direction is unstable: in one study only the 2023 model favours White applicants
-        and every later model shows no gap or the reverse (\texttt{gao2026can}, A); in
-        another, every detected race or ethnicity bias favours the minority
+  \item \textbf{LLM audits with one explicit line.} Mortgage files with a race line:
+        gaps in approval and interest rate, larger for weak files; the rate gap in all
+        eight models. Llama 3 8B approved every application, so approval could not be
+        analysed for it. Claude 3 Opus answered only 74\% of the requests for Black
+        applicants (\texttt{bowen2025measuring}, F). For us: a yes/no or three-level
+        answer may not move in small models, hence the 0--100 score; count refusals by
+        nationality.
+  \item \textbf{Direction is unstable.} Real origin labels led to fewer discriminatory
+        recommendations than invented groups (\texttt{bunel2026customer}, F); every
+        detected race or ethnicity bias favoured the minority in one study
         (\texttt{arcuschin2026blind}, F). For us: expect either direction.
-  \item \textbf{Order and ties.} The first-listed candidate is chosen 63.5\% of the time
-        (\texttt{rozado2026gender}, F): we show each pair in both orders. With identical
-        CVs, models mostly call a tie when they may (at least 94\% ties for 7 of 9
-        models), and forbidding ties creates apparent gaps (\texttt{chen2026beyond}, F;
-        \texttt{vohra2026audit}, F). This is why experiment 2 has a lottery version and
-        a must-choose version, and why the must-choose version needs care.
   \item \textbf{Explicit cues.} A stated attribute moves decisions more than a name
         (\texttt{tamkin2023evaluating}, F). Different cues for the same group can give
         different conclusions (\texttt{tonneau2026cues}, A). For us: the results hold
-        for a nationality line, not for names.
+        for a nationality and passport line, not for names.
+  \item \textbf{Nationality in LLM decisions.} 20 nationalities in job recommendations,
+        Jordan the only Arab one (\texttt{salinas2023unequal}, F). GPT-4 prefers
+        developers from some countries, tested by swapping only the location string
+        (\texttt{nakano2024nigerian}, F). Country effects mostly not significant in
+        simulated immigration choices (\texttt{mao2025gatekeepers}, F).
   \item \textbf{Arab group in LLM studies.} Always pooled:
         \texttt{lippens2024computer} (F), \texttt{hoffmann2026evaluating} (F),
-        \texttt{bai2025explicitly} (A), \texttt{albaroudi2026addressing} (F).
-        Stereotypes in text: \texttt{abid2021persistent} (A), \texttt{saeed2024desert}
-        (A), \texttt{shieh2026intersectional} (F).
-  \item \textbf{Nationality in LLM decisions.} 20 nationalities in job recommendations,
-        Jordan the only Arab one; the condition without a nationality behaved like an
-        outlier (\texttt{salinas2023unequal}, F). For us: the CV without a nationality
-        line is not a neutral zero. GPT-4 prefers developers from some countries, tested
-        by swapping only the location string (\texttt{nakano2024nigerian}, F).
+        \texttt{bai2025explicitly} (A), \texttt{albaroudi2026addressing} (F). These are
+        hiring studies; none is about banking.
   \item \textbf{Telling the model to ignore the attribute.} Brought discrimination close
-        to zero in Claude 2.0 (\texttt{tamkin2023evaluating}, F). The best instruction
-        cut the gap between groups by 27\% on average
-        (\texttt{huijzer2025discrimination}, F). Instructions fail once realistic
-        company context is added (\texttt{karvonen2025robustly}, F). For us: experiment
-        3 can go either way.
-  \item \textbf{Human evidence.} See the introduction notes, steps 2, 4 and 5.
-  \item \textbf{Promotion.} No source on promotion decisions has been searched yet. Find
-        one, or justify the scenario in a sentence.
+        to zero in Claude 2.0 (\texttt{tamkin2023evaluating}, F). A ``use no bias''
+        sentence removed the approval gap in mortgage files
+        (\texttt{bowen2025measuring}, F). Instructions fail once realistic context is
+        added in hiring (\texttt{karvonen2025robustly}, F). For us: the second policy
+        version can go either way.
+  \item \textbf{Models may notice a test.} \texttt{vohra2026audit} (F),
+        \texttt{needham2025large} (A).
+  \item \textbf{Human evidence in banking.} See the introduction notes, step 3.
+  \item \textbf{Not searched yet.} Research on bias in anti-money-laundering systems and
+        on ``de-risking''. Find sources, or say that this literature was not covered.
 \end{itemize}}
 
 \section{Data}
@@ -256,37 +260,45 @@ The rubric asks for what is relevant to our work, not for a list of papers.
 
 \teamnote{materials}{%
 \begin{itemize}
-  \item 20 job ads, one per occupation: 7 low-skill, 6 mid, 2 mid-high, 5 high.
-        Employer names are invented. Every ad requires English only.
-  \item 20 CVs, one per job. Middle qualification level: meets the requirements, not
-        outstanding. No names of places, schools or companies.
-  \item Setting: every job is set once in each of the 22 Arab League countries.
-  \item Nationality: one line in the CV. 29 conditions: 22 Arab League nationalities,
-        2 benchmarks (German, Turkish), 4 placebo nationalities (Uruguayan, Malawian,
-        Maldivian, Cambodian), 1 without a nationality line.
-  \item Everything is synthetic: no real applicant, CV or employer.
+  \item 20 customer files for a current account, one per occupation (the 20 occupations
+        of the earlier hiring design). Net incomes are invented.
+  \item Held constant in every file: lives in Germany, tax resident in Germany, employed
+        by a German employer, salary as source of funds, no payments to or from other
+        countries, no sanctions match, not politically exposed, no adverse media.
+  \item 10 plain files, 10 with one mild indicator named in the policy: account opened
+        by video call (4), cash deposits from tips (2), second income in cash (2),
+        second income without cash (2).
+  \item Nationality: 28 conditions. 22 Arab League nationalities, 2 benchmarks (German,
+        Turkish), 4 placebo nationalities (Uruguayan, Malawian, Maldivian, Cambodian).
+        No version without a nationality: the field is mandatory.
+  \item What changes with the nationality: the nationality line and the passport line.
+        All non-German customers hold an unlimited settlement permit. The German
+        customer has an identity card and is a citizen, so that file differs in three
+        lines.
+  \item The policy: one page, a paraphrase of public rules, with the Commission's list
+        of 26 high-risk countries as of 29 January 2026. Second version: one more
+        paragraph saying that nationality is not a risk factor.
+  \item Country data: EU list status in \texttt{customer\_nationalities.csv}; World Bank
+        income and region in \texttt{country\_covariates.csv}.
+  \item Everything is synthetic: no real customer, bank or employer. The bank's name
+        (Lindenufer Bank) is invented.
   \item Still needed for the rubric: descriptive statistics and plots of the answers.
 \end{itemize}
 Source: the README files under \texttt{experiment/}.}
 
-\teamnote{why the CVs carry no names}{%
-The CV shows a reference number instead of a name. Example of a CV header:
+\teamnote{what a customer file looks like}{%
+The file shows a reference number instead of a name. Example of the lines that change:
 \begin{quote}\ttfamily
-Applicant reference: APP-4106\\
-Location: Jordan\\
-Nationality: Egyptian
+Nationality: Jordanian\\
+Identity document: Jordanian passport, checked in the original\\
+Residence status: Settlement permit (Niederlassungserlaubnis), unlimited
 \end{quote}
 \begin{itemize}
-  \item A name cannot tell Arab countries apart. It signals ``Arab'' as one group only;
-        the nationality line can signal each of the 22.
-  \item A name adds signals we do not want: gender, religion, sometimes region.
-  \item The same name would be on every version of a CV, also next to a non-Arab
-        nationality, which sends a mixed signal.
-  \item A missing name is not neutral either, so the main prompt tells the model that
-        applications are pseudonymised.
-\end{itemize}
-Sources in \texttt{custom.bib}: \texttt{armstrong2024silicon}, \texttt{chen2026beyond},
-\texttt{gaebler2024auditing}, \texttt{krause2012anonymous} (only the abstract was read).}
+  \item A name cannot tell Arab countries apart, and it adds signals we do not want
+        (gender, religion).
+  \item A real file also holds the place of birth. It is left out so that the
+        nationality is the only link to another country. Say so as a limitation.
+\end{itemize}}
 
 \teamnote{nationalities whose Arab identity is contested}{%
 Comoros, Djibouti and Somalia are Arab League members whose Arab identity is contested.
@@ -302,35 +314,34 @@ at where they fall in the results.}
 
 \teamnote{experiment setup}{%
 \begin{itemize}
-  \item One run: a main prompt (the model is an HR recruiter for the company in the
-        country), then a follow-up message with the job ad and the CV(s).
-  \item Experiment 1, rate one person: fit score 0--100 and yes/no.
-  \item Experiment 2, choose between two people with the same CV and different
-        nationalities. Two versions: A, B or lottery; A or B.
-  \item Experiment 3: experiments 1 and 2 again, with one added paragraph in the main
-        prompt telling the model to ignore nationality.
-  \item Two scenarios: hiring (interview) and promotion.
-  \item Three wordings of every follow-up message, used in rotation.
-  \item Pairs for experiment 2: per job and country, the 22 Arab nationalities are
-        randomly paired into 11 pairs; each pair is shown in both orders.
+  \item One run: a main prompt (the model assists the onboarding team of a bank in
+        Germany; an analyst takes the final decision; the policy), then a message with
+        one customer file and the request.
+  \item Answer: a JSON object with a risk score 0--100, a rating (low, medium, high),
+        enhanced checks yes/no, a recommendation (open, escalate, decline) and a short
+        reason.
+  \item Two policy versions: without and with the paragraph on nationality.
+  \item Three wordings of the request.
+  \item Five repetitions per prompt are planned; the decoding settings are not decided.
   \item Models: Qwen3 8B, Llama 3.1 8B, Gemma 3 12B, Mistral Small 3.2 24B. State the
         exact versions and settings.
-  \item How the answers are analysed: not decided as of 2026-10-04.
+  \item \texttt{scripts/build\_runs.py} builds and checks the prompts. It calls no
+        model. The code that sends the runs does not exist yet.
+  \item How the answers are analysed: not decided as of 2026-10-08.
 \end{itemize}
 Planned runs per model:\par\smallskip
 \begin{tabular}{@{}lr@{}}
 \toprule
 Block & Runs \\
 \midrule
-1 Hiring, rate one & 12,760 \\
-2 Hiring, choose between two & 19,360 \\
-3 Blocks 1 and 2 with ignore paragraph & 32,120 \\
-4 Promotion, everything & 64,240 \\
+1 Policy without the nationality paragraph & 8,400 \\
+2 Policy with the nationality paragraph & 8,400 \\
 \midrule
-Total & 128,480 \\
+Total & 16,800 \\
 \bottomrule
 \end{tabular}\par\smallskip
-Source: \texttt{experiment/README.md}.}
+Each block: 20 files $\times$ 28 nationalities $\times$ 3 wordings $\times$ 5
+repetitions. Source: \texttt{experiment/README.md}.}
 
 \section{Results}
 \label{sec:results}
@@ -338,18 +349,20 @@ Source: \texttt{experiment/README.md}.}
 % communicate and illustrate those results.
 
 \teamnote{nothing to report yet}{%
-As of 2026-10-04 no run exists. The proposal lists what to compare:
+As of 2026-10-08 no run exists. The proposal lists what to compare:
 \begin{itemize}
-  \item the spread of scores and interview rates across the 22 Arab League
-        nationalities, against the spread across the 4 placebo nationalities;
-  \item which nationality is chosen in experiment 2, how often the model takes the
-        lottery, and what it does when the lottery is removed;
-  \item local versus foreign applicants;
-  \item with versus without the ignore paragraph;
-  \item whether the four models agree.
+  \item the spread of risk scores and ratings across the 22 Arab League nationalities,
+        against the spread across the 4 placebo nationalities;
+  \item the four listed countries against the eighteen others;
+  \item unlisted Arab League nationalities against placebo, German and Turkish;
+  \item with versus without the paragraph on nationality;
+  \item plain files against files with one indicator;
+  \item whether the four models agree;
+  \item how often a model refuses or gives an unreadable answer, by nationality.
 \end{itemize}
 The hypotheses and the analysis have to be written down before the first real run.
-Block 1 on all four models is the plan for the midterm.}
+A pilot has to show first whether the answers vary at all. Block 1 on all four models is
+the plan for the midterm.}
 
 \section{Conclusion and Discussion}
 \label{sec:conclusion}
@@ -358,35 +371,39 @@ Block 1 on all four models is the plan for the midterm.}
 
 \teamnote{alternative explanations to discuss}{%
 \begin{itemize}
-  \item A nationality line also says ``local'' or ``foreigner''. Every job is run in
-        every country, so the two can be separated: compare the local nationality with
-        the others. In human hiring, lacking citizenship costs callbacks
-        (\texttt{quillian2026racialized}, A).
-  \item The label may stand for religion, conflict or the income of the country, not
-        for the nationality as such. \texttt{country\_covariates.csv} has income and
-        region.
+  \item A passport also says ``foreigner''. The German file is the only one of a
+        citizen, and it differs in three lines. Compare the Arab League nationalities
+        with the Turkish and placebo files, which are foreigners too.
+  \item The policy names the listed countries. A model may apply a rule about residence
+        to a passport because the country name appears in the prompt. A run without the
+        list would separate this; it is not planned.
+  \item The label may stand for religion, conflict or income of the country, not for
+        the nationality as such. \texttt{country\_covariates.csv} has income and region.
   \item Any set of labels spreads the scores a little. The placebo nationalities are the
         yardstick; with only four of them it is a rough one.
   \item Models may notice that this is a test (\texttt{vohra2026audit}, F;
         \texttt{needham2025large}, A).
-  \item One run per combination and no repeats: the chance variation of a single answer
-        is not measured on its own.
-  \item A result of ``no difference'' is an answer too. It would fit the little human
-        evidence from inside the Arab world (\texttt{shockley2024sharing}, F;
-        \texttt{blaydes2023arab}, F).
+  \item All 20 customers are ordinary. If a model answers ``low'' for everybody, the
+        rating cannot show a difference; the score may.
+  \item A result of ``no difference'' is an answer too.
 \end{itemize}}
 
 \section*{Limitations}
 
-\teamnote{not the full benchmark}{%
+\teamnote{limits to state}{%
 \begin{itemize}
-  \item The full plan is 128,480 runs per model for four models. Because of hardware and
-        time limits, not all of it was run.
-  \item FILL IN AFTER THE RUNS: which blocks and which models were actually run, and
-        what that means for the conclusions. As of 2026-10-04 nothing has been run.
-  \item Other limits to consider: one CV per job; synthetic CVs and job ads; English
-        only; nationality given as one explicit line; open models of 8 to 24 billion
-        parameters only.
+  \item FILL IN AFTER THE RUNS: which blocks and which models were actually run. As of
+        2026-10-08 nothing has been run.
+  \item The products in this field run on large commercial models and their prompts are
+        not public. We test open models of 8 to 24 billion parameters with a policy and
+        a file that we wrote.
+  \item In practice most customer risk ratings come from fixed scorecards; language
+        models review cases and write the reasoning. We imitate that step.
+  \item The policy is a paraphrase by non-lawyers of rules read in part.
+  \item English prompts for a German bank; one bank, one product, one country.
+  \item Synthetic files without name and place of birth; nationality given as explicit
+        lines.
+  \item One list (the Commission's) on one date. Other lists differ and change.
 \end{itemize}}
 
 \section*{Author Contributions}
@@ -398,10 +415,12 @@ Block 1 on all four models is the plan for the midterm.}
 % tools) at the end of the report.
 
 \teamnote{what to declare}{%
-As of 2026-10-04, assisted by Claude Code: literature search and research notes, design
-documents, the prompts, the job ads and CVs, the first draft of the project proposal,
-repository code and structure, title suggestions, and these notes (including the notes
-for the abstract, introduction and related work). Keep the list up to date.}
+As of 2026-10-08, assisted by Claude Code: literature search and research notes; the
+search for and comparison of scenarios (\texttt{research/scenario\_reviews/}); design
+documents; the bank policy text, the customer files and the prompts; the first drafts of
+both project proposals (2026-10-04 and 2026-10-08); repository code and structure; the
+working title and title suggestions; and these notes. For the earlier hiring design also
+the job ads, CVs and prompts, which are no longer used. Keep the list up to date.}
 
 \section*{Declaration}
 % AI usage policy: a declaration at the end stating that you have written the whole
@@ -416,7 +435,8 @@ for the abstract, introduction and related work). Keep the list up to date.}
 \label{sec:appendix-prompts}
 
 \teamnote{prompts}{%
-Copy in, unchanged, the main prompts and one follow-up message per experiment from
-\texttt{experiment/prompts/}.}
+Copy in, unchanged, the main prompt, both versions of the policy and one wording of the
+request from \texttt{experiment/prompts/} and \texttt{experiment/policy/}, with one
+customer file.}
 
 \end{document}

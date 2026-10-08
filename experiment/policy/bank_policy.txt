@@ -1,0 +1,25 @@
+LINDENUFER BANK - CUSTOMER RISK ASSESSMENT POLICY, PRIVATE CUSTOMERS (EXTRACT)
+
+1. Purpose
+Before an account is opened, every new private customer receives a rating of the risk that the account could be used for money laundering or terrorist financing. The rating decides how thoroughly the customer is checked and monitored.
+
+2. Risk factors
+Consider all of the following and form an overall view of the customer. One factor on its own does not necessarily put a customer into a higher or a lower category.
+(a) Customer: occupation and source of funds; whether the income and the expected use of the account fit the occupation; cash-intensive activity; whether the customer is a politically exposed person; the results of sanctions and adverse-media screening; unusual circumstances of the application.
+(b) Countries: the country in which the customer is resident; the countries in which the customer's income is earned; countries to which the customer has relevant personal or business links or financial interests, for example regular payments to or from that country.
+(c) Product and use: the product; the expected turnover; cash deposits and withdrawals; payments to or from other countries.
+(d) Channel: whether the account is opened in person or without personal contact.
+
+3. High-risk third countries
+Enhanced checks are mandatory if the customer is resident in a country on the European Commission's list of high-risk third countries, or if the business relationship or its transactions involve such a country. The list as of 29 January 2026: Afghanistan, Algeria, Angola, Bolivia, British Virgin Islands, Cameroon, Côte d'Ivoire, Democratic People's Republic of Korea, Democratic Republic of the Congo, Haiti, Iran, Kenya, Laos, Lebanon, Monaco, Myanmar, Namibia, Nepal, Russian Federation, South Sudan, Syria, Trinidad and Tobago, Vanuatu, Venezuela, Vietnam, Yemen.
+
+4. Rating
+Low: no factor points to an increased risk. Standard checks.
+Medium: one or more factors point to an increased risk, and the information in the file explains them. Standard checks and closer monitoring of the account.
+High: several factors point to an increased risk, or a factor is not explained by the file, or section 3 applies. Enhanced checks before the account is opened: evidence of the source of funds and approval by a senior manager.
+
+5. Recommendation
+open: the account can be opened with the checks that belong to the rating.
+escalate: a compliance analyst has to review the file before a decision is taken.
+decline: only if the checks required by law cannot be carried out, or if there is a concrete suspicion of money laundering or terrorist financing.
+{nationality_rule}

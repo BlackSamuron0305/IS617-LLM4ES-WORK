@@ -1,5 +1,7 @@
-% Project proposal for the professor. First draft written by Claude Code on 2026-10-04 at
-% Laith's request. Read it, correct it and put it into your own words before sending.
+% Project proposal for the professor. First draft written by Claude Code on 2026-10-08 at
+% Laith's request, after the project moved from hiring to bank customer checks. Read it,
+% correct it and put it into your own words before sending. The proposal of 2026-10-04
+% (hiring and promotion) is in research/old_design/hiring_2026-10-04/proposal/.
 \documentclass[11pt]{article}
 
 \usepackage[preprint]{acl}
@@ -15,7 +17,7 @@
 \usepackage{enumitem}
 \setlist{itemsep=1pt,topsep=3pt,parsep=0pt}
 
-\title{Which Arab? How LLMs Treat Candidates from the 22 Arab League Countries in Hiring and Promotion\\[4pt]
+\title{Which Arab? How LLMs Rate Bank Customers from the 22 Arab League Countries in Money-Laundering Checks\\[4pt]
 \large Project proposal, IS 617 (HWS26)}
 
 \author{
@@ -36,26 +38,24 @@ Arab League countries, however, differ widely in wealth, in political stability 
 how their citizens are seen abroad: high-income Gulf states, middle-income countries such
 as Egypt, Jordan and Morocco, and countries marked by war and displacement such as Syria,
 Yemen, Sudan, Libya and Somalia. We ask whether a model sees some of these nationalities
-more favourably than others. To put a number on this we use hiring and promotion: the
-model receives a job and CVs that are identical except for one line stating the
-nationality, and returns a score and a decision.
+more favourably than others. To put a number on this we use a task in which the
+nationality is always in front of the system: the money-laundering check that a bank
+runs before it opens an account. The model receives the bank's written policy and a
+customer file. The files are identical except for the nationality and the passport, and
+the model returns a risk rating and a recommendation.
 
 \begin{description}[leftmargin=2.6em,labelwidth=2.1em,labelsep=0.5em]
-  \item[RQ1] Do fit scores and decisions differ across the 22 Arab League nationalities
-        when everything else is identical, and is this spread larger than for unrelated
-        placebo nationalities? This is the main question.
-  \item[RQ2] Do the differences follow a country's economic and political position, for
-        example Gulf nationalities above nationalities associated with war, displacement
-        or low income?
-  \item[RQ3] Does the place of the job matter? Is the local nationality favoured in its
-        own country, and is the same foreign nationality, for example Yemeni or Egyptian,
-        treated differently in a Gulf country than in a North African one?
-  \item[RQ4] Do the differences remain when the model is told that nationality is not a
-        criterion, and when it may let a lottery decide between two identical candidates?
-  \item[RQ5] Are the patterns the same in hiring and in promotion, and across models?
+  \item[RQ1] Do risk ratings and recommendations differ across the 22 Arab League
+        nationalities when the customer file is otherwise identical, and is this spread
+        larger than for unrelated placebo nationalities? This is the main question.
+  \item[RQ2] Do the differences follow the European Union's list of high-risk countries,
+        on which four of the 22 appear, or a country's economic and political position?
+  \item[RQ3] Are Arab League nationalities as a group rated differently from German,
+        Turkish and placebo nationalities?
+  \item[RQ4] Do the differences remain when the policy states that nationality is not a
+        risk factor?
+  \item[RQ5] Do the four models agree?
 \end{description}
-
-\noindent The comparison between Arab and non-Arab nationalities is secondary.
 
 \section{Motivation and related work}
 \label{sec:related}
@@ -66,97 +66,107 @@ than for other religious groups \citep{abid2021persistent}, and a weaker form of
 association was still found in later GPT models \citep{hemmatian2023muslim}. In stories
 written by five models, characters with Middle Eastern or North African names appeared
 78\% less often in workplace stories than their share of the US population would suggest
-\citep{shieh2026intersectional}. The two biases are linked. The Arab League countries are
-majority-Muslim, and when models describe Middle Eastern people they disproportionately
-mention religion \citep{cheng2023marked}. A bias against Muslims can therefore be
-expected to reach Arab nationalities, and this general disadvantage is our starting
-point. It has two limits. The studies treat Arabs and Muslims as one group, and they
-tested models released between 2020 and 2023. Whether the disadvantage appears in the
-models we test is open; the German, Turkish and no-nationality conditions will show
-whether it does. Our CVs state a nationality and no religion, so we measure how
-nationalities are treated, not bias against Islam itself.
+\citep{shieh2026intersectional}. When models describe Middle Eastern people they
+disproportionately mention religion \citep{cheng2023marked}. These studies treat Arabs
+and Muslims as one group, and they tested models released between 2020 and 2023. Our
+customer files state a nationality and no religion, so we measure how nationalities are
+treated, not bias against Islam itself.
 
 \textbf{Models also tell Arab countries apart.} In text generated by GPT-2, Libyan,
 Sudanese and Tunisian were among the five demonyms with the most negative sentiment
 \citep{venkit2023nationality}. In simulated immigration decisions, GPT models suggested
-additional scrutiny for applicants from Iraq, Sudan and Somalia
-\citep{mao2025gatekeepers}. Models also represent the values of some Arab countries much
-better than those of others \citep{zahraei2025menavalues}. None of these studies compares
-the 22 nationalities with each other in a decision about a person.
+additional scrutiny for applicants from Iraq, Sudan and Somalia, although most country
+effects in their choices were not significant \citep{mao2025gatekeepers}. Models also
+represent the values of some Arab countries much better than those of others
+\citep{zahraei2025menavalues}. None of these studies compares the 22 nationalities with
+each other in a decision about a person.
 
-\textbf{Hiring and promotion are our measuring instrument.} To compare 22 nationalities
-we need a task in which the nationality can change while everything else stays the same,
-and in which the model answers with a number. A CV does this: the text stays word for
-word the same, one line changes, and the model returns a fit score and a decision. It is
-also how discrimination is usually measured, among employers \citep{lippens2023state} and
-in LLMs \citep{gaebler2024auditing,armstrong2024silicon}.
+\textbf{Banks are a place where this matters.} In a field experiment, banks in seven
+European countries answered 55.2\% of e-mail enquiries signed with a domestic-sounding
+name and 31.6\% of those signed with an Arabic-sounding name; for enquiries about a loan
+the figures were 59.8\% and 35.1\% \citep{stefan2018ethnical}. Money-laundering controls
+have had the same effect: according to a press report, the Netherlands Institute for
+Human Rights found in 2024 that a bank had discriminated against two customers whose
+payments it blocked and checked because of names that did not sound Dutch
+\citep{nltimes2024ing}. Again the evidence is about one pooled group.
 
-\textbf{The scenario is realistic.} Many Arabs work in an Arab country other than their
-own. In the Gulf states, Arabs from other countries were 72\% of the foreign population
-in 1975 and still about a third in the early 2000s \citep{kapiszewski2006arab}.
-Nationality is used openly there. A report for the International Labour Organization
-finds that segmentation in Jordan is based on nationality rather than on education or
-skills \citep{razzaz2017challenging}. Among low-income workers in Qatar, pay differs by
-nationality \citep{gardner2013portrait}. Politics has singled out individual Arab
-nationalities: in 1990--91 more than 1.5 million people were expelled from Gulf states,
-among them up to one million Yemenis from Saudi Arabia, 200,000 Jordanians and 150,000
-Palestinians \citep{kapiszewski2006arab}. An Egyptian accountant applying in Kuwait is
-an everyday case, and a nationality line on a CV is normal there.
+\textbf{In this task the nationality cannot be left out.} In a CV, a nationality line
+can be removed before a model sees it. In a bank it cannot: German law obliges the bank
+to record the name, place and date of birth, nationality and address of every customer
+\citep{gwg2017}, and to rate the customer's money-laundering risk. This is why we chose
+the task.
 
-\textbf{The answer is open in both directions.} Field experiments in Western labour
-markets find about 41\% fewer positive callbacks for applicants with Arab, Maghrebi or
-Middle Eastern names \citep{lippens2023state}, and origin can matter within that group:
-Swedish employers called back 10\% of Iraq-born and 5\% of Somalia-born applicants
-\citep{vernby2019immigrants}. Inside the region the evidence points the other way.
-Qatari citizens made no significant distinction between nationalities in a survey
-experiment on residency \citep{shockley2024sharing}, and Arab expatriates in Kuwait and
-Qatar favour ``fellow Arabs'' as one group \citep{blaydes2023arab}. A result of ``no
-difference'' would therefore also be an answer.
+\textbf{The rules give us a yardstick.} The European guidelines tie country risk to
+where a customer is based or resident, where the main place of business is, and to which
+countries the customer has relevant links. In the 225 pages of the final report the word
+``nationality'' does not occur, and the guidelines state that an isolated risk factor
+does not necessarily move a customer into a higher category \citep{eba2021riskfactors}. The European Commission keeps
+a list of high-risk third countries. Of its 26 entries, four are Arab League members:
+Algeria, Lebanon, Syria and Yemen \citep{ec2026highrisk}. German law applies it to
+relationships and transactions that involve such a country or a person resident there
+\citep{gwg2017}. A consumer who is legally resident in the EU must not be disadvantaged
+on account of nationality when opening a payment account \citep{zkg2016}, and banks
+should not refuse whole categories of customers without looking at the individual
+\citep{eba2023derisking}. For a customer who lives and works in Germany and sends no
+money abroad, the rules therefore give no reason to rate the passport. We can ask not
+only whether a model treats the 22 nationalities differently, but also whether it draws
+the line where the list draws it, lumps all of them together, or draws lines of its own.
 
-\textbf{Existing LLM hiring audits cannot tell.} They mostly vary race and gender through
-names \citep{gaebler2024auditing,armstrong2024silicon}. Where Arab applicants appear,
-they are one group: Arab names received a penalty of 1.41 points on a 100-point scale in
-GPT-3.5 \citep{lippens2024computer}. A pooled figure does not say whether the
-nationalities behind it are treated alike: differences between them are averaged away.
-The pooling follows from the method, because a name does not identify a country: raters
-assigned only 34\% of Moroccan names to Morocco \citep{martiniello2022signaling}. To our knowledge, no study lets an LLM make
-hiring decisions while varying individual Arab nationalities with qualifications held
-fixed. The closest one we found pools them into Arab versus non-Arab
-\citep{albaroudi2026addressing}. We treat this claim as tentative.
+\textbf{AI systems are entering this task.} The EU anti-money-laundering regulation,
+which applies from July 2027, allows decisions ``resulting from automated processes
+[\ldots] or from processes involving AI systems'' if a decision to accept or refuse a
+customer is subject to ``meaningful human intervention'' \citep{eu2024amlr}. Vendors sell
+AI agents that review customer checks and screening alerts
+\citep{workfusion2026agents,sardine2026agentic}; one of them states that ten of the
+twenty largest banks use its agents. These are company statements, and what such
+products do with a customer's nationality is not public. For credit scoring and fraud
+detection, the models that banks reported to their supervisor were mainly decision trees
+\citep{ecb2025ai}. We do not test a product; we test what open models do in the task
+these products are sold for.
+
+\textbf{The answer is open in both directions.} In a mortgage experiment with one line
+stating the applicant's race, GPT-4 Turbo recommended approval 8.5 percentage points less
+often for Black applicants, and an instruction to use no bias removed that gap
+\citep{bowen2025measuring}. Explicit labels can also have the opposite effect: in a
+French study, models recommended discrimination less often when the groups carried real
+origin labels than when the groups were invented \citep{bunel2026customer}. We have found
+no study in which an LLM rates bank customers while their nationality is varied. We have
+not searched for one systematically yet and treat this claim as tentative.
 
 \section{Design}
 \label{sec:design}
 
 \textbf{Materials.} Everything is synthetic; the project audits model behaviour and is
-not a hiring tool. We prepared 20 job advertisements, from warehouse associate to
-software developer, and one CV per job. Each CV meets the requirements of its job without
-being outstanding, so that scores can move in both directions. A CV carries a reference
-number instead of a name and contains no names of places, schools or companies.
+not a tool for checking customers. We prepared 20 customer files for a current account,
+with occupations from warehouse associate to software developer. Every customer lives in
+Germany, is employed by a German employer, expects no payments to or from other
+countries and has clean screening results. Ten files contain nothing unusual. Ten contain
+one mild indicator that the policy names, such as cash deposits from tips or an account
+opened by video call, so that the rating has room to move. A file carries a reference
+number instead of a name.
 
-\textbf{Manipulation.} One line in the CV, for example \texttt{Nationality: Jordanian}.
-There are 29 conditions: the 22 Arab League nationalities, German and Turkish as
-benchmarks, four unrelated nationalities as a placebo set (Uruguayan, Malawian,
-Maldivian, Cambodian), and a CV without the line. The placebo set shows how much the
-scores vary for arbitrary nationality labels.
+\textbf{Manipulation.} The nationality and the matching passport, for example
+\texttt{Nationality: Jordanian} and \texttt{Jordanian passport}. There are 28 conditions:
+the 22 Arab League nationalities, German and Turkish as benchmarks, and four unrelated
+nationalities as a placebo set (Uruguayan, Malawian, Maldivian, Cambodian). All
+non-German customers hold an unlimited residence permit. There is no version without a
+nationality, because the field is mandatory.
 
-\textbf{Setting.} The model is told that it recruits for the company in a given country.
-Each job is placed once in each of the 22 Arab League countries, so every Arab
-nationality appears both as the local applicant and as a foreign one (RQ3).
+\textbf{Policy.} The model is told that it assists the onboarding team of a bank in
+Germany and that an analyst takes the final decision. It receives a one-page policy that
+paraphrases the public rules: the risk factors, the Commission's list of high-risk
+countries, a rating scale and the possible recommendations. In a second version the
+policy has one more paragraph, taken from the rules cited above: nationality is recorded
+for identification and is not a risk factor (RQ4).
 
-\textbf{Tasks.} (1)~Rate one applicant: a fit score from 0 to 100 and interview yes or
-no. (2)~Choose between two applicants who have the same CV and different nationalities,
-with one interview slot. In one version the model may answer A, B or ``lottery''; in the
-other it must choose A or B. Each pair is shown in both orders. (3)~Both tasks again with
-one added paragraph stating that nationality is not a selection criterion. All of this
-is run in two scenarios: hiring, and an internal promotion with the same job description
-and the same CV.
+\textbf{Task.} For each file the model returns a risk score from 0 to 100, a rating
+(low, medium, high), whether enhanced checks are required, and a recommendation (open,
+escalate to an analyst, decline). The request is phrased in three ways.
 
 \textbf{Models.} Four open-weight models served with vLLM on bwUniCluster: Qwen3 8B,
 Llama 3.1 8B, Gemma 3 12B and Mistral Small 3.2 24B.
 
-\textbf{Size.} Table~\ref{tab:runs} lists the runs per model. For the choice task, the 22
-Arab nationalities are randomly paired within each job and country. We run the blocks in
-the order shown and will report which blocks were completed.
+\textbf{Size.} Table~\ref{tab:runs} lists the runs per model.
 
 \begin{table}[t]
 \centering
@@ -165,15 +175,14 @@ the order shown and will report which blocks were completed.
 \toprule
 Block & Runs per model \\
 \midrule
-1\quad Hiring, rate one applicant & 12,760 \\
-2\quad Hiring, choose between two & 19,360 \\
-3\quad Blocks 1 and 2 with the added paragraph & 32,120 \\
-4\quad Promotion, all of the above & 64,240 \\
+1\quad Policy without the paragraph on nationality & 8,400 \\
+2\quad Policy with the paragraph on nationality & 8,400 \\
 \midrule
-Total & 128,480 \\
+Total & 16,800 \\
 \bottomrule
 \end{tabular}
-\caption{Planned runs per model, in order of priority.}
+\caption{Planned runs per model: 20 files, 28 nationalities, three phrasings and five
+repetitions in each block.}
 \label{tab:runs}
 \end{table}
 
@@ -181,17 +190,14 @@ Total & 128,480 \\
 \label{sec:analysis}
 
 \begin{description}[leftmargin=2.6em,labelwidth=2.1em,labelsep=0.5em]
-  \item[RQ1] How far the mean score and the decision rates differ across the 22 Arab
+  \item[RQ1] How far the risk score and the ratings differ across the 22 Arab League
         nationalities, against the spread across the placebo nationalities.
-  \item[RQ2] Each nationality's result against its country's income group (World Bank)
-        and against whether the country is affected by armed conflict. The conflict
-        classification still has to be fixed.
-  \item[RQ3] Local versus foreign applicants, and each foreign nationality across the
-        countries of the job.
-  \item[RQ4] The same comparisons with the added paragraph; in the choice task, which
-        nationality is chosen, how often the model takes the lottery, and what it does
-        when the lottery is removed.
-  \item[RQ5] Hiring against promotion, and the four models against each other.
+  \item[RQ2] The four listed countries against the eighteen others, and each
+        nationality's result against its country's income group (World Bank).
+  \item[RQ3] Arab League nationalities that are not on the list against the placebo
+        nationalities and against the German and Turkish benchmarks.
+  \item[RQ4] The same comparisons with the added paragraph.
+  \item[RQ5] The four models against each other.
 \end{description}
 
 \noindent We have not fixed the statistical analysis yet. We will write down the
@@ -200,28 +206,29 @@ hypotheses and the analysis before the first real run.
 \section{Timeline}
 \label{sec:timeline}
 
-Pitch on 13 October. A timing test and block~1 on all four models before the midterm
-presentation (11--12 November). The remaining blocks before the final presentation
-(9--10 December). Report due on 8 January 2027.
+Pitch on 13 October. A small pilot and block~1 on all four models before the midterm
+presentation (11--12 November). Block~2 before the final presentation (9--10 December).
+Report due on 8 January 2027.
 
 \section{Questions}
 \label{sec:questions}
 
 \begin{enumerate}
-  \item Is the scope right for a short paper, or should we drop the promotion scenario
-        and keep hiring only?
-  \item For RQ2, which classification of the countries would you use (income, conflict,
-        region), and is it defensible to group them at all?
-  \item Is one CV per job at one qualification level enough, or would you expect several
-        levels?
-  \item Is the choice between two identical CVs with a lottery option a sensible measure,
-        and are four placebo nationalities enough as a yardstick?
-  \item Are four open-weight models between 8B and 24B parameters acceptable?
+  \item Is a bank's customer check a suitable setting for this course, and is the scope
+        right for a short paper?
+  \item The policy we give the model names the Commission's list of high-risk countries.
+        Is that the right choice, or should the model receive no list?
+  \item Is the yardstick convincing: a customer who lives and works in Germany, for whom
+        the rules give the passport no weight?
+  \item Are 20 customer files, four placebo nationalities and five repetitions enough?
+  \item Are four open-weight models between 8B and 24B parameters acceptable, although
+        the products in this field run on larger commercial models?
+  \item The prompts are in English although the bank is German. Is that a problem?
   \item Do you see concerns with reporting results by individual nationality?
 \end{enumerate}
 
-\paragraph{AI use.} The job advertisements, CVs and prompts, and a first draft of this
-proposal, were prepared with the help of Claude Code.
+\paragraph{AI use.} The customer files, the policy text and the prompts, the literature
+search, and a first draft of this proposal were prepared with the help of Claude Code.
 
 \bibliography{../final_paper/custom}
 

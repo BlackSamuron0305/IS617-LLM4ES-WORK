@@ -15,6 +15,8 @@ The criteria below are copied from the course
 - `acl.sty` and `acl_natbib.bst` are the ACL template. They must stay next to `paper.tex`.
   Formatting rules: <https://acl-org.github.io/ACLPUB/formatting.html>.
 - Build: `.\build.ps1` compiles `paper.pdf`, warns above 5 pages and removes the build files.
+  The template needs the LaTeX packages `caption` and `upquote`. On Laith's TinyTeX they
+  were missing on 2026-10-08 (`tlmgr update --self`, then `tlmgr install caption upquote`).
 - The blue blocks in the PDF are team notes (`\teamnote` in `paper.tex`): facts and
   reminders, not report text. Replace each with your own wording. `\shownotesfalse` near
   the top of `paper.tex` hides them all. They must be gone before submission.

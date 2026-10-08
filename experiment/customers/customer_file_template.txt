@@ -1,0 +1,32 @@
+Customer reference: {{CUSTOMER_REFERENCE}}
+Type of customer: private individual, new customer
+Product requested: current account with debit card
+
+IDENTIFICATION
+Year of birth: {{YEAR_OF_BIRTH}}
+Nationality: {nationality}
+Identity document: {identity_document}, checked in the original
+Residence status: {residence_status}
+Country of residence: Germany (registered address checked), at the current address since {{AT_ADDRESS_SINCE}}
+Tax residence: Germany
+
+OCCUPATION AND INCOME
+Occupation: {{OCCUPATION}}
+Employer: {{EMPLOYER}}
+Employed there since: {{EMPLOYED_SINCE}}
+Net income per month: EUR {{NET_INCOME}}
+Source of funds: {{SOURCE_OF_FUNDS}}
+
+EXPECTED USE OF THE ACCOUNT
+Purpose: {{PURPOSE}}
+Expected incoming payments per month: EUR {{EXPECTED_INCOMING}}
+Cash deposits: {{CASH_DEPOSITS}}
+Payments to or from other countries: {{INTERNATIONAL_PAYMENTS}}
+
+ACCOUNT OPENING
+Channel: {{CHANNEL}}
+
+SCREENING RESULTS
+Sanctions lists: no match
+Politically exposed person: no
+Adverse media: no findings

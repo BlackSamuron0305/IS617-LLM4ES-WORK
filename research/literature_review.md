@@ -4,10 +4,19 @@ Status: final synthesis of the two literature parts plus a gap-search pass, 2026
 Internal working document. **Not paper prose**: the team writes the paper and the
 presentations themselves (AI-usage rule in `CLAUDE.md`). Do not paste from here.
 
+**Note of 2026-10-08: this review was written for the hiring design.** The project moved
+to bank customer checks (`experiment/README.md`). The strands below on LLM audits, audit
+method, Arab and nationality bias in LLMs, interventions and fairness theory still
+apply. The strand on human hiring audits is background only. Banking is not reviewed
+here: 13 sources on anti-money-laundering rules, banking practice and one LLM lending
+experiment were added to the matrix on 2026-10-08 (strands `banking_aml` and
+`llm_lending`) without a review text. What they say is summarised in
+`experiment/policy/README.md` and `scenario_reviews/bank_onboarding_scenario.md`.
+
 Companion files:
-- `research/literature_matrix.csv`: 193 sources, one row each, with a `strand` column
-  (125 from the first passes, 68 added on 2026-10-04; see §6).
-- `research/references.bib`: the same 193 keys. `verification` and `strand` are custom
+- `research/literature_matrix.csv`: 206 sources, one row each, with a `strand` column
+  (125 from the first passes, 68 added on 2026-10-04, see §6; 13 added on 2026-10-08).
+- `research/references.bib`: the same 206 keys. `verification` and `strand` are custom
   fields that BibTeX styles ignore, and `annote` holds remarks.
 - `research/novelty_assessment.md`: the stress-tested novelty verdict.
 - Full search logs from the two parts (`lit_parts/L1_notes.md`, `lit_parts/L2_notes.md`)

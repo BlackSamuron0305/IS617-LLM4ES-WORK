@@ -7,6 +7,24 @@ the contribution itself (AI-usage rule in `CLAUDE.md`). Sources and keys are in
 `literature_matrix.csv` and `references.bib`, and the search log is in
 `literature_review.md` §1. This file supersedes `lit_parts/L2_novelty_draft.md`.
 
+**Note of 2026-10-08: this assessment is about hiring, not about the current design.**
+The project moved to bank customer checks (`experiment/README.md`). Everything below
+tests a claim about LLM hiring decisions and was not redone. For the bank design:
+
+- No systematic search has been done. A few web searches on 2026-10-08 found no study in
+  which an LLM rates bank customers, or does sanctions or name screening, while their
+  nationality is varied (`scenario_reviews/bank_onboarding_scenario.md`, section 6).
+- Nearest work found: a mortgage experiment with a race line (`bowen2025measuring`, read
+  in sections); an article reported to find that models judge identical transactions as
+  more likely fraudulent when the company is labelled Chinese (Journal of Business
+  Ethics, 2026; known from a search summary only, not read, not in the matrix).
+- Not searched: SSRN, finance and compliance outlets, the literature on bias in
+  anti-money-laundering systems and on de-risking.
+- What still holds from below: that prior work pools "Arab" into one group, and that
+  LLMs treat Arab countries differently in text and values (sections 3 and 5).
+- Until a search like the one below has been done for banking, there is no novelty
+  claim for the bank design. Do not write one.
+
 ---
 
 ## 1. Tentative claim under test
