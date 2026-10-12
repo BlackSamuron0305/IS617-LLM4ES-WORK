@@ -246,8 +246,12 @@ all three drafts have to be listed when AI use is declared, and so do the two pa
 on software that sorts or rates visa applicants, which Claude extended on 2026-10-12.
 The working titles were also
 proposed by Claude. The pitch slides (`paper/first_presentation/pitch.pptx`, and the
-short versions `pitch_v2.pptx` to `pitch_v5.pptx` of 2026-10-12; v5 is
-the one to present) were built
+short versions `pitch_v2.pptx` to `pitch_v8.pptx` of 2026-10-12; v5, reordered by the
+team by hand, is the one to present, v6 is v5 with Google's post on slide 2, v7 is v6
+with the titles of twelve published studies on slide 3 in place of the three figures, and
+v8 is v7 with four new slides: one big group against the others, why Arabs, which
+scenario, experimental setup)
+were built
 by Claude at Laith's explicit request, including their wording: the team rewrites the
 wording or declares it.
 

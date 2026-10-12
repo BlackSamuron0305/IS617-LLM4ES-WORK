@@ -23,6 +23,9 @@ hiring design are in `research/old_design/hiring_2026-10-04/first_presentation/`
 
 | file | what it is |
 |---|---|
+| `pitch_v8.pptx` | `pitch_v7.pptx` as saved on 2026-10-12 at 19:10, with four new slides and a new order (Laith, 2026-10-12): 11 slides and 17 backup slides. See "Four new slides" below |
+| `pitch_v7.pptx` | `pitch_v6.pptx` with one change on slide 3, "And in language models? What research found" (Laith, 2026-10-12): the three figures (66%, 78%, -15%) are replaced by the titles of twelve published studies, to show that many researchers work on this. Each title is an image cut from the first page of the paper; a caption gives authors, venue and year. Nothing else differs from v6. See "Slide 3" below |
+| `pitch_v6.pptx` | `pitch_v5.pptx` as the team had saved it on 2026-10-12 at 19:00 (25 slides, reordered by hand), with one change on slide 2, "August 2026: two searches on Google": a screenshot of Google's own post on X of 20 August 2026 (`google2026aioverviewpost`) under the news article, which is cropped to its headline. Nothing else differs from v5 |
 | `pitch_v5.pptx` | **The version to present, built on 2026-10-12 at Laith's request.** 9 slides and 13 backup slides: `pitch_v4.pptx` with one new backup slide (13) on Australia and on what is planned elsewhere, corrected speaker notes on slides 11 and 12, and three more entries on the sources slide |
 | `pitch_v4.pptx` | 9 slides and 12 backup slides, also of 2026-10-12: `pitch_v3.pptx` with a new first slide, the Google AI Overview case of August 2026 with a screenshot of a news article (Islam Channel, 27 August 2026; taken from the live page on 2026-10-12) |
 | `pitch_v3.pptx` | 8 slides and 12 backup slides. It opens with society, the title comes fifth |
@@ -32,6 +35,67 @@ hiring design are in `research/old_design/hiring_2026-10-04/first_presentation/`
 | `arab_league_wealth_map.png` | the map on slide 5: the 22 in the three groups rich, normal and poor (World Bank income classes, `experiment/countries/applicant_nationalities.csv`) |
 | `arab_league_grant_rates_map.png` | the map on slide 8: the 22 Arab League countries, darker = a larger share of Australian visitor visa applications granted in 2019-20; hatched = too few cases (Department of Home Affairs; outlines from Natural Earth, public domain) |
 | `qa_prep.md` | likely questions with the facts and where they come from |
+
+## Four new slides (`pitch_v8.pptx`)
+
+Order of the eleven slides in front (new ones in bold): 1 title, 2 Google, 3 twelve paper
+titles, **4 "The papers we found compare one big group"**, **5 "Why Arabs? Two
+reasons"**, **6 "What scenario is best?"**, 7 spot the difference, 8 Australia, 9 what we
+ask, **10 "Our experimental setup"**, 11 timeline.
+
+What moved: the second title page (old slide 6) is gone, slide 6 took its place. The two
+slides that slide 5 sums up ("53 Muslim-majority countries are not one group", "Born in
+the Gulf, still a foreigner") are now the first two backup slides, with their notes and
+animations. Nothing else was touched.
+
+| slide | content | what to know before saying it |
+|---|---|---|
+| 4 | left: the usual study compares one group (Muslim, Arab, Middle Eastern) with the others, with three examples; right: the 22 flags, "And inside the group?" | **Do not say that nobody has looked inside the group.** Of the twelve titles on slide 3, Keleg, Venkit et al., Nguyen et al. and Mao and Zhao do, in other tasks. Say "in the papers we found". No novelty claim |
+| 5 | reason 1, less noise: the map, 53 to 22; reason 2, realistic: 6.9 million citizens of other Arab countries in Saudi Arabia and the Emirates, seven flags with the millions | "Diaspora" is Laith's word; the UN counts foreign citizens and does not say who was born there |
+| 6 | hiring and medicine crossed out: name, religion and nationality can be removed before a model sees the text; visa: the nationality stays on the form | **Say "can be removed", not "is removed".** Many hiring pipelines do not remove the nationality (`research/scenario_reviews/nationality_line_pipeline_review.md`). **For medicine no source was read**: it is the team's reasoning |
+| 10 | 20 applicants, 22 passports, 4 models, score 0 to 100; "still open": hypotheses and analysis plan, pilot, model settings; tag "needs refinement" | the open points are those of `experiment/README.md`, "Open" |
+
+- The quote on slide 6 was read word for word on 2026-10-12 in the documentation of
+  Presidio, an open-source redaction tool (list of supported entities): `NRP`, "A
+  person's Nationality, religious or political group."; `PERSON`, "A full person name,
+  which can include first names, middle names or initials, and last names." Presidio is
+  not in `research/literature_matrix.csv` and not on the sources slide.
+- Eleven slides are too many for five minutes at the pace of the earlier versions. Slides
+  7 and 8 are the first candidates for the backup.
+- The speaker notes of the four slides have the facts and the limits.
+
+## Slide 3: twelve paper titles (`pitch_v7.pptx`)
+
+- The twelve: Abid, Farooqi and Zou 2021; Hemmatian, Baltaji and Varshney 2023;
+  Plaza-del-Arco et al. 2024; Saeed et al. 2024; Naous et al. 2024; Demidova et al.
+  2024; Shieh et al. 2026; Lippens 2024; Keleg 2025; Venkit et al. 2023; Nguyen et al.
+  2026; Mao and Zhao 2025. All are in `research/literature_matrix.csv`; eight were read
+  in full, four as abstracts (Saeed, Naous, Keleg, Nguyen). The first pages were
+  downloaded on 2026-10-12 from arXiv, the ACL Anthology and Nature, and the titles are
+  shown as printed there. For Lippens the picture is the arXiv preprint.
+- The speaker notes say in one line what each study found, and keep the facts behind the
+  three figures that were on the slide before. `pitch_v6.pptx` still has the old slide.
+- **Do not say that all twelve found the same thing.** Demidova et al. and Mao and Zhao
+  report mixed results.
+- **Be careful with "huge".** Bias in language models is a large field. Religion and
+  nationality are the smaller part of it: one review of 189 papers found gender in
+  79.9%, religion in 19.1% and nationality in 13.2% (`ghosh2025bias`, abstract and first
+  pages read). That smaller part is the gap the project works in, so "many studies, but
+  few on nationality" is the line that fits both the slide and the proposal.
+- Twelve is a selection from the team's list, not a count of the field.
+
+## Google's post on slide 2 (`pitch_v6.pptx`)
+
+- The screenshot shows the post itself, taken on 2026-10-12 from X's embed view. The
+  text was also read directly from X. The time on it is Central European time.
+- The picture attached to the post (a search for "i'm alone with an american" with a
+  harmless answer) is switched off in the screenshot so that the text can be read.
+- The post is a reply to another user, not to the post about the search for a Muslim.
+  Google wrote about "these types of searches" in general and said the warnings
+  "aren't unique to any one group". Do not say that Google apologised to Muslims.
+- The same sentences went out three minutes earlier as a reply to Donald Trump Jr., with
+  a search for "i'm alone with a christian". That post is not on the slide.
+- The speaker notes of slide 2 have the links.
 
 ## The version to present (`pitch_v5.pptx`)
 
