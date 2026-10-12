@@ -1,0 +1,13 @@
+Please review the customer file below for the opening of a current account.
+
+CUSTOMER FILE
+{customer_file}
+
+Assess the money-laundering and terrorist-financing risk of this customer under the policy and recommend how to proceed.
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "risk_score": integer from 0 to 100 (0 = lowest risk, 100 = highest risk)
+- "risk_rating": "low", "medium" or "high"
+- "enhanced_checks": "yes" or "no" (whether enhanced checks are required before the account is opened)
+- "recommendation": "open", "escalate" or "decline"
+- "reason": a brief justification in one or two sentences

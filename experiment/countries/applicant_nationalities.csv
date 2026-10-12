@@ -1,0 +1,27 @@
+country,iso2,demonym,group,wealth_group,wb_income_group,arab_identity_contested,travel_document,note
+Algeria,DZ,Algerian,arab,normal,Upper middle income,false,Algerian passport,
+Bahrain,BH,Bahraini,arab,rich,High income,false,Bahraini passport,Gulf Cooperation Council state: in reality needs no residence visa in the United Arab Emirates; the application states the same legal status for everyone
+Comoros,KM,Comorian,arab,normal,Lower middle income,true,Comorian passport,Arab identity contested
+Djibouti,DJ,Djiboutian,arab,normal,Lower middle income,true,Djiboutian passport,Arab identity contested
+Egypt,EG,Egyptian,arab,normal,Lower middle income,false,Egyptian passport,
+Iraq,IQ,Iraqi,arab,normal,Upper middle income,false,Iraqi passport,
+Jordan,JO,Jordanian,arab,normal,Upper middle income,false,Jordanian passport,
+Kuwait,KW,Kuwaiti,arab,rich,High income,false,Kuwaiti passport,Gulf Cooperation Council state: in reality needs no residence visa in the United Arab Emirates; the application states the same legal status for everyone
+Lebanon,LB,Lebanese,arab,normal,Lower middle income,false,Lebanese passport,
+Libya,LY,Libyan,arab,normal,Upper middle income,false,Libyan passport,
+Mauritania,MR,Mauritanian,arab,normal,Lower middle income,false,Mauritanian passport,
+Morocco,MA,Moroccan,arab,normal,Lower middle income,false,Moroccan passport,
+Oman,OM,Omani,arab,rich,High income,false,Omani passport,Gulf Cooperation Council state: in reality needs no residence visa in the United Arab Emirates; the application states the same legal status for everyone
+Palestine,PS,Palestinian,arab,normal,Lower middle income,false,Palestinian passport,Arab League member; statehood recognition varies internationally; kept as a common self-description (see README)
+Qatar,QA,Qatari,arab,rich,High income,false,Qatari passport,Gulf Cooperation Council state: in reality needs no residence visa in the United Arab Emirates; the application states the same legal status for everyone
+Saudi Arabia,SA,Saudi,arab,rich,High income,false,Saudi passport,Gulf Cooperation Council state: in reality needs no residence visa in the United Arab Emirates; the application states the same legal status for everyone
+Somalia,SO,Somali,arab,poor,Low income,true,Somali passport,Arab identity contested
+Sudan,SD,Sudanese,arab,poor,Low income,false,Sudanese passport,War since April 2023 (see README)
+Syria,SY,Syrian,arab,poor,Low income,false,Syrian passport,"Arab League membership suspended 2011-2023, restored May 2023; treated as member"
+Tunisia,TN,Tunisian,arab,normal,Lower middle income,false,Tunisian passport,
+United Arab Emirates,AE,Emirati,arab,rich,High income,false,Emirati passport,The country the applicants live in. In reality a citizen there; the application states the same legal status for everyone
+Yemen,YE,Yemeni,arab,poor,Low income,false,Yemeni passport,
+Uruguay,UY,Uruguayan,placebo,rich,High income,false,Uruguayan passport,"Placebo: Latin America & Caribbean, high income"
+Malawi,MW,Malawian,placebo,poor,Low income,false,Malawian passport,"Placebo: Sub-Saharan Africa, low income"
+Maldives,MV,Maldivian,placebo,normal,Upper middle income,false,Maldivian passport,"Placebo: South Asia, upper middle income, Muslim-majority"
+Cambodia,KH,Cambodian,placebo,normal,Lower middle income,false,Cambodian passport,"Placebo: East Asia & Pacific, lower middle income"

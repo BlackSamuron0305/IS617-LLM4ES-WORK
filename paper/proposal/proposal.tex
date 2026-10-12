@@ -1,7 +1,17 @@
-% Project proposal for the professor. First draft written by Claude Code on 2026-10-08 at
-% Laith's request, after the project moved from hiring to bank customer checks. Read it,
-% correct it and put it into your own words before sending. The proposal of 2026-10-04
-% (hiring and promotion) is in research/old_design/hiring_2026-10-04/proposal/.
+% Project proposal for the professor. First draft written by Claude Code on 2026-10-10 at
+% Laith's request, after the project moved from bank customer checks to visitor visa
+% applications. Changed the same day after Laith's decisions: the applicants live in the
+% United Arab Emirates; every application states the same legal status; the project is
+% about bias among the 22 Arab League nationalities, measured against the official rules,
+% and does not look at passport strength or at non-Arab comparison groups.
+% Extended by Claude Code on 2026-10-12 at Laith's request: the paragraph on machines that
+% sort visa applicants now quotes its sources word for word and adds Australia and the
+% plans in the EU and Germany. The quotes were checked on the originals that day; how far
+% each source was read is in research/literature_matrix.csv.
+% Read it, correct it and put it into your own words before sending. The
+% proposal of 2026-10-08 (bank customer checks) is in
+% research/old_design/bank_2026-10-08/proposal/; the one of 2026-10-04 (hiring) is in
+% research/old_design/hiring_2026-10-04/proposal/.
 \documentclass[11pt]{article}
 
 \usepackage[preprint]{acl}
@@ -17,7 +27,7 @@
 \usepackage{enumitem}
 \setlist{itemsep=1pt,topsep=3pt,parsep=0pt}
 
-\title{Which Arab? How LLMs Rate Bank Customers from the 22 Arab League Countries in Money-Laundering Checks\\[4pt]
+\title{Which Arab? How LLMs Rate Visa Applicants from the 22 Arab League Countries\\[4pt]
 \large Project proposal, IS 617 (HWS26)}
 
 \author{
@@ -32,136 +42,202 @@
 \section{Research questions}
 \label{sec:rq}
 
-Language models have been shown to carry stereotypes about Arabs and Muslims
-(Section~\ref{sec:related}). The studies that show this treat them as one group. The 22
-Arab League countries, however, differ widely in wealth, in political stability and in
-how their citizens are seen abroad: high-income Gulf states, middle-income countries such
-as Egypt, Jordan and Morocco, and countries marked by war and displacement such as Syria,
-Yemen, Sudan, Libya and Somalia. We ask whether a model sees some of these nationalities
-more favourably than others. To put a number on this we use a task in which the
-nationality is always in front of the system: the money-laundering check that a bank
-runs before it opens an account. The model receives the bank's written policy and a
-customer file. The files are identical except for the nationality and the passport, and
-the model returns a risk rating and a recommendation.
+Our motivation is Islamophobia. Muslims in Europe report discrimination in growing
+numbers, and language models have been shown to repeat stereotypes about Muslims
+(Section~\ref{sec:related}). We want to know whether this shows when a model takes part
+in a decision about a person. A decision of that kind rarely has a religion in front of
+it. At a border it has a passport. All Muslim-majority countries together are too mixed
+a group for one experiment: 53 countries on three continents
+\citep{pew2025religious}. We therefore study one group among them that shares a language
+and a label, the 22 members of the Arab League, and we ask about bias among them. Two
+people hand in the same application for a visitor visa. One holds a Syrian passport, the
+other an Emirati one. The official rules for the visa are the same for both. Why should
+a model rate them differently? And if it does, does it sort the 22 countries into the
+groups a reader would expect: rich, normal and poor? In the experiment a model receives
+the guidance of a visa office and one application. The applications are identical except
+for the nationality and the passport, and the model returns a risk rating and a
+recommendation.
 
 \begin{description}[leftmargin=2.6em,labelwidth=2.1em,labelsep=0.5em]
   \item[RQ1] Do risk ratings and recommendations differ across the 22 Arab League
-        nationalities when the customer file is otherwise identical, and is this spread
-        larger than for unrelated placebo nationalities? This is the main question.
-  \item[RQ2] Do the differences follow the European Union's list of high-risk countries,
-        on which four of the 22 appear, or a country's economic and political position?
-  \item[RQ3] Are Arab League nationalities as a group rated differently from German,
-        Turkish and placebo nationalities?
-  \item[RQ4] Do the differences remain when the policy states that nationality is not a
-        risk factor?
-  \item[RQ5] Do the four models agree?
+        nationalities when the application is identical and the official rules are the
+        same for all of them? This is the first main question.
+  \item[RQ2] Can the 22 countries be grouped into rich, normal and poor by how the models
+        rate them? This is the second main question.
+  \item[RQ3] Do the differences remain when the guidance states that nationality is not
+        a ground for a higher rating?
+  \item[RQ4] What would the differences cost an applicant: in the savings needed to make
+        up for them, in fees and in extra checks?
 \end{description}
+
+\noindent Every question is answered for four models.
 
 \section{Motivation and related work}
 \label{sec:related}
 
-\textbf{Models carry stereotypes about Arabs and Muslims.} In GPT-3, 66 of 100
-completions of the prompt ``Two Muslims walked into a'' were violent, significantly more
-than for other religious groups \citep{abid2021persistent}, and a weaker form of this
-association was still found in later GPT models \citep{hemmatian2023muslim}. In stories
-written by five models, characters with Middle Eastern or North African names appeared
-78\% less often in workplace stories than their share of the US population would suggest
-\citep{shieh2026intersectional}. When models describe Middle Eastern people they
-disproportionately mention religion \citep{cheng2023marked}. These studies treat Arabs
-and Muslims as one group, and they tested models released between 2020 and 2023. Our
-customer files state a nationality and no religion, so we measure how nationalities are
-treated, not bias against Islam itself.
+\textbf{Anti-Muslim discrimination is widespread, and models repeat it.} In a survey in
+13 EU countries, 47\% of Muslim respondents reported racial discrimination in the five
+years before the survey, against 39\% in 2016; in Germany it was 68\%
+\citep{fra2024being}. A German monitoring network documented 3,080 anti-Muslim incidents
+in 2024 and 1,926 in 2023; part of the rise comes from a larger number of reporting
+centres \citep{claim2025lagebild}. In GPT-3, 66 of 100 completions of the prompt ``Two
+Muslims walked into a'' were violent \citep{abid2021persistent}, and a weaker form of
+this association was still found in later GPT models \citep{hemmatian2023muslim}.
 
-\textbf{Models also tell Arab countries apart.} In text generated by GPT-2, Libyan,
-Sudanese and Tunisian were among the five demonyms with the most negative sentiment
-\citep{venkit2023nationality}. In simulated immigration decisions, GPT models suggested
-additional scrutiny for applicants from Iraq, Sudan and Somalia, although most country
-effects in their choices were not significant \citep{mao2025gatekeepers}. Models also
-represent the values of some Arab countries much better than those of others
-\citep{zahraei2025menavalues}. None of these studies compares the 22 nationalities with
-each other in a decision about a person.
+\textbf{From a religion to a passport.} In a hiring experiment in five European
+countries, applicants whose families came from Muslim-majority countries were at a
+disadvantage in four of the five even when they gave no sign of their religion
+\citep{distasio2021muslim}. This is the link we rely on: a nationality is a noisy signal
+for a religion. It is not the same thing. In a survey experiment in the United States,
+respondents penalised the label ``Muslim'' but not the label ``Arab''
+\citep{calfano2021evaluating}. Our applications state no religion, so we measure how
+passports are treated.
 
-\textbf{Banks are a place where this matters.} In a field experiment, banks in seven
-European countries answered 55.2\% of e-mail enquiries signed with a domestic-sounding
-name and 31.6\% of those signed with an Arabic-sounding name; for enquiries about a loan
-the figures were 59.8\% and 35.1\% \citep{stefan2018ethnical}. Money-laundering controls
-have had the same effect: according to a press report, the Netherlands Institute for
-Human Rights found in 2024 that a bank had discriminated against two customers whose
-payments it blocked and checked because of names that did not sound Dutch
-\citep{nltimes2024ing}. Again the evidence is about one pooled group.
+\textbf{Our yardstick is the official rules.} We do not ask how strong a passport is or
+how a country is seen. We ask what the rules of the destination say about the 22
+nationalities. For the Australian Visitor visa they say the same for all of them. None
+of the 22 can use the two simpler electronic permits
+\citep{homeaffairs2026eta,homeaffairs2026evisitor}, so all need the same visa, apply
+with the same online form \citep{au2021lin21056} and pay the same fee. The legal test is
+about the individual and is the same for every nationality: the applicant must genuinely
+intend to stay temporarily and must have adequate means \citep{au1994migrationregs}. The
+law allows a list of risk groups defined by nationality, but the last such list was
+revoked in 2009 \citep{au2008riskfactor,au2009revocation}. The department's instruction
+for officers calls a profile ``merely an alert'', says that it ``is not grounds to refuse
+to grant a visa'' and that ``all applications must be considered on their own merits''
+\citep{homeaffairs2018genguide}; the version we read is from 2016, the current one is
+not public. By these rules two identical applications should receive the same
+assessment whatever the passport. A systematic difference among the 22 is what we call
+bias.
 
-\textbf{In this task the nationality cannot be left out.} In a CV, a nationality line
-can be removed before a model sees it. In a bank it cannot: German law obliges the bank
-to record the name, place and date of birth, nationality and address of every customer
-\citep{gwg2017}, and to rate the customer's money-laundering risk. This is why we chose
-the task.
+\textbf{Why Australia.} It is the only destination we checked where the rules are the
+same for all 22. Elsewhere the rules themselves sort the nationalities: Emirati citizens
+need no visa, or only an electronic permit, for the Schengen area, the United Kingdom,
+Canada and New Zealand, and the United States bars six of the 22 nationalities by
+proclamation \citep{crs2025proclamation}. There a different answer for a Syrian and an
+Emirati applicant follows from a rule and is not a bias.
 
-\textbf{The rules give us a yardstick.} The European guidelines tie country risk to
-where a customer is based or resident, where the main place of business is, and to which
-countries the customer has relevant links. In the 225 pages of the final report the word
-``nationality'' does not occur, and the guidelines state that an isolated risk factor
-does not necessarily move a customer into a higher category \citep{eba2021riskfactors}. The European Commission keeps
-a list of high-risk third countries. Of its 26 entries, four are Arab League members:
-Algeria, Lebanon, Syria and Yemen \citep{ec2026highrisk}. German law applies it to
-relationships and transactions that involve such a country or a person resident there
-\citep{gwg2017}. A consumer who is legally resident in the EU must not be disadvantaged
-on account of nationality when opening a payment account \citep{zkg2016}, and banks
-should not refuse whole categories of customers without looking at the individual
-\citep{eba2023derisking}. For a customer who lives and works in Germany and sends no
-money abroad, the rules therefore give no reason to rate the passport. We can ask not
-only whether a model treats the 22 nationalities differently, but also whether it draws
-the line where the list draws it, lumps all of them together, or draws lines of its own.
+\textbf{Same rules, different outcomes.} In practice the 22 fare very differently.
+Australia granted 96.5\% of the visitor visa applications of Omani citizens and 21.9\%
+of those of Somali citizens in 2019--20, the last year for which figures by citizenship
+are available \citep{homeaffairs2020foi106}. Granted applications from the Gulf states
+were decided in about one day at the median, Syrian and Palestinian ones in about a
+month \citep{homeaffairs2025da449}. These figures come from real applicants in very
+different circumstances, so they do not show a bias by themselves. They show what a
+model may have learned. The experiment holds the applicant fixed and asks whether a
+model carries the gap over to identical applications.
 
-\textbf{AI systems are entering this task.} The EU anti-money-laundering regulation,
-which applies from July 2027, allows decisions ``resulting from automated processes
-[\ldots] or from processes involving AI systems'' if a decision to accept or refuse a
-customer is subject to ``meaningful human intervention'' \citep{eu2024amlr}. Vendors sell
-AI agents that review customer checks and screening alerts
-\citep{workfusion2026agents,sardine2026agentic}; one of them states that ten of the
-twenty largest banks use its agents. These are company statements, and what such
-products do with a customer's nationality is not public. For credit scoring and fraud
-detection, the models that banks reported to their supervisor were mainly decision trees
-\citep{ecb2025ai}. We do not test a product; we test what open models do in the task
-these products are sold for.
+\textbf{Machines already sort visa applicants, and nationality has been an input.} We
+quote the sources here, because the wording matters. From 2015 to 2020 a tool of the
+United Kingdom streamed visa applications ``\,`Green' (low risk), `Amber' (medium risk)
+or `Red' (high risk)''. In one office in early 2017, 96\% of the visit applications rated
+green were issued and 49\% of those rated red, and the inspector saw ``a risk that the
+streaming tool becomes a de facto decision-making tool'' \citep{icibi2017entry}. A
+government letter quoted in a legal blog confirmed that ``nationality is one of the
+relevant factors used by the streaming tool''; the tool was withdrawn in 2020 after a
+legal challenge \citep{ukhrb2020streaming}. A Dutch tool builds profiles from
+nationality, age group and gender, among other things \citep{nlminister2023iob}: ``33
+percent of applications in the intensive, `high risk' track were rejected, whereas only
+3.5 percent of applications in the normal, `low risk' track were rejected''
+\citep{lighthouse2023ethnic}. Canada's system ``sorts applications into tiers based on
+their level of complexity'', for all visitor visa applications made from abroad, and
+approves routine ones; it ``never refuses applications nor does it recommend refusals''
+\citep{ircc2022aia}. Australia, the destination in our experiment, uses analytics based
+on machine learning to ``predict risk in visa programs'' and states that it ``does not
+use machine learning to make administrative decisions'' \citep{homeaffairs2024foi}; the
+document does not say what goes into the prediction.
 
-\textbf{The answer is open in both directions.} In a mortgage experiment with one line
-stating the applicant's race, GPT-4 Turbo recommended approval 8.5 percentage points less
-often for Black applicants, and an instruction to use no bias removed that gap
-\citep{bowen2025measuring}. Explicit labels can also have the opposite effect: in a
-French study, models recommended discrimination less often when the groups carried real
-origin labels than when the groups were invented \citep{bunel2026customer}. We have found
-no study in which an LLM rates bank customers while their nationality is varied. We have
-not searched for one systematically yet and treat this claim as tentative.
+\textbf{More is planned, and none of it is a language model.} EU law defines the
+screening rules of its travel authorisation for visitors without a visa as ``an
+algorithm enabling profiling'', built on data such as ``age range, sex, nationality''
+\citep{eu2018etias}; the system was scheduled to start in the last quarter of 2026
+\citep{meier2026algorithmic}. In Germany, a government paper calls the use of
+artificial intelligence in the visa procedure ``den ersten Schritt'', the first step
+\citep{aabmi2025kieckpunkte}, and a bill on artificial intelligence in migration
+offices had its first reading on 8 October 2026 \citep{bundestag2026kimvg}. The British
+tool was a decision tree and the Dutch one is, in the minister's words, not
+self-learning; only the Australian document names machine learning. We found no
+authority that lets a language model rate applications. Canada states that it ``does
+not allow the use of generative AI tools, such as ChatGPT, in support of decision-making
+on client applications'' \citep{ircc2025qpnote}. The EU AI Act classes systems that
+assist in examining visa applications as high-risk \citep{eu2024aiact}. We do not test a
+product; we test what open models do in the seat these systems occupy.
+
+\textbf{What is known about language models.} In the closest study, GPT-3.5 and GPT-4
+chose between pairs of immigrants from ten countries, three of them Arab League members;
+most country effects were not significant, yet the models suggested additional scrutiny
+for applicants from Iraq, Sudan and Somalia \citep{mao2025gatekeepers}. A public test
+set for discrimination in model decisions contains a visitor visa case but varies age,
+gender and race, not nationality
+\citep{tamkin2023evaluating,anthropic2023discrimeval}. In a mortgage experiment with one
+line stating the applicant's race, GPT-4 Turbo recommended approval 8.5 percentage
+points less often for Black applicants, an instruction to use no bias removed that gap,
+and the authors expressed the gap in credit-score points \citep{bowen2025measuring}.
+Explicit labels can also have the opposite effect \citep{bunel2026customer}. We have
+found no study that changes only the nationality in a visa application, and none that
+compares the 22 nationalities. We have not searched systematically and treat this as
+tentative.
 
 \section{Design}
 \label{sec:design}
 
 \textbf{Materials.} Everything is synthetic; the project audits model behaviour and is
-not a tool for checking customers. We prepared 20 customer files for a current account,
-with occupations from warehouse associate to software developer. Every customer lives in
-Germany, is employed by a German employer, expects no payments to or from other
-countries and has clean screening results. Ten files contain nothing unusual. Ten contain
-one mild indicator that the policy names, such as cash deposits from tips or an account
-opened by video call, so that the rating has room to move. A file carries a reference
-number instead of a name.
+not a tool for assessing applicants. We prepared 20 applications for an Australian
+Visitor visa (subclass 600, Tourist stream), with occupations from warehouse associate
+to software developer. Ten applications contain nothing unusual. Ten contain one mild
+point that the guidance names, such as a new job or a sibling who lives in Australia, so
+that the rating has room to move. An application carries a reference number instead of a
+name.
+
+\textbf{Where the applicants live.} Every applicant was born in the United Arab
+Emirates, has lived there since birth, is employed there, plans a holiday and has no
+refusal or overstay on record. We chose the Emirates as the most realistic place for
+people of all these nationalities to be born and raised without becoming citizens: birth
+there gives no citizenship to the child of foreign parents \citep{uae1972nationality},
+and 88.5\% of the residents were foreigners in the last official figures that give the
+split \citep{khaleej2011expats}. Every application states the same legal status: a
+lawful long-term resident with the full right to live and work there. Such a status
+exists for foreigners, for example a renewable visa of five or ten years that needs no
+sponsor \citep{uae2026goldenvisa}. The line simplifies reality for six nationalities: an
+Emirati is a citizen there, and citizens of the five other Gulf states need no residence
+visa \citep{uae2026gcc}. A model may know this although the application does not say
+it, so we repeat the comparisons without these six as a check.
 
 \textbf{Manipulation.} The nationality and the matching passport, for example
-\texttt{Nationality: Jordanian} and \texttt{Jordanian passport}. There are 28 conditions:
-the 22 Arab League nationalities, German and Turkish as benchmarks, and four unrelated
-nationalities as a placebo set (Uruguayan, Malawian, Maldivian, Cambodian). All
-non-German customers hold an unlimited residence permit. There is no version without a
-nationality, because the field is mandatory.
+\texttt{Nationality: Jordanian} and \texttt{Jordanian passport}. Nothing else changes.
+There are 26 conditions: the 22 Arab League nationalities, and four unrelated
+nationalities (Uruguayan, Malawian, Maldivian, Cambodian) that need the same visa under
+the same rules. The four are a noise check: any set of labels moves a model's answers a
+little, and they show how much. They are not a research question.
 
-\textbf{Policy.} The model is told that it assists the onboarding team of a bank in
-Germany and that an analyst takes the final decision. It receives a one-page policy that
-paraphrases the public rules: the risk factors, the Commission's list of high-risk
-countries, a rating scale and the possible recommendations. In a second version the
-policy has one more paragraph, taken from the rules cited above: nationality is recorded
-for identification and is not a risk factor (RQ4).
+\textbf{Three groups (RQ2).} Before any run we sort the 22 countries into three groups
+by the World Bank's income classification \citep{worldbank2026wdi}. Rich (high income):
+Bahrain, Kuwait, Oman, Qatar, Saudi Arabia and the United Arab Emirates. Normal (upper
+and lower middle income): Algeria, Comoros, Djibouti, Egypt, Iraq, Jordan, Lebanon,
+Libya, Mauritania, Morocco, Palestine and Tunisia. Poor (low income): Somalia, Sudan,
+Syria and Yemen. Two limits are built in. The rich group is exactly the six Gulf
+states, whose citizens have a stronger position in the Emirates in reality, so we cannot
+separate ``rich'' from ``Gulf''. And the four poor countries are all at war or just out
+of one.
 
-\textbf{Task.} For each file the model returns a risk score from 0 to 100, a rating
-(low, medium, high), whether enhanced checks are required, and a recommendation (open,
-escalate to an analyst, decline). The request is phrased in three ways.
+\textbf{Guidance.} The model is told that it is a case assistant who pre-assesses
+applications and that a visa officer takes every decision; this is the role the real
+systems have. It receives a one-page guidance that paraphrases the public criteria. In a
+second version the guidance has one more paragraph, built from the department's own
+wording: nationality is not a ground for a higher rating, and every application must be
+considered on its own merits (RQ3).
+
+\textbf{Task.} For each application the model returns a risk score from 0 to 100, a
+rating (low, medium, high), a list of further checks chosen from a menu of six, and a
+recommendation (grant, refer for further checks, refuse). The request is phrased in three
+ways.
+
+\textbf{Cost (RQ4).} Our main measure is the amount of savings that would make up for a
+passport: how much more money in the bank an applicant with passport~A needs to receive
+the same risk score as the same applicant with passport~B. For this the applications
+come with five levels of savings, and one block of runs repeats every application at
+each level. Two further measures are the fees lost per 1,000 identical applicants (the
+fee of AUD~250 is not refunded after a refusal) and the number of further checks.
 
 \textbf{Models.} Four open-weight models served with vLLM on bwUniCluster: Qwen3 8B,
 Llama 3.1 8B, Gemma 3 12B and Mistral Small 3.2 24B.
@@ -175,14 +251,16 @@ Llama 3.1 8B, Gemma 3 12B and Mistral Small 3.2 24B.
 \toprule
 Block & Runs per model \\
 \midrule
-1\quad Policy without the paragraph on nationality & 8,400 \\
-2\quad Policy with the paragraph on nationality & 8,400 \\
+1\quad Guidance, no paragraph on nationality & 7,800 \\
+2\quad Guidance with that paragraph & 7,800 \\
+3\quad Block 1, four other savings levels & 6,240 \\
 \midrule
-Total & 16,800 \\
+Total & 21,840 \\
 \bottomrule
 \end{tabular}
-\caption{Planned runs per model: 20 files, 28 nationalities, three phrasings and five
-repetitions in each block.}
+\caption{Planned runs per model. Blocks 1 and 2: 20 applications, 26 nationalities, three
+phrasings and five repetitions. Block 3: four further savings levels, three phrasings,
+one run each.}
 \label{tab:runs}
 \end{table}
 
@@ -190,14 +268,16 @@ repetitions in each block.}
 \label{sec:analysis}
 
 \begin{description}[leftmargin=2.6em,labelwidth=2.1em,labelsep=0.5em]
-  \item[RQ1] How far the risk score and the ratings differ across the 22 Arab League
-        nationalities, against the spread across the placebo nationalities.
-  \item[RQ2] The four listed countries against the eighteen others, and each
-        nationality's result against its country's income group (World Bank).
-  \item[RQ3] Arab League nationalities that are not on the list against the placebo
-        nationalities and against the German and Turkish benchmarks.
-  \item[RQ4] The same comparisons with the added paragraph.
-  \item[RQ5] The four models against each other.
+  \item[RQ1] How far the risk score, the ratings, the further checks and the
+        recommendations differ across the 22 Arab League nationalities. By the rules the
+        difference should be zero. The four unrelated nationalities show how much a set
+        of labels moves the answers by chance.
+  \item[RQ2] Two checks. Do the three groups differ, and in the order rich, normal,
+        poor? And the other way round: if the 22 are sorted into three groups by the
+        models' ratings alone, do these match the three wealth groups, and which
+        countries land in another group? Both for each model, phrasing and application.
+  \item[RQ3] The same comparisons with the added paragraph.
+  \item[RQ4] The three cost measures.
 \end{description}
 
 \noindent We have not fixed the statistical analysis yet. We will write down the
@@ -207,28 +287,40 @@ hypotheses and the analysis before the first real run.
 \label{sec:timeline}
 
 Pitch on 13 October. A small pilot and block~1 on all four models before the midterm
-presentation (11--12 November). Block~2 before the final presentation (9--10 December).
-Report due on 8 January 2027.
+presentation (11--12 November). Blocks~2 and~3 before the final presentation (9--10
+December). Report due on 8 January 2027.
 
 \section{Questions}
 \label{sec:questions}
 
 \begin{enumerate}
-  \item Is a bank's customer check a suitable setting for this course, and is the scope
-        right for a short paper?
-  \item The policy we give the model names the Commission's list of high-risk countries.
-        Is that the right choice, or should the model receive no list?
-  \item Is the yardstick convincing: a customer who lives and works in Germany, for whom
-        the rules give the passport no weight?
-  \item Are 20 customer files, four placebo nationalities and five repetitions enough?
-  \item Are four open-weight models between 8B and 24B parameters acceptable, although
-        the products in this field run on larger commercial models?
-  \item The prompts are in English although the bank is German. Is that a problem?
+  \item Is the pre-assessment of visa applications a suitable setting, although no
+        authority is documented as using a language model for it?
+  \item Our motivation is Islamophobia, and what we vary is the passport of an Arab
+        League country. Is this step convincing, or does the design need a condition
+        that states a religion?
+  \item Our yardstick is the official rules: they are the same for all 22
+        nationalities, so we call any systematic difference between identical
+        applications a bias. Is this convincing, given that real offices grant these
+        nationalities at very different rates?
+  \item We set the applicants in the United Arab Emirates and state the same legal
+        status for everybody, although Gulf citizens have a stronger position there in
+        reality. Is this setting convincing?
+  \item We sort the 22 into rich, normal and poor by the World Bank's income classes (6,
+        12 and 4 countries). Is this the right grouping, or should upper and lower
+        middle income stay apart? Are four poor countries enough?
+  \item Are four unrelated nationalities enough as a noise check, or is the check not
+        needed at all?
+  \item Is it acceptable to express a difference as the savings needed to make up for
+        it, and is the extra block worth its runs?
+  \item Are 20 applications, five repetitions and four open-weight models between 8B and
+        24B parameters enough?
   \item Do you see concerns with reporting results by individual nationality?
 \end{enumerate}
 
-\paragraph{AI use.} The customer files, the policy text and the prompts, the literature
-search, and a first draft of this proposal were prepared with the help of Claude Code.
+\paragraph{AI use.} The applications, the guidance text and the prompts, the table of
+official rules, the literature and source search, and a first draft of this proposal
+were prepared with the help of Claude Code.
 
 \bibliography{../final_paper/custom}
 

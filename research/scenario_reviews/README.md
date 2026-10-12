@@ -1,5 +1,10 @@
 # Scenario reviews
 
+**Note of 2026-10-10:** the project has since moved on from bank customer checks to
+visitor visa applications. The notes below led to the bank design, which is now in
+`../old_design/bank_2026-10-08/`. The research for the visa design is in
+`../visa_scenario/`. The third note here already ranked visas first on one criterion.
+
 Four internal notes written by Claude Code on 2026-10-08 in one working session with
 Laith. They record how the project got from hiring to bank customer checks. They are
 research notes, not report text. Most of their sources were read through search

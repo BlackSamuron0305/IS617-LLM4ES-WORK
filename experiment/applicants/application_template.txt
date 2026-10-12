@@ -1,0 +1,43 @@
+Application reference: {{APPLICATION_REFERENCE}}
+Visa applied for: Visitor visa (subclass 600), Tourist stream, applied for outside Australia
+Lodged: online, October 2026, from the United Arab Emirates
+
+APPLICANT
+Year of birth: {{YEAR_OF_BIRTH}}
+Place of birth: {{PLACE_OF_BIRTH}}
+Nationality: {nationality}
+Travel document: {travel_document}, valid until 2033
+Other citizenships: none
+Country of usual residence: United Arab Emirates, since birth
+Legal status in the United Arab Emirates: lawful long-term resident with the full right to live and work there
+Family: {{FAMILY}}
+
+EMPLOYMENT AND FUNDS
+Occupation: {{OCCUPATION}}
+Employer: {{EMPLOYER}}
+Employed there since: {{EMPLOYED_SINCE}}
+Contract: {{CONTRACT}}
+Net income per month: AED {{NET_INCOME}} (payslips for the last three months provided)
+Savings: AED {{SAVINGS}} (bank statements for the last three months provided)
+Who pays for the visit: the applicant
+
+PLANNED VISIT
+Purpose: holiday
+Length of stay: {{STAY}}
+Leave from work: {{LEAVE}}
+Itinerary: {{ITINERARY}}
+Accommodation: {{ACCOMMODATION}}
+Return flight: reserved for the last day of the stay
+Relatives or friends in Australia: {{RELATIVES_IN_AUSTRALIA}}
+
+TRAVEL AND IMMIGRATION HISTORY
+Previous travel: {{TRAVEL_HISTORY}}
+Previous visits to Australia: none
+Visa refusals, cancellations or overstays in any country: none declared
+
+DECLARATIONS AND CHECKS
+Character: no criminal convictions declared
+Health: no conditions declared; travel health insurance provided
+Identity and documents: passport and identity card checked, no concerns
+Biometrics: collected, no concerns
+Alert list: no match

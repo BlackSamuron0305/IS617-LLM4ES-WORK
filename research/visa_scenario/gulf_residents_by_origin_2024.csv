@@ -1,0 +1,75 @@
+destination,origin,origin_iso2,un_data_type,persons_mid_2024
+Bahrain,all origins,,C,840202
+Bahrain,Egypt,EG,C,84943
+Bahrain,Yemen,YE,C,19392
+Bahrain,Jordan,JO,C,15949
+Bahrain,Sudan,SD,C,12550
+Bahrain,United Arab Emirates,AE,C,7139
+Bahrain,Kuwait,KW,C,6371
+Bahrain,Palestine,PS,C,5501
+Bahrain,Syria,SY,C,4984
+Bahrain,Lebanon,LB,C,3961
+Bahrain,Somalia,SO,C,916
+Bahrain,Morocco,MA,C,843
+Bahrain,Saudi Arabia,SA,C,619
+Bahrain,Tunisia,TN,C,555
+Bahrain,Qatar,QA,C,252
+Kuwait,all origins,,C,3323191
+Kuwait,Egypt,EG,C,449863
+Kuwait,Yemen,YE,C,75513
+Kuwait,Jordan,JO,C,58434
+Kuwait,Sudan,SD,C,52783
+Kuwait,United Arab Emirates,AE,C,28593
+Kuwait,Syria,SY,C,24742
+Kuwait,Palestine,PS,C,16524
+Kuwait,Lebanon,LB,C,13369
+Kuwait,Somalia,SO,C,3671
+Kuwait,Morocco,MA,C,3240
+Kuwait,Saudi Arabia,SA,C,2406
+Kuwait,Tunisia,TN,C,2068
+Kuwait,Bahrain,BH,C,1503
+Kuwait,Qatar,QA,C,720
+Oman,all origins,,C,2283366
+Oman,Egypt,EG,C,84977
+Oman,Sudan,SD,C,22405
+Oman,Jordan,JO,C,15210
+Qatar,all origins,,C,2337000
+Qatar,Egypt,EG,C,192680
+Qatar,Yemen,YE,C,37285
+Qatar,Jordan,JO,C,34441
+Qatar,Syria,SY,C,25981
+Qatar,Sudan,SD,C,24580
+Qatar,United Arab Emirates,AE,C,10034
+Qatar,Lebanon,LB,C,8844
+Qatar,Kuwait,KW,C,6941
+Qatar,Palestine,PS,C,5980
+Qatar,Morocco,MA,C,1535
+Qatar,Somalia,SO,C,1327
+Qatar,Tunisia,TN,C,1043
+Qatar,Saudi Arabia,SA,C,956
+Qatar,Bahrain,BH,C,816
+Saudi Arabia,all origins,,C R,13683841
+Saudi Arabia,Yemen,YE,C R,1999619
+Saudi Arabia,Egypt,EG,C R,1498313
+Saudi Arabia,Sudan,SD,C R,895646
+Saudi Arabia,Syria,SY,C R,496044
+Saudi Arabia,Jordan,JO,C R,209093
+Saudi Arabia,Palestine,PS,C R,131779
+Saudi Arabia,Lebanon,LB,C R,52864
+Saudi Arabia,Somalia,SO,C R,48099
+Saudi Arabia,Iraq,IQ,C R,6510
+United Arab Emirates,all origins,,C,8157000
+United Arab Emirates,Egypt,EG,C,841883
+United Arab Emirates,Yemen,YE,C,192423
+United Arab Emirates,Jordan,JO,C,158125
+United Arab Emirates,Sudan,SD,C,124677
+United Arab Emirates,Kuwait,KW,C,63192
+United Arab Emirates,Palestine,PS,C,54566
+United Arab Emirates,Syria,SY,C,49529
+United Arab Emirates,Lebanon,LB,C,39223
+United Arab Emirates,Somalia,SO,C,9109
+United Arab Emirates,Morocco,MA,C,8368
+United Arab Emirates,Saudi Arabia,SA,C,6157
+United Arab Emirates,Tunisia,TN,C,5497
+United Arab Emirates,Qatar,QA,C,2500
+United Arab Emirates,Bahrain,BH,C,1870

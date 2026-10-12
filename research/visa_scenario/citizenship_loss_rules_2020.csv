@@ -1,0 +1,23 @@
+country,iso2,dualcit_cat,dualcit_grouped,rule
+Algeria,DZ,210,2,kept; can be given up
+Bahrain,BH,210,2,kept; can be given up
+Comoros,KM,220,2,kept; can be given up
+Djibouti,DJ,210,2,kept; can be given up
+Egypt,EG,210,2,kept; can be given up
+Iraq,IQ,210,2,kept; can be given up
+Jordan,JO,210,2,kept; can be given up
+Kuwait,KW,110,1,lost automatically when another citizenship is acquired
+Lebanon,LB,210,2,kept; can be given up
+Libya,LY,110,1,lost automatically when another citizenship is acquired
+Mauritania,MR,110,1,lost automatically when another citizenship is acquired
+Morocco,MA,310,3,kept; cannot be given up
+Oman,OM,210,2,kept; can be given up
+Palestine,PS,,,not in the dataset
+Qatar,QA,310,3,kept; cannot be given up
+Saudi Arabia,SA,210,2,kept; can be given up
+Somalia,SO,210,2,kept; can be given up
+Sudan,SD,210,2,kept; can be given up
+Syria,SY,210,2,kept; can be given up
+Tunisia,TN,310,3,kept; cannot be given up
+United Arab Emirates,AE,110,1,lost automatically when another citizenship is acquired
+Yemen,YE,310,3,kept; cannot be given up

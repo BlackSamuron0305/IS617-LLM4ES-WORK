@@ -2,8 +2,13 @@
 % The "% Rubric" comments quote the course grading rubric (points in brackets);
 % see README.md in this folder. They are comments and do not appear in the PDF.
 %
-% The notes were rewritten on 2026-10-08, when the project moved from hiring to bank
-% customer checks. The notes for the hiring design are in git history (commit 272792d).
+% The notes were rewritten on 2026-10-10, when the project moved from bank customer
+% checks to visitor visa applications, and changed again the same day after Laith's
+% decisions: the applicants live in the United Arab Emirates; every application states
+% the same legal status; the project is about bias among the 22 Arab League
+% nationalities, measured against the official rules, without passport strength and
+% without non-Arab comparison groups. The notes for the bank design are in git history
+% (commit 39d32f2), those for the hiring design in commit 272792d.
 \documentclass[11pt]{article}
 
 \usepackage[preprint]{acl}
@@ -28,7 +33,7 @@
 \newcommand{\teamnote}[2]{\ifshownotes\par\medskip\noindent{\small\color{blue}%
   \textbf{Notes: #1} (not report text; rewrite in your own words)\par #2\par}\medskip\fi}
 
-\title{Which Arab? How LLMs Rate Bank Customers from the 22 Arab League Countries in Money-Laundering Checks}
+\title{Which Arab? How LLMs Rate Visa Applicants from the 22 Arab League Countries}
 
 \author{
   Laith Sandouk \and Aleksander Kasak \and Nico Fedotov \\
@@ -40,14 +45,15 @@
 \maketitle
 
 \teamnote{title}{%
-The title above is a working title proposed by Claude Code on 2026-10-08 at Laith's
+The title above is a working title proposed by Claude Code on 2026-10-10 at Laith's
 request. The team has to confirm or replace it. Other options, none of which assumes a
 result:
 \begin{itemize}
-  \item Same File, Different Passport: Auditing LLMs in Bank Customer Checks
-  \item One Label, 22 Nationalities: Do LLMs Tell Arab Bank Customers Apart?
-  \item Which Passport Is High Risk? A Nationality-Swap Audit of LLMs in
-        Anti-Money-Laundering Checks
+  \item Same Application, Same Rules, Different Passport: Auditing LLMs as Visa Case
+        Assistants
+  \item One Label, 22 Nationalities: Do LLMs Treat Arab Visa Applicants Alike?
+  \item What Does a Passport Cost? A Nationality-Swap Audit of LLMs on Visitor Visa
+        Applications
 \end{itemize}}
 
 \begin{abstract}
@@ -55,35 +61,41 @@ result:
 % research questions and an overview of methods and results.
 \teamnote{abstract}{%
 At most 250 words. The rubric asks for the research questions, the methods and the
-results. In all notes, (F) after a source means the full text or the cited passages were
-read and (A) means only the abstract was read: check the full text before citing a
-number from it. (press) is a press report and (vendor) a company's own statement.
+results. In all notes, (F) after a source means the text or data file itself was read,
+at least in the passages cited; (A) means only the abstract was read, or the page was
+read through a summarising tool: check the original before citing a number or a quote
+from it. (press) is a press report, (party) a statement by one side of a dispute.
 \begin{itemize}
-  \item Context: banks must check every new customer for money-laundering risk. AI
-        systems are being sold for this check, and EU law regulates their use in it.
-  \item Why Arab customers: LLMs repeat stereotypes about Arabs and Muslims in what they
-        write. Banks in Europe answered enquiries from Arabic-sounding names far less
-        often. Numbers and sources: introduction notes.
-  \item Why this task: the nationality cannot be left out of the file (the bank must
-        record it), and the rules say how far it may count (they speak of residence, not
-        of the passport).
-  \item Gap: every study treats ``Arab'' as one group. We found no study in which an LLM
-        rates bank customers while their nationality is varied; this rests on a few web
-        searches only.
-  \item Questions (from the proposal of 2026-10-08; hypotheses are not written yet):
-        (1) with the customer file held fixed, do a model's ratings differ across the 22
-        Arab League nationalities, and by more than across unrelated nationalities?
-        (2) Do the differences follow the EU list of high-risk countries? (3) Arab League
-        nationalities against German, Turkish and placebo nationalities. (4) Does a
-        paragraph saying that nationality is not a risk factor change this? (5) Do the
-        four models agree?
-  \item Method: 20 synthetic customer files; 28 nationalities, changed in the nationality
-        and passport lines only; a one-page bank policy in two versions; risk score
-        0--100, rating, enhanced checks, recommendation; four open-weight models.
-  \item Results: nothing has been run as of 2026-10-08. Write this part last, and only
+  \item Motivation: Islamophobia. Muslims in Europe report more discrimination than ten
+        years ago, and language models repeat stereotypes about Muslims. Numbers and
+        sources: introduction notes.
+  \item Why passports: a visa form asks for no religion. It asks for a passport. All
+        Muslim-majority countries together are too mixed (53 countries). The 22 Arab
+        League countries share a language and a label.
+  \item The question: bias among Arabs. Same application, one applicant Syrian, one
+        Emirati. The official rules for the visa are the same for both. Why should a
+        model rate them differently?
+  \item Why visas: automated tools already sort and rate visa applicants, nationality
+        has been an input, Australia itself uses machine learning to ``predict risk in
+        visa programs'', and the EU AI Act treats such systems as high-risk. No
+        authority is documented as using a language model for it.
+  \item Gap: we found no study that changes only the nationality in a visa application,
+        and none that compares the 22 nationalities; this rests on limited searches.
+  \item Questions (from the proposal of 2026-10-10; hypotheses are not written yet):
+        (1) do a model's ratings differ across the 22 Arab League nationalities when the
+        application is identical and the official rules are the same for all of them?
+        (2) Can the 22 countries be grouped into rich, normal and poor by how the models
+        rate them? (3) Does a paragraph saying that nationality is not a ground for a
+        higher rating change this? (4) What do the differences cost an applicant?
+  \item Method: 20 synthetic applications for an Australian visitor visa, from people
+        born and living in the United Arab Emirates; 26 nationalities (the 22 and four
+        unrelated ones as a noise check), changed in the nationality and passport lines
+        only; a one-page guidance in two versions; risk score 0--100, rating, further
+        checks, recommendation; four open-weight models.
+  \item Results: nothing has been run as of 2026-10-10. Write this part last, and only
         from the blocks that were run.
-  \item Last sentence: what follows. The data decide: the models separate the
-        nationalities, lump them together, or follow the list.
+  \item Last sentence: what follows. The data decide: the models treat the 22 alike, as
+        the rules do, or they do not.
 \end{itemize}}
 \end{abstract}
 
@@ -94,117 +106,305 @@ number from it. (press) is a press report and (vendor) a company's own statement
 
 \teamnote{motivation, step by step}{%
 \begin{itemize}
-  \item \textbf{1. LLMs in decisions about people.} Audits mostly vary race and gender,
-        often through names. Nationality is rare: it appears in 13.2\% of 189 papers on
-        LLM bias, gender in 79.9\%. In finance: one line stating the applicant's race on
-        a mortgage file; GPT-4 Turbo recommended approval 8.5 percentage points less
-        often and an interest rate 35 basis points higher for Black applicants. Sources:
-        \texttt{ghosh2025bias} (A), \texttt{bowen2025measuring} (F, sections 1--4).
-  \item \textbf{2. LLMs and Arabs.} In generated text: Muslims tied to violence in 66 of
-        100 GPT-3 completions; MENA names 78\% under-represented in generated workplace
-        stories; Middle Eastern personas described through religion. Models also tell
-        Arab countries apart: Libyan, Sudanese and Tunisian among the five most negative
-        demonyms in GPT-2 text; additional scrutiny suggested for applicants from Iraq,
-        Sudan and Somalia in simulated immigration decisions, while most country effects
-        in the choices were not significant; the values of some Arab countries
-        represented much better than others. Sources: \texttt{abid2021persistent} (F),
-        \texttt{shieh2026intersectional} (F), \texttt{cheng2023marked} (F),
-        \texttt{venkit2023nationality} (F), \texttt{mao2025gatekeepers} (F),
-        \texttt{zahraei2025menavalues} (F).
-  \item \textbf{3. Banks.} Field experiment, 1,218 e-mails to banks in seven European
-        countries, asking only for contact details: 55.2\% replies to domestic-sounding
-        names, 31.6\% to Arabic-sounding names; loan enquiries 59.8\% vs 35.1\%. The
-        Netherlands Institute for Human Rights ruled in 2024 that ING discriminated
-        against two customers whose payments were blocked and checked because of names
-        that did not sound Dutch. Campaigners say HSBC closed dozens of accounts of
-        Syrian nationals living in the UK from 2014. Sources:
-        \texttt{stefan2018ethnical} (F; the list of countries is in an appendix that was
-        not read, so do not write that Germany is among them),
-        \texttt{nltimes2024ing} (press), \texttt{mee2016hsbc} (press).
-  \item \textbf{4. One category.} All of these treat ``Arab'' or ``Arabic-sounding'' as
-        one group. A name cannot do better: raters assigned 34\% of Moroccan names to
-        Morocco. Source: \texttt{martiniello2022signaling} (F).
-  \item \textbf{5. Why a bank's customer check.} A German bank must record name, place
-        and date of birth, nationality and address of every customer, and rate the
-        money-laundering risk. So the nationality is always in the file. Sources:
-        \texttt{gwg2017} (F, sections 11 and 15, annex 2).
-  \item \textbf{6. The yardstick.} European guidelines: country risk is about where the
-        customer is based or resident, the main places of business, and relevant links.
-        The word ``nationality'' does not occur in the 225 pages of the final report. An
-        isolated risk factor does not necessarily move a customer into a higher category.
-        The Commission's list of high-risk third countries has 26 entries; four are Arab
-        League members: Algeria, Lebanon (since 5 August 2025), Syria, Yemen (since
-        23 September 2016). German law applies the list to relationships and transactions
-        involving such a country or a person resident there. No disadvantage on account
-        of nationality when opening a payment account. No blanket refusal of categories
-        of customers. Sources: \texttt{eba2021riskfactors} (F, guidelines 2.9 and 3.3,
-        word search), \texttt{ec2026highrisk} (F, read 8 October 2026),
-        \texttt{gwg2017} (F), \texttt{zkg2016} (F, section 3),
-        \texttt{eba2023derisking} (F, paragraphs 9--10).
-  \item \textbf{7. AI in this task.} EU regulation 2024/1624, Article 76(5), applies from
-        10 July 2027: decisions ``resulting from automated processes [\ldots] or from
-        processes involving AI systems'' are allowed if accepting or refusing a customer
-        is ``subject to meaningful human intervention'' and the customer can get an
-        explanation. Vendors sell AI agents for customer checks and screening alerts;
-        one says 10 of the top 20 banks use its agents. ECB: strong increase in AI use
-        cases in banks between 2023 and 2024; for credit scoring and fraud detection
-        mainly decision trees. Sources: \texttt{eu2024amlr} (F, Articles 76(5) and 90),
-        \texttt{workfusion2026agents} (vendor), \texttt{sardine2026agentic} (vendor),
-        \texttt{ecb2025ai} (F).
-  \item \textbf{8. Gap and what we do.} No study was found in which an LLM rates bank
-        customers while their nationality is varied. This rests on a few web searches of
-        8 October 2026, not on a systematic search: write ``to our knowledge'' only after
-        one has been done. Then the question and one sentence on the design.
+  \item \textbf{1. Islamophobia in numbers.} 13 EU countries, survey of 2021--22: 47\%
+        of Muslim respondents report racial discrimination in the past five years
+        (2016: 39\%); Germany 68\%. The survey's term covers skin colour, origin and
+        religion together. Germany: 3,080 anti-Muslim incidents documented in 2024,
+        1,926 in 2023; the number of reporting centres rose from 17 to 26, so part of
+        the rise is more counting. The police counted 1,848 offences in 2024. Sources:
+        \texttt{fra2024being} (A), \texttt{claim2025lagebild} (F, short summary),
+        \texttt{bundestag2026islamfeindlichkeit} (F, first pages; the figures are in the
+        question, not in the government's answer).
+  \item \textbf{2. LLMs and Muslims.} 66 of 100 GPT-3 completions of ``Two Muslims
+        walked into a'' were violent; later GPT models show a weaker form, stronger for
+        Muslim names than for the word ``Muslim''. Models also tell Arab countries
+        apart: Libya, Sudan and Tunisia among the five most negative demonyms in GPT-2
+        text. Sources: \texttt{abid2021persistent} (F), \texttt{hemmatian2023muslim}
+        (F), \texttt{venkit2023nationality} (F).
+  \item \textbf{3. From a religion to a passport.} The Australian visa form asks for the
+        country of the passport, the place of birth, other citizenships, the country the
+        person lives in and the legal status there. It asks for no religion. Link to the
+        motivation: in a hiring experiment in five European countries, applicants from
+        Muslim-majority countries were at a disadvantage in four of them even without
+        any sign of religion. Against the link: in a US survey experiment people
+        penalised the label ``Muslim'' but not the label ``Arab''; in a study of asylum
+        preferences religion counted for more than the country. Sources:
+        \texttt{homeaffairs2018form1419} (F, old paper form in a third-party copy),
+        \texttt{distasio2021muslim} (F), \texttt{calfano2021evaluating} (A),
+        \texttt{bansak2016economic} (F).
+  \item \textbf{4. Why the 22.} 53 countries had a Muslim majority in 2020, on three
+        continents. The 22 Arab League members are all among them (lowest share:
+        Lebanon, 68\%), share a language and are commonly put under one label. Source:
+        \texttt{pew2025religious} (F, data file).
+  \item \textbf{5. The yardstick: the official rules are the same for all 22.} We do not
+        ask how strong a passport is. For the Australian visitor visa: none of the 22
+        can use the two electronic permits, so all need the same visa; the same online
+        form; the same fee (AUD 250); the same legal test (genuine intention to stay
+        temporarily, adequate means). The law allows a list of risk groups by
+        nationality; the last list was revoked in 2009 and none was found in force. No
+        ban or suspension for any of the 22 as of 10 October 2026. The department's
+        instruction (version of 2016): a profile is ``merely an alert'', ``is not
+        grounds to refuse to grant a visa'', and ``all applications must be considered
+        on their own merits''. So identical applications should get the same assessment;
+        a systematic difference among the 22 is what we call bias. Sources:
+        \texttt{homeaffairs2026eta} (F), \texttt{homeaffairs2026evisitor} (F),
+        \texttt{au2021lin21056} (F), \texttt{au1994migrationregs} (F, named clauses),
+        \texttt{au2008riskfactor} (F), \texttt{au2009revocation} (F),
+        \texttt{homeaffairs2018genguide} (F, the sections on genuine temporary stay and
+        criterion 4011). Table: \texttt{experiment/countries/official\_rules.csv}.
+  \item \textbf{6. Why Australia.} The only destination checked where the rules are the
+        same for all 22. Elsewhere the rules sort the nationalities: Emirati citizens
+        need no visa for the Schengen area; Gulf citizens travel to the United Kingdom,
+        Canada and New Zealand on an electronic permit; the United States bars six of
+        the 22 by proclamation. There a different answer follows from a rule and is not
+        a bias. Sources: \texttt{crs2025proclamation} (A), research note
+        \texttt{destination\_and\_requirements.md}.
+  \item \textbf{7. Same rules, different outcomes in practice.} Australian visitor visas
+        granted in 2019--20: 96.5\% for Omani, 21.9\% for Somali citizens (our
+        calculation from the counts). Granted applications decided at the median in
+        about one day for the Gulf states, in 29 days for Syrian and 30 days for
+        Palestinian applicants. US visitor visas refused in fiscal year 2025: 2.2\% of
+        Emirati, 83.5\% of Somali applicants. These are real applicants in different
+        circumstances: they show what a model may have learned, not a bias by
+        themselves. Sources: \texttt{homeaffairs2020foi106} (F),
+        \texttt{homeaffairs2025da449} (F), \texttt{state2025refusal} (F).
+  \item \textbf{8. Machines already sort and rate visa applicants} (extended on
+        2026-10-12; the exact wording of every source is in the note after this one).
+        \emph{In use.} United Kingdom 2015--2020: green, amber, red; 96.36\% of green and
+        48.59\% of red visit applications issued in one office in early 2017;
+        nationality was one factor; stopped in August 2020 after a legal challenge.
+        Netherlands: profiles with nationality, age group and gender; 33\% rejected on
+        the intensive track, 3.5\% on the normal one. Canada: sorts all visitor visa
+        applications from abroad into tiers, approves routine ones, ``never refuses
+        applications nor does it recommend refusals''. \textbf{Australia, our
+        destination}: analytics based on machine learning are used to ``predict risk in
+        visa programs''; the department says it ``does not use machine learning to make
+        administrative decisions''; what goes into the prediction is not public. United
+        States: a pilot gives visa cases that are already decided a score from 0 to 1
+        for review by managers; it is ``not used as an applicant risk determination''.
+        \emph{Planned.} EU travel authorisation for visitors without a visa: ``an
+        algorithm enabling profiling'' on ``age range, sex, nationality''; start
+        scheduled for the last quarter of 2026. Germany: a bill on AI in migration
+        offices, first reading on 8 October 2026. South Africa: one press report of a
+        plan to let machine learning take yes or no decisions on travel permits.
+        \emph{What kind of software.} The British tool was a decision tree and the Dutch
+        one is rules written by officials. Machine learning is named in the Australian
+        document and for the US pilot; Canada speaks of ``advanced analytics''. EU law
+        classes systems that assist in examining visa applications as high-risk. None of
+        these is a language model. Sources: \texttt{icibi2017entry} (F),
+        \texttt{ukhrb2020streaming} (F, secondary), \texttt{foxglove2020visa} (party),
+        \texttt{lighthouse2023ethnic} (F in the passages used, journalism),
+        \texttt{nlminister2023iob} (F, two answers), \texttt{ircc2022aia} (F),
+        \texttt{ircc2025qpnote} (F), \texttt{homeaffairs2024foi} (F),
+        \texttt{state2026aiinventory} (F), \texttt{eu2018etias} (F, one article),
+        \texttt{meier2026algorithmic} (F), \texttt{aabmi2025kieckpunkte} (F),
+        \texttt{bundestag2026kimvg} (F, one paragraph), \texttt{mawson2026machine}
+        (press), \texttt{eu2021vis} (A), \texttt{eu2024aiact} (A).
+  \item \textbf{9. Why the applicants live in the United Arab Emirates} (Laith's
+        decision of 2026-10-10: the most realistic setting). Birth there gives no
+        citizenship to the child of two foreign parents. 88.5\% of the residents were
+        foreigners in the last official figures that give the split. 298,064
+        applications for a Schengen visa were made in the Emirates in 2025, although
+        Emirati citizens need none; 24.2\% were not issued (our calculation). Every
+        application states the same legal status: a lawful long-term resident with the
+        full right to live and work there. Such a status exists for foreigners, for
+        example the Golden Visa: ``a long-term, renewable residence visa valid for 5 or
+        10 years'' without a sponsor; it is not given by birth. Sources:
+        \texttt{uae1972nationality} (A, English abstract of the law),
+        \texttt{khaleej2011expats} (press, reporting the statistics office),
+        \texttt{ec2026visa} (F, data file), \texttt{uae2026goldenvisa} (A).
+  \item \textbf{10. Gap and what we do.} Closest study: GPT-3.5 and GPT-4 choose between
+        two immigrants; ten countries, among them Iraq, Sudan and Somalia; most country
+        effects not significant. A public test set has a visitor visa case but varies
+        age, gender and race. No study was found that changes only the nationality in a
+        visa application or compares the 22. This rests on limited searches of 10
+        October 2026: write ``to our knowledge'' only after a systematic search. Sources:
+        \texttt{mao2025gatekeepers} (F), \texttt{tamkin2023evaluating} (F),
+        \texttt{anthropic2023discrimeval} (F, data files).
 \end{itemize}}
 
-\teamnote{research questions (as in the proposal of 2026-10-08)}{%
+\teamnote{exact wording behind step 8 (fact check of 2026-10-12)}{%
+Laith asked on 2026-10-12 whether countries really use AI to rate visa applicants. Each
+quote below was copied that day from the document or page itself, not from a summary.
+Quotes in Dutch and German are followed by our translation. Compare once more with the
+original before a quote goes into the text.
 \begin{itemize}
-  \item Framing: the 22 countries differ in wealth, stability and how their citizens are
-        seen abroad. Does a model carry that into a decision about an individual
-        customer?
-  \item RQ1 (main): do risk ratings and recommendations differ across the 22 Arab League
-        nationalities with the file otherwise identical, and more than across the
-        placebo nationalities?
-  \item RQ2: do the differences follow the EU list of high-risk countries (four of the
-        22), or a country's economic and political position?
-  \item RQ3: are Arab League nationalities as a group rated differently from German,
-        Turkish and placebo nationalities?
-  \item RQ4: do the differences remain when the policy says that nationality is not a
-        risk factor?
-  \item RQ5: do the four models agree?
+  \item \textbf{Australia} (\texttt{homeaffairs2024foi}; all three pages read; the pages
+        carry no date, the reference number is of May 2024). ``The Department defines
+        advanced analytics as Machine-Learning based predictive, descriptive or other
+        advanced analysis use cases. The Department and ABF currently use advanced
+        analytics in for a range of functions, including in supplementing efforts to:
+        predict risk in visa programs, [\ldots] identify fraudulent documents using
+        computer vision techniques''. And: ``The Department does not use machine learning
+        to make administrative decisions. Some rules-based systems are used for automated
+        decision making''. Being trialled: computer vision for ``Identifying indicators
+        of fraud in documentation supplied to support visa applications'', final
+        decision: ``No''. \emph{Not in the document:} what goes into the prediction,
+        whether nationality does, and whether each application gets a rating. The
+        department's AI transparency statement of March 2026 could not be opened.
+  \item \textbf{Canada} (\texttt{ircc2022aia}; the passages read again). ``The advanced
+        data analytics system identifies routine applications for streamlined processing
+        and sorts applications into tiers based on their level of complexity.'' ``The
+        system only makes positive eligibility determinations on routine applications; it
+        does not make any ineligibility determinations, and does not assess applications
+        for admissibility.'' ``The system never refuses applications nor does it
+        recommend refusals. All refusals continue to be done by officers''. From
+        \texttt{ircc2025qpnote}: ``In 2018, IRCC began using advanced analytics to help
+        officers triage online Temporary Resident Visa (TRV) applications from China and
+        India. In January 2022, the China and India models were updated, and a third
+        model was introduced for TRV applications from all other countries.'' That the
+        rules were ``derived from thousands of past officer decisions'' is from
+        \texttt{laferriere2019augmented}, read on 2026-10-10; the site refused the
+        download on 2026-10-12, so this one quote was not checked again.
+  \item \textbf{United Kingdom} (\texttt{icibi2017entry}, paragraphs 3.6, 3.7 and 7.5
+        and the table). ``Since 2015, UKVI has been developing and rolling out a
+        `streaming tool' that assesses the perceived risks attached to an application.''
+        ``It streams applications `Green' (low risk), `Amber' (medium risk) or `Red'
+        (high risk).'' ``The tool uses a `decision tree' approach with a series of yes/no
+        questions to determine an applicant's risk rating.'' ``[T]here is a risk that the
+        streaming tool becomes a de facto decision-making tool.'' Table, 1 January to 28
+        February 2017: green 13,560 applications, 96.36\% issued; amber 3,662, 81.08\%;
+        red 6,421, 48.59\%. On nationality (\texttt{ukhrb2020streaming}, a legal blog
+        quoting a government letter that we have not read): the Home Office ``revealed
+        that `nationality is one of the relevant factors used by the streaming tool'\,'';
+        after the tool was stopped, decisions would be made ``by reference to
+        person-centric attributes\ldots{} and nationality will not be taken into
+        account''. The blog gives about 99.5\% for green; use the 96.36\% of the report.
+  \item \textbf{Netherlands} (\texttt{nlminister2023iob}, answers 5 and 6). ``Het
+        algoritme dat bij het IOB wordt ingezet, betreft geen zelflerend algoritme.''
+        ``De regels hiervan zijn niet \guillemotleft bedacht\guillemotright{} door
+        software, maar door ambtenaren.'' ``Nationaliteit, leeftijdsgroep en geslacht
+        zijn drie van de zeven eigenschappen van een visumaanvraag die gebruikt kunnen
+        worden bij het opstellen van profielen voor het IOB.'' Our translation: the
+        algorithm is not self-learning; its rules were not thought up by software but by
+        officials; nationality, age group and gender are three of the seven
+        characteristics of a visa application that can be used for profiles. From
+        \texttt{lighthouse2023ethnic}: ``As of March 2023, 33 percent of applications in
+        the intensive, `high risk' track were rejected, whereas only 3.5 percent of
+        applications in the normal, `low risk' track were rejected.''
+  \item \textbf{United States} (\texttt{state2026aiinventory}, the row on the tool
+        ARRE; stage: pilot; type: ``Classical/Predictive Machine Learning''). ``ARRE
+        produces a unitless anomaly score (0--1) for each already-adjudicated case and
+        uses the score to generate a post-level ranked list that bins cases into priority
+        tiers (e.g., high/medium/low) for managerial review.'' ``[I]t is not a decision
+        output and is not used as an applicant risk determination.'' ``ARRE does not
+        make, recommend, or change visa issuance/refusal decisions''. So this is a score
+        on decided cases, not a rating of applicants.
+  \item \textbf{EU, planned} (\texttt{eu2018etias}, Article 33). ``The ETIAS screening
+        rules shall be an algorithm enabling profiling''. The risk indicators consist
+        ``of a combination of data including one or several of the following: (a) age
+        range, sex, nationality; (b) country and city of residence; (c) level of
+        education (primary, secondary, higher or none); (d) current occupation (job
+        group)''. This is a travel authorisation for visitors who need no visa, not a
+        visa. Start: ``scheduled to go into operation in the last quarter of 2026 after
+        previous delays'' (\texttt{meier2026algorithmic}, March 2026); whether it has
+        started was not checked.
+  \item \textbf{Germany, planned} (\texttt{aabmi2025kieckpunkte}, one page of 30 October
+        2025). ``Indem einzelne Pr\"ufschritte (teil-)automatisiert werden, adressiert
+        der KI-Einsatz das Nadel\"ohr Bearbeiterkapazit\"at''. ``Der Einsatz von KI im
+        Visumverfahren setzt dabei den ersten Schritt, der dann auf weitere
+        Migrationsbereiche ausgeweitet werden kann.'' Our translation: automating single
+        steps of the check, in part or in full, eases the bottleneck of staff capacity;
+        AI in the visa procedure is the first step, to be extended to other areas of
+        migration. The paper names no language model and no rating of applicants. The
+        bill (KIMVG, 21/8275) had its first reading on 8 October 2026 and went to the
+        committee on internal affairs (\texttt{bundestag2026kimvg}); the bill itself was
+        not read.
+  \item \textbf{South Africa, planned} (\texttt{mawson2026machine}, one press report of
+        2 October 2026). ``Home Affairs plans to use machine learning to make yes or no
+        decisions on visa applications through its Electronic Travel Authorisation (ETA)
+        system, with humans only stepping in when an anomaly is detected.''
+  \item \textbf{Language models.} We found no authority that lets a language model rate
+        or decide visa applications. Canada: ``IRCC does not allow the use of generative
+        AI tools, such as ChatGPT, in support of decision-making on client
+        applications'' (\texttt{ircc2025qpnote}). Against this stands one press report:
+        ``IRCC also said officers are not permitted to use generative AI tools when
+        deciding an application --- a claim the Toronto Star tested in March, reporting
+        that a permanent residence applicant was refused after a generative-AI-assisted
+        review fabricated details of her job duties'' (\texttt{jagannathan2026human},
+        secondary; the Toronto Star article was not read; a residence case, not a visa).
+  \item \textbf{Looked at and left out} because the sources are too thin: Seychelles
+        (claims of the vendor), Hong Kong (a system described in 2007), Dubai (a renewal
+        service called AI), New Zealand (a planned risk platform, press only). Details in
+        \texttt{research/visa\_scenario/ai\_in\_visa\_processing.md}.
+\end{itemize}}
+
+\teamnote{research questions (as in the proposal of 2026-10-10)}{%
+\begin{itemize}
+  \item Framing: LLM bias among the Arab countries, with two main questions (Laith,
+        2026-10-10). The motivation is Islamophobia; what the experiment varies is a
+        passport; the yardstick is the official rules, which are the same for all 22.
+  \item RQ1 (main): is there a bias? Do risk ratings and recommendations differ across
+        the 22 Arab League nationalities when the application is identical and the
+        official rules are the same for all of them?
+  \item RQ2 (main): can the countries be grouped into rich, normal and poor by how the
+        models rate them? The groups are fixed before any run from the World Bank's
+        income classes (retrieved 10 October 2026; \texttt{worldbank2026wdi}, F, data):
+        rich = high income (Bahrain, Kuwait, Oman, Qatar, Saudi Arabia, United Arab
+        Emirates); normal = upper and lower middle income (Algeria, Comoros, Djibouti,
+        Egypt, Iraq, Jordan, Lebanon, Libya, Mauritania, Morocco, Palestine, Tunisia);
+        poor = low income (Somalia, Sudan, Syria, Yemen).
+  \item RQ3: do the differences remain when the guidance says that nationality is not a
+        ground for a higher rating?
+  \item RQ4: what would the differences cost an applicant?
+  \item Each question is answered for four models.
 \end{itemize}}
 
 \teamnote{why it matters (rubric: science, technology, society)}{%
 \begin{itemize}
-  \item Science: bias audits report one number for ``Arab''. Here there is an official
-        yardstick for the 22 countries, so three outcomes can be told apart: the model
-        follows the list, lumps all 22 together, or draws its own lines.
-  \item Technology: AI agents are sold for customer checks (step 7), and EU law expects
-        AI systems in this decision. How language models react to the nationality in a
-        customer file is untested, as far as we found.
-  \item Society: an account is needed for wages, rent and daily life. A higher risk
-        rating means more checks, delays or a refusal. This last sentence is our own
-        argument and has no source.
+  \item Science: bias audits report one number for ``Arab'' or ``Muslim''. Here the
+        question is whether a model treats 22 Arab nationalities alike when the rules
+        say it should. Nationality is rare in this literature: 13.2\% of 189 papers on
+        LLM bias, religion 19.1\%, gender 79.9\% (\texttt{ghosh2025bias}, A).
+  \item Technology: sorting tools for visa applications exist and have used nationality
+        (step 8). How language models react to the passport line is untested, as far as
+        we found.
+  \item Society: a refusal costs the fee (AUD 250, not refunded), has to be declared in
+        later applications, and stops visits to family, study and work. Fees paid for
+        refused Schengen visas: EUR 157.1 million in 2025 according to one collective.
+        Sources: \texttt{au1994migrationregs} (F), \texttt{homeaffairs2026refunds} (F),
+        \texttt{foresti2026cost} (A, advocacy).
 \end{itemize}}
 
 \teamnote{do not overstate}{%
 \begin{itemize}
-  \item Not ``banks use LLMs to decide on customers'': what the products do, which
-        models they use and which fields the model sees is not public. We test open
-        models in the task the products are sold for.
-  \item Not ``LLMs discriminate against Arab customers'' as a fact. Nothing has been run.
-        Explicit origin labels can also make models more cautious
+  \item Not ``visa offices use LLMs to decide'' and not ``to rate applicants'': no
+        authority is documented as doing so. What is documented is sorting and risk
+        rating by fixed rules or by machine learning (step 8). Say ``AI'' only for
+        Australia, Canada and the US pilot; the British and Dutch tools are rules. We
+        test open models in the seat that real sorting tools occupy.
+  \item Not ``no authority uses generative AI on files''. Canada says it does not
+        allow it in support of decisions (\texttt{ircc2025qpnote}, F), but one press
+        report says a residence refusal of 2026 rested on a review assisted by
+        generative AI (\texttt{jagannathan2026human}, press, secondary). Say ``we found
+        no authority that lets a language model rate visa applications''.
+  \item Not ``Australia rates every applicant with AI''. The document says machine
+        learning is used to ``predict risk in visa programs'' and not for decisions. It
+        describes no rating per application and no inputs.
+  \item Not ``LLMs discriminate against Arab applicants'' as a fact. Nothing has been
+        run. Explicit origin labels can also make models more careful
         (\texttt{bunel2026customer}, F).
-  \item A higher rating for a listed country is not automatically wrong in practice.
-        Our argument is narrower: for a customer who lives and works in Germany and has
-        no payments abroad, the written rules give the passport no weight.
-  \item The legal texts were read in single sections only (see the literature matrix).
-        Nobody on the team is a lawyer. Do not present the policy as legal advice.
-  \item Say ``Arab League nationalities'', not ``MENA'' and not ``Arab customers''.
+  \item Not ``we measure Islamophobia in models''. The applications state no religion.
+        We measure how passports are treated; the link to religion is argued, and one
+        study speaks against it (step 3).
+  \item The yardstick is the rules in force, read in part by non-lawyers. The
+        instruction is from 2016; the current one is not public. It lets officers ask
+        for more evidence if statistics show that nationals of the applicant's home
+        country overstay more often, and it defines the home country as the country of
+        usual residence, which is the Emirates for every applicant here. Say ``by the
+        published rules'', not ``by law''.
+  \item Real offices treat these nationalities differently in practice (step 7). That
+        may be where a model's bias comes from. It does not make a different answer for
+        identical applications correct, and it is not our yardstick.
+  \item The status line is the same for everybody, but it simplifies: an Emirati is in
+        reality a citizen in the Emirates, and citizens of the other Gulf states need no
+        visa there. A model may know this (\texttt{uae2026gcc}, A). Report the check
+        without the six Gulf nationalities.
+  \item Say ``Arab League nationalities'', not ``MENA'' and not ``Arab applicants''.
   \item The claim to be first needs a systematic search that has not been done.
   \item Do not cite numbers from \texttt{mohammad2026mirage}: they are placeholders.
-  \item This is an audit of model behaviour, not a tool for checking customers. The risk
-        score is not a probability.
+  \item This is an audit of model behaviour, not a tool for assessing applicants. The
+        risk score is not a probability.
 \end{itemize}}
 
 \section{Related Work}
@@ -216,41 +416,58 @@ number from it. (press) is a press report and (vendor) a company's own statement
 \teamnote{what each strand teaches us}{%
 The rubric asks for what is relevant to our work, not for a list of papers.
 \begin{itemize}
+  \item \textbf{The closest study.} A model as US immigration officer chooses between
+        two applicants; nine attributes vary at once; one prompt; two OpenAI models.
+        Country mattered little in the choices, but asked directly the models named
+        Iraq, Sudan and Somalia for ``additional scrutiny''
+        (\texttt{mao2025gatekeepers}, F). For us: rate one applicant instead of choosing
+        between two, change only the nationality, use several wordings and open models,
+        and expect small effects in the choice and more in the stated reasons.
   \item \textbf{LLM audits with one explicit line.} Mortgage files with a race line:
-        gaps in approval and interest rate, larger for weak files; the rate gap in all
-        eight models. Llama 3 8B approved every application, so approval could not be
-        analysed for it. Claude 3 Opus answered only 74\% of the requests for Black
-        applicants (\texttt{bowen2025measuring}, F). For us: a yes/no or three-level
-        answer may not move in small models, hence the 0--100 score; count refusals by
-        nationality.
+        gaps in approval and interest rate. Llama 3 8B approved every application, so
+        approval could not be analysed for it. Claude 3 Opus answered only 74\% of the
+        requests for Black applicants (\texttt{bowen2025measuring}, F). For us: a yes/no
+        answer may not move in small models, hence the 0--100 score; count refusals to
+        answer by nationality.
+  \item \textbf{A gap expressed in something valuable.} The same paper: Black applicants
+        would need a credit score about 52 points higher for the same approval rate
+        (introduction; the results section of the same version says 120 points: quote
+        the page or ask the authors). In human studies: 71 credit-score points, eight
+        years of experience (\texttt{hanson2016discrimination}, A;
+        \texttt{francis2003employers}, A). For us: the model for RQ4.
   \item \textbf{Direction is unstable.} Real origin labels led to fewer discriminatory
-        recommendations than invented groups (\texttt{bunel2026customer}, F); every
-        detected race or ethnicity bias favoured the minority in one study
-        (\texttt{arcuschin2026blind}, F). For us: expect either direction.
+        recommendations than invented groups (\texttt{bunel2026customer}, F); in one
+        study an explicit Muslim label did slightly better than other religions in loan
+        approval (\texttt{arcuschin2026blind}, F). For us: expect either direction.
   \item \textbf{Explicit cues.} A stated attribute moves decisions more than a name
-        (\texttt{tamkin2023evaluating}, F). Different cues for the same group can give
-        different conclusions (\texttt{tonneau2026cues}, A). For us: the results hold
-        for a nationality and passport line, not for names.
-  \item \textbf{Nationality in LLM decisions.} 20 nationalities in job recommendations,
-        Jordan the only Arab one (\texttt{salinas2023unequal}, F). GPT-4 prefers
-        developers from some countries, tested by swapping only the location string
-        (\texttt{nakano2024nigerian}, F). Country effects mostly not significant in
-        simulated immigration choices (\texttt{mao2025gatekeepers}, F).
-  \item \textbf{Arab group in LLM studies.} Always pooled:
-        \texttt{lippens2024computer} (F), \texttt{hoffmann2026evaluating} (F),
-        \texttt{bai2025explicitly} (A), \texttt{albaroudi2026addressing} (F). These are
-        hiring studies; none is about banking.
+        (\texttt{tamkin2023evaluating}, F), but for Muslims a name triggered more than
+        the word (\texttt{hemmatian2023muslim}, F). Different cues for the same group
+        can give different conclusions (\texttt{tonneau2026cues}, A). For us: the
+        results hold for a nationality and passport line, not for names.
   \item \textbf{Telling the model to ignore the attribute.} Brought discrimination close
-        to zero in Claude 2.0 (\texttt{tamkin2023evaluating}, F). A ``use no bias''
-        sentence removed the approval gap in mortgage files
-        (\texttt{bowen2025measuring}, F). Instructions fail once realistic context is
-        added in hiring (\texttt{karvonen2025robustly}, F). For us: the second policy
-        version can go either way.
-  \item \textbf{Models may notice a test.} \texttt{vohra2026audit} (F),
-        \texttt{needham2025large} (A).
-  \item \textbf{Human evidence in banking.} See the introduction notes, step 3.
-  \item \textbf{Not searched yet.} Research on bias in anti-money-laundering systems and
-        on ``de-risking''. Find sources, or say that this literature was not covered.
+        to zero in Claude 2.0 (\texttt{tamkin2023evaluating}, F) and removed the
+        approval gap in mortgage files (\texttt{bowen2025measuring}, F). Instructions
+        fail once realistic context is added in hiring (\texttt{karvonen2025robustly},
+        F). For us: the second version of the guidance can go either way.
+  \item \textbf{Poorer countries are described worse.} GPT-2 text is more negative for
+        countries with fewer internet users and lower economic status
+        (\texttt{venkit2023nationality}, F). For us: one reason to expect that the 22
+        are not treated alike.
+  \item \textbf{Real visa decisions.} Refusal rates for African countries more than
+        double those for Europe, not explained by social and economic factors
+        (\texttt{thomas2025global}, A, seminar abstract). Student visas: 8 percentage
+        points more refusals for predominantly Muslim countries after controls
+        (\texttt{maggio2026racial}, A, unpublished conference paper). For us: evidence
+        that passports matter beyond the applicant in real decisions.
+  \item \textbf{What a reviewer expects.} The format of an audit moves results as much
+        as the group does (\texttt{vohra2026audit}, F); wording variants and an
+        anti-discrimination instruction as standard (\texttt{gaebler2024auditing}, F);
+        uncertainty by item, not by run (\texttt{miller2024adding}, F); models may
+        notice a test (\texttt{needham2025large}, A).
+  \item \textbf{Not searched systematically.} Research on consular officers'
+        discretion, and German-language work on visa refusals. A few sources are in
+        \texttt{research/visa\_scenario/}; find more, or say that this literature was
+        not covered.
 \end{itemize}}
 
 \section{Data}
@@ -260,44 +477,64 @@ The rubric asks for what is relevant to our work, not for a list of papers.
 
 \teamnote{materials}{%
 \begin{itemize}
-  \item 20 customer files for a current account, one per occupation (the 20 occupations
-        of the earlier hiring design). Net incomes are invented.
-  \item Held constant in every file: lives in Germany, tax resident in Germany, employed
-        by a German employer, salary as source of funds, no payments to or from other
-        countries, no sanctions match, not politically exposed, no adverse media.
-  \item 10 plain files, 10 with one mild indicator named in the policy: account opened
-        by video call (4), cash deposits from tips (2), second income in cash (2),
-        second income without cash (2).
-  \item Nationality: 28 conditions. 22 Arab League nationalities, 2 benchmarks (German,
-        Turkish), 4 placebo nationalities (Uruguayan, Malawian, Maldivian, Cambodian).
-        No version without a nationality: the field is mandatory.
+  \item 20 applications for an Australian Visitor visa (subclass 600, Tourist stream),
+        one per occupation (the 20 occupations of the earlier designs). Incomes and
+        savings are invented.
+  \item Held constant in every application: born in the United Arab Emirates, has lived
+        there since birth, employed there on a fixed-term contract, pays for the visit
+        alone, a holiday with a reserved return flight and confirmed leave, no earlier
+        visit to Australia, no refusal or overstay anywhere, no convictions, documents
+        and biometrics checked.
+  \item 10 plain applications, 10 with one mild point named in the guidance: a new job
+        (2), no travel outside the Emirates so far (2), a stay of 56 days (2), a brother
+        or sister in Australia (2), a job contract that ends in June 2027 without a
+        confirmed renewal (2).
+  \item Savings on five levels (AED 16,000 to 81,000, each 1.5 times the one before),
+        four applicants per level, assigned so that they are unrelated to income and to
+        the indicators.
+  \item Nationality: 26 conditions. The 22 Arab League nationalities, and four unrelated
+        nationalities as a noise check (Uruguayan, Malawian, Maldivian, Cambodian; the
+        four of the earlier designs, chosen before any data). No version without a
+        nationality.
+  \item Three wealth groups among the 22, from the World Bank's income classes: rich
+        (6), normal (12), poor (4). Column \texttt{wealth\_group} in
+        \texttt{applicant\_nationalities.csv}. Fixed before any run; do not move a
+        country after seeing results.
+  \item Legal status in the Emirates: the same line in every application, ``lawful
+        long-term resident with the full right to live and work there'' (Laith's
+        decision; no special case for any nationality).
   \item What changes with the nationality: the nationality line and the passport line.
-        All non-German customers hold an unlimited settlement permit. The German
-        customer has an identity card and is a citizen, so that file differs in three
-        lines.
-  \item The policy: one page, a paraphrase of public rules, with the Commission's list
-        of 26 high-risk countries as of 29 January 2026. Second version: one more
-        paragraph saying that nationality is not a risk factor.
-  \item Country data: EU list status in \texttt{customer\_nationalities.csv}; World Bank
-        income and region in \texttt{country\_covariates.csv}.
-  \item Everything is synthetic: no real customer, bank or employer. The bank's name
-        (Lindenufer Bank) is invented.
+        Nothing else; a script checks this for all 520 applications.
+  \item The official rules for each of the 26 nationalities are in
+        \texttt{official\_rules.csv}: visa needed, electronic permits, form, fee, legal
+        test, risk list, ban. A script checks that they are the same for all. The same
+        table has the real grant and refusal rates, for context only.
+  \item The guidance: one page, a paraphrase of the public criteria. Second version: one
+        more paragraph saying that nationality is not a ground for a higher rating.
+  \item Everything is synthetic: no real applicant or employer.
   \item Still needed for the rubric: descriptive statistics and plots of the answers.
 \end{itemize}
 Source: the README files under \texttt{experiment/}.}
 
-\teamnote{what a customer file looks like}{%
-The file shows a reference number instead of a name. Example of the lines that change:
+\teamnote{what an application looks like}{%
+The application shows a reference number instead of a name. The two lines that change
+(nationality and travel document), and the ones around them:
 \begin{quote}\ttfamily
+Place of birth: Dubai, United Arab Emirates\\
 Nationality: Jordanian\\
-Identity document: Jordanian passport, checked in the original\\
-Residence status: Settlement permit (Niederlassungserlaubnis), unlimited
+Travel document: Jordanian passport, valid until 2033\\
+Country of usual residence: United Arab Emirates, since birth\\
+Legal status in the United Arab Emirates: lawful long-term resident with the full
+right to live and work there
 \end{quote}
 \begin{itemize}
   \item A name cannot tell Arab countries apart, and it adds signals we do not want
         (gender, religion).
-  \item A real file also holds the place of birth. It is left out so that the
-        nationality is the only link to another country. Say so as a limitation.
+  \item The real form asks for the sex of the applicant; ours does not. Say so as a
+        limitation.
+  \item Not every one of the 26 nationalities has a sizeable community in the Emirates,
+        and the lower-paid jobs are in reality mostly done by people who came as adults.
+        Say so as a limitation.
 \end{itemize}}
 
 \teamnote{nationalities whose Arab identity is contested}{%
@@ -314,34 +551,59 @@ at where they fall in the results.}
 
 \teamnote{experiment setup}{%
 \begin{itemize}
-  \item One run: a main prompt (the model assists the onboarding team of a bank in
-        Germany; an analyst takes the final decision; the policy), then a message with
-        one customer file and the request.
-  \item Answer: a JSON object with a risk score 0--100, a rating (low, medium, high),
-        enhanced checks yes/no, a recommendation (open, escalate, decline) and a short
-        reason.
-  \item Two policy versions: without and with the paragraph on nationality.
-  \item Three wordings of the request.
-  \item Five repetitions per prompt are planned; the decoding settings are not decided.
+  \item One run: a main prompt (the model is a case assistant who pre-assesses
+        applications; a visa officer takes every decision; the guidance), then a message
+        with one application and the request.
+  \item Answer: a JSON object with a risk score 0--100, a rating (low, medium, high), a
+        list of further checks from a menu of six, a recommendation (grant, refer,
+        refuse) and a short reason.
+  \item Why this form: real tools sort into three levels, send the highest level to
+        extra checks and leave the decision to a person. ``Refuse'' as a recommendation
+        is not documented for any real system; it is there to measure the harshest
+        outcome.
+  \item Two versions of the guidance; three wordings of the request.
+  \item Five repetitions per prompt are planned in blocks 1 and 2; the decoding settings
+        are not decided.
   \item Models: Qwen3 8B, Llama 3.1 8B, Gemma 3 12B, Mistral Small 3.2 24B. State the
         exact versions and settings.
   \item \texttt{scripts/build\_runs.py} builds and checks the prompts. It calls no
         model. The code that sends the runs does not exist yet.
-  \item How the answers are analysed: not decided as of 2026-10-08.
+  \item How the answers are analysed: not decided as of 2026-10-10.
 \end{itemize}
 Planned runs per model:\par\smallskip
 \begin{tabular}{@{}lr@{}}
 \toprule
 Block & Runs \\
 \midrule
-1 Policy without the nationality paragraph & 8,400 \\
-2 Policy with the nationality paragraph & 8,400 \\
+1 Guidance without the nationality paragraph & 7,800 \\
+2 Guidance with the nationality paragraph & 7,800 \\
+3 Block 1 with the four other savings levels & 6,240 \\
 \midrule
-Total & 16,800 \\
+Total & 21,840 \\
 \bottomrule
 \end{tabular}\par\smallskip
-Each block: 20 files $\times$ 28 nationalities $\times$ 3 wordings $\times$ 5
-repetitions. Source: \texttt{experiment/README.md}.}
+Blocks 1 and 2: 20 applications $\times$ 26 nationalities $\times$ 3 wordings $\times$ 5
+repetitions. Block 3: 20 $\times$ 4 $\times$ 26 $\times$ 3, one run each. Source:
+\texttt{experiment/README.md}.}
+
+\teamnote{cost measures (draft; fix them before the first run)}{%
+\begin{itemize}
+  \item \textbf{1. Savings needed (main).} From block 3: how many points the score falls
+        when savings are 1.5 times as high. From blocks 1 and 2: the gap in points
+        between two passports. Gap divided by fall per step gives steps of savings;
+        from a stated starting amount this is a sum in dirhams. Report a range, and each
+        model on its own. If a model does not react to savings, the measure cannot be
+        computed for it: say so.
+  \item \textbf{2. Fees lost per 1,000 identical applicants (illustration).} Difference
+        in the share of ``refuse'' recommendations times 1,000 times AUD 250. If the
+        models hardly ever refuse: apply the refusal shares the UK tool had for its
+        three levels (3.6\%, 18.9\%, 51.4\%; one office, two months of 2017) to the
+        model's ratings, and label the result as borrowed from another country and year.
+  \item \textbf{3. Further checks.} The number of checks named. A burden in time; no
+        price list was found.
+  \item No total for a country: it would assume that a model decides real applications.
+\end{itemize}
+Source: \texttt{experiment/costs/README.md}.}
 
 \section{Results}
 \label{sec:results}
@@ -349,16 +611,22 @@ repetitions. Source: \texttt{experiment/README.md}.}
 % communicate and illustrate those results.
 
 \teamnote{nothing to report yet}{%
-As of 2026-10-08 no run exists. The proposal lists what to compare:
+As of 2026-10-10 no run exists. The proposal lists what to compare:
 \begin{itemize}
-  \item the spread of risk scores and ratings across the 22 Arab League nationalities,
-        against the spread across the 4 placebo nationalities;
-  \item the four listed countries against the eighteen others;
-  \item unlisted Arab League nationalities against placebo, German and Turkish;
+  \item the spread of risk scores, ratings, further checks and recommendations across
+        the 22 Arab League nationalities; by the rules it should be zero;
+  \item whether the three wealth groups differ, and in the order rich, normal, poor;
+  \item the other way round: the 22 sorted into three groups by the models' ratings
+        alone, compared with the three wealth groups; which countries land in another
+        group; whether this is the same across models, wordings and applicants;
+  \item the four unrelated nationalities as a noise check;
   \item with versus without the paragraph on nationality;
-  \item plain files against files with one indicator;
-  \item whether the four models agree;
-  \item how often a model refuses or gives an unreadable answer, by nationality.
+  \item the three cost measures;
+  \item plain applications against applications with one indicator; whether the score
+        reacts to savings (block 3);
+  \item the same without the six Gulf nationalities, as a check;
+  \item how often a model refuses to answer or gives an unreadable answer, by
+        nationality.
 \end{itemize}
 The hypotheses and the analysis have to be written down before the first real run.
 A pilot has to show first whether the answers vary at all. Block 1 on all four models is
@@ -371,21 +639,39 @@ the plan for the midterm.}
 
 \teamnote{alternative explanations to discuss}{%
 \begin{itemize}
-  \item A passport also says ``foreigner''. The German file is the only one of a
-        citizen, and it differs in three lines. Compare the Arab League nationalities
-        with the Turkish and placebo files, which are foreigners too.
-  \item The policy names the listed countries. A model may apply a rule about residence
-        to a passport because the country name appears in the prompt. A run without the
-        list would separate this; it is not planned.
-  \item The label may stand for religion, conflict or income of the country, not for
-        the nationality as such. \texttt{country\_covariates.csv} has income and region.
-  \item Any set of labels spreads the scores a little. The placebo nationalities are the
-        yardstick; with only four of them it is a rough one.
+  \item Where a difference may come from: real offices treat these nationalities
+        differently, and the model has read about them. That explains a bias; it does
+        not justify a different answer for identical applications under identical rules.
+  \item The label may stand for the wealth, conflict or migration history of a country.
+        These are reasons for the bias, not excuses for it, and the design does not
+        separate them.
+  \item ``Rich'' cannot be told apart from ``Gulf'': the rich group is exactly the six
+        Gulf states, the same six for which the status line simplifies reality. The
+        comparison of normal and poor is free of this.
+  \item ``Poor'' cannot be told apart from ``at war'': Somalia, Sudan, Syria and Yemen
+        are all at war or just out of one.
+  \item Three groups of 6, 12 and 4 countries are small. A grouping found in the ratings
+        may fit three groups by chance; say how many of the 22 land in their group and
+        what a random sorting would give.
+  \item The guidance names ``conditions in the home country'' and defines home country
+        as the country where the applicant lives. A model may apply the sentence to the
+        passport country because of the wording. A version without the sentence would
+        separate this; it is not planned.
+  \item The model may know more than the application says: that an Emirati is a citizen
+        in the Emirates, that Gulf citizens need no visa there, that many foreign
+        residents hold a visa tied to the job. A better rating for the six Gulf
+        nationalities may come from that knowledge. The check without them shows how
+        much of a result rests on them.
+  \item A passport is not a religion. A difference among Arab League passports does not
+        prove a reaction to Islam.
+  \item Any set of labels spreads the scores a little. The four unrelated nationalities
+        are the yardstick for that; with only four it is a rough one.
   \item Models may notice that this is a test (\texttt{vohra2026audit}, F;
         \texttt{needham2025large}, A).
-  \item All 20 customers are ordinary. If a model answers ``low'' for everybody, the
-        rating cannot show a difference; the score may.
-  \item A result of ``no difference'' is an answer too.
+  \item All 20 applicants are ordinary. If a model answers ``low'' and ``grant'' for
+        everybody, the rating cannot show a difference; the score may.
+  \item A result of ``no difference'' is an answer too: the models then do what the
+        rules ask.
 \end{itemize}}
 
 \section*{Limitations}
@@ -393,17 +679,23 @@ the plan for the midterm.}
 \teamnote{limits to state}{%
 \begin{itemize}
   \item FILL IN AFTER THE RUNS: which blocks and which models were actually run. As of
-        2026-10-08 nothing has been run.
-  \item The products in this field run on large commercial models and their prompts are
-        not public. We test open models of 8 to 24 billion parameters with a policy and
-        a file that we wrote.
-  \item In practice most customer risk ratings come from fixed scorecards; language
-        models review cases and write the reasoning. We imitate that step.
-  \item The policy is a paraphrase by non-lawyers of rules read in part.
-  \item English prompts for a German bank; one bank, one product, one country.
-  \item Synthetic files without name and place of birth; nationality given as explicit
-        lines.
-  \item One list (the Commission's) on one date. Other lists differ and change.
+        2026-10-10 nothing has been run.
+  \item No authority is documented as using a language model to rate visa applications.
+        We test open models of 8 to 24 billion parameters with a guidance and
+        applications that we wrote.
+  \item The yardstick is the published rules, read in part by non-lawyers; the
+        instruction it draws on is from 2016. Rules and bans change: the table refers to
+        10 October 2026.
+  \item One destination, one visa, one country of residence, English only.
+  \item Synthetic applications without name and gender; nationality given as two
+        explicit lines; applicants born and living in the United Arab Emirates, which is
+        common for some of the nationalities and rare for others; invented incomes.
+  \item One legal status line for everybody simplifies reality: an Emirati is a citizen
+        in the Emirates, Gulf citizens need no visa there, and a long-term visa that
+        needs no sponsor is not what most residents hold.
+  \item The facts about the Emirates come from an abstract of the nationality law, three
+        government web pages and one press report of official figures.
+  \item The cost figures are illustrations, not forecasts.
 \end{itemize}}
 
 \section*{Author Contributions}
@@ -415,12 +707,17 @@ the plan for the midterm.}
 % tools) at the end of the report.
 
 \teamnote{what to declare}{%
-As of 2026-10-08, assisted by Claude Code: literature search and research notes; the
-search for and comparison of scenarios (\texttt{research/scenario\_reviews/}); design
-documents; the bank policy text, the customer files and the prompts; the first drafts of
-both project proposals (2026-10-04 and 2026-10-08); repository code and structure; the
-working title and title suggestions; and these notes. For the earlier hiring design also
-the job ads, CVs and prompts, which are no longer used. Keep the list up to date.}
+As of 2026-10-10, assisted by Claude Code: literature and source search and research
+notes (\texttt{research/visa\_scenario/}); the choice of the destination country; the
+design documents; the guidance text, the applications and the prompts; the table of
+official rules; the cost measures; the first drafts of all three project proposals
+(2026-10-04, 2026-10-08, 2026-10-10); the slides and the question-and-answer notes for
+the pitch; repository code and structure; the working title and title suggestions; and
+these notes. On 2026-10-12 also: the check of which countries use AI to rate visa
+applicants, with the quotes in the introduction notes, the two paragraphs on it in the
+proposal, and the slide on Australia in \texttt{pitch\_v5.pptx}. For the earlier hiring
+and bank designs also their materials, which are no longer used. Keep the list up to
+date.}
 
 \section*{Declaration}
 % AI usage policy: a declaration at the end stating that you have written the whole
@@ -435,8 +732,8 @@ the job ads, CVs and prompts, which are no longer used. Keep the list up to date
 \label{sec:appendix-prompts}
 
 \teamnote{prompts}{%
-Copy in, unchanged, the main prompt, both versions of the policy and one wording of the
+Copy in, unchanged, the main prompt, both versions of the guidance and one wording of the
 request from \texttt{experiment/prompts/} and \texttt{experiment/policy/}, with one
-customer file.}
+application.}
 
 \end{document}

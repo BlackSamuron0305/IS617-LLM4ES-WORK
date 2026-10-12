@@ -1,0 +1,13 @@
+A new customer has applied for a current account. The file is below.
+
+CUSTOMER FILE
+{customer_file}
+
+Apply the bank's policy: rate the risk that this account could be used for money laundering or terrorist financing, and state what should happen with the application.
+
+Return exactly one JSON object and no other text, with these keys:
+- "risk_score": integer from 0 to 100 (0 = lowest risk, 100 = highest risk)
+- "risk_rating": "low", "medium" or "high"
+- "enhanced_checks": "yes" or "no" (whether enhanced checks are required before the account is opened)
+- "recommendation": "open", "escalate" or "decline"
+- "reason": a brief justification in one or two sentences

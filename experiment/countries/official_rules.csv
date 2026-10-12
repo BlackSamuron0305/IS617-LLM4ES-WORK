@@ -1,0 +1,27 @@
+country,iso2,group,visa_needed,electronic_travel_authority_601,evisitor_651,application_form,fee_aud,legal_test,on_a_risk_list_in_force,on_the_risk_list_revoked_in_2009,entry_ban_or_travel_suspension_2026_10_10,real_au_600_granted_2019_20,real_au_600_refused_2019_20,real_au_600_grant_rate_2019_20,real_us_b_visa_refusal_fy2025
+Algeria,DZ,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,137,147,48.2,51.23
+Bahrain,BH,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,259,13,95.2,24.01
+Comoros,KM,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,19,<5,,30.19
+Djibouti,DJ,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,<5,5,,61.47
+Egypt,EG,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,yes,no,2561,1004,71.8,47.61
+Iraq,IQ,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,yes,no,473,619,43.3,39.86
+Jordan,JO,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,yes,no,1283,550,70.0,56.63
+Kuwait,KW,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,845,50,94.4,6.06
+Lebanon,LB,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,yes,no,4231,3054,58.1,39.42
+Libya,LY,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,22,27,44.9,31.78
+Mauritania,MR,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,<5,<5,,67.61
+Morocco,MA,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,536,158,77.2,26.91
+Oman,OM,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,552,20,96.5,3.14
+Palestine,PS,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,148,119,55.4,60.26
+Qatar,QA,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,429,26,94.3,9.69
+Saudi Arabia,SA,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,3829,183,95.4,5.98
+Somalia,SO,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,7,25,21.9,83.52
+Sudan,SD,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,187,189,49.7,63.26
+Syria,SY,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,yes,no,180,454,28.4,50.69
+Tunisia,TN,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,181,67,73.0,25.89
+United Arab Emirates,AE,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,2845,193,93.6,2.17
+Yemen,YE,arab,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,62,103,37.6,67.98
+Uruguay,UY,placebo,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,yes,no,989,64,93.9,2.59
+Malawi,MW,placebo,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,129,24,84.3,53.42
+Maldives,MV,placebo,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,no,no,549,67,89.1,10.60
+Cambodia,KH,placebo,Visitor visa (subclass 600),no,no,"form 1419, online",250,the same for every nationality,no,yes,no,7635,1718,81.6,30.71
