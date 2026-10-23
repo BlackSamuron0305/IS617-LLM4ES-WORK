@@ -48,3 +48,6 @@ results/mock*/
 # Real-run raw outputs (data/raw/<run_id>/) are deliberately NOT ignored: they are
 # the primary evidence and are committed. Do not add an ignore rule for them.
 # Processed tables are regenerable from raw but are small and are committed too.
+
+# Office lock files
+~$*

@@ -24,8 +24,7 @@ when it takes on a customer. Whether Aleksander and Nico have agreed is not reco
 here. Reason: in hiring a nationality line can be dropped before a model sees
 it; in a bank's customer file the nationality is mandatory, AI systems are sold for the
 task, and an official list ranks the countries. The reasoning and the sources are in
-`research/scenario_reviews/`. The work is on the branch `switching-hr-to-banking`. The
-hiring material of 2026-10-04 (prompts, jobs, CVs, country tables, proposal, pitch
+`research/scenario_reviews/`. The hiring material of 2026-10-04 (prompts, jobs, CVs, country tables, proposal, pitch
 slides, Q&A notes) was moved to `research/old_design/hiring_2026-10-04/`; the state
 before the move is commit 272792d.
 
@@ -34,10 +33,15 @@ request the bank scenario was replaced with the pre-assessment of applications f
 visitor visa. Whether Aleksander and Nico have agreed is not recorded here. Reason given
 by Laith: the motivation is Islamophobia, and the project should look at Arab countries
 in visa applications, in a country that asks all of them for a visa, and put a cost on
-the bias. The research behind the design is in `research/visa_scenario/`. The work is on
-the branch `Arabs-in-Visa`. The bank material of 2026-10-08 (policy, customers, country
-tables, prompts, build script, proposal, Q&A notes) was moved to
-`research/old_design/bank_2026-10-08/`; the state before the move is commit 39d32f2.
+the bias. The research behind the design is in `research/visa_scenario/`. The bank
+material of 2026-10-08 (policy, customers, country tables, prompts, build script,
+proposal, Q&A notes) was moved to `research/old_design/bank_2026-10-08/`; the state
+before the move is commit 39d32f2.
+
+**Single branch (2026-10-23).** At Laith's request the branch `Arabs-in-Visa` was merged
+into `main` and every other branch was deleted, locally and on GitHub
+(`switching-hr-to-banking`, `research-realistic-hr-process`). Nothing was lost: all
+their commits were already in `Arabs-in-Visa`. Work happens on `main`.
 
 **What the project is about (Laith, 2026-10-10, said twice in one session).** Bias among
 Arabs: do models treat the 22 Arab League nationalities differently from one another
