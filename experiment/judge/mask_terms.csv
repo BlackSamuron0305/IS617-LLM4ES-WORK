@@ -4,6 +4,7 @@ Somalian,[NATIONALITY],alias
 Comoran,[NATIONALITY],alias
 Yemenite,[NATIONALITY],alias
 Khmer,[NATIONALITY],alias
+Bahrainian,[NATIONALITY],alias
 Syrian Arab Republic,[PASSPORT COUNTRY],alias
 Kingdom of Saudi Arabia,[PASSPORT COUNTRY],alias
 KSA,[PASSPORT COUNTRY],alias
@@ -11,6 +12,9 @@ Palestinian territories,[PASSPORT COUNTRY],alias
 State of Palestine,[PASSPORT COUNTRY],alias
 Gaza,[PASSPORT COUNTRY],alias
 West Bank,[PASSPORT COUNTRY],alias
+Somaliland,[PASSPORT COUNTRY],alias
+Comoro Islands,[PASSPORT COUNTRY],alias
+South Sudan,[PASSPORT COUNTRY],alias
 Algiers,[PLACE],capital
 Manama,[PLACE],capital
 Moroni,[PLACE],capital
@@ -32,6 +36,7 @@ Damascus,[PLACE],capital
 Tunis,[PLACE],capital
 Sanaa,[PLACE],capital
 Sana'a,[PLACE],capital
+Sana’a,[PLACE],capital
 Montevideo,[PLACE],capital
 Lilongwe,[PLACE],capital
 Phnom Penh,[PLACE],capital
@@ -43,8 +48,16 @@ MENA,[REGION],region
 Gulf,[REGION],region
 GCC,[REGION],region
 Levant,[REGION],region
+Levantine,[REGION],region
 North Africa,[REGION],region
 North African,[REGION],region
+Maghreb,[REGION],region
+Maghrebi,[REGION],region
+Arabian Peninsula,[REGION],region
+Khaleeji,[REGION],region
+Mesopotamia,[REGION],region
+East Africa,[REGION],region
+East African,[REGION],region
 Horn of Africa,[REGION],region
 Sub-Saharan Africa,[REGION],region
 Africa,[REGION],region

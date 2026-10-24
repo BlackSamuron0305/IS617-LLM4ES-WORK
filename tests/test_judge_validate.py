@@ -369,6 +369,26 @@ class CliTest(unittest.TestCase):
                          [("0", "", "", "False")] * 5)
         self.assertIn("n/a", out)
 
+    def test_unmatched_ids_are_counted_on_both_sides(self):
+        # A spreadsheet can turn an id such as 12e4567890123456 into a number; that id finds no partner.
+        coded = {i: {c: "yes" if v else "no" for c in JUDGE_CODES} for i, v in self.pattern.items()}
+        coded["1.2E+18"] = coded.pop("i3")
+        write_human(self.human, coded)
+        self.judge()
+        code, out, _ = run_cli([*self.argv, "--judge", "gpt-oss-120b"])
+        self.assertEqual(code, 0)
+        self.assertIn("only in the human file: 1", out)
+        self.assertIn("only on the other side: 1", out)
+        self.assertEqual([r["n"] for r in read_rows(self.tmp / "processed/mock_v/validation_agreement_gpt-oss-120b.csv")],
+                         ["3"] * 5)
+
+    def test_no_unmatched_ids_prints_zero_on_both_sides(self):
+        self.judge()
+        code, out, _ = run_cli([*self.argv, "--judge", "gpt-oss-120b"])
+        self.assertEqual(code, 0)
+        self.assertIn("only in the human file: 0", out)
+        self.assertIn("only on the other side: 0", out)
+
     def test_other_human_file_is_named_by_its_stem(self):
         other = write_human(self.tmp / "second_coder.csv", {
             i: {c: "yes" if v else "no" for c in JUDGE_CODES} for i, v in self.pattern.items()})

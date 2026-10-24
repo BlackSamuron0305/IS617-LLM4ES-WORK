@@ -30,7 +30,7 @@ def answer_row(**fields):
     applicant = APPLICANTS[0]
     row = dict.fromkeys(ANSWER_COLUMNS, "")
     row.update(applicant_id=applicant["applicant_id"], savings=applicant["savings"], country="Syria",
-               parse_status="ok", reason="The stay is short.", repetition="0")
+               parse_status="ok", prompt_matches="1", reason="The stay is short.", repetition="0")
     row.update(fields)
     return row
 
@@ -72,6 +72,24 @@ class MaskingTest(unittest.TestCase):
         self.assertEqual(mask("Somalian, Comoran, Yemenite and Khmer applicants", masker_for("Syria")),
                          ("[NATIONALITY], [NATIONALITY], [NATIONALITY] and [NATIONALITY] applicants", 4))
 
+    def test_more_region_alias_and_capital_terms_are_masked(self):
+        m = masker_for("Syria")
+        for text in ("Levantine", "Maghreb", "Maghrebi", "Arabian Peninsula", "Khaleeji", "Mesopotamia",
+                     "East Africa", "East African"):
+            self.assertEqual(mask(f"from {text} and back", m), ("from [REGION] and back", 1), text)
+        for text in ("Somaliland", "Comoro Islands", "South Sudan"):
+            self.assertEqual(mask(f"from {text} and back", m), ("from [PASSPORT COUNTRY] and back", 1), text)
+        self.assertEqual(mask("a Bahrainian man", m), ("a [NATIONALITY] man", 1))
+        self.assertEqual(mask("born in Sana\u2019a", m), ("born in [PLACE]", 1))  # curly apostrophe
+        self.assertEqual(mask("born in Sana'a", m), ("born in [PLACE]", 1))
+
+    def test_non_ascii_case_variants_do_not_crash_and_are_not_masked(self):
+        # U+017F (long s) and U+0130 (dotted capital I) match "s" and "i" under Unicode case folding but
+        # do not lower-case to them; matching is ASCII-only so that the match and the lookup agree.
+        m = masker_for("Syria")
+        self.assertEqual(mask("\u017fyrian SYR\u0130AN", m), ("\u017fyrian SYR\u0130AN", 0))
+        self.assertEqual(mask("SYRIAN syrian", m), ("[NATIONALITY] [NATIONALITY]", 2))
+
     def test_word_boundaries_leave_other_words_alone(self):
         m = masker_for("Syria")
         text = "Arabic documents, a male clerk, Omanis and Africans"
@@ -112,6 +130,17 @@ class MaterialsTest(unittest.TestCase):
         for code in JUDGE_CODES:
             self.assertIn(f'"{code}"', task)
             self.assertIn(f"{code}:", prompt)
+
+    def test_judge_prompt_describes_every_placeholder(self):
+        prompt = read_text(JUDGE / "judge_prompt.txt")
+        placeholders = {row["replacement"] for row in ROWS if row["kind"] != "keep"}
+        placeholders |= {judge_build.NATIONALITY_MASK, judge_build.PASSPORT_MASK}
+        self.assertEqual(placeholders, {"[NATIONALITY]", "[PASSPORT COUNTRY]", "[PLACE]", "[REGION]"})
+        for placeholder in placeholders:
+            self.assertIn(placeholder, prompt)
+        # A region word is masked even when it says where the applicant lives; the judge is told so.
+        self.assertIn("A [REGION] placeholder can also stand for the region in which the applicant lives, and "
+                      "[PASSPORT COUNTRY] can stand for a country other than the applicant's own.", prompt)
 
     def test_client_marker_is_the_marker_line_of_the_task(self):
         self.assertIn(JUDGE_MARKER, read_text(JUDGE / "judge_task.txt").splitlines())
@@ -172,6 +201,17 @@ class BuildItemsTest(unittest.TestCase):
         self.assertIn("Travel document: [NATIONALITY] passport, valid until 2033\n", user)
         self.assertIn(f"Savings: AED {APPLICANTS[0]['savings']} ", user)
         self.assertNotIn("{", user)
+
+    def test_skips_answers_whose_prompt_no_longer_matches(self):
+        # prompt_matches = 0: the files of the experiment changed after the run, so the application the
+        # model saw cannot be rebuilt. Such an answer gets no judge input and is counted as skipped.
+        self.write_answers("mock_p", [answer_row(key="k1", run_id="r1"),
+                                      answer_row(key="k2", run_id="r2", prompt_matches="0", reason="Other reason.")])
+        summary = build_judge_items("mock_p", self.tmp)
+        self.assertEqual(summary, {"answers": 2, "linked": 1, "items": 1, "skipped": 1})
+        (item,) = read_jsonl(self.tmp / "processed/mock_p/judge_items.jsonl")
+        self.assertEqual(item["reason_masked"], "The stay is short.")
+        self.assertEqual([link["key"] for link in read_table(self.tmp / "processed/mock_p/judge_links.csv")], ["k1"])
 
     def test_skips_failed_and_empty_reasons(self):
         self.write_answers("mock_k", [answer_row(key="k1", run_id="r1"),

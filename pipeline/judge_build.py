@@ -1,7 +1,8 @@
 """Stage 3: prepare what the judge sees, with every nationality word hidden.
 
 Reads data/processed/<batch>/answers.csv (written by parse_answers). For each answer that was
-read and has a reason, the nationality words in the reason are replaced by placeholders, the
+read, has a reason and whose prompt still is the one the experiment files give now (prompt_matches
+is 1), the nationality words in the reason are replaced by placeholders, the
 application is rebuilt with [NATIONALITY] in its two nationality lines, and the judge's two
 messages are put together. The judge never sees the score, the rating or the recommendation.
 Identical judge inputs are written once. Writes data/processed/<batch>/judge_items.jsonl
@@ -61,10 +62,12 @@ def masking_terms(nationalities, mask_rows, own):
 
 def compile_masker(terms):
     # One pattern for all terms, longest first so that "Saudi Arabian" wins over "Saudi"; an
-    # optional trailing "s" is part of the match, so "Syrians" is masked as one word.
+    # optional trailing "s" is part of the match, so "Syrians" is masked as one word. Matching is
+    # ASCII-only: under Unicode case folding a long s (U+017F) would match "s" but not lower-case to
+    # it, and the lookup in mask() would fail.
     ordered = sorted(terms, key=lambda term: (-len(term), term))
     alternatives = "|".join(re.escape(term) for term in ordered)
-    return re.compile(r"\b(?P<term>" + alternatives + r")s?\b", re.IGNORECASE), terms
+    return re.compile(r"\b(?P<term>" + alternatives + r")s?\b", re.IGNORECASE | re.ASCII), terms
 
 
 def mask(text, masker):
@@ -113,6 +116,8 @@ def build_judge_items(batch, data_root):
     for row in answers:
         if row["parse_status"] != "ok" or not row["reason"].strip():
             continue
+        if row["prompt_matches"] != "1":
+            continue  # the files of the experiment changed after the run: the application cannot be rebuilt
         country, applicant = by_country.get(row["country"]), applicants.get(row["applicant_id"])
         if country is None or applicant is None:
             continue  # the run is not in today's experiment files, so its application cannot be rebuilt
@@ -150,7 +155,8 @@ def main(argv=None):
         return 2
     out_dir = Path(args.data_root) / "processed" / args.batch
     print(f"{summary['answers']} answers: {summary['linked']} linked to {summary['items']} unique judge inputs, "
-          f"{summary['skipped']} skipped (answer not read, empty reason, or run not in the experiment files)")
+          f"{summary['skipped']} skipped (answer not read, empty reason, prompt changed since the run, "
+          "or run not in the experiment files)")
     print(f"written: {out_dir / 'judge_items.jsonl'}, {out_dir / 'judge_links.csv'}")
     return 0
 

@@ -7,7 +7,7 @@ judge model.
 
 | file | what it is |
 |---|---|
-| `judge_prompt.txt` | the system message: what the judge is, the placeholders, the five questions |
+| `judge_prompt.txt` | the system message: what the judge is, what each placeholder stands for, the five questions |
 | `judge_task.txt` | the user message. `{application}` is filled with the application, `{reason}` with the masked reason |
 | `judge_models.csv` | the two judge models, with the columns of `../models.csv` plus `role` (`revision` is still empty) |
 | `mask_terms.csv` | the words, beyond the two nationality tables, that are hidden from the judge (or kept visible) |
@@ -16,7 +16,9 @@ judge model.
 
 `python -m pipeline.judge_build --batch NAME` reads `data/processed/NAME/answers.csv`
 (from `pipeline/parse_answers.py`) and writes two files next to it, fresh on every run.
-Answers whose parse status is not `ok`, or whose reason is blank, get no judge input.
+Answers whose parse status is not `ok`, whose reason is blank, or whose `prompt_matches`
+is not 1 (the experiment files no longer give the prompt that was sent, so the
+application cannot be rebuilt) get no judge input and are counted as skipped.
 
 | file | content |
 |---|---|
@@ -65,8 +67,9 @@ this before the judge sees anything:
 2. `mask_terms.csv` has the columns `term`, `replacement`, `kind`. `alias` rows are other
    names for a nationality or a country, `capital` rows are capitals, `region` rows are
    regions and continents, `keep` rows (empty replacement) are terms that stay visible.
-3. Matching ignores case, takes the longest term first ("Saudi Arabian" before "Saudi")
-   and takes a plural "s" along ("Syrians" becomes `[NATIONALITY]`).
+3. Matching ignores case (for the letters A to Z only), takes the longest term first
+   ("Saudi Arabian" before "Saudi", "East Africa" before "Africa") and takes a plural "s"
+   along ("Syrians" becomes `[NATIONALITY]`).
 4. The terms for the country of residence (`United Arab Emirates`, `Abu Dhabi`) and the
    word `Emirati` are kept, because hiding them would destroy `doubts_residence`: the
    judge has to see that a reason doubts the right to stay in the Emirates. The
@@ -76,6 +79,13 @@ this before the judge sees anything:
    `Nationality:` and `Travel document:`.
 6. Judge inputs that are identical after masking are written once (`item_id`) and
    judged once. `judge_links.csv` ties every answer to its input.
+
+What the judge is told about the placeholders (`judge_prompt.txt`): `[NATIONALITY]`
+stands for a nationality, `[PASSPORT COUNTRY]` for a country name, `[PLACE]` for a city
+and `[REGION]` for a region such as the Gulf or the Middle East. A `[REGION]` can also
+stand for the region in which the applicant lives, and `[PASSPORT COUNTRY]` can stand
+for a country other than the applicant's own. The judge treats a placeholder like the
+word it replaced.
 
 ### Known leaks
 
@@ -88,8 +98,14 @@ The blinding is not perfect. State this wherever results are reported.
   the Emirates" stays visible. In a reason about a non-Emirati applicant it is a contrast
   ("not a UAE citizen"); in a reason about an Emirati applicant it can reveal the
   nationality.
+- Region words such as "Gulf" are masked even when they describe where the applicant
+  lives, so the judge may read them as the passport's region.
 - A place that is in no table (for example "Aleppo" or "Basra") is not masked, and not
   counted in `n_masked`.
+- Matching is ASCII-only, so a non-ASCII case variant of a term is not masked (for
+  example "Syrian" written with a long s or with a dotted capital I).
+- "South Sudanese" becomes "South `[NATIONALITY]`": "South Sudan" is a term, but its
+  demonym is not, and "Sudanese" is.
 - Alternate spellings and misspellings of a demonym that are not in `mask_terms.csv` stay
   visible, for example "Emirian". It is not added, because masking it for every
   applicant would also hide residence wording.

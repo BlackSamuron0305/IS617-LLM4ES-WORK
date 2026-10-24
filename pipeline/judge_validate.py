@@ -13,8 +13,9 @@ judge_codes_<alias>.csv (rows with judge_status ok or inconsistent), or a second
 each of the five codes it compares the two sides on the items that have a value on both and prints
 n, the share of items they agree on and Cohen's kappa. A code passes when kappa is at least
 KAPPA_MIN. The table is also written to validation_agreement_<alias or file stem>.csv. A kappa is
-n/a when chance alone would give complete agreement (a code that is constant on both sides). Never
-calls a model.
+n/a when chance alone would give complete agreement (a code that is constant on both sides). Below
+the table it prints how many item ids have codes on one side only, so that ids a spreadsheet program
+has changed do not drop out unnoticed. Never calls a model.
 
 Usage:
     python -m pipeline.judge_validate sample --batch pilot1 [--n 200] [--seed 617] [--force]
@@ -161,10 +162,15 @@ def run_agreement(args):
     for path in (Path(args.human), other_path):
         if not path.exists():
             raise FileNotFoundError(f"{path} does not exist")
-    rows = agreement(read_codes(args.human), read_codes(other_path))
+    human, other = read_codes(args.human), read_codes(other_path)
+    rows = agreement(human, other)
     out_path = folder / f"validation_agreement_{name}.csv"
     write_csv(out_path, rows, AGREEMENT_COLUMNS)  # None is written as an empty cell
     print_agreement(rows, args.human, other_path)
+    # Ids that a spreadsheet changed find no partner and would drop out of the table without a word.
+    print(f"item ids with codes only in the human file: {len(human.keys() - other.keys())} "
+          "(if not 0, check that the ids are unchanged)")
+    print(f"item ids with codes only on the other side: {len(other.keys() - human.keys())}")
     print(f"written: {out_path}")
 
 
