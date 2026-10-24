@@ -17,9 +17,9 @@ import sys
 from pathlib import Path
 
 from pipeline.build_runs import build_runs
-from pipeline.calls import record_summary, run_calls, update_manifest
-from pipeline.client import MockClient, RunRefused, check_mock_batch, make_client
-from pipeline.common import DATA, EXPERIMENT, dirty_files, git_commit, load_models, load_settings, utc_now
+from pipeline.calls import begin_stage, check_mock_label, record_summary, run_calls
+from pipeline.client import RunRefused, make_client
+from pipeline.common import DATA, EXPERIMENT, load_models, load_settings
 from pipeline.parse_answers import ANSWER_SCHEMA
 
 
@@ -41,25 +41,16 @@ def run_answers(batch, model_alias, client, data_root, blocks=None, limit=None, 
     if model_alias not in models:
         raise RunRefused(f"unknown model alias {model_alias!r}; experiment/models.csv has: {', '.join(models)}")
     model = models[model_alias]
-    # The label "mock" must match the client, or mock output would pass for a result (or the reverse).
-    if isinstance(client, MockClient) != mock:
-        raise RunRefused("mock=True needs the mock client, and the mock client needs mock=True")
-    if mock:
-        check_mock_batch(batch)
+    check_mock_label(client, mock, batch)
     runs, _, _, problems = build_runs()
     if problems:
         raise RunRefused("build_runs reports problems: " + "; ".join(problems[:5]))
     settings = load_settings("answers")
     items = plan_items(runs, blocks, limit)
     batch_dir = Path(data_root) / "raw" / batch
-    header = {"batch": batch, "kind": "answers", "model_alias": model_alias, "model_id": model["model_id"],
-              "revision": model["revision"], "mock": mock}
-    session = {"started_utc": utc_now(), "git_commit": git_commit(), "dirty": dirty_files(), "blocks": blocks,
-               "limit": limit, "settings": settings, "summary": None}
     # The manifest comes first: a batch that belongs to another model is refused before any call.
-    update_manifest(batch_dir / "manifest.json", header, session)
-    fixed_fields = {"batch": batch, "model_alias": model_alias, "model_id": model["model_id"], "kind": "answers",
-                    "mock": mock}
+    fixed_fields = begin_stage(batch_dir / "manifest.json", "answers", batch, model_alias, model, mock, settings,
+                               {"blocks": blocks, "limit": limit})
     summary = run_calls(items, client, settings, model["extra_body"], ANSWER_SCHEMA, batch_dir / "answers.jsonl",
                         workers, fixed_fields)
     record_summary(batch_dir / "manifest.json", summary)

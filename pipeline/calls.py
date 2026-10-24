@@ -1,4 +1,4 @@
-"""The call loop shared by the stages that talk to a model (run_models, later the judge).
+"""The call loop shared by the stages that talk to a model (run_models and run_judge).
 
 It sends a list of items through a client, appends one record per call to a raw JSON
 lines file and skips what is already done, so an interrupted run can be started again.
@@ -7,8 +7,10 @@ Nothing here decides whether a call is allowed; that is the client's job
 (pipeline/client.py). Standard library only.
 
 Usage:
+    check_mock_label(client, mock, batch)
+    fixed_fields = begin_stage(manifest_path, kind, batch, model_alias, model, mock, settings, session_extra)
     summary = run_calls(items, client, settings, extra_body, schema, out_path, workers, fixed_fields)
-    update_manifest(manifest_path, header, session)
+    record_summary(manifest_path, summary)
 """
 
 import json
@@ -16,8 +18,9 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from pipeline.client import RunRefused
-from pipeline.common import append_jsonl, last_by_key, messages_sha256, read_jsonl, sha256_text, utc_now
+from pipeline.client import MockClient, RunRefused, check_mock_batch
+from pipeline.common import (append_jsonl, dirty_files, git_commit, last_by_key, messages_sha256, read_jsonl,
+                             sha256_text, utc_now)
 
 
 def request_params(settings, key, extra_body, schema):
@@ -97,3 +100,22 @@ def record_summary(path, summary):
     manifest = json.loads(Path(path).read_text(encoding="utf-8"))
     manifest["sessions"][-1]["summary"] = summary
     _write_manifest(path, manifest)
+
+
+def check_mock_label(client, mock, batch):
+    # The label "mock" must match the client, or mock output would pass for a result (or the reverse).
+    if isinstance(client, MockClient) != mock:
+        raise RunRefused("mock=True needs the mock client, and the mock client needs mock=True")
+    if mock:
+        check_mock_batch(batch)
+
+
+def begin_stage(manifest_path, kind, batch, model_alias, model, mock, settings, session_extra):
+    # Writes the manifest header and a new session before any call, so that a batch that belongs to
+    # another model is refused first. Returns the fields every raw record of the stage carries.
+    header = {"batch": batch, "kind": kind, "model_alias": model_alias, "model_id": model["model_id"],
+              "revision": model["revision"], "mock": mock}
+    session = {"started_utc": utc_now(), "git_commit": git_commit(), "dirty": dirty_files(), **session_extra,
+               "settings": settings, "summary": None}
+    update_manifest(manifest_path, header, session)
+    return {"batch": batch, "model_alias": model_alias, "model_id": model["model_id"], "kind": kind, "mock": mock}
