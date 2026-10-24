@@ -14,9 +14,10 @@ from unittest import mock
 from pipeline.build_runs import build_runs
 from pipeline.calls import (begin_stage, check_mock_label, done_keys, record_summary, request_params, run_calls,
                             update_manifest)
-from pipeline.client import ClientError, MockClient, OpenAICompatibleClient, RunRefused
+from pipeline.client import ClientError, MockClient, OpenAICompatibleClient, RunRefused, make_client
 from pipeline.common import EXPERIMENT, append_jsonl, load_models, load_settings, read_jsonl
 from pipeline.run_models import main, plan_items, run_answers
+from tests.test_client import REVISION, Stub
 
 # Fixed settings for the tests of the call loop; the values in experiment/run_settings.csv may change.
 SETTINGS = {"temperature": 0.7, "top_p": 1.0, "max_tokens": 400, "seed": "per_call", "json_schema": False}
@@ -312,6 +313,23 @@ class RunModelsTest(unittest.TestCase):
             begin_stage(path, "answers", "pilot1", "qwen3-8b", MODEL, False, SETTINGS, {}, client)
         (session,) = json.loads(path.read_text(encoding="utf-8"))["sessions"]
         self.assertEqual((session["model_path"], session["vllm_args"]), ("", ""))
+
+    def test_real_run_through_make_client_against_a_stub_server(self):
+        # The whole real path on 127.0.0.1: make_client approves the client, the stage accepts it, the
+        # records are not labelled as mock and the session names the server.
+        stub = Stub()
+        self.addCleanup(stub.close)
+        with mock.patch("pipeline.client.dirty_files", return_value=[]),                 mock.patch.dict(os.environ, {"MODEL_PATH": "/models/m", "VLLM_ARGS": "--x"}):
+            client = make_client("answers", dict(MODEL, model_id="org/m", revision=REVISION), "pilot1", False,
+                                 stub.url, True)
+            summary = run_answers("pilot1", "qwen3-8b", client, self.tmp, blocks=[1], limit=2, workers=1)
+        self.assertEqual((summary["called"], summary["errors"]), (2, 0))
+        records = read_jsonl(self.tmp / "raw/pilot1/answers.jsonl")
+        self.assertEqual([r["mock"] for r in records], [False, False])
+        self.assertEqual({r["served_model"] for r in records}, {"org/m"})
+        (session,) = json.loads((self.tmp / "raw/pilot1/manifest.json").read_text(encoding="utf-8"))["sessions"]
+        self.assertEqual((session["model_path"], session["vllm_args"], session["base_url"]),
+                         ("/models/m", "--x", stub.url))
 
     def test_mock_session_records_no_server_facts(self):
         with mock.patch.dict(os.environ, {"MODEL_PATH": "/models/qwen3-8b", "VLLM_ARGS": "--x"}):
