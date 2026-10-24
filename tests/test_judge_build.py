@@ -59,6 +59,7 @@ class MaskingTest(unittest.TestCase):
                          "[NATIONALITY] and [NATIONALITY] nationals from [PASSPORT COUNTRY]")
         self.assertEqual(mask("unrest in the Middle East, Damascus", m)[0], "unrest in the [REGION], [PLACE]")
         self.assertEqual(mask("a woman in Amman", m)[0], "a woman in [PLACE]")
+        self.assertEqual(mask("born in Muscat or Phnom Penh", masker_for("Oman")), ("born in [PLACE] or [PLACE]", 2))
 
     def test_aliases_and_longer_terms_win(self):
         m = masker_for("Palestine")
