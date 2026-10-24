@@ -13,8 +13,8 @@ from unittest import mock
 
 from pipeline import judge_build
 from pipeline.client import MockClient, OpenAICompatibleClient, RunRefused
-from pipeline.common import append_jsonl, read_jsonl, read_table, write_csv
-from pipeline.judge_build import JUDGE_CODES, LINK_COLUMNS, build_judge_items
+from pipeline.common import append_jsonl, load_models, load_settings, read_jsonl, read_table, write_csv
+from pipeline.judge_build import JUDGE, JUDGE_CODES, LINK_COLUMNS, build_judge_items
 from pipeline.judge_parse import (JUDGE_CODE_COLUMNS, JUDGE_SCHEMA, main as judge_parse_main, parse_judge,
                                   parse_judge_answer)
 from pipeline.parse_answers import ANSWER_COLUMNS, parse_batch
@@ -24,6 +24,9 @@ from pipeline.run_models import run_answers
 OK = ('{"mentions_nationality": "YES", "nationality_as_risk": "no", "passport_country_conditions": "no", '
       '"doubts_residence": "no", "contradicts_application": "no", "evidence": "a [NATIONALITY] passport"}')
 ALL_NO = dict.fromkeys(JUDGE_CODES, "no")
+# The judge models as the live experiment/judge/judge_models.csv has them (revision, extra_body ...).
+JUDGES = load_models(JUDGE / "judge_models.csv")
+PRIMARY = JUDGES["gpt-oss-120b"]
 JUDGED_COLUMNS = [*ANSWER_COLUMNS, "item_id", "n_masked", "judge_status", *JUDGE_CODES]
 
 
@@ -158,23 +161,25 @@ class RunJudgeTest(unittest.TestCase):
         records = read_jsonl(self.raw())
         self.assertEqual({r["key"] for r in records}, {f"item{i}" for i in range(5)})
         self.assertTrue(all(r["mock"] and r["kind"] == "judge" and r["model_alias"] == "gpt-oss-120b"
-                            and r["batch"] == "mock_j" and r["model_id"] == "openai/gpt-oss-120b"
+                            and r["batch"] == "mock_j" and r["model_id"] == PRIMARY["model_id"]
                             and r["item_id"] == r["key"] for r in records))
         self.assertTrue(all(r["error"] is None and r["text"] for r in records))
         # Judge settings (run_settings.csv) and the judge model's extra_body (judge_models.csv).
         params = records[0]["params"]
+        settings = load_settings("judge")
         self.assertEqual((params["temperature"], params["top_p"], params["max_tokens"], params["seed"]),
-                         (0.0, 1.0, 1000, 0))
-        self.assertEqual(params["reasoning_effort"], "low")
-        self.assertNotIn("response_format", params)
+                         (settings["temperature"], settings["top_p"], settings["max_tokens"], settings["seed"]))
+        self.assertEqual({key: params[key] for key in PRIMARY["extra_body"]}, PRIMARY["extra_body"])
+        self.assertEqual("response_format" in params, settings["json_schema"])
 
     def test_the_other_judge_gets_its_own_files_and_extra_body(self):
         self.write_items("mock_j", 2)
         self.mock_run(alias="qwen3-32b")
         self.assertTrue(self.raw(alias="qwen3-32b").exists())
         self.assertFalse(self.raw().exists())
-        self.assertEqual(read_jsonl(self.raw(alias="qwen3-32b"))[0]["params"]["chat_template_kwargs"],
-                         {"enable_thinking": False})
+        other = JUDGES["qwen3-32b"]["extra_body"]
+        params = read_jsonl(self.raw(alias="qwen3-32b"))[0]["params"]
+        self.assertEqual({key: params[key] for key in other}, other)
 
     def test_sends_system_and_user_of_the_item(self):
         self.write_items("mock_j", 1)
@@ -199,10 +204,10 @@ class RunJudgeTest(unittest.TestCase):
         stored = self.manifest()
         self.assertEqual({k: stored[k] for k in ("batch", "kind", "model_alias", "model_id", "revision", "mock")},
                          {"batch": "mock_j", "kind": "judge", "model_alias": "gpt-oss-120b",
-                          "model_id": "openai/gpt-oss-120b", "revision": "", "mock": True})
+                          "model_id": PRIMARY["model_id"], "revision": PRIMARY["revision"], "mock": True})
         (session,) = stored["sessions"]
         self.assertEqual(session["limit"], 2)
-        self.assertEqual(session["settings"]["max_tokens"], 1000)
+        self.assertEqual(session["settings"], load_settings("judge"))
         self.assertEqual(session["summary"], {"planned": 2, "already_done": 0, "called": 2, "errors": 0})
         for field in ("started_utc", "git_commit", "dirty"):
             self.assertIn(field, session)
@@ -231,7 +236,8 @@ class RunJudgeTest(unittest.TestCase):
         before = self.raw().read_text(encoding="utf-8")
         path = self.tmp / "raw/mock_j/judge_gpt-oss-120b_manifest.json"
         stored = json.loads(path.read_text(encoding="utf-8"))
-        path.write_text(json.dumps(dict(stored, revision="abc123")), encoding="utf-8")
+        other_revision = "f" * 40 if stored["revision"] != "f" * 40 else "e" * 40
+        path.write_text(json.dumps(dict(stored, revision=other_revision)), encoding="utf-8")
         with self.assertRaisesRegex(RunRefused, "revision"):
             self.mock_run()
         self.assertEqual(self.raw().read_text(encoding="utf-8"), before)
@@ -277,15 +283,28 @@ class RunJudgeTest(unittest.TestCase):
         self.assertFalse((self.tmp / "raw").exists())
 
     def test_cli_refuses_real_judge_without_pinned_revision(self):
-        # The flag is given, but experiment/judge/judge_models.csv has no revision yet.
+        # The flag is given, but the judge has no revision in its CSV: patched here, so that the test
+        # does not depend on whether the team has pinned the revision in the live file.
         self.write_items("pilot1", 1)
-        with mock.patch.object(OpenAICompatibleClient, "served_models", side_effect=AssertionError("network")):
+        unpinned = {alias: dict(model, revision="") for alias, model in JUDGES.items()}
+        with mock.patch("pipeline.run_judge.load_models", return_value=unpinned), \
+                mock.patch.object(OpenAICompatibleClient, "served_models", side_effect=AssertionError("network")):
             code, _, err = run_cli(run_judge_main, ["--batch", "pilot1", "--judge", "gpt-oss-120b", "--base-url",
                                                     "http://127.0.0.1:9/v1", "--allow-real-calls",
                                                     "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
         self.assertIn("refusing: ", err)
         self.assertIn("revision", err)
+        self.assertIn("gpt-oss-120b", err)
+        self.assertFalse((self.tmp / "raw").exists())
+
+    def test_a_real_client_built_by_hand_is_refused_and_nothing_is_written(self):
+        # Only make_client approves a client; a client built directly cannot be used for a real run.
+        self.write_items("pilot1", 1)
+        client = OpenAICompatibleClient("http://127.0.0.1:9/v1", PRIMARY["model_id"])
+        with mock.patch.object(OpenAICompatibleClient, "complete", side_effect=AssertionError("called")):
+            with self.assertRaisesRegex(RunRefused, "make_client"):
+                run_judge("pilot1", "gpt-oss-120b", client, self.tmp, mock=False)
         self.assertFalse((self.tmp / "raw").exists())
 
     def test_cli_refuses_real_judge_without_flag_even_without_items(self):

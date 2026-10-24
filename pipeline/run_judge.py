@@ -50,7 +50,8 @@ def run_judge(batch, judge_alias, client, data_root, limit=None, workers=8, mock
     batch_dir = Path(data_root) / "raw" / batch
     manifest_path = batch_dir / f"judge_{judge_alias}_manifest.json"
     # The manifest comes first: a batch that belongs to another model is refused before any call.
-    fixed_fields = begin_stage(manifest_path, "judge", batch, judge_alias, judge, mock, settings, {"limit": limit})
+    fixed_fields = begin_stage(manifest_path, "judge", batch, judge_alias, judge, mock, settings, {"limit": limit},
+                               client)
     summary = run_calls(items, client, settings, judge["extra_body"], JUDGE_SCHEMA,
                         batch_dir / f"judge_{judge_alias}.jsonl", workers, fixed_fields)
     record_summary(manifest_path, summary)

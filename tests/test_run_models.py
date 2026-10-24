@@ -4,6 +4,7 @@ called: every run uses the mock client or a client defined in the test."""
 import contextlib
 import io
 import json
+import os
 import tempfile
 import threading
 import unittest
@@ -11,13 +12,23 @@ from pathlib import Path
 from unittest import mock
 
 from pipeline.build_runs import build_runs
-from pipeline.calls import done_keys, request_params, run_calls, update_manifest
+from pipeline.calls import (begin_stage, check_mock_label, done_keys, record_summary, request_params, run_calls,
+                            update_manifest)
 from pipeline.client import ClientError, MockClient, OpenAICompatibleClient, RunRefused
-from pipeline.common import EXPERIMENT, append_jsonl, load_settings, read_jsonl, read_text
+from pipeline.common import EXPERIMENT, append_jsonl, load_models, load_settings, read_jsonl
 from pipeline.run_models import main, plan_items, run_answers
 
+# Fixed settings for the tests of the call loop; the values in experiment/run_settings.csv may change.
 SETTINGS = {"temperature": 0.7, "top_p": 1.0, "max_tokens": 400, "seed": "per_call", "json_schema": False}
+SETTINGS_CSV = ("setting,answers,judge,status,note\n"
+                "temperature,0.7,0,provisional,\n"
+                "top_p,1,1,provisional,\n"
+                "max_tokens,400,1000,provisional,\n"
+                "seed,per_call,0,provisional,\n"
+                "json_schema,{answers_schema},no,open,\n")
 MSGS = [{"role": "user", "content": "hi"}]
+# The model the tests run, as the live experiment/models.csv has it.
+MODEL = load_models(EXPERIMENT / "models.csv")["qwen3-8b"]
 
 
 class CountingClient:
@@ -57,19 +68,30 @@ class RunModelsTest(unittest.TestCase):
 
     # --- settings and request parameters
 
+    def settings_file(self, answers_schema="no"):
+        path = self.tmp / "s.csv"
+        path.write_text(SETTINGS_CSV.format(answers_schema=answers_schema), encoding="utf-8", newline="\n")
+        return path
+
     def test_load_settings(self):
-        self.assertEqual(load_settings("judge"), {"temperature": 0.0, "top_p": 1.0, "max_tokens": 1000, "seed": 0,
-                                                  "json_schema": False})
-        self.assertEqual(load_settings("answers"), SETTINGS)
+        # Read from a file of the test's own: the values in experiment/run_settings.csv may change.
+        path = self.settings_file()
+        self.assertEqual(load_settings("judge", path), {"temperature": 0.0, "top_p": 1.0, "max_tokens": 1000,
+                                                        "seed": 0, "json_schema": False})
+        self.assertEqual(load_settings("answers", path), SETTINGS)
+        self.assertIs(load_settings("answers", self.settings_file("yes"))["json_schema"], True)
+
+    def test_load_settings_reads_the_live_file(self):
+        for kind in ("answers", "judge"):
+            settings = load_settings(kind)
+            self.assertEqual(set(settings), {"temperature", "top_p", "max_tokens", "seed", "json_schema"})
+            self.assertIsInstance(settings["json_schema"], bool)
 
     def test_load_settings_rejects_bad_kind_and_value(self):
         with self.assertRaises(ValueError):
             load_settings("other")
-        bad = self.tmp / "s.csv"
-        bad.write_text(read_text(EXPERIMENT / "run_settings.csv").replace("json_schema,no,no", "json_schema,maybe,no"),
-                       encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "json_schema"):
-            load_settings("answers", bad)
+            load_settings("answers", self.settings_file("maybe"))
 
     def test_request_params(self):
         s = SETTINGS
@@ -153,6 +175,24 @@ class RunModelsTest(unittest.TestCase):
             update_manifest(path, dict(header, model_alias="m2"), {"started_utc": "t3"})
         self.assertEqual(len(json.loads(path.read_text(encoding="utf-8"))["sessions"]), 2)
 
+    def test_manifest_is_written_through_a_temp_file_that_is_gone_afterwards(self):
+        path = self.tmp / "b" / "manifest.json"
+        header = {"batch": "mock_t", "model_alias": "m1", "mock": True}
+        update_manifest(path, header, {"started_utc": "t1"})
+        record_summary(path, {"called": 1})
+        self.assertEqual([p.name for p in path.parent.iterdir()], ["manifest.json"])
+
+    def test_failed_manifest_write_keeps_the_old_manifest(self):
+        path = self.tmp / "b" / "manifest.json"
+        header = {"batch": "mock_t", "model_alias": "m1", "mock": True}
+        update_manifest(path, header, {"started_utc": "t1"})
+        before = path.read_bytes()
+        with mock.patch("pipeline.calls.os.replace", side_effect=OSError("disk")):
+            with self.assertRaises(OSError):
+                update_manifest(path, header, {"started_utc": "t2"})
+        self.assertEqual(path.read_bytes(), before)
+        self.assertEqual([p.name for p in path.parent.iterdir()], ["manifest.json"])
+
     # --- run_answers
 
     def test_mock_run_writes_labelled_records(self):
@@ -165,18 +205,18 @@ class RunModelsTest(unittest.TestCase):
                             for r in recs))
         self.assertTrue(all(r["error"] is None and r["text"] for r in recs))
         # The model's extra_body from models.csv goes into the request.
-        self.assertEqual(recs[0]["params"]["chat_template_kwargs"], {"enable_thinking": False})
+        self.assertEqual({key: recs[0]["params"][key] for key in MODEL["extra_body"]}, MODEL["extra_body"])
 
     def test_manifest_has_header_and_session_with_summary(self):
         self.mock_run(limit=3)
         stored = json.loads((self.tmp / "raw/mock_t/manifest.json").read_text(encoding="utf-8"))
         self.assertEqual({k: stored[k] for k in ("batch", "kind", "model_alias", "model_id", "revision", "mock")},
                          {"batch": "mock_t", "kind": "answers", "model_alias": "qwen3-8b",
-                          "model_id": "Qwen/Qwen3-8B", "revision": "", "mock": True})
+                          "model_id": MODEL["model_id"], "revision": MODEL["revision"], "mock": True})
         (session,) = stored["sessions"]
         self.assertEqual(session["blocks"], [1])
         self.assertEqual(session["limit"], 3)
-        self.assertEqual(session["settings"], SETTINGS)
+        self.assertEqual(session["settings"], load_settings("answers"))
         self.assertEqual(session["summary"], {"planned": 3, "already_done": 0, "called": 3, "errors": 0})
         for field in ("started_utc", "git_commit", "dirty"):
             self.assertIn(field, session)
@@ -192,6 +232,21 @@ class RunModelsTest(unittest.TestCase):
         self.assertEqual(done_keys(path), {r["key"] for r in recs})
         stored = json.loads((self.tmp / "raw/mock_t/manifest.json").read_text(encoding="utf-8"))
         self.assertEqual(len(stored["sessions"]), 2)
+
+    def test_resume_over_a_torn_last_line_calls_that_key_again(self):
+        # A killed job can leave half a record at the end of the raw file.
+        self.mock_run(limit=5)
+        path = self.tmp / "raw/mock_t/answers.jsonl"
+        keys = {r["key"] for r in read_jsonl(path)}
+        data = path.read_bytes()
+        last_start = data.rstrip(b"\n").rfind(b"\n") + 1
+        path.write_bytes(data[:last_start + 25])
+        with contextlib.redirect_stderr(io.StringIO()) as err:
+            again = self.mock_run(limit=5)
+            self.assertEqual((again["already_done"], again["called"]), (4, 1))
+            self.assertEqual(done_keys(path), keys)
+        self.assertIn("skipped 1 unreadable line(s)", err.getvalue())
+        self.assertEqual(len(path.read_bytes().splitlines()), 6)  # 4 whole records, the fragment, the new record
 
     def test_batch_reused_with_other_model_refused(self):
         self.mock_run(limit=2)
@@ -216,6 +271,54 @@ class RunModelsTest(unittest.TestCase):
         with self.assertRaisesRegex(RunRefused, "mock"):
             run_answers("pilot1", "qwen3-8b", MockClient("answers"), self.tmp, blocks=[1], limit=1, mock=True)
         self.assertFalse((self.tmp / "raw").exists())
+
+    # --- the gate: only make_client can produce a client that may make real calls
+
+    def test_a_real_client_built_by_hand_is_refused_and_nothing_is_written(self):
+        client = OpenAICompatibleClient("http://127.0.0.1:9/v1", MODEL["model_id"])
+        with mock.patch.object(OpenAICompatibleClient, "complete", side_effect=AssertionError("called")):
+            with self.assertRaisesRegex(RunRefused, "make_client"):
+                run_answers("pilot1", "qwen3-8b", client, self.tmp, blocks=[1], limit=1, mock=False)
+        self.assertFalse((self.tmp / "raw").exists())
+
+    def test_an_approved_client_passes_the_label_check(self):
+        client = OpenAICompatibleClient("http://127.0.0.1:9/v1", MODEL["model_id"])
+        client.approved = True  # what make_client does once every condition holds
+        check_mock_label(client, False, "pilot1")
+
+    def test_any_other_non_mock_client_is_refused_too(self):
+        with self.assertRaisesRegex(RunRefused, "make_client"):
+            check_mock_label(CountingClient(), False, "pilot1")
+
+    # --- what the manifest records about the server
+
+    def test_real_session_records_the_server_facts_from_the_environment(self):
+        client = OpenAICompatibleClient("http://127.0.0.1:9/v1", MODEL["model_id"])
+        client.approved = True
+        path = self.tmp / "manifest.json"
+        with mock.patch.dict(os.environ, {"MODEL_PATH": "/models/qwen3-8b", "VLLM_ARGS": "--max-model-len 8192"}):
+            begin_stage(path, "answers", "pilot1", "qwen3-8b", MODEL, False, SETTINGS, {}, client)
+        (session,) = json.loads(path.read_text(encoding="utf-8"))["sessions"]
+        self.assertEqual((session["model_path"], session["vllm_args"], session["base_url"]),
+                         ("/models/qwen3-8b", "--max-model-len 8192", "http://127.0.0.1:9/v1"))
+
+    def test_real_session_records_empty_strings_when_the_environment_is_not_set(self):
+        client = OpenAICompatibleClient("http://127.0.0.1:9/v1", MODEL["model_id"])
+        client.approved = True
+        path = self.tmp / "manifest.json"
+        with mock.patch.dict(os.environ):
+            os.environ.pop("MODEL_PATH", None)
+            os.environ.pop("VLLM_ARGS", None)
+            begin_stage(path, "answers", "pilot1", "qwen3-8b", MODEL, False, SETTINGS, {}, client)
+        (session,) = json.loads(path.read_text(encoding="utf-8"))["sessions"]
+        self.assertEqual((session["model_path"], session["vllm_args"]), ("", ""))
+
+    def test_mock_session_records_no_server_facts(self):
+        with mock.patch.dict(os.environ, {"MODEL_PATH": "/models/qwen3-8b", "VLLM_ARGS": "--x"}):
+            self.mock_run(limit=1)
+        stored = json.loads((self.tmp / "raw/mock_t/manifest.json").read_text(encoding="utf-8"))
+        (session,) = stored["sessions"]
+        self.assertEqual((session["model_path"], session["vllm_args"], session["base_url"]), ("", "", None))
 
     # --- the command line
 

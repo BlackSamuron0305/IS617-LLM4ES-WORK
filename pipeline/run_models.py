@@ -50,7 +50,7 @@ def run_answers(batch, model_alias, client, data_root, blocks=None, limit=None, 
     batch_dir = Path(data_root) / "raw" / batch
     # The manifest comes first: a batch that belongs to another model is refused before any call.
     fixed_fields = begin_stage(batch_dir / "manifest.json", "answers", batch, model_alias, model, mock, settings,
-                               {"blocks": blocks, "limit": limit})
+                               {"blocks": blocks, "limit": limit}, client)
     summary = run_calls(items, client, settings, model["extra_body"], ANSWER_SCHEMA, batch_dir / "answers.jsonl",
                         workers, fixed_fields)
     record_summary(batch_dir / "manifest.json", summary)

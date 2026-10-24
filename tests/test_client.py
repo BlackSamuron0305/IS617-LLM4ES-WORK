@@ -5,11 +5,13 @@ import json
 import threading
 import unittest
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from unittest import mock
 
 from pipeline.client import (ClientError, MockClient, OpenAICompatibleClient, RunRefused, check_mock_batch,
                              check_real_calls_allowed, make_client)
 
-REAL = {"alias": "m", "model_id": "org/m", "revision": "abc123", "extra_body": {}}
+REVISION = "0123456789abcdef0123456789abcdef01234567"  # 40 lowercase hex characters, like a commit hash
+REAL = {"alias": "m", "model_id": "org/m", "revision": REVISION, "extra_body": {}}
 MSGS = [{"role": "user", "content": "hi"}]
 CHAT_REPLY = {"model": "org/m", "choices": [{"message": {"content": "{}"}, "finish_reason": "stop"}],
               "usage": {"total_tokens": 3}}
@@ -80,6 +82,23 @@ class RefusalTest(unittest.TestCase):
         with self.assertRaisesRegex(RunRefused, "revision"):
             check_real_calls_allowed("pilot1", dict(REAL, revision=""), True, self.fail_if_called, [])
 
+    def test_unpinned_revision_message_names_the_model_and_does_not_name_a_file(self):
+        # The same check serves experiment/models.csv and experiment/judge/judge_models.csv.
+        judge = dict(REAL, alias="gpt-oss-120b", revision="")
+        with self.assertRaises(RunRefused) as caught:
+            check_real_calls_allowed("pilot1", judge, True, self.fail_if_called, [])
+        message = str(caught.exception)
+        self.assertIn("gpt-oss-120b", message)
+        self.assertIn("its models CSV", message)
+        self.assertNotIn("experiment/models.csv", message)
+
+    def test_refuses_a_revision_that_is_not_a_commit_hash(self):
+        for revision in ("main", "abc123", REVISION[:-1], REVISION + "0", REVISION.upper(), REVISION + "\n",
+                         " " + REVISION, "g" * 40):
+            with self.subTest(revision=revision):
+                with self.assertRaisesRegex(RunRefused, "revision.*40-character commit hash"):
+                    check_real_calls_allowed("pilot1", dict(REAL, revision=revision), True, self.fail_if_called, [])
+
     def test_refuses_uncommitted_changes(self):
         with self.assertRaisesRegex(RunRefused, "uncommitted"):
             check_real_calls_allowed("pilot1", REAL, True, self.fail_if_called, [" M experiment/models.csv"])
@@ -126,6 +145,24 @@ class RefusalTest(unittest.TestCase):
         # The flag is checked before the server is asked; nothing listens at this address.
         with self.assertRaisesRegex(RunRefused, "allow-real-calls"):
             make_client("answers", REAL, "pilot1", False, "http://127.0.0.1:9/v1", False)
+
+    def test_make_client_asks_git_about_the_state_of_the_files(self):
+        # make_client passes the real dirty_files() on to the check; a dirty tree stops it before the server.
+        with mock.patch("pipeline.client.dirty_files", return_value=[" M experiment/models.csv"]), \
+                mock.patch.object(OpenAICompatibleClient, "served_models", side_effect=AssertionError("asked")):
+            with self.assertRaisesRegex(RunRefused, "uncommitted"):
+                make_client("answers", REAL, "pilot1", False, "http://127.0.0.1:9/v1", True)
+
+    def test_make_client_returns_an_approved_client_when_all_holds(self):
+        with mock.patch("pipeline.client.dirty_files", return_value=[]), \
+                mock.patch.object(OpenAICompatibleClient, "served_models", return_value=["org/m"]):
+            client = make_client("answers", REAL, "pilot1", False, "http://127.0.0.1:9/v1", True)
+        self.assertIsInstance(client, OpenAICompatibleClient)
+        self.assertIs(client.approved, True)
+        self.assertEqual((client.base_url, client.model_id), ("http://127.0.0.1:9/v1", "org/m"))
+
+    def test_a_client_built_by_hand_is_not_approved(self):
+        self.assertIs(OpenAICompatibleClient("http://127.0.0.1:9/v1", "org/m").approved, False)
 
 
 class MockClientTest(unittest.TestCase):
@@ -220,6 +257,14 @@ class RealClientTest(unittest.TestCase):
         self.assertEqual(stub.last_body["seed"], 5)
         self.assertEqual(stub.last_body["temperature"], 0.7)
         self.assertEqual(stub.last_body["messages"], MSGS)
+
+    def test_settings_cannot_override_the_model_or_the_messages(self):
+        stub = self.stub()
+        client = OpenAICompatibleClient(stub.url, "org/m", retries=1, backoff=0)
+        client.complete(MSGS, {"model": "x", "messages": [], "seed": 5})
+        self.assertEqual(stub.last_body["model"], "org/m")
+        self.assertEqual(stub.last_body["messages"], MSGS)
+        self.assertEqual(stub.last_body["seed"], 5)
 
     def test_gives_up_after_retries(self):
         stub = self.stub(post_status=500)

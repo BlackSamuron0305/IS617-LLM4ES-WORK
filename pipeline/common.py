@@ -7,6 +7,7 @@ import csv
 import hashlib
 import json
 import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -25,20 +26,38 @@ def read_table(path):
 
 
 def read_jsonl(path):
-    # A raw file that does not exist yet is an empty file.
+    # A raw file that does not exist yet is an empty file. A line that cannot be read (a record torn
+    # by a killed job) is skipped and counted; its key is simply called again on the next start.
     path = Path(path)
     if not path.exists():
         return []
-    with open(path, encoding="utf-8") as f:
-        return [json.loads(line) for line in f if line.strip()]
+    records, skipped = [], 0
+    with open(path, "rb") as f:
+        for line in f:
+            if not line.strip():
+                continue
+            try:
+                records.append(json.loads(line.decode("utf-8")))
+            except ValueError:  # JSONDecodeError and UnicodeDecodeError are both ValueErrors
+                skipped += 1
+    if skipped:
+        print(f"skipped {skipped} unreadable line(s) in {path}", file=sys.stderr)
+    return records
 
 
 def append_jsonl(path, record):
-    # Raw files are append-only: one record per line, written and flushed at once.
+    # Raw files are append-only: one record per line, written and flushed at once. If a killed job
+    # left the last line without its newline, a newline goes first, so the torn fragment stays on
+    # its own line and cannot swallow this record.
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    lead = ""
+    if path.exists() and path.stat().st_size > 0:
+        with open(path, "rb") as f:
+            f.seek(-1, 2)
+            lead = "" if f.read(1) == b"\n" else "\n"
     with open(path, "a", encoding="utf-8", newline="\n") as f:
-        f.write(json.dumps(record, ensure_ascii=False) + "\n")
+        f.write(lead + json.dumps(record, ensure_ascii=False) + "\n")
         f.flush()
 
 

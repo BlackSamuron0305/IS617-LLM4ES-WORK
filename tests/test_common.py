@@ -1,5 +1,7 @@
 """Tests for the shared helpers (pipeline/common.py)."""
 
+import contextlib
+import io
 import subprocess
 import tempfile
 import unittest
@@ -26,6 +28,44 @@ class CommonTest(unittest.TestCase):
         self.assertEqual(len(read_jsonl(p)), 3)
         self.assertEqual({k: r["v"] for k, r in last_by_key(read_jsonl(p)).items()}, {"a": 2, "b": 3})
 
+    def test_append_jsonl_writes_plain_lines_without_blank_ones(self):
+        p = self.tmp / "plain.jsonl"
+        append_jsonl(p, {"key": "a"})
+        append_jsonl(p, {"key": "b"})
+        self.assertEqual(p.read_bytes(), b'{"key": "a"}\n{"key": "b"}\n')
+
+    def test_read_jsonl_skips_a_torn_last_line_and_warns(self):
+        p = self.tmp / "torn.jsonl"
+        p.write_text('{"key": "a", "v": 1}\n{"key": "b", "err', encoding="utf-8")
+        with contextlib.redirect_stderr(io.StringIO()) as err:
+            records = read_jsonl(p)
+        self.assertEqual(records, [{"key": "a", "v": 1}])
+        self.assertEqual(err.getvalue(), f"skipped 1 unreadable line(s) in {p}\n")
+
+    def test_read_jsonl_skips_a_line_torn_inside_a_character(self):
+        p = self.tmp / "torn_bytes.jsonl"
+        p.write_bytes('{"key": "a"}\n'.encode("utf-8") + '{"key": "b", "text": "قطر"}'.encode("utf-8")[:-6])
+        with contextlib.redirect_stderr(io.StringIO()) as err:
+            records = read_jsonl(p)
+        self.assertEqual(records, [{"key": "a"}])
+        self.assertIn("skipped 1 unreadable line(s)", err.getvalue())
+
+    def test_read_jsonl_is_silent_when_every_line_is_readable(self):
+        p = self.tmp / "fine.jsonl"
+        append_jsonl(p, {"key": "a"})
+        with contextlib.redirect_stderr(io.StringIO()) as err:
+            read_jsonl(p)
+        self.assertEqual(err.getvalue(), "")
+
+    def test_append_after_a_torn_line_keeps_the_new_record_readable(self):
+        p = self.tmp / "torn.jsonl"
+        p.write_text('{"key": "a", "v": 1}\n{"key": "b", "err', encoding="utf-8")
+        append_jsonl(p, {"key": "b", "v": 2})
+        self.assertEqual(p.read_bytes().count(b"\n"), 3)  # the fragment ends its own line
+        with contextlib.redirect_stderr(io.StringIO()):
+            records = read_jsonl(p)
+        self.assertEqual(records, [{"key": "a", "v": 1}, {"key": "b", "v": 2}])
+
     def test_append_jsonl_keeps_non_ascii_on_one_line(self):
         p = self.tmp / "u.jsonl"
         append_jsonl(p, {"key": "a", "text": "Qatari – قطر"})
@@ -44,9 +84,16 @@ class CommonTest(unittest.TestCase):
         self.assertEqual(len(read_table(EXPERIMENT / "models.csv")), 4)
 
     def test_load_models_parses_extra_body(self):
-        models = load_models(EXPERIMENT / "models.csv")
-        self.assertEqual(models["qwen3-8b"]["extra_body"], {"chat_template_kwargs": {"enable_thinking": False}})
-        self.assertEqual(models["llama-3.1-8b-instruct"]["extra_body"], {})
+        # A file of the test's own: the rows of experiment/models.csv may change.
+        path = self.tmp / "models.csv"
+        write_csv(path, [{"alias": "a", "model_id": "o/a", "revision": "", "extra_body": '{"x": {"y": false}}'},
+                         {"alias": "b", "model_id": "o/b", "revision": "", "extra_body": ""}],
+                  ["alias", "model_id", "revision", "extra_body"])
+        models = load_models(path)
+        self.assertEqual(models["a"]["extra_body"], {"x": {"y": False}})
+        self.assertEqual(models["b"]["extra_body"], {})
+        live = load_models(EXPERIMENT / "models.csv")  # the live file loads, whatever its rows say
+        self.assertEqual(set(live), {row["alias"] for row in read_table(EXPERIMENT / "models.csv")})
 
     def test_messages_sha256_stable(self):
         m = [{"role": "user", "content": "x"}]

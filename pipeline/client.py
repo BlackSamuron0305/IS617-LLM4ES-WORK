@@ -23,6 +23,8 @@ from pipeline.common import dirty_files
 from pipeline.judge_build import JUDGE_CODES
 
 MOCK_LABEL = "MOCK ANSWER, NOT A RESULT."
+# A pinned revision is the commit hash of the weights on Hugging Face: 40 lowercase hexadecimal characters.
+COMMIT_HASH = re.compile(r"[0-9a-f]{40}")
 # The line of experiment/judge/judge_task.txt that precedes the reason (tests/test_judge_build.py checks it).
 JUDGE_MARKER = "REASON GIVEN BY THE MODEL"
 # Placeholders the masking puts in the text the judge sees (the judge never sees the nationality).
@@ -87,9 +89,12 @@ class MockClient:
 
 class OpenAICompatibleClient:
     # Talks to a server with /models and /chat/completions (vLLM). Never constructed for a mock run.
+    # approved stays False until make_client has checked every condition for a real run; the stages
+    # refuse a real client that is not approved (calls.check_mock_label).
     def __init__(self, base_url, model_id, timeout=300.0, retries=3, backoff=2.0):
         self.base_url = base_url.rstrip("/")
         self.model_id = model_id
+        self.approved = False
         self.timeout = timeout
         self.retries = retries
         self.backoff = backoff
@@ -99,7 +104,8 @@ class OpenAICompatibleClient:
         return [entry["id"] for entry in data.get("data", [])]
 
     def complete(self, messages, params):
-        body = {"model": self.model_id, "messages": messages, **params}
+        # The model and the messages come last, so that a setting cannot override them.
+        body = {**params, "model": self.model_id, "messages": messages}
         data = self._request("POST", f"{self.base_url}/chat/completions", body)
         try:
             choice = data["choices"][0]
@@ -146,8 +152,14 @@ def check_real_calls_allowed(batch, model, allow_real_calls, served_models, dirt
     if batch.startswith("mock"):
         raise RunRefused(f"batch {batch!r} starts with 'mock'; a real run needs another batch name, "
                          "because every record of a mock batch is labelled as a mock result")
-    if not model.get("revision", "").strip():
-        raise RunRefused(f"model {model['alias']} has no pinned revision in experiment/models.csv")
+    revision = model.get("revision", "")
+    if not revision.strip():
+        raise RunRefused(f"model {model['alias']} has no pinned revision in its models CSV; "
+                         "pin the 40-character commit hash of the weights")
+    if not COMMIT_HASH.fullmatch(revision):
+        raise RunRefused(f"the revision of model {model['alias']} is {revision!r}, which is not a "
+                         "40-character commit hash (40 lowercase hexadecimal characters, as on the model's "
+                         "Hugging Face page); a branch name such as 'main' can move")
     if dirty:
         if dirty == ["git status failed"]:
             detail = "git status could not be run, so the state is not known to be clean"
@@ -175,4 +187,5 @@ def make_client(kind, model, batch, mock, base_url, allow_real_calls):
                          "(for example http://localhost:8000/v1)")
     client = OpenAICompatibleClient(base_url, model["model_id"])
     check_real_calls_allowed(batch, model, allow_real_calls, client.served_models, dirty_files())
+    client.approved = True
     return client

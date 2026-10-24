@@ -77,14 +77,15 @@ fi
 # changes, would be refused by the stage anyway; stop here, before the server is loaded.
 MODEL_ID=$("$PYTHON" - "$TABLE" "$ALIAS" <<'PY'
 import sys
+from pipeline.client import COMMIT_HASH
 from pipeline.common import dirty_files, load_models
 
 models = load_models(sys.argv[1])
 if sys.argv[2] not in models:
     sys.exit(f"error: unknown alias {sys.argv[2]!r}; {sys.argv[1]} has: {', '.join(models)}")
 model = models[sys.argv[2]]
-if not model["revision"].strip():
-    sys.exit(f"refusing: {sys.argv[2]} has no pinned revision in {sys.argv[1]}")
+if not COMMIT_HASH.fullmatch(model["revision"]):
+    sys.exit(f"refusing: {sys.argv[2]} has no pinned revision (a 40-character commit hash) in {sys.argv[1]}")
 if dirty_files():
     sys.exit("refusing: git reports uncommitted changes (or fails) in experiment/ or pipeline/")
 print(model["model_id"])
