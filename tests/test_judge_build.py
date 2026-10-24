@@ -68,6 +68,10 @@ class MaskingTest(unittest.TestCase):
         self.assertEqual(mask("the Kingdom of Saudi Arabia, KSA", m)[0], "the [PASSPORT COUNTRY], [PASSPORT COUNTRY]")
         self.assertEqual(mask("Kuwait City is not Kuwait", m)[0], "[PLACE] is not [PASSPORT COUNTRY]")
 
+    def test_alternate_demonym_spellings_are_masked(self):
+        self.assertEqual(mask("Somalian, Comoran, Yemenite and Khmer applicants", masker_for("Syria")),
+                         ("[NATIONALITY], [NATIONALITY], [NATIONALITY] and [NATIONALITY] applicants", 4))
+
     def test_word_boundaries_leave_other_words_alone(self):
         m = masker_for("Syria")
         text = "Arabic documents, a male clerk, Omanis and Africans"

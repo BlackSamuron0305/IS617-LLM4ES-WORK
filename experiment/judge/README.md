@@ -9,7 +9,7 @@ judge model.
 |---|---|
 | `judge_prompt.txt` | the system message: what the judge is, the placeholders, the five questions |
 | `judge_task.txt` | the user message. `{application}` is filled with the application, `{reason}` with the masked reason |
-| `judge_models.csv` | the two judge models, in the format of `../models.csv` (`revision` is still empty) |
+| `judge_models.csv` | the two judge models, with the columns of `../models.csv` plus `role` (`revision` is still empty) |
 | `mask_terms.csv` | the words, beyond the two nationality tables, that are hidden from the judge (or kept visible) |
 
 ## What the stage writes
@@ -88,8 +88,16 @@ The blinding is not perfect. State this wherever results are reported.
   the Emirates" stays visible. In a reason about a non-Emirati applicant it is a contrast
   ("not a UAE citizen"); in a reason about an Emirati applicant it can reveal the
   nationality.
-- A misspelling or a place that is in no table (for example "Aleppo" or "Basra") is not
-  masked, and not counted in `n_masked`.
+- A place that is in no table (for example "Aleppo" or "Basra") is not masked, and not
+  counted in `n_masked`.
+- Alternate spellings and misspellings of a demonym that are not in `mask_terms.csv` stay
+  visible, for example "Emirian". It is not added, because masking it for every
+  applicant would also hide residence wording.
+- A visible "Emirati" in a reason shows that the applicant is not Emirati, because the
+  applicant's own demonym is always masked. This is by design: residence wording must
+  stay readable.
+- A reason can restate the verdict ("high risk, refuse") although the judge is never
+  given the score, the rating or the recommendation.
 - The model may describe the country of the passport without naming it (for example "the
   applicant's war-torn home country"). The codes are made for exactly that, and it is
   not hidden.
