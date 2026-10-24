@@ -60,6 +60,20 @@ def load_models(path):
     return models
 
 
+def load_settings(kind, path=EXPERIMENT / "run_settings.csv"):
+    # The sampling settings for "answers" (the audited model) or "judge", from run_settings.csv.
+    if kind not in ("answers", "judge"):
+        raise ValueError(f"kind must be 'answers' or 'judge', not {kind!r}")
+    raw = {row["setting"]: row[kind].strip() for row in read_table(path)}
+    seed = raw["seed"]
+    json_schema = raw["json_schema"]
+    if json_schema not in ("yes", "no"):
+        raise ValueError(f"json_schema must be yes or no, not {json_schema!r}")
+    return {"temperature": float(raw["temperature"]), "top_p": float(raw["top_p"]),
+            "max_tokens": int(raw["max_tokens"]), "seed": seed if seed == "per_call" else int(seed),
+            "json_schema": json_schema == "yes"}
+
+
 def sha256_text(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
