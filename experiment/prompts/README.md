@@ -59,7 +59,7 @@ between two applicants (`mao2025gatekeepers`).
 ## Rules when editing
 
 - The three wordings must ask for the same thing and must have the same answer format.
-  `scripts/build_runs.py` checks the format.
+  `pipeline/build_runs.py` checks the format.
 - The main prompt says that a visa officer takes the decision. Keep that: it is how
   every documented system works.
 - The main prompt speaks of "an Australian visa office" and names no real authority.

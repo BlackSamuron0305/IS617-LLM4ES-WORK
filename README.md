@@ -31,7 +31,7 @@ The project moved from bank customer checks to visitor visa applications on 2026
 The experiment is described in `experiment/README.md`; the team has not confirmed it
 yet. The bank design of 2026-10-08 is in `research/old_design/bank_2026-10-08/`, the
 hiring design of 2026-10-04 in `research/old_design/hiring_2026-10-04/`. The code that
-sends the runs and reads the answers does not exist yet; `scripts/build_runs.py` builds
+sends the runs and reads the answers does not exist yet; `pipeline/build_runs.py` builds
 and checks the prompts only.
 
 ## Repository layout
@@ -45,7 +45,7 @@ and checks the prompts only.
 | `experiment/prompts/` | the main prompt and three wordings of the task |
 | `experiment/costs/` | how a difference is turned into money, with prices and sources |
 | `experiment/models.csv` | the four planned models |
-| `scripts/build_runs.py` | puts the prompts together, checks them and prints the counts; calls no model |
+| `pipeline/build_runs.py` | puts the prompts together, checks them and prints the counts; calls no model |
 | `data/raw/`, `data/processed/` | output of model runs; empty until the first real run |
 | `research/` | literature review, literature matrix, references, novelty assessment, literature notes, framing outline. Most of it was written for the hiring design |
 | `research/visa_scenario/` | the research notes of 2026-10-10 behind the visa design |
@@ -55,7 +55,7 @@ and checks the prompts only.
 | `ETHICS.md` | ethics statement and handling rules |
 | `CLAUDE.md` | project context and working rules for AI assistants |
 
-Check the experiment files: `python scripts/build_runs.py --example`
+Check the experiment files: `python -m pipeline.build_runs --example`
 
 ## Deadlines
 

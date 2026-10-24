@@ -85,7 +85,7 @@ passport, not as proven prejudice.
 - `experiment/costs/`: the cost measures and `cost_assumptions.csv` (prices and rates
   with sources).
 - `experiment/models.csv`: the four planned models.
-- `scripts/build_runs.py`: builds and checks the prompts. It never calls a model.
+- `pipeline/build_runs.py`: builds and checks the prompts. It never calls a model.
 - `data/raw/`, `data/processed/`: empty until the first real run.
 - `research/`: literature review, literature matrix, references, novelty assessment,
   literature notes (`lit_parts/`), framing outline. Most of it was written for the
@@ -172,7 +172,7 @@ by Claude on 2026-10-10 and has not been confirmed by the team.
 - Yardstick: the official rules. For the Australian visitor visa they are the same for
   all 22 Arab League nationalities: same visa, same form, same fee, same legal test, no
   list of risk nationalities in force, no ban (`experiment/countries/official_rules.csv`;
-  `scripts/build_runs.py` checks it). Expected result by the rules: no difference. A
+  `pipeline/build_runs.py` checks it). Expected result by the rules: no difference. A
   systematic difference among the 22 is what the project calls bias.
 - Why Australia: the only destination checked where the rules are the same for all 22.
   The United States bars six of the 22 by proclamation, the Schengen area exempts
@@ -188,7 +188,7 @@ by Claude on 2026-10-10 and has not been confirmed by the team.
   is no not-stated row.
 - Legal status: every application states the same line, "lawful long-term resident with
   the full right to live and work there". All applications differ in two lines only;
-  `scripts/build_runs.py` checks it. The six Gulf nationalities are marked in the `note`
+  `pipeline/build_runs.py` checks it. The six Gulf nationalities are marked in the `note`
   column of the nationality table; a check without them is listed among the comparisons.
 - Real grant and refusal rates (Australia 2019-20, United States 2025) are in
   `official_rules.csv` as context and for the slides: they show that the 22 fare very

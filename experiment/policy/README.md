@@ -76,7 +76,7 @@ and the honest limits.
 
 - The two versions must differ only by section 7.
 - The version without section 7 must not contain the word "nationality".
-  `scripts/build_runs.py` checks both.
+  `pipeline/build_runs.py` checks both.
 - Fix the guidance before the pilot. Do not change it after seeing results.
 
 ## Open

@@ -6,19 +6,19 @@ written it must refuse real calls unless the team has approved them explicitly
 (CLAUDE.md, "Compute and models").
 
 Usage:
-    python scripts/build_runs.py                 check everything and print the counts
-    python scripts/build_runs.py --example       also print one complete run
-    python scripts/build_runs.py --write FILE    also write all prompts to FILE (JSON lines)
+    python -m pipeline.build_runs                 check everything and print the counts
+    python -m pipeline.build_runs --example       also print one complete run
+    python -m pipeline.build_runs --write FILE    also write all prompts to FILE (JSON lines)
 """
 
 import argparse
-import csv
 import json
 import re
 import sys
-from pathlib import Path
 
-EXPERIMENT = Path(__file__).resolve().parent.parent / "experiment"
+from pipeline import common
+from pipeline.common import EXPERIMENT
+
 POLICY_VERSIONS = ("without_nationality_rule", "with_nationality_rule")
 WORDINGS = (1, 2, 3)
 RULE_PLACEHOLDER = "{nationality_rule}"
@@ -38,12 +38,11 @@ REPETITIONS = {1: 5, 2: 5, 3: 1}
 
 
 def read_text(relative):
-    return (EXPERIMENT / relative).read_text(encoding="utf-8")
+    return common.read_text(EXPERIMENT / relative)
 
 
 def read_table(relative):
-    with open(EXPERIMENT / relative, encoding="utf-8", newline="") as f:
-        return list(csv.DictReader(f))
+    return common.read_table(EXPERIMENT / relative)
 
 
 def build_policy(version):

@@ -45,7 +45,7 @@ Australian visitor visa they say the same for all of them
 | list of risk nationalities | none in force (the last one was revoked in 2009) |
 | entry ban or suspension | none, as of 10 October 2026 |
 
-`scripts/build_runs.py` reads that table and stops with a problem if a rule differs
+`pipeline/build_runs.py` reads that table and stops with a problem if a rule differs
 between two nationalities.
 
 By this yardstick the expected result is no difference. A systematic difference among
@@ -93,7 +93,7 @@ legal status there. `applicants/README.md` has the sources.
 | `costs/` | how a difference in the answers is turned into money, with the prices and their sources |
 | `models.csv` | the four planned models: name, exact model id, version to pin, notes |
 
-Each folder has its own README. `scripts/build_runs.py` puts the prompts together and
+Each folder has its own README. `pipeline/build_runs.py` puts the prompts together and
 checks them; it never calls a model.
 
 **Table conventions.** Tables are UTF-8 CSV files with one thing per row. An empty cell
@@ -131,7 +131,7 @@ cannot be applied for without a passport.
 
 ## Run plan
 
-`python scripts/build_runs.py` prints these counts from the files.
+`python -m pipeline.build_runs` prints these counts from the files.
 
 | block | what | prompts | repetitions | runs per model |
 |---|---|---|---|---|

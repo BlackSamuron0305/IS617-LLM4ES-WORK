@@ -66,7 +66,7 @@ and would not mean"):
    `{travel_document}`.
 
 Every version of an application is therefore identical except for those two lines, for
-all 26 nationalities. `scripts/build_runs.py` checks this for all applications.
+all 26 nationalities. `pipeline/build_runs.py` checks this for all applications.
 
 ## What is the same for every applicant
 

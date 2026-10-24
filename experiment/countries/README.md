@@ -25,7 +25,7 @@ or how a country is seen. `official_rules.csv` has one row per nationality:
 | `on_the_risk_list_revoked_in_2009` | whether the nationality was on the last such list | **no, it differs** | the list of 2008 (IMMI 08/033) had Egyptian, Iraqi, Jordanian, Lebanese and Syrian groups by sex and age, and Cambodian and Uruguayan ones. It was revoked on 15 May 2009. History, not a rule in force |
 | `entry_ban_or_travel_suspension_2026_10_10` | whether holders of this passport are barred | yes: no | none found for any of the 26. See the warning below |
 
-`scripts/build_runs.py` checks that every column of rules in force has one value for all
+`pipeline/build_runs.py` checks that every column of rules in force has one value for all
 26 rows.
 
 Three more columns start with `real_`. They are **not rules**. They show how real
