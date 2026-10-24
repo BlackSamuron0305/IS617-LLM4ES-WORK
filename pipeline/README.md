@@ -91,14 +91,24 @@ conditions are checked in this order:
    with the team's explicit approval.
 2. The batch name does not start with `mock`.
 3. The `revision` of the model in its table (`experiment/models.csv`, or
-   `experiment/judge/judge_models.csv` for the judge) is not empty. All revisions are empty
-   today, so every real run is refused until they are pinned.
+   `experiment/judge/judge_models.csv` for the judge) is a 40-character commit hash (40
+   lowercase hexadecimal characters). An empty cell, a branch name such as `main` or a short
+   hash is refused. All revisions are empty today, so every real run is refused until they
+   are pinned.
 4. `git status --porcelain -- experiment pipeline` is empty. A run is tied to a commit.
 5. The server lists the model's `model_id` at `GET /models`.
 
 Also: a real run needs `--base-url`; a mock run needs a batch name that starts with `mock`;
-a batch belongs to one model, and a second model under the same batch name is refused;
-`build_runs` must report no problem.
+a batch belongs to one audited model (several judges can code the same batch), and a second
+audited model under the same batch name is refused; the stages refuse a real client that did
+not come from `make_client`, which is where the five conditions are checked; `build_runs`
+must report no problem.
+
+A real session also records `MODEL_PATH`, `VLLM_ARGS` (both from the environment, empty when
+unset) and the address of the server in its manifest. A mock session records empty values.
+
+If a job is killed while it writes, the last line of a raw file may be cut off. The next run
+skips such a line (it prints `skipped N unreadable line(s)`) and calls that key again.
 
 Mock output is labelled. Every mock record has `"mock": true`, and every mock answer starts
 with `MOCK ANSWER, NOT A RESULT.`
@@ -123,9 +133,12 @@ judge's codes.
   `passport_country_conditions`, `doubts_residence`, `contradicts_application`) write `yes`
   or `no`. The questions are in `experiment/judge/judge_prompt.txt`. Write your name or
   initials in `coder`. `note` is free.
-- Keep `item_id` as text. The ids are 16 characters from 0-9 and a-f. Excel can turn an id
-  that is all digits into a number and change it. Format the `item_id` column as text
-  before saving, and check the ids against the original file.
+- Keep `item_id` as text. The ids are 16 characters from 0-9 and a-f. Excel keeps only 15
+  digits of a number and reads an id such as `12e4567890123456` as a number in scientific
+  notation, so it changes the id. Do not double-click the file: open Excel and use Data >
+  From Text/CSV, set the `item_id` column to Text, and save as described below. After the
+  agreement command, look at the number of item ids that have codes only in the human file;
+  it should be 0.
 - Save as "CSV UTF-8 (comma delimited)". Excel on a German-language computer saves a plain
   "CSV" with semicolons, and in an encoding that is not UTF-8. The program reads neither.
 - Two coders code separate copies. `agreement --human A.csv --other-human B.csv` measures
@@ -135,7 +148,11 @@ judge's codes.
 `agreement` prints, for each code, the number of items that have a value on both sides, the
 share they agree on and Cohen's kappa. A code passes at kappa 0.7 or more. The threshold is
 provisional until the team confirms it. A kappa is `n/a` when a code is the same on every
-item on both sides. The table is also written to
+item on both sides; a code whose kappa is `n/a` does not pass. Rare codes (for example
+`contradicts_application` and `doubts_residence`) may need a larger or a targeted sample
+before they can be validated. Below the table `agreement` prints how many item ids have
+codes only in the human file and how many only on the other side, so that ids a
+spreadsheet has changed do not drop out unnoticed. The table is also written to
 `data/processed/<batch>/validation_agreement_<name>.csv`.
 
 ## Tests

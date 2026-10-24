@@ -95,7 +95,7 @@ legal status there. `applicants/README.md` has the sources.
 | `judge/` | the judge that codes the free-text reason of each answer: its prompt, the masking terms, the two judge models |
 | `run_settings.csv` | the sampling settings (temperature, top_p, max_tokens, seed, answer format) for the audited models and for the judge; each marked provisional or open |
 
-Each folder has its own README, except `run_settings.csv`, which is one file. The code is in
+Each folder has its own README; `models.csv` and `run_settings.csv` are single files. The code is in
 `pipeline/` (`pipeline/README.md`): `pipeline/build_runs.py` puts the prompts together and
 checks them; it never calls a model.
 

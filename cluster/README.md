@@ -21,9 +21,9 @@ One job runs one stage for one model, on one GPU (partition `gpu_a100_il`, 4 hou
 2. Exits if a required variable is missing.
 3. Looks up the model id of `ALIAS` in `experiment/models.csv` (stage `answers`) or
    `experiment/judge/judge_models.csv` (stage `judge`). It stops here if the revision of
-   the model is not pinned or if `experiment/` or `pipeline/` has uncommitted changes,
-   because the stage would refuse anyway, and this saves the minutes it takes to load a
-   model.
+   the model is not pinned (a 40-character commit hash) or if `experiment/` or
+   `pipeline/` has uncommitted changes, because the stage would refuse anyway, and this
+   saves the minutes it takes to load a model.
 4. Starts `vllm serve` in the container `pyxis_vllm_is617` and writes its log to
    `logs/vllm-<job>.log`.
 5. Waits until `http://localhost:<port>/v1/models` answers (every 10 seconds, at most 900
@@ -32,16 +32,19 @@ One job runs one stage for one model, on one GPU (partition `gpu_a100_il`, 4 hou
    (stage `judge`) against the local server.
 7. Stops the server and exits with the exit code of the stage.
 
-The script talks to `localhost` only. It sets `HF_HUB_OFFLINE=1` and
-`VLLM_NO_USAGE_STATS=1` so that vLLM does not contact the internet.
+The script talks to `localhost` only. It sets four variables, `HF_HUB_OFFLINE=1`,
+`TRANSFORMERS_OFFLINE=1`, `VLLM_NO_USAGE_STATS=1` and `DO_NOT_TRACK=1`, which ask vLLM and
+the Hugging Face libraries to stay offline and not to send usage statistics. They are
+requests to those libraries, not a block on the network.
 
 ## Before the first submission
 
 1. The team has approved the run, for this model and this batch.
 2. The `revision` of the model is pinned in `experiment/models.csv` (answers) or
    `experiment/judge/judge_models.csv` (judge), and committed. Both columns are empty
-   today, so every real run is refused. The pin is the exact version of the model (a commit
-   of its Hugging Face repo) that was downloaded.
+   today, so every real run is refused. The pin is the exact version of the model that was
+   downloaded: the 40-character commit hash of its Hugging Face repo. A branch name such as
+   `main` is refused.
 3. The repo on the cluster is a `git clone` at that commit, not a plain copy. A real run is
    refused when `git status` fails or shows a change in `experiment/` or `pipeline/`, so
    that every raw answer can be tied to a commit.
@@ -79,8 +82,9 @@ sbatch --export=ALL,STAGE=judge,ALIAS=gpt-oss-120b,BATCH=pilot1,MODEL_PATH=/path
 | `PYTHON` | optional | the python to use, default `python3` |
 
 Run one model and one block at a time, so that a failed batch can be repeated on its own
-(`experiment/README.md`, "Run plan"). A batch belongs to one model: the manifest in
-`data/raw/<batch>/` refuses a second model under the same batch name.
+(`experiment/README.md`, "Run plan"). A batch belongs to one audited model (several judges
+can code the same batch): the manifest in `data/raw/<batch>/` refuses a second audited
+model under the same batch name.
 
 ## Order of the stages
 
@@ -102,7 +106,8 @@ Run one model and one block at a time, so that a failed batch can be repeated on
 - The summary of the stage (planned, already done, called, errors) is at the end of the job
   log, and in `data/raw/<batch>/manifest.json` (answers) or
   `judge_<alias>_manifest.json` (judge). An exit code of 0 means the stage ran through; read
-  the number of errors as well.
+  the number of errors as well. Each session in the manifest also records the commit,
+  `MODEL_PATH`, `VLLM_ARGS` and the address of the server.
 - A job that stopped (time limit, a failed node) can be submitted again with the same
   command. The stage skips what is already done and continues.
 - Copy `data/raw/<batch>/` off the cluster and commit it (`data/README.md`). Never keep the

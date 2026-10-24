@@ -14,7 +14,7 @@ append-only: a call is added as one line, and when a key appears twice the last 
 ```
 raw/<batch>/
   answers.jsonl                 one line per call to the audited model
-  manifest.json                 model, revision, settings, commit and summary of every session
+  manifest.json                 model, revision, settings, commit, server and summary of every session
   judge_<alias>.jsonl           one line per call to the judge model <alias>
   judge_<alias>_manifest.json   the same for the judge
 ```

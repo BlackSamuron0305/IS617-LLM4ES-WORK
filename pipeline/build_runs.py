@@ -1,9 +1,9 @@
 """Build and check the prompts of the visitor-visa experiment.
 
 This script only reads the files under experiment/ and puts the prompts together. It
-never calls a model. A runner that sends requests does not exist yet; when one is
-written it must refuse real calls unless the team has approved them explicitly
-(CLAUDE.md, "Compute and models").
+never calls a model. The runner that sends the prompts is pipeline/run_models.py; it
+refuses real calls unless the team has approved them explicitly (CLAUDE.md, "Compute and
+models").
 
 Usage:
     python -m pipeline.build_runs                 check everything and print the counts
