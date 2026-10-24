@@ -20,6 +20,7 @@ from pipeline.build_runs import build_runs
 from pipeline.calls import record_summary, run_calls, update_manifest
 from pipeline.client import MockClient, RunRefused, check_mock_batch, make_client
 from pipeline.common import DATA, EXPERIMENT, dirty_files, git_commit, load_models, load_settings, utc_now
+from pipeline.parse_answers import ANSWER_SCHEMA
 
 
 def plan_items(runs, blocks, limit):
@@ -59,8 +60,8 @@ def run_answers(batch, model_alias, client, data_root, blocks=None, limit=None, 
     update_manifest(batch_dir / "manifest.json", header, session)
     fixed_fields = {"batch": batch, "model_alias": model_alias, "model_id": model["model_id"], "kind": "answers",
                     "mock": mock}
-    summary = run_calls(items, client, settings, model["extra_body"], None, batch_dir / "answers.jsonl", workers,
-                        fixed_fields)
+    summary = run_calls(items, client, settings, model["extra_body"], ANSWER_SCHEMA, batch_dir / "answers.jsonl",
+                        workers, fixed_fields)
     record_summary(batch_dir / "manifest.json", summary)
     return summary
 
