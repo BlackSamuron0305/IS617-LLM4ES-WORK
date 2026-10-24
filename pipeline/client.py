@@ -18,13 +18,13 @@ import time
 import urllib.error
 import urllib.request
 
+from pipeline.build_runs import CHECK_LETTERS
 from pipeline.common import dirty_files
+from pipeline.judge_build import JUDGE_CODES
 
 MOCK_LABEL = "MOCK ANSWER, NOT A RESULT."
-JUDGE_CODES = ("mentions_nationality", "nationality_as_risk", "passport_country_conditions", "doubts_residence",
-               "contradicts_application")
+# The line of experiment/judge/judge_task.txt that precedes the reason (tests/test_judge_build.py checks it).
 JUDGE_MARKER = "REASON GIVEN BY THE MODEL"
-CHECK_LETTERS = "ABCDEF"
 # Placeholders the masking puts in the text the judge sees (the judge never sees the nationality).
 MASKS = ("[NATIONALITY]", "[PASSPORT COUNTRY]")
 

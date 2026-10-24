@@ -1,0 +1,3 @@
+alias,model_id,revision,extra_body,role,notes
+gpt-oss-120b,openai/gpt-oss-120b,,"{""reasoning_effort"": ""low""}",primary,"Different family from the four audited models. Fits one 80 GB GPU (MXFP4 weights). Reasoning model: low effort keeps answers short. Check on the cluster that vLLM accepts reasoning_effort."
+qwen3-32b,Qwen/Qwen3-32B,,"{""chat_template_kwargs"": {""enable_thinking"": false}}",agreement_check,"Already downloaded on the cluster. Same family as qwen3-8b, so used only as a second opinion on the validation sample."

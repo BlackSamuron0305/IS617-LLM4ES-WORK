@@ -1,0 +1,57 @@
+term,replacement,kind
+Saudi Arabian,[NATIONALITY],alias
+Syrian Arab Republic,[PASSPORT COUNTRY],alias
+Kingdom of Saudi Arabia,[PASSPORT COUNTRY],alias
+KSA,[PASSPORT COUNTRY],alias
+Palestinian territories,[PASSPORT COUNTRY],alias
+State of Palestine,[PASSPORT COUNTRY],alias
+Gaza,[PASSPORT COUNTRY],alias
+West Bank,[PASSPORT COUNTRY],alias
+Algiers,[PLACE],capital
+Manama,[PLACE],capital
+Moroni,[PLACE],capital
+Cairo,[PLACE],capital
+Baghdad,[PLACE],capital
+Amman,[PLACE],capital
+Kuwait City,[PLACE],capital
+Beirut,[PLACE],capital
+Tripoli,[PLACE],capital
+Nouakchott,[PLACE],capital
+Rabat,[PLACE],capital
+Ramallah,[PLACE],capital
+Jerusalem,[PLACE],capital
+Doha,[PLACE],capital
+Riyadh,[PLACE],capital
+Mogadishu,[PLACE],capital
+Khartoum,[PLACE],capital
+Damascus,[PLACE],capital
+Tunis,[PLACE],capital
+Sanaa,[PLACE],capital
+Sana'a,[PLACE],capital
+Montevideo,[PLACE],capital
+Lilongwe,[PLACE],capital
+Phnom Penh,[PLACE],capital
+Arab,[REGION],region
+Middle East,[REGION],region
+Middle Eastern,[REGION],region
+MENA,[REGION],region
+Gulf,[REGION],region
+GCC,[REGION],region
+Levant,[REGION],region
+North Africa,[REGION],region
+North African,[REGION],region
+Horn of Africa,[REGION],region
+Sub-Saharan Africa,[REGION],region
+Africa,[REGION],region
+African,[REGION],region
+Latin America,[REGION],region
+Latin American,[REGION],region
+South America,[REGION],region
+South American,[REGION],region
+Southeast Asia,[REGION],region
+Southeast Asian,[REGION],region
+Asia,[REGION],region
+Asian,[REGION],region
+United Arab Emirates,,keep
+Emirati,,keep
+Abu Dhabi,,keep
