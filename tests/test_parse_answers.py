@@ -5,6 +5,7 @@ import contextlib
 import csv
 import io
 import json
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -60,6 +61,17 @@ class ParseAnswersTest(unittest.TestCase):
         self.assertIsNone(extract_json('{"a": 1'))
         self.assertIsNone(extract_json(""))
         self.assertIsNone(extract_json(None))
+
+    def test_extract_survives_endless_nesting(self):
+        # A model stuck in a loop can emit [[[[... or {"a":[[[... up to the token limit. The JSON parser
+        # gives up with RecursionError on such text; that must be "no JSON", not a crash of the stage.
+        # The depth is a generous multiple of the recursion limit and at least 100,000, which is deeper
+        # than the parser's own limit on Python 3.11 to 3.14.
+        depth = max(100_000, 100 * sys.getrecursionlimit())
+        loop = '{"a":' * (3 * sys.getrecursionlimit())  # many openings; only the scan can fail here
+        for text in ("[" * depth, '{"a":' + "[" * depth, loop):
+            self.assertIsNone(extract_json(text))
+            self.assertEqual(parse_answer(text, None), {"parse_status": "no_json", **BLANK, "reason": ""})
 
     # --- parse_answer
 

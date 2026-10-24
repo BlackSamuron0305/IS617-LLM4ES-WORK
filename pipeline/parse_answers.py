@@ -54,7 +54,7 @@ def extract_json(text):
         whole = json.loads(text.strip())
         if isinstance(whole, dict):
             return whole
-    except ValueError:
+    except (ValueError, RecursionError):  # endless nesting is "no JSON", not a crash
         pass
     decoder = json.JSONDecoder()
     position = text.find("{")
