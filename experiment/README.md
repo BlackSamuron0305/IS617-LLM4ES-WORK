@@ -92,8 +92,11 @@ legal status there. `applicants/README.md` has the sources.
 | `prompts/` | the main prompt and the three wordings of the task |
 | `costs/` | how a difference in the answers is turned into money, with the prices and their sources |
 | `models.csv` | the four planned models: name, exact model id, version to pin, notes |
+| `judge/` | the judge that codes the free-text reason of each answer: its prompt, the masking terms, the two judge models |
+| `run_settings.csv` | the sampling settings (temperature, top_p, max_tokens, seed, answer format) for the audited models and for the judge; each marked provisional or open |
 
-Each folder has its own README. `pipeline/build_runs.py` puts the prompts together and
+Each folder has its own README, except `run_settings.csv`, which is one file. The code is in
+`pipeline/` (`pipeline/README.md`): `pipeline/build_runs.py` puts the prompts together and
 checks them; it never calls a model.
 
 **Table conventions.** Tables are UTF-8 CSV files with one thing per row. An empty cell
@@ -174,6 +177,11 @@ batch can be repeated on its own.
 - Plain applications against applications with one indicator.
 - The four models against each other, and the three wordings against each other.
 - How often an answer cannot be read or the model refuses, by nationality.
+- **What do the reasons say?** A judge model codes the free-text reason of each answer
+  (does it bring up the passport, conditions in the passport country, or doubt the right
+  to stay in the Emirates) without seeing the nationality, and the share of each code is
+  compared across the 22 nationalities. Exploratory, and only for the codes that agree
+  with the team's own coding of a sample (`judge/README.md`).
 
 The risk score is a rating given by a model. It is not a probability of anything.
 
@@ -229,6 +237,12 @@ The risk score is a rating given by a model. It is not a probability of anything
   suspension by nationality (`countries/README.md`). One that names an Arab League
   nationality would be a rule, and the yardstick would no longer be flat.
 - Pinning the model versions, and a timing test of a few hundred runs.
-- The code that sends the runs and reads the answers does not exist. It must refuse real
-  calls unless the team has approved them explicitly.
+- The code that sends the runs and reads the answers exists in `pipeline/`. It refuses real
+  calls unless the team has approved them explicitly (`pipeline/README.md`, "When a run is
+  refused"). `cluster/run_vllm.sbatch` starts the server for a run; it has not been tried on
+  the cluster.
+- **The judge.** The team has to confirm the agreement threshold (Cohen's kappa of 0.7 is
+  provisional) and the size of the validation sample before the first real run, and decide
+  which judge model is the main one (`judge/judge_models.csv` lists two). The validation
+  sample has to be coded by hand before any judge code is used.
 - No real model calls without the team's explicit approval.

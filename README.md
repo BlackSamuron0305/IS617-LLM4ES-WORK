@@ -23,16 +23,20 @@ United Arab Emirates and live and work there; the visa is an Australian visitor 
 This is an **audit of model behaviour**, not a tool for assessing applicants. Every
 applicant and every employer is synthetic.
 
-## Status (2026-10-10)
+## Status (2026-10-24)
 
 Planning stage. No real model has been called and there are no results.
 
 The project moved from bank customer checks to visitor visa applications on 2026-10-10.
 The experiment is described in `experiment/README.md`; the team has not confirmed it
 yet. The bank design of 2026-10-08 is in `research/old_design/bank_2026-10-08/`, the
-hiring design of 2026-10-04 in `research/old_design/hiring_2026-10-04/`. The code that
-sends the runs and reads the answers does not exist yet; `pipeline/build_runs.py` builds
-and checks the prompts only.
+hiring design of 2026-10-04 in `research/old_design/hiring_2026-10-04/`.
+
+On 2026-10-24 the code was added (`pipeline/`): it builds the prompts, sends them to a
+model, reads the answers and runs a judge model on the free-text reason of each answer.
+It has been tried only with a mock model. The judge is exploratory, and it is not
+confirmed by the team. `cluster/run_vllm.sbatch` is the script for the cluster; it has
+never been run there.
 
 ## Repository layout
 
@@ -45,8 +49,13 @@ and checks the prompts only.
 | `experiment/prompts/` | the main prompt and three wordings of the task |
 | `experiment/costs/` | how a difference is turned into money, with prices and sources |
 | `experiment/models.csv` | the four planned models |
-| `pipeline/build_runs.py` | puts the prompts together, checks them and prints the counts; calls no model |
-| `data/raw/`, `data/processed/` | output of model runs; empty until the first real run |
+| `experiment/judge/` | the judge that codes the free-text reason of each answer: prompt files, the terms that are hidden from it, the two judge models, `README.md` |
+| `experiment/run_settings.csv` | the sampling settings for the audited models and for the judge |
+| `pipeline/` | the code, one module per stage: `build_runs`, `run_models`, `parse_answers`, `judge_build`, `run_judge`, `judge_parse`, `judge_validate`. Calls no model unless a run is approved. `pipeline/README.md` has the commands |
+| `cluster/` | `run_vllm.sbatch`, the Slurm script that starts vLLM and runs one stage on bwUniCluster (untested), and `README.md` |
+| `tests/` | the unit tests; they use a mock model or a local stub server only |
+| `data/raw/`, `data/processed/` | output of model runs, by batch; empty until the first real run. `data/README.md` has the layout |
+| `docs/superpowers/plans/` | the implementation plan of the pipeline and the judge |
 | `research/` | literature review, literature matrix, references, novelty assessment, literature notes, framing outline. Most of it was written for the hiring design |
 | `research/visa_scenario/` | the research notes of 2026-10-10 behind the visa design |
 | `research/scenario_reviews/` | the review notes that led from hiring to the bank scenario |
@@ -56,6 +65,11 @@ and checks the prompts only.
 | `CLAUDE.md` | project context and working rules for AI assistants |
 
 Check the experiment files: `python -m pipeline.build_runs --example`
+
+Run the tests: `python -m unittest discover -s tests -t . -v`
+
+Try the whole pipeline with a mock model (no server, no real call): the walk-through in
+`pipeline/README.md`. A real run needs the team's approval (`cluster/README.md`).
 
 ## Deadlines
 

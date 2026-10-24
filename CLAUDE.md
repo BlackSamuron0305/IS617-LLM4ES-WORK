@@ -85,8 +85,21 @@ passport, not as proven prejudice.
 - `experiment/costs/`: the cost measures and `cost_assumptions.csv` (prices and rates
   with sources).
 - `experiment/models.csv`: the four planned models.
-- `pipeline/build_runs.py`: builds and checks the prompts. It never calls a model.
-- `data/raw/`, `data/processed/`: empty until the first real run.
+- `experiment/judge/`: the judge that codes the free-text reason of each answer (prompt
+  files, `mask_terms.csv`, `judge_models.csv`). Its README is authoritative.
+- `experiment/run_settings.csv`: the sampling settings (temperature, top_p, max_tokens,
+  seed, answer format) for the audited models and for the judge; all provisional or open.
+- `pipeline/`: the code, one module per stage: `build_runs` (builds and checks the
+  prompts, never calls a model), `run_models`, `parse_answers`, `judge_build`,
+  `run_judge`, `judge_parse`, `judge_validate`. `pipeline/README.md` has the commands, a
+  mock walk-through and the refusal rules.
+- `cluster/`: `run_vllm.sbatch`, the Slurm script that starts vLLM on bwUniCluster and
+  runs one stage (untested), and its README.
+- `tests/`: the unit tests (`python -m unittest discover -s tests -t . -v`). They use a
+  mock model or a local stub server and never call a real one.
+- `docs/superpowers/plans/`: the implementation plan of the pipeline and the judge.
+- `data/raw/`, `data/processed/`: empty until the first real run; one folder per batch
+  (`data/README.md`).
 - `research/`: literature review, literature matrix, references, novelty assessment,
   literature notes (`lit_parts/`), framing outline. Most of it was written for the
   hiring design; the 13 sources added on 2026-10-08 are the strands `banking_aml` and
@@ -215,13 +228,28 @@ by Claude on 2026-10-10 and has not been confirmed by the team.
   illustrations of model behaviour, never forecasts.
 - Run plan: four models, three blocks, 21,840 runs per model. Block 3 repeats block 1
   with the other savings levels.
+- Judge (added on 2026-10-24 at Laith's request, drafted by Claude, **not confirmed by the
+  team**): a second model codes the free-text `reason` of each answer, and only that
+  field, with five yes/no codes (mentions nationality, treats it as a risk, refers to
+  conditions in the passport country, doubts the right to stay in the Emirates,
+  contradicts the application). It is blinded: it sees the reason and the application
+  with the nationality words and lines hidden, never the score, rating or
+  recommendation. The codes describe how a model justifies its rating, not why it gave
+  it; they are exploratory, and a code is used only if it agrees with the team's own
+  coding of a sample by hand. `experiment/judge/README.md` is authoritative.
 
 ## Compute and models
 
 Open-weight models (`experiment/models.csv`) served with vLLM on bwUniCluster (KIT).
 There is no API budget. **Never launch real or paid model calls without explicit
-approval.** Any new runner must refuse real calls unless that approval is given
-explicitly, as the removed one did.
+approval.** The runner in `pipeline/` refuses real calls unless `--allow-real-calls` is
+given and the other conditions hold (a batch name that does not start with `mock`, a
+pinned model revision, no uncommitted change in `experiment/` or `pipeline/`, and the
+model listed by the server); any other runner must do the same. The revisions in
+`experiment/models.csv` and `experiment/judge/judge_models.csv` are empty, so every real
+call is refused until they are pinned. `cluster/run_vllm.sbatch` is the only place that
+passes `--allow-real-calls`, and only with `ALLOW_REAL_CALLS=yes`; it has not been run on
+the cluster.
 
 ## Deadlines
 
@@ -257,7 +285,9 @@ v8 is v7 with four new slides: one big group against the others, why Arabs, whic
 scenario, experimental setup)
 were built
 by Claude at Laith's explicit request, including their wording: the team rewrites the
-wording or declares it.
+wording or declares it. The judge prompt, the codebook and `mask_terms.csv` in
+`experiment/judge/` were drafted by Claude on 2026-10-24 at Laith's request and have to
+be listed when AI use is declared.
 
 **No fabricated results or citations.** Output of mock or test runs is labelled as
 such and is never reported as a result. Every citation carries a verification level in
@@ -296,7 +326,6 @@ further changes cost time the midterm needs.
 - Condition 8503 ("no further stay") as a further outcome
 - German-language applications and prompts
 - Arabic-centric models (e.g. ALLaM, Jais) as an extra model family
-- LLM-judge coding of free-text reasons
 - The bank design of 2026-10-08 with its own parked ideas (name screening, payments to
   the home country, other lists), the hiring and promotion design of 2026-10-04, and the
   loan scenario compared in `research/scenario_reviews/`
@@ -310,4 +339,7 @@ cost measures come before the first real run; the pilot needs explicit approval.
 the pitch on 13.10. the team has to go through `paper/first_presentation/pitch.pptx`
 and check its numbers (`paper/first_presentation/README.md`). Before any run, check the
 Australian legislation register for a travel suspension by nationality
-(`experiment/countries/README.md`).
+(`experiment/countries/README.md`). For the judge: the team has to confirm the agreement
+threshold (Cohen's kappa of 0.7 is provisional) and the size of the validation sample,
+and choose the judge model (`experiment/judge/judge_models.csv` lists two). The
+validation sample has to be coded by hand before any judge code is used.
