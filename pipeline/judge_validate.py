@@ -1,11 +1,12 @@
 """Stage 6: check the judge against a human. Draw items for hand-coding, then measure agreement.
 
 sample: draws items from data/processed/<batch>/judge_items.jsonl and writes validation_sample.csv
-in the same folder: item_id, applicant_id and the masked reason, five empty code columns, coder and
-note. It holds none of the judge's codes, so the person who fills it in stays blind to them. About
-half of the items are ones where a nationality word was hidden (n_masked > 0), the rest are drawn
-from the others. The same batch, n and seed give the same file. Code a copy: running sample again
-overwrites the file.
+in the same folder: item_id, applicant_id, the masked reason, the masked application as the judge
+saw it, five empty code columns, coder and note. It holds none of the judge's codes, so the person
+who fills it in stays blind to them. About half of the items are ones where a nationality word was
+hidden (n_masked > 0), the rest are drawn from the others. The same batch, n and seed give the same
+file. sample refuses to overwrite an existing file (the hand-coding may be in it) unless --force is
+given; code a copy.
 
 agreement: reads the hand-coded file (cells yes, no, 1, 0 or empty) and either the judge's codes,
 judge_codes_<alias>.csv (rows with judge_status ok or inconsistent), or a second hand-coded file. For
@@ -16,7 +17,7 @@ n/a when chance alone would give complete agreement (a code that is constant on 
 calls a model.
 
 Usage:
-    python -m pipeline.judge_validate sample --batch pilot1 [--n 200] [--seed 617]
+    python -m pipeline.judge_validate sample --batch pilot1 [--n 200] [--seed 617] [--force]
     python -m pipeline.judge_validate agreement --batch pilot1 --human coded.csv --judge gpt-oss-120b
     python -m pipeline.judge_validate agreement --batch pilot1 --human coded.csv --other-human coded2.csv
 Both take --data-root (default: the data folder of the repo).
@@ -29,12 +30,15 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+from pipeline.client import JUDGE_MARKER
 from pipeline.common import DATA, read_jsonl, write_csv
 from pipeline.judge_build import JUDGE_CODES
 
 # Provisional: the team confirms this threshold before the first real run.
 KAPPA_MIN = 0.7
-SAMPLE_COLUMNS = ["item_id", "applicant_id", "reason_masked", *JUDGE_CODES, "coder", "note"]
+# The line of experiment/judge/judge_task.txt that precedes the application.
+APPLICATION_MARKER = "APPLICATION"
+SAMPLE_COLUMNS = ["item_id", "applicant_id", "reason_masked", "application_masked", *JUDGE_CODES, "coder", "note"]
 AGREEMENT_COLUMNS = ["code", "n", "agree_share", "kappa", "passes"]
 CODE_VALUES = {"yes": 1, "1": 1, "no": 0, "0": 0}
 # Rows of a judge file with another status have blank codes (judge_parse leaves them blank).
@@ -72,13 +76,27 @@ def agreement(a, b):
     return rows
 
 
-def draw_sample(batch, n, seed, data_root):
+def application_of(item):
+    # The masked application exactly as the judge saw it: the text of the user message between the
+    # line APPLICATION and the line that precedes the reason, without the newlines around it.
+    head, marker, _ = item["user"].partition(JUDGE_MARKER)
+    if not marker or not head.startswith(APPLICATION_MARKER + "\n"):
+        raise ValueError(f"item {item['item_id']}: the judge input does not have the form "
+                         f"{APPLICATION_MARKER} ... {JUDGE_MARKER} ...")
+    return head[len(APPLICATION_MARKER):].strip("\n")
+
+
+def draw_sample(batch, n, seed, data_root, force=False):
     if n < 1:
         raise ValueError(f"n must be at least 1, not {n}")
     items_path = Path(data_root) / "processed" / batch / "judge_items.jsonl"
     if not items_path.exists():
         raise FileNotFoundError(f"no judge inputs for batch {batch!r}: {items_path} does not exist "
                                 "(run judge_build first)")
+    path = Path(data_root) / "processed" / batch / "validation_sample.csv"
+    if path.exists() and not force:
+        raise FileExistsError(f"{path} already exists and may hold hand-coding: code a copy of it, "
+                              "or pass --force to overwrite it")
     # Sorted, so that the sample does not depend on the order of the file.
     items = sorted(read_jsonl(items_path), key=lambda item: item["item_id"])
     masked = [item for item in items if item["n_masked"] > 0]
@@ -91,9 +109,8 @@ def draw_sample(batch, n, seed, data_root):
     chosen = rng.sample(masked, take_masked) + rng.sample(others, take_others)
     rng.shuffle(chosen)
     rows = [{"item_id": item["item_id"], "applicant_id": item["applicant_id"],
-             "reason_masked": item["reason_masked"], **dict.fromkeys(JUDGE_CODES, ""), "coder": "", "note": ""}
-            for item in chosen]
-    path = Path(data_root) / "processed" / batch / "validation_sample.csv"
+             "reason_masked": item["reason_masked"], "application_masked": application_of(item),
+             **dict.fromkeys(JUDGE_CODES, ""), "coder": "", "note": ""} for item in chosen]
     write_csv(path, rows, SAMPLE_COLUMNS)
     return path
 
@@ -158,6 +175,7 @@ def main(argv=None):
     sample.add_argument("--batch", required=True, help="name of the batch under data/processed")
     sample.add_argument("--n", type=int, default=200, help="number of items (default 200)")
     sample.add_argument("--seed", type=int, default=617, help="seed of the draw (default 617)")
+    sample.add_argument("--force", action="store_true", help="overwrite an existing validation_sample.csv")
     sample.add_argument("--data-root", default=str(DATA))
     check = commands.add_parser("agreement", help="compare hand codes with the judge or with a second coder")
     check.add_argument("--batch", required=True, help="name of the batch under data/processed")
@@ -169,12 +187,12 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         if args.command == "sample":
-            path = draw_sample(args.batch, args.n, args.seed, Path(args.data_root))
+            path = draw_sample(args.batch, args.n, args.seed, Path(args.data_root), force=args.force)
             print(f"written: {path}")
-            print("code a copy of it: running sample again overwrites the file")
+            print("code a copy of it: sample will not overwrite this file again without --force")
         else:
             run_agreement(args)
-    except (FileNotFoundError, ValueError) as exc:
+    except (FileNotFoundError, FileExistsError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
     return 0

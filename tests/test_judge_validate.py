@@ -8,12 +8,14 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from pipeline.common import write_csv
-from pipeline.judge_build import JUDGE_CODES, write_jsonl
+from pipeline.client import JUDGE_MARKER
+from pipeline.common import read_text, write_csv
+from pipeline.judge_build import JUDGE, JUDGE_CODES, write_jsonl
 from pipeline.judge_parse import JUDGE_CODE_COLUMNS
 from pipeline.judge_validate import KAPPA_MIN, agreement, cohen_kappa, draw_sample, main, read_codes
 
 HUMAN_COLUMNS = ["item_id", *JUDGE_CODES, "coder", "note"]
+TASK = read_text(JUDGE / "judge_task.txt")
 
 
 def run_cli(argv):
@@ -27,12 +29,20 @@ def read_rows(path):
         return list(csv.DictReader(f))
 
 
+def judge_user(k, reason):
+    # The judge's user message: the real judge_task.txt around a masked application, so that the
+    # test breaks if the layout of that file changes.
+    application = (f"Application reference: R{k:04d}\nLodged: online\n\nAPPLICANT\nNationality: [NATIONALITY]\n"
+                   "Travel document: [NATIONALITY] passport, valid until 2033\n\nSavings: AED 16,000")
+    return TASK.replace("{application}", application).replace("{reason}", reason)
+
+
 def write_items(data_root, batch, masked, plain):
     # judge_items.jsonl with `masked` items that had a nationality word hidden and `plain` that had none.
     items = [{"item_id": f"m{k:03d}", "applicant_id": "A01", "reason_masked": f"masked reason {k}", "n_masked": 1,
-              "system": "s", "user": "u"} for k in range(masked)]
+              "system": "s", "user": judge_user(k, f"masked reason {k}")} for k in range(masked)]
     items += [{"item_id": f"p{k:03d}", "applicant_id": "A02", "reason_masked": f"plain reason {k}", "n_masked": 0,
-               "system": "s", "user": "u"} for k in range(plain)]
+               "system": "s", "user": judge_user(1000 + k, f"plain reason {k}")} for k in range(plain)]
     folder = Path(data_root) / "processed" / batch
     folder.mkdir(parents=True, exist_ok=True)
     write_jsonl(folder / "judge_items.jsonl", items)
@@ -179,14 +189,15 @@ class SampleTest(unittest.TestCase):
             self.assertEqual(len(rows), 20)
             self.assertEqual(sum(1 for r in rows if r["item_id"] in masked_ids), 10)
             self.assertTrue(all(r["mentions_nationality"] == "" for r in rows))
-            self.assertEqual(draw_sample("mock_v", 20, 617, tmp).read_text(encoding="utf-8"),
+            self.assertEqual(draw_sample("mock_v", 20, 617, tmp, force=True).read_text(encoding="utf-8"),
                              first_text)  # same seed, same sample
 
     def test_columns_and_blank_cells(self):
         with tempfile.TemporaryDirectory() as tmp:
             write_items(tmp, "mock_v", masked=3, plain=3)
             rows = read_rows(draw_sample("mock_v", 4, 1, tmp))
-        self.assertEqual(list(rows[0]), ["item_id", "applicant_id", "reason_masked", *JUDGE_CODES, "coder", "note"])
+        self.assertEqual(list(rows[0]), ["item_id", "applicant_id", "reason_masked", "application_masked",
+                                         *JUDGE_CODES, "coder", "note"])
         for row in rows:
             self.assertRegex(row["reason_masked"], r"^(masked|plain) reason \d$")
             self.assertEqual(row["applicant_id"], "A01" if row["item_id"].startswith("m") else "A02")
@@ -209,13 +220,13 @@ class SampleTest(unittest.TestCase):
             items = write_items(tmp, "mock_v", masked=10, plain=90)
             first = draw_sample("mock_v", 20, 617, tmp).read_bytes()
             write_jsonl(tmp / "processed/mock_v/judge_items.jsonl", list(reversed(items)))
-            self.assertEqual(draw_sample("mock_v", 20, 617, tmp).read_bytes(), first)
+            self.assertEqual(draw_sample("mock_v", 20, 617, tmp, force=True).read_bytes(), first)
 
     def test_another_seed_gives_another_sample(self):
         with tempfile.TemporaryDirectory() as tmp:
             write_items(tmp, "mock_v", masked=10, plain=90)
             one = draw_sample("mock_v", 20, 1, tmp).read_bytes()
-            two = draw_sample("mock_v", 20, 2, tmp).read_bytes()
+            two = draw_sample("mock_v", 20, 2, tmp, force=True).read_bytes()
         self.assertNotEqual(one, two)
 
     def test_few_masked_items_are_all_taken_and_the_rest_filled_from_the_others(self):
@@ -253,6 +264,48 @@ class SampleTest(unittest.TestCase):
             ids = [r["item_id"] for r in read_rows(draw_sample("mock_v", 20, 617, tmp))]
         # Masked items are not all at the front.
         self.assertNotEqual([i[0] for i in ids], sorted(i[0] for i in ids))
+
+    def test_application_is_shown_as_the_judge_saw_it(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            items = write_items(tmp, "mock_v", masked=3, plain=3)
+            rows = read_rows(draw_sample("mock_v", 6, 617, tmp))
+        users = {item["item_id"]: item["user"] for item in items}
+        self.assertEqual(len(rows), 6)
+        for row in rows:
+            application = row["application_masked"]
+            self.assertTrue(application.startswith("Application reference:"))
+            self.assertIn("Nationality: [NATIONALITY]", application)
+            self.assertNotIn("REASON GIVEN BY THE MODEL", application)
+            self.assertNotIn(row["reason_masked"], application)
+            self.assertEqual(application, application.strip("\n"))
+            # Exactly the text between the line APPLICATION and the blank line before the reason marker.
+            self.assertEqual(users[row["item_id"]].partition(JUDGE_MARKER)[0], "APPLICATION\n" + application + "\n\n")
+
+    def test_input_without_the_judge_layout_is_an_error(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            items = write_items(tmp, "mock_v", masked=1, plain=0)
+            items[0]["user"] = "u"
+            write_jsonl(Path(tmp) / "processed/mock_v/judge_items.jsonl", items)
+            with self.assertRaises(ValueError) as caught:
+                draw_sample("mock_v", 1, 617, tmp)
+            self.assertIn("m000", str(caught.exception))
+            self.assertFalse((Path(tmp) / "processed/mock_v/validation_sample.csv").exists())
+
+    def test_second_draw_without_force_raises_and_keeps_the_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            write_items(tmp, "mock_v", masked=10, plain=90)
+            path = draw_sample("mock_v", 20, 617, tmp)
+            # The hand-coder has been working in the file.
+            coded = path.read_text(encoding="utf-8") + "hand-coding goes here\n"
+            path.write_text(coded, encoding="utf-8")
+            for seed in (617, 5):
+                with self.assertRaises(FileExistsError) as caught:
+                    draw_sample("mock_v", 20, seed, tmp)
+                self.assertIn("--force", str(caught.exception))
+                self.assertIn("copy", str(caught.exception))
+                self.assertEqual(path.read_text(encoding="utf-8"), coded)
+            draw_sample("mock_v", 20, 617, tmp, force=True)
+            self.assertNotEqual(path.read_text(encoding="utf-8"), coded)
 
     def test_missing_items_file_and_bad_n(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -364,7 +417,21 @@ class CliTest(unittest.TestCase):
         self.assertEqual(sum(1 for r in rows if r["item_id"].startswith("m")), 100)
         self.assertIn(str(path), out)
         # --seed defaults to 617
-        self.assertEqual(draw_sample("mock_v", 200, 617, self.tmp).read_bytes(), path.read_bytes())
+        self.assertEqual(draw_sample("mock_v", 200, 617, self.tmp, force=True).read_bytes(), path.read_bytes())
+
+    def test_sample_subcommand_refuses_to_overwrite_unless_forced(self):
+        write_items(self.tmp, "mock_v", masked=5, plain=5)
+        argv = ["sample", "--batch", "mock_v", "--n", "4", "--data-root", str(self.tmp)]
+        self.assertEqual(run_cli(argv)[0], 0)
+        path = self.tmp / "processed/mock_v/validation_sample.csv"
+        path.write_text("my hand-coding\n", encoding="utf-8")
+        code, out, err = run_cli(argv)
+        self.assertEqual(code, 2)
+        self.assertIn("--force", err)
+        self.assertEqual(path.read_text(encoding="utf-8"), "my hand-coding\n")
+        code, _, err = run_cli([*argv, "--force"])
+        self.assertEqual((code, err), (0, ""))
+        self.assertEqual(len(read_rows(path)), 4)
 
     def test_sample_with_a_bad_n_returns_two(self):
         write_items(self.tmp, "mock_v", masked=1, plain=1)
