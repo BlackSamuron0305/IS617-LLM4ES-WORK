@@ -8,7 +8,7 @@ then the **task** (one application and the request for the rating).
 
 | file | what it is |
 |---|---|
-| `main_prompt.txt` | the main prompt. `{policy}` is filled with one of the two versions of the guidance |
+| `main_prompt.txt` | the main prompt, in six sections: ROLE, TASK, DECISION, PROCEDURE, OUTPUT FORMAT, GUIDANCE. `{policy}` is filled with one of the two versions of the guidance |
 | `task_wording_1.txt`, `task_wording_2.txt`, `task_wording_3.txt` | the task in three phrasings, so that a result does not depend on one phrasing. `{application}` is filled with one application |
 
 ## Placeholders
@@ -28,10 +28,10 @@ All three wordings ask for the same JSON object:
 | key | values |
 |---|---|
 | `risk_score` | integer from 0 (lowest risk) to 100 (highest risk) |
-| `risk_rating` | `low`, `medium` or `high` |
-| `further_checks` | a list of letters `A` to `F` from section 5 of the guidance, or an empty list |
-| `recommendation` | `grant`, `refer` or `refuse` |
-| `reason` | one or two sentences |
+| `risk_rating` | `low`, `medium` or `high`, as defined in section 4 of the guidance |
+| `further_checks` | a JSON list of capital letters `A` to `F` from section 5 of the guidance, or an empty list |
+| `recommendation` | `grant`, `refer` or `refuse`, as defined in section 6 of the guidance |
+| `reason` | one or two sentences that name the points from section 3 of the guidance the model relied on |
 
 Never call the risk score a probability.
 
@@ -56,6 +56,40 @@ The role sentence is close to the one used in the nearest published study, in wh
 model is told to "imagine you are an officer from U.S. immigration office" and chooses
 between two applicants (`mao2025gatekeepers`).
 
+## Main prompt: structure and sources
+
+| section | prompt component | source | why |
+|---|---|---|---|
+| all sections | structure | `schulhoff2024prompt`, section 1.2.1, pp. 5-6 | the prompt uses the standard components of a prompt: role, directive, additional information, output formatting |
+| ROLE | role | `schulhoff2024prompt`; `mao2025gatekeepers`, p. 3 | role is a standard component; Mao and Zhao give the model the role of an immigration officer as well |
+| TASK | directive | `schulhoff2024prompt`; `tamkin2023evaluating`, pp. 2-3 | the directive is "the core intent of the prompt"; Tamkin et al. let the model decide about one described person, including "issuing a tourist visa" |
+| DECISION | additional information | the table above; `mao2025gatekeepers` | documented systems sort applications and an officer decides; in Mao and Zhao the model decides itself, here it only supports the officer |
+| PROCEDURE | directive | `schulhoff2024prompt`; `tamkin2023evaluating` | one application per request, as one person per prompt in Tamkin et al. |
+| OUTPUT FORMAT | output formatting | `schulhoff2024prompt` | the format is a component of its own; the exact format is given in the task |
+| GUIDANCE | additional information | `schulhoff2024prompt`; `tamkin2023evaluating`, p. 8 | the guidance is context; its section 7 is an intervention like "Ignore demographics" in Tamkin et al., which reduced discrimination strongly (RQ3) |
+
+Left out on purpose:
+- **No examples (zero-shot).** Examples would anchor the scores and would need a nationality themselves. `mao2025gatekeepers` and `tamkin2023evaluating` are zero-shot as well.
+- **No sentence asking the model to be fair.** Such statements reduce discrimination strongly (`tamkin2023evaluating`, p. 8). Here that sentence is section 7 of the guidance, which only block 2 gets; in the main prompt it would remove the contrast that RQ3 tests.
+
+## Task wordings: structure and sources
+
+The three wordings ask for the same thing and end with the same answer block. They differ in structure, not only in a few words:
+
+| wording | structure |
+|---|---|
+| 1 | a short request, then the application between `<application>` tags, then the task in one sentence |
+| 2 | a one-line notice, then the application under the heading APPLICATION, then the task as running text |
+| 3 | the task as three numbered steps, then the application under the heading APPLICATION |
+
+| change | why | source |
+|---|---|---|
+| three different structures instead of three near-identical phrasings | a result from one phrasing can be unreliable; small changes of format and wording change results strongly, so the robustness check needs real differences | `sclar2024quantifying`; `mizrahi2024state` |
+| "one or more of the criteria in section 2" instead of "does not meet the criteria" | names the criteria the risk refers to and is easier to read for small models; the same in all three wordings | `atreja2025prompt` |
+| answer block linked to the guidance ("as defined in section 4 / 6", "a JSON list of the capital letters") | the model should use the definitions of the guidance, and a clear format helps small models to comply | `atreja2025prompt` |
+| the reason field is kept | asking for an explanation improves compliance with the instructions; the reasons can be coded later | `atreja2025prompt`, p. 7 |
+| answer block identical in all three wordings | the answers must be comparable; `scripts/build_runs.py` checks this | — |
+
 ## Rules when editing
 
 - The three wordings must ask for the same thing and must have the same answer format.
@@ -64,6 +98,8 @@ between two applicants (`mao2025gatekeepers`).
   every documented system works.
 - The main prompt speaks of "an Australian visa office" and names no real authority.
   Keep it that way: no authority runs this system.
+- The main prompt has no examples and no sentence asking the model to be fair or to
+  ignore nationality. Keep it that way: see "Main prompt: structure and sources".
 - Fix the prompts before the pilot. Do not change them after seeing results.
 
 ## Open
