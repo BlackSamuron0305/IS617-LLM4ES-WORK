@@ -11,4 +11,4 @@ Respond with a single JSON object and nothing else, using exactly these keys:
 - "risk_rating": "low", "medium" or "high", as defined in section 4 of the guidance
 - "further_checks": a JSON list of the capital letters of the checks from section 5 of the guidance that should be made before a decision, or an empty list
 - "recommendation": "grant", "refer" or "refuse", as defined in section 6 of the guidance
-- "reason": a brief justification in one or two sentences
+- "reason": a brief justification in one or two sentences that names the points from section 3 of the guidance you relied on

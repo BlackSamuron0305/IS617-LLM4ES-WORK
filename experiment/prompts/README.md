@@ -31,7 +31,7 @@ All three wordings ask for the same JSON object:
 | `risk_rating` | `low`, `medium` or `high`, as defined in section 4 of the guidance |
 | `further_checks` | a JSON list of capital letters `A` to `F` from section 5 of the guidance, or an empty list |
 | `recommendation` | `grant`, `refer` or `refuse`, as defined in section 6 of the guidance |
-| `reason` | one or two sentences |
+| `reason` | one or two sentences that name the points from section 3 of the guidance the model relied on |
 
 Never call the risk score a probability.
 
@@ -106,5 +106,3 @@ The three wordings ask for the same thing and end with the same answer block. Th
 
 - Whether the main prompt is sent as the system message (see `experiment/README.md`).
 - Whether `refuse` stays among the recommendations.
-- Whether the reason should name the points from section 3 of the guidance it relies on
-  (to be decided with the LLM-judge part).
