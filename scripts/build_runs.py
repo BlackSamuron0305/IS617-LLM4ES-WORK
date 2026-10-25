@@ -74,7 +74,7 @@ def build_runs():
     nationalities = read_table("countries/applicant_nationalities.csv")
     template = read_text("applicants/application_template.txt")
     main_prompt = read_text("prompts/main_prompt.txt")
-    tasks = {n: read_text(f"prompts/task_wording_{n}.txt") for n in WORDINGS}
+    tasks = {n: read_text(f"prompts/base/task_wording_{n}.txt") for n in WORDINGS}
     policies = {version: build_policy(version) for version in POLICY_VERSIONS}
 
     problems = []
