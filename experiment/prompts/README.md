@@ -8,7 +8,7 @@ then the **task** (one application and the request for the rating).
 
 | file | what it is |
 |---|---|
-| `main_prompt.txt` | the main prompt. `{policy}` is filled with one of the two versions of the guidance |
+| `main_prompt.txt` | the main prompt, in six sections: ROLE, TASK, DECISION, PROCEDURE, OUTPUT FORMAT, GUIDANCE. `{policy}` is filled with one of the two versions of the guidance |
 | `task_wording_1.txt`, `task_wording_2.txt`, `task_wording_3.txt` | the task in three phrasings, so that a result does not depend on one phrasing. `{application}` is filled with one application |
 
 ## Placeholders
@@ -56,6 +56,24 @@ The role sentence is close to the one used in the nearest published study, in wh
 model is told to "imagine you are an officer from U.S. immigration office" and chooses
 between two applicants (`mao2025gatekeepers`).
 
+
+## Main prompt: structure and sources (revised 2026-10-25, Nico)
+
+| section | prompt component | source | why |
+|---|---|---|---|
+| all sections | structure | `schulhoff2024prompt`, section 1.2.1, pp. 5-6 | the prompt uses the standard components of a prompt: role, directive, additional information, output formatting |
+| ROLE | role | `schulhoff2024prompt`; `mao2025gatekeepers`, p. 3 | role is a standard component; Mao and Zhao give the model the role of an immigration officer as well |
+| TASK | directive | `schulhoff2024prompt`; `tamkin2023evaluating`, pp. 2-3 | the directive is "the core intent of the prompt"; Tamkin et al. let the model decide about one described person, including "issuing a tourist visa" |
+| DECISION | additional information | the table above; `mao2025gatekeepers` | documented systems sort applications and an officer decides; in Mao and Zhao the model decides itself, here it only supports the officer |
+| PROCEDURE | directive | `schulhoff2024prompt`; `tamkin2023evaluating` | one application per request, as one person per prompt in Tamkin et al. |
+| OUTPUT FORMAT | output formatting | `schulhoff2024prompt` | the format is a component of its own; the exact format is given in the task |
+| GUIDANCE | additional information | `schulhoff2024prompt`; `tamkin2023evaluating`, p. 8 | the guidance is context; its section 7 is an intervention like "Ignore demographics" in Tamkin et al., which reduced discrimination strongly (RQ3) |
+
+Left out on purpose:
+- **No examples (zero-shot).** Examples would anchor the scores and would need a nationality themselves. `mao2025gatekeepers` and `tamkin2023evaluating` are zero-shot as well.
+- **No sentence asking the model to be fair.** Such statements reduce discrimination strongly (`tamkin2023evaluating`, p. 8). Here that sentence is section 7 of the guidance, which only block 2 gets; in the main prompt it would remove the contrast that RQ3 tests.
+
+
 ## Rules when editing
 
 - The three wordings must ask for the same thing and must have the same answer format.
@@ -65,6 +83,7 @@ between two applicants (`mao2025gatekeepers`).
 - The main prompt speaks of "an Australian visa office" and names no real authority.
   Keep it that way: no authority runs this system.
 - Fix the prompts before the pilot. Do not change them after seeing results.
+
 
 ## Open
 
