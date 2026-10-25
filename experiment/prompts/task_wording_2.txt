@@ -1,13 +1,16 @@
-A new application for a visitor visa has been lodged. The file is below.
+A new application for a visitor visa has been lodged.
 
 APPLICATION
 {application}
 
-Apply the guidance: rate the risk that this applicant does not meet the criteria for the visa, and state what should happen with the application.
+The application is now with you for pre-assessment. 
+Check it against the criteria in section 2 of the guidance and rate the risk that the applicant does not meet one or more of them. 
+Then tell the officer what should happen with the application.
+
 
 Return exactly one JSON object and no other text, with these keys:
 - "risk_score": integer from 0 to 100 (0 = lowest risk, 100 = highest risk)
-- "risk_rating": "low", "medium" or "high"
-- "further_checks": a list with the letters of the checks from section 5 of the guidance that should be made before a decision, or an empty list
-- "recommendation": "grant", "refer" or "refuse"
+- "risk_rating": "low", "medium" or "high", as defined in section 4 of the guidance
+- "further_checks": a JSON list of the capital letters of the checks from section 5 of the guidance that should be made before a decision, or an empty list
+- "recommendation": "grant", "refer" or "refuse", as defined in section 6 of the guidance
 - "reason": a brief justification in one or two sentences

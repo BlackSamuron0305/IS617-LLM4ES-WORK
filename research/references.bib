@@ -3732,3 +3732,30 @@
   strand        = {intervention},
   annote        = {Preprint (v1). Sections 1, 2 and 5.3, Table 1 and the prompt fragments in Appendix B (pp. 25--26) checked in the PDF text on 2026-10-25. Used for the audit design and for section 7 of the guidance. Exact wording: `Each prompt instructs the model to make a hypothetical binary decision about a particular person described in the prompt. This strategy enables us to scalably produce prompts covering decision scenarios [...] from issuing a work visa to granting press credentials' (p. 2); Table 1 lists `granting a work visa' and `issuing a tourist visa' (p. 3); `several of the interventions we explore are quite effective, especially Illegal to discriminate, Ignore demographics, Illegal + Ignore. Many of these interventions significantly reduce the discrimination score, often approaching 0' (p. 8). Demographics varied: age, gender and race; nationality is not among them. One model (Claude 2.0)}
 }
+
+@article{mizrahi2024state,
+  author        = {Mizrahi, Moran and Kaplan, Guy and Malkin, Dan and Dror, Rotem and Shahaf, Dafna and Stanovsky, Gabriel},
+  title         = {State of What Art? A Call for Multi-Prompt {LLM} Evaluation},
+  journal       = {Transactions of the Association for Computational Linguistics},
+  volume        = {12},
+  pages         = {933--949},
+  year          = {2024},
+  url           = {https://aclanthology.org/2024.tacl-1.52},
+  verification  = {fulltext},
+  strand        = {audit_method},
+  annote        = {Abstract and sections 1 and 4 checked in the PDF text on 2026-10-25. 20 LLMs, 39 tasks, about 175 paraphrases per task. Exact wording: `We find that models perform very differently on different instruction paraphrases' and `very little can be said on either absolute or relative performance based on single-instruction evaluation' (p. 1); `major differences in performance can occur even for very similar paraphrase pairs' (p. 7). Used to justify three task wordings}
+}
+
+@inproceedings{atreja2025prompt,
+  author        = {Atreja, Shubham and Ashkinaze, Joshua and Li, Lingyao and Mendelsohn, Julia and Hemphill, Libby},
+  title         = {Prompt Design Matters for Computational Social Science Tasks but in Unpredictable Ways},
+  booktitle     = {Proceedings of the International AAAI Conference on Web and Social Media (ICWSM)},
+  volume        = {19},
+  year          = {2025},
+  doi           = {10.1609/icwsm.v19i1.35807},
+  eprint        = {2406.11980},
+  archiveprefix = {arXiv},
+  verification  = {fulltext},
+  strand        = {audit_method},
+  annote        = {Course reading. Abstract and the discussion (pp. 7--9) checked in the PDF text (arXiv v1) on 2026-10-25. Three LLMs, four CSS annotation tasks, 16 prompt designs. Exact wording: `LLM compliance and accuracy are highly prompt-dependent. For instance, prompting for numerical scores instead of labels reduces all LLMs' compliance and accuracy' and `minor prompt changes can cause large changes in the distribution of generated labels' (p. 1); `prompting LLMs to explain their output improves their compliance with prompt instructions' (p. 7); for the smaller Falcon7b `compliance decreases drastically as input prompts become more complex, such as when prompting for numerical scores' (p. 9). Used for the wording of the task, for keeping the reason field and for treating the rating as the main outcome}
+}
