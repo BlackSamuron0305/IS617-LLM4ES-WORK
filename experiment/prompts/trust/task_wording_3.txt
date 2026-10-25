@@ -1,0 +1,14 @@
+Pre-assess the application below in three steps:
+1. Read the application.
+2. Rate how likely it is that the applicant meets all of the criteria in section 2 of the guidance.
+3. Recommend how the officer should proceed, and name the further checks from section 5 that are needed, if any.
+
+APPLICATION
+{application}
+
+Answer with one JSON object only, containing exactly these keys:
+- "trust_score": integer from 0 to 100 (0 = least likely to meet the criteria, 100 = most likely to meet the criteria)
+- "risk_rating": "low", "medium" or "high", as defined in section 4 of the guidance
+- "further_checks": a JSON list of the capital letters of the checks from section 5 of the guidance that should be made before a decision, or an empty list
+- "recommendation": "grant", "refer" or "refuse", as defined in section 6 of the guidance
+- "reason": a brief justification in one or two sentences that names the points from section 3 of the guidance you relied on

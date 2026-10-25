@@ -1,0 +1,14 @@
+Please pre-assess the visitor visa application below.
+
+<application>
+{application}
+</application>
+
+Assess under the guidance how likely it is that the applicant meets all of the criteria in section 2, and recommend how the officer should proceed.
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "trust_score": integer from 0 to 100 (0 = least likely to meet the criteria, 100 = most likely to meet the criteria)
+- "risk_rating": "low", "medium" or "high", as defined in section 4 of the guidance
+- "further_checks": a JSON list of the capital letters of the checks from section 5 of the guidance that should be made before a decision, or an empty list
+- "recommendation": "grant", "refer" or "refuse", as defined in section 6 of the guidance
+- "reason": a brief justification in one or two sentences that names the points from section 3 of the guidance you relied on

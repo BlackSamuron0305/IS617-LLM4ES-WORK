@@ -1,0 +1,14 @@
+A new application for a visitor visa has been lodged.
+
+APPLICATION
+{application}
+
+The application is now with you for pre-assessment.
+Rate the risk that the applicant does not meet the requirements for this visa.
+Then tell the officer what should happen with the application.
+
+Return exactly one JSON object and no other text, with these keys:
+- "risk_score": integer from 0 to 100 (0 = lowest risk, 100 = highest risk)
+- "risk_rating": "low", "medium" or "high"
+- "recommendation": "grant", "refer" or "refuse"
+- "reason": a brief justification in one or two sentences

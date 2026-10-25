@@ -3759,3 +3759,27 @@
   strand        = {audit_method},
   annote        = {Course reading. Abstract and the discussion (pp. 7--9) checked in the PDF text (arXiv v1) on 2026-10-25. Three LLMs, four CSS annotation tasks, 16 prompt designs. Exact wording: `LLM compliance and accuracy are highly prompt-dependent. For instance, prompting for numerical scores instead of labels reduces all LLMs' compliance and accuracy' and `minor prompt changes can cause large changes in the distribution of generated labels' (p. 1); `prompting LLMs to explain their output improves their compliance with prompt instructions' (p. 7); for the smaller Falcon7b `compliance decreases drastically as input prompts become more complex, such as when prompting for numerical scores' (p. 9). Used for the wording of the task, for keeping the reason field and for treating the rating as the main outcome}
 }
+
+@inproceedings{shaikh2023second,
+  author        = {Shaikh, Omar and Zhang, Hongxin and Held, William and Bernstein, Michael and Yang, Diyi},
+  title         = {On Second Thought, Let's Not Think Step by Step! Bias and Toxicity in Zero-Shot Reasoning},
+  booktitle     = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages         = {4454--4470},
+  year          = {2023},
+  url           = {https://aclanthology.org/2023.acl-long.244},
+  verification  = {abstract},
+  strand        = {audit_method},
+  annote        = {Abstract read on 2026-10-25. Zero-shot chain-of-thought in socially sensitive domains makes models significantly more likely to produce harmful or undesirable output, including on stereotype benchmarks. Used to justify the reasoning variant}
+}
+
+@inproceedings{turpin2023language,
+  author        = {Turpin, Miles and Michael, Julian and Perez, Ethan and Bowman, Samuel R.},
+  title         = {Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting},
+  booktitle     = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year          = {2023},
+  eprint        = {2305.04388},
+  archiveprefix = {arXiv},
+  verification  = {abstract},
+  strand        = {audit_method},
+  annote        = {Abstract read on 2026-10-25. Biasing features in the input shape chain-of-thought explanations, but models rarely mention them; on a social-bias task the explanations justify stereotype-consistent answers without naming the bias. Used to say that the reasoning and reason fields are not faithful explanations}
+}

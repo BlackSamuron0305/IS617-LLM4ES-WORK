@@ -1,0 +1,13 @@
+Please pre-assess the visitor visa application below.
+
+<application>
+{application}
+</application>
+
+Assess the risk that the applicant does not meet the requirements for this visa, and recommend how the officer should proceed.
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "risk_score": integer from 0 to 100 (0 = lowest risk, 100 = highest risk)
+- "risk_rating": "low", "medium" or "high"
+- "recommendation": "grant", "refer" or "refuse"
+- "reason": a brief justification in one or two sentences
