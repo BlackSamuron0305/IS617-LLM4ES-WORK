@@ -1,6 +1,6 @@
 setting,answers,judge,status,note
 temperature,0.7,0,provisional,"Not decided (experiment/README.md, Open). Above 0 so that repetitions can differ."
 top_p,1,1,provisional,
-max_tokens,400,1000,provisional,"gpt-oss counts its reasoning in max_tokens, hence more for the judge."
+max_tokens,800,1000,provisional,"gpt-oss counts its reasoning in max_tokens, hence more for the judge."
 seed,per_call,0,provisional,"per_call: derived from the call key, so a repeated call gives the same answer."
 json_schema,no,no,open,"yes: the answer format is enforced at decoding time (experiment/README.md, Open)."

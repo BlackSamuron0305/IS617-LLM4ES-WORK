@@ -48,7 +48,7 @@ never been run there.
 | `experiment/countries/` | `applicant_nationalities.csv` (26 rows: the 22 Arab League nationalities and 4 placebo nationalities), `official_rules.csv` (what the official Australian rules say about each: the same for all) |
 | `experiment/prompts/` | the main prompt and three wordings of the task |
 | `experiment/costs/` | how a difference is turned into money, with prices and sources |
-| `experiment/models.csv` | the four planned models |
+| `experiment/models.csv` | the three planned models |
 | `experiment/judge/` | the judge that codes the free-text reason of each answer: prompt files, the terms that are hidden from it, the two judge models, `README.md` |
 | `experiment/run_settings.csv` | the sampling settings for the audited models and for the judge |
 | `pipeline/` | the code, one module per stage: `build_runs`, `run_models`, `parse_answers`, `judge_build`, `run_judge`, `judge_parse`, `judge_validate`. Calls no model unless a run is approved. `pipeline/README.md` has the commands |

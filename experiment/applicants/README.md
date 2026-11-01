@@ -47,7 +47,7 @@ numbered blocks of the template:
 | 2. Travel medical insurance | policy attached, cover EUR 30,000, valid in all Schengen States, for the dates of the stay | (a)(vii) |
 | 3. Return flight | round trip reserved for the dates of the stay; booking confirmation attached, not yet ticketed | (b) intention to leave |
 | 4. Accommodation | hotel bookings for every night, confirmed and paid; or a host, with an invitation | (a)(ii) |
-| 5. Means of subsistence | monthly net income, savings, who pays; payslips and bank statements for three months provided | (a)(iii) |
+| 5. Means of subsistence | funds available for the trip (the bank balance, the variable "savings" in the files), monthly net income, who pays; payslips and bank statements for three months provided | (a)(iii) |
 
 The page of the Estonian Ministry of Foreign Affairs says a reservation or a ticket may
 show the intention to return and an invitation or a booking may show the accommodation.

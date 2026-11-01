@@ -23,7 +23,7 @@ from pipeline.common import DATA, EXPERIMENT, load_models, load_settings
 from pipeline.parse_answers import answer_schema
 
 
-def plan_items(runs, blocks, limit, variants=None):
+def plan_items(runs, blocks, limit, variants=None, wordings=None, max_repetitions=None):
     # One item per repetition of every run, in build order; the key names run and repetition.
     items = []
     for run in runs:
@@ -31,15 +31,17 @@ def plan_items(runs, blocks, limit, variants=None):
             continue
         if variants is not None and run["variant"] not in variants:
             continue
+        if wordings is not None and run["wording"] not in wordings:
+            continue
         messages = [{"role": "system", "content": run["system"]}, {"role": "user", "content": run["user"]}]
-        for repetition in range(1, run["repetitions"] + 1):
+        for repetition in range(1, min(run["repetitions"], max_repetitions or run["repetitions"]) + 1):
             items.append({"key": f"{run['run_id']}__r{repetition}", "messages": messages,
                           "meta": {"run_id": run["run_id"], "repetition": repetition, "block": run["block"]}})
     return items if limit is None else items[:limit]
 
 
 def run_answers(batch, model_alias, client, data_root, blocks=None, limit=None, workers=8, mock=False,
-                variants=("base",)):
+                variants=("base",), wordings=None, max_repetitions=None):
     models = load_models(EXPERIMENT / "models.csv")
     if model_alias not in models:
         raise RunRefused(f"unknown model alias {model_alias!r}; experiment/models.csv has: {', '.join(models)}")
@@ -49,14 +51,15 @@ def run_answers(batch, model_alias, client, data_root, blocks=None, limit=None, 
     if problems:
         raise RunRefused("build_runs reports problems: " + "; ".join(problems[:5]))
     settings = load_settings("answers")
-    items = plan_items(runs, blocks, limit, list(variants))
+    items = plan_items(runs, blocks, limit, list(variants), wordings, max_repetitions)
     keys = {run["answer_keys"] for run in runs if run["variant"] in variants}
     if len(keys) > 1 and settings["json_schema"]:
         raise RunRefused("the chosen variants ask for different answer keys; with json_schema yes run one variant at a time")
     batch_dir = Path(data_root) / "raw" / batch
     # The manifest comes first: a batch that belongs to another model is refused before any call.
     fixed_fields = begin_stage(batch_dir / "manifest.json", "answers", batch, model_alias, model, mock, settings,
-                               {"blocks": blocks, "limit": limit, "variants": list(variants)}, client)
+                               {"blocks": blocks, "limit": limit, "variants": list(variants), "wordings": wordings,
+                                "max_repetitions": max_repetitions}, client)
     summary = run_calls(items, client, settings, model["extra_body"], answer_schema(next(iter(keys))), batch_dir / "answers.jsonl",
                         workers, fixed_fields)
     record_summary(batch_dir / "manifest.json", summary)
@@ -70,6 +73,10 @@ def main(argv=None):
     parser.add_argument("--block", type=int, action="append", help="only this block (repeatable)")
     parser.add_argument("--variant", action="append", help="only this prompt variant (repeatable; default: base). "
                         "See experiment/prompts/variants.csv")
+    parser.add_argument("--wording", type=int, action="append", choices=(1, 2, 3),
+                        help="only this task wording (repeatable); a pilot uses --wording 1")
+    parser.add_argument("--max-repetitions", type=int,
+                        help="at most N repetitions of each prompt; a pilot uses 1")
     parser.add_argument("--limit", type=int, help="only the first N calls")
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--mock", action="store_true", help="use the mock client, no server needed")
@@ -88,7 +95,8 @@ def main(argv=None):
         client = make_client("answers", models[args.model], args.batch, args.mock, args.base_url,
                              args.allow_real_calls)
         summary = run_answers(args.batch, args.model, client, Path(args.data_root), args.block, args.limit,
-                              args.workers, args.mock, tuple(args.variant or ("base",)))
+                              args.workers, args.mock, tuple(args.variant or ("base",)), args.wording,
+                              args.max_repetitions)
     except RunRefused as exc:
         print(f"refusing: {exc}", file=sys.stderr)
         return 2

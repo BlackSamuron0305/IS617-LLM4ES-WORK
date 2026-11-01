@@ -113,6 +113,18 @@ class RunModelsTest(unittest.TestCase):
 
     # --- planning
 
+    def test_plan_items_pilot_filters(self):
+        # The pilot: block 1, wording 1, one repetition = 20 applicants x 26 nationalities.
+        runs = build_runs("all")[0]
+        pilot = plan_items(runs, [1], None, ["base"], [1], 1)
+        self.assertEqual(len(pilot), 520)
+        self.assertEqual({i["meta"]["repetition"] for i in pilot}, {1})
+        self.assertEqual({i["meta"]["block"] for i in pilot}, {1})
+        self.assertTrue(all(i["key"].endswith("__w1__r1") for i in pilot))
+        # Without the filters block 1 is five repetitions of three wordings.
+        self.assertEqual(len(plan_items(runs, [1], None, ["base"])), 7800)
+        self.assertEqual(len(plan_items(runs, [4], None, ["no_guidance"], [2, 3], 5)), 1040)
+
     def test_plan_items_repetitions_and_keys(self):
         runs = build_runs()[0]
         items = plan_items(runs, [1], None)

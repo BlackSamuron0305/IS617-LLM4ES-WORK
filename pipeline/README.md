@@ -11,6 +11,7 @@ server. The output of a mock run is labelled as such and is never a result.
 
 | # | stage | what it does | command |
 |---|---|---|---|
+| 0a | `filter_applicants` | writes the applicants the model may see from the full records and the filter | `python -m pipeline.filter_applicants` |
 | 0 | `build_runs` | puts the prompts together from `experiment/`, checks them and prints the counts. Calls no model | `python -m pipeline.build_runs` |
 | 1 | `run_models` | sends the prompts of one batch to one model and stores the raw answers | `python -m pipeline.run_models --batch pilot1 --model qwen3-32b --block 1 --base-url http://localhost:8000/v1 --allow-real-calls` |
 | 2 | `parse_answers` | reads the answers (score, reason; `reasoning` for the reasoning variant) into one table. A risk-scale answer is also written on the grant scale (`visa_score`) | `python -m pipeline.parse_answers --batch pilot1` |
@@ -18,6 +19,8 @@ server. The output of a mock run is labelled as such and is never a result.
 | 4 | `run_judge` | sends the judge inputs to the judge model and stores the raw answers | `python -m pipeline.run_judge --batch pilot1 --judge olmo-3.1-32b-instruct --base-url http://localhost:8000/v1 --allow-real-calls` |
 | 5 | `judge_parse` | reads the judge's codes and puts them on every answer | `python -m pipeline.judge_parse --batch pilot1 --judge olmo-3.1-32b-instruct` |
 | 6a | `judge_validate sample` | draws the items that the team codes by hand | `python -m pipeline.judge_validate sample --batch pilot1` |
+| P | `pilot_report` | after the pilot: the go / no-go checks of `experiment/analysis_plan.md`, section 5 | `python -m pipeline.pilot_report --batch pilot1` |
+| A | `analyze_main` | the confirmatory tests H1 to H4 for the full run, one model at a time | `python -m pipeline.analyze_main --batch main_qwen3-32b` |
 | 6b | `judge_validate agreement` | measures how well two sets of codes agree | `python -m pipeline.judge_validate agreement --batch pilot1 --human coded.csv --judge olmo-3.1-32b-instruct` |
 
 The commands of stages 1 and 4 are real calls. They are shown as they are used on the
@@ -25,7 +28,7 @@ cluster, where `cluster/run_vllm.sbatch` starts the server and passes `--allow-r
 (`cluster/README.md`). On a PC, add `--mock` and give a batch name that starts with `mock`
 instead of `--base-url` and `--allow-real-calls`.
 
-Other flags: `--variant NAME` (repeatable; default `base`; the names are in `experiment/prompts/variants.csv`) and `--block N` (repeatable) and `--limit N` on `run_models`, `--limit N` on
+Other flags: `--wording N` (repeatable) and `--max-repetitions N` on `run_models` (the pilot: `--wording 1 --max-repetitions 1`), `--variant NAME` (repeatable; default `base`; the names are in `experiment/prompts/variants.csv`) and `--block N` (repeatable) and `--limit N` on `run_models`, `--limit N` on
 `run_judge`, `--workers N` on both, `--n N`, `--seed N` and `--force` on
 `judge_validate sample`, `--other-human FILE` in place of `--judge` on `judge_validate
 agreement`, and `--data-root DIR` on every stage that reads or writes data.

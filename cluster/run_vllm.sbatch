@@ -1,17 +1,20 @@
 #!/bin/bash
 #SBATCH --job-name=is617
-#SBATCH --partition=gpu_a100_il
+#SBATCH --partition=gpu_h100
 #SBATCH --gres=gpu:1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=120gb
 #SBATCH --time=04:00:00
 #SBATCH --output=logs/%x-%j.out
 #
 # Start a vLLM server for one model and run ONE stage of the pipeline against it.
 #
-# UNTESTED. This script has never run on the cluster. Before the first approved run, check it
-# against the helpers that already work there (~/is617/repo/cluster/lib.sh: vllm_start,
-# vllm_wait, vllm_verify_model, vllm_stop) and fix the srun line, the container options and the
-# paths if they differ. This is the only place that passes --allow-real-calls; it does so only
-# when ALLOW_REAL_CALLS=yes, which is set only after the team has approved the run.
+# Adapted on 2026-11-01 to the launch method that already works on the cluster
+# (~/llm/vllm_serve.sbatch and ~/llm/run_stage.sbatch): `enroot start --rw --rc rc_exec.sh` on the
+# unpacked container pyxis_vllm, with the workspace mounted. This is the only place that passes
+# --allow-real-calls; it does so only when ALLOW_REAL_CALLS=yes, which is set only after the team
+# has approved the run.
 #
 # Submit from the repo root, after `mkdir -p logs` (Slurm does not create the log folder):
 #   sbatch --export=ALL,STAGE=answers,ALIAS=qwen3-32b,BATCH=pilot1,BLOCKS=1,MODEL_PATH=/path/to/qwen3-32b,ALLOW_REAL_CALLS=yes cluster/run_vllm.sbatch
@@ -23,6 +26,12 @@
 #   BATCH             required: batch name; must not start with "mock"
 #   MODEL_PATH        required: folder with the model weights on the cluster
 #   BLOCKS            optional, answers only: space-separated block numbers, for example "1 2"
+#   VARIANTS          optional, answers only: space-separated prompt variants, default base
+#   WORDINGS          optional, answers only: space-separated task wordings, for example "1"
+#   MAX_REPETITIONS   optional, answers only: at most this many repetitions per prompt
+#   CONTAINER_NAME    optional: name of the unpacked Enroot container with vLLM, default pyxis_vllm
+#   ENV_FILE          optional: file that sets WS and the Enroot paths, default ~/llm/env.sh
+#   PYTHON_MODULE     optional: a module to load for Python 3.11 or newer, for example devel/python/3.11.7-gnu-11.4
 #   WORKERS           optional: parallel calls, default 16
 #   PORT              optional: port of the server, default 8000
 #   VLLM_ARGS         optional: extra arguments for `vllm serve`, for example "--max-model-len 8192"
@@ -57,9 +66,14 @@ case "$STAGE" in
     judge) TABLE=experiment/judge/judge_models.csv ;;
     *) echo "error: STAGE must be answers or judge, not '$STAGE'" >&2; exit 1 ;;
 esac
-if [ "$STAGE" = "judge" ] && [ -n "${BLOCKS:-}" ]; then
-    echo "error: BLOCKS only applies to STAGE=answers" >&2
+if [ "$STAGE" = "judge" ] && [ -n "${BLOCKS:-}${VARIANTS:-}${WORDINGS:-}${MAX_REPETITIONS:-}" ]; then
+    echo "error: BLOCKS, VARIANTS, WORDINGS and MAX_REPETITIONS only apply to STAGE=answers" >&2
     exit 1
+fi
+# The environment of the working cluster setup (WS, ENROOT_DATA_PATH, VLLM_IMAGE, HF_HOME).
+source "${ENV_FILE:-$HOME/llm/env.sh}" || exit 1
+if [ -n "${PYTHON_MODULE:-}" ]; then
+    module load "$PYTHON_MODULE" || exit 1
 fi
 WORKERS="${WORKERS:-16}"
 PORT="${PORT:-8000}"
@@ -118,9 +132,18 @@ trap 'exit 143' TERM INT HUP
 # 4. Start the server in the background, inside the container, and log to logs/vllm-<job>.log.
 mkdir -p logs
 echo "starting vLLM for $MODEL_ID ($STAGE, alias $ALIAS, batch $BATCH) on port $PORT"
-# $VLLM_ARGS is split into words on purpose.
-srun --ntasks=1 --container-name=pyxis_vllm_is617 --container-mounts="$MODEL_PATH:$MODEL_PATH:ro" \
-    vllm serve "$MODEL_PATH" --served-model-name "$MODEL_ID" --port "$PORT" $VLLM_ARGS \
+# The model folder may be a symlink into another workspace: serve and mount the real path.
+MODEL_REAL=$(readlink -f "$MODEL_PATH")
+CONTAINER="${CONTAINER_NAME:-pyxis_vllm}"
+enroot list | grep -qx "$CONTAINER" || enroot create -n "$CONTAINER" "$VLLM_IMAGE"
+# $VLLM_ARGS is split into words on purpose. --rc makes the container run the command it is given
+# (the image's own rc would append it to `vllm serve`).
+enroot start --rw --rc "$HOME/llm/rc_exec.sh" \
+    -m "$WS:$WS" -m "$HOME:$HOME" -m "$(dirname "$MODEL_REAL"):$(dirname "$MODEL_REAL")" -m "${TMPDIR:-/tmp}:/tmp" \
+    -e HF_HOME="${HF_HOME:-$WS/hf-cache}" -e HF_HUB_OFFLINE=1 \
+    "$CONTAINER" \
+    vllm serve "$MODEL_REAL" --served-model-name "$MODEL_ID" --host 127.0.0.1 --port "$PORT" \
+    --max-model-len 8192 --gpu-memory-utilization 0.90 --max-num-seqs 64 $VLLM_ARGS \
     > "logs/vllm-${SLURM_JOB_ID:-local}.log" 2>&1 &
 VLLM_PID=$!
 
@@ -151,6 +174,15 @@ if [ "$STAGE" = "answers" ]; then
     for block in ${BLOCKS:-}; do
         cmd+=(--block "$block")
     done
+    for variant in ${VARIANTS:-}; do
+        cmd+=(--variant "$variant")
+    done
+    for wording in ${WORDINGS:-}; do
+        cmd+=(--wording "$wording")
+    done
+    if [ -n "${MAX_REPETITIONS:-}" ]; then
+        cmd+=(--max-repetitions "$MAX_REPETITIONS")
+    fi
 else
     cmd=("$PYTHON" -m pipeline.run_judge --batch "$BATCH" --judge "$ALIAS")
 fi

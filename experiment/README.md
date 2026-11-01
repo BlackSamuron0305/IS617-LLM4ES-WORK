@@ -53,8 +53,9 @@ Australia.
 | `countries/` | the 26 nationalities an applicant can have, and the official rules for each |
 | `prompts/` | the main prompt, three wordings of the task, and `variants.csv` with the twelve variants |
 | `costs/` | how a difference in the scores is turned into money |
-| `models.csv` | the four planned models |
+| `models.csv` | the three planned models |
 | `judge/` | the judge that codes the free-text reason of each answer |
+| `analysis_plan.md`, `design_review.md`, `deviations.md` | the hypotheses and tests, the referee's view of the design, and the log of changes after the freeze |
 | `run_settings.csv` | the sampling settings for the audited models and the judge; each marked provisional or open |
 
 The code is in `pipeline/` (`pipeline/README.md`). `pipeline/build_runs.py` puts the
@@ -107,7 +108,7 @@ history) remain and are stated in `applicants/README.md`.
 | | **base design (blocks 1 to 3)** | **9,360** | | **21,840** |
 | | **with all variants** | **28,080** | | **40,560** |
 
-With four models: 87,360 runs for the base design and 162,240 with all variants. A prompt
+With three models: 65,520 runs for the base design and 121,680 with all variants. A prompt
 has 550 to 1,400 words. Block 1 on all models is enough for the midterm; block 3 and the
 variants are the first things to cut if time is short. Run in small batches (one model and
 one block or variant at a time).
@@ -134,7 +135,7 @@ one block or variant at a time).
   application, and does it name a ground of Article 32? Exploratory, and only for codes
   that agree with the team's own coding of a sample (`judge/README.md`).
 - **What does it cost?** `costs/README.md`.
-- Plain applications against applications with one indicator; the four models against each
+- Plain applications against applications with one indicator; the three models against each
   other; the three wordings against each other; how often an answer cannot be read.
 
 The score is a number given by a model. It is not a probability of anything.

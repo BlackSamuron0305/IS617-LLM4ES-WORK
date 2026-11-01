@@ -198,7 +198,7 @@ class BuildItemsTest(unittest.TestCase):
         user = read_jsonl(self.tmp / "processed/mock_a/judge_items.jsonl")[0]["user"]
         self.assertIn("Nationality: [NATIONALITY]\n", user)
         self.assertIn("Travel document: [NATIONALITY] passport, valid until 2033, two free pages\n", user)
-        self.assertIn(f"Savings: AED {APPLICANTS[0]['savings']} ", user)
+        self.assertIn(f"Funds available for the trip: AED {APPLICANTS[0]['savings']} ", user)
         self.assertNotIn("{", user)
 
     def test_skips_answers_whose_prompt_no_longer_matches(self):

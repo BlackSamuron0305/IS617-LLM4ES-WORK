@@ -107,7 +107,8 @@ carried over to the new scenario as `experiment/prompts/variants.csv`.
   with twelve variants (folders per variant).
 - `experiment/costs/`: the cost measures and `cost_assumptions.csv` (prices and rates with
   sources).
-- `experiment/models.csv`: the four planned models.
+- `experiment/models.csv`: the three planned models (qwen3-32b, gemma-4-31b-it, mistral-small-3.2-24b-instruct).
+- `experiment/analysis_plan.md` (hypotheses, tests, pilot go / no-go), `experiment/design_review.md` (the referee's view) and `cluster/PILOT.md` (how to run the pilot).
 - `experiment/judge/`: the judge that codes the free-text reason of each answer (prompt
   files, `mask_terms.csv`, `judge_models.csv`). Its README is authoritative.
 - `experiment/run_settings.csv`: the sampling settings; all provisional or open.
@@ -242,7 +243,7 @@ not been confirmed by the team.
   refusal, a refusal line below 20 and a doubt line below 50); the share of scores that
   send an application to a closer look (20 to 49). All are illustrations of model
   behaviour, never forecasts.
-- Run plan: four models; blocks 1 to 3 are 21,840 runs per model (block 3 repeats block 1
+- Run plan: three models; blocks 1 to 3 are 21,840 runs per model (block 3 repeats block 1
   with the other savings levels); block 4 is 18,720 runs per model for the twelve
   variants.
 - Judge (drafted by Claude on 2026-10-24, extended on 2026-11-01 with the code
