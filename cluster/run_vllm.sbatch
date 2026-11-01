@@ -29,6 +29,8 @@
 #   VARIANTS          optional, answers only: space-separated prompt variants, default base
 #   WORDINGS          optional, answers only: space-separated task wordings, for example "1"
 #   MAX_REPETITIONS   optional, answers only: at most this many repetitions per prompt
+#   SHARD             optional, answers only: K/N, only every N-th call starting at K (use one BATCH per shard)
+#   LIMIT             optional, answers only: only the first N calls (a smoke test)
 #   CONTAINER_NAME    optional: name of the unpacked Enroot container with vLLM, default pyxis_vllm
 #   ENV_FILE          optional: file that sets WS and the Enroot paths, default ~/llm/env.sh
 #   PYTHON_MODULE     optional: a module to load for Python 3.11 or newer, for example devel/python/3.11.7-gnu-11.4
@@ -66,8 +68,8 @@ case "$STAGE" in
     judge) TABLE=experiment/judge/judge_models.csv ;;
     *) echo "error: STAGE must be answers or judge, not '$STAGE'" >&2; exit 1 ;;
 esac
-if [ "$STAGE" = "judge" ] && [ -n "${BLOCKS:-}${VARIANTS:-}${WORDINGS:-}${MAX_REPETITIONS:-}" ]; then
-    echo "error: BLOCKS, VARIANTS, WORDINGS and MAX_REPETITIONS only apply to STAGE=answers" >&2
+if [ "$STAGE" = "judge" ] && [ -n "${BLOCKS:-}${VARIANTS:-}${WORDINGS:-}${MAX_REPETITIONS:-}${SHARD:-}${LIMIT:-}" ]; then
+    echo "error: BLOCKS, VARIANTS, WORDINGS, MAX_REPETITIONS, SHARD and LIMIT only apply to STAGE=answers" >&2
     exit 1
 fi
 # The environment of the working cluster setup (WS, ENROOT_DATA_PATH, VLLM_IMAGE, HF_HOME).
@@ -105,6 +107,22 @@ if dirty_files():
 print(model["model_id"])
 PY
 ) || { echo "error: could not look up $ALIAS in $TABLE (see the message above)" >&2; exit 1; }
+
+# The plan options of the answers stage, used by the check below and by the run itself.
+PLAN=()
+if [ "$STAGE" = "answers" ]; then
+    for block in ${BLOCKS:-}; do PLAN+=(--block "$block"); done
+    for variant in ${VARIANTS:-}; do PLAN+=(--variant "$variant"); done
+    for wording in ${WORDINGS:-}; do PLAN+=(--wording "$wording"); done
+    if [ -n "${MAX_REPETITIONS:-}" ]; then PLAN+=(--max-repetitions "$MAX_REPETITIONS"); fi
+    if [ -n "${SHARD:-}" ]; then PLAN+=(--shard "$SHARD"); fi
+    # Nothing left to do: leave before the server is started (it takes minutes to load a model).
+    # This is what makes a chain of identical jobs cheap: the later ones end here.
+    LEFT=$("$PYTHON" -m pipeline.run_models --batch "$BATCH" --model "$ALIAS" "${PLAN[@]}" --remaining) || exit 1
+    echo "plan: $LEFT"
+    case "$LEFT" in *'"remaining": 0'*) echo "nothing left to do for $BATCH"; exit 0 ;; esac
+    if [ -n "${LIMIT:-}" ]; then PLAN+=(--limit "$LIMIT"); fi
+fi
 
 # vLLM and the Hugging Face libraries must not contact the internet: the model is a local folder.
 export HF_HUB_OFFLINE=1
@@ -170,19 +188,7 @@ echo "server ready after about $waited s"
 
 # 6. Run the stage. This is the only place that passes --allow-real-calls.
 if [ "$STAGE" = "answers" ]; then
-    cmd=("$PYTHON" -m pipeline.run_models --batch "$BATCH" --model "$ALIAS")
-    for block in ${BLOCKS:-}; do
-        cmd+=(--block "$block")
-    done
-    for variant in ${VARIANTS:-}; do
-        cmd+=(--variant "$variant")
-    done
-    for wording in ${WORDINGS:-}; do
-        cmd+=(--wording "$wording")
-    done
-    if [ -n "${MAX_REPETITIONS:-}" ]; then
-        cmd+=(--max-repetitions "$MAX_REPETITIONS")
-    fi
+    cmd=("$PYTHON" -m pipeline.run_models --batch "$BATCH" --model "$ALIAS" "${PLAN[@]}")
 else
     cmd=("$PYTHON" -m pipeline.run_judge --batch "$BATCH" --judge "$ALIAS")
 fi

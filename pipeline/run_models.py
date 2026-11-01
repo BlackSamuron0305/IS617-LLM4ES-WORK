@@ -17,13 +17,13 @@ import sys
 from pathlib import Path
 
 from pipeline.build_runs import build_runs
-from pipeline.calls import begin_stage, check_mock_label, record_summary, run_calls
+from pipeline.calls import begin_stage, done_keys, check_mock_label, record_summary, run_calls
 from pipeline.client import RunRefused, make_client
 from pipeline.common import DATA, EXPERIMENT, load_models, load_settings
 from pipeline.parse_answers import answer_schema
 
 
-def plan_items(runs, blocks, limit, variants=None, wordings=None, max_repetitions=None):
+def plan_items(runs, blocks, limit, variants=None, wordings=None, max_repetitions=None, shard=None):
     # One item per repetition of every run, in build order; the key names run and repetition.
     items = []
     for run in runs:
@@ -37,11 +37,15 @@ def plan_items(runs, blocks, limit, variants=None, wordings=None, max_repetition
         for repetition in range(1, min(run["repetitions"], max_repetitions or run["repetitions"]) + 1):
             items.append({"key": f"{run['run_id']}__r{repetition}", "messages": messages,
                           "meta": {"run_id": run["run_id"], "repetition": repetition, "block": run["block"]}})
+    if shard is not None:
+        # (k, n): every n-th item starting at k, so that n jobs can share one list without overlap.
+        k, n = shard
+        items = items[k::n]
     return items if limit is None else items[:limit]
 
 
 def run_answers(batch, model_alias, client, data_root, blocks=None, limit=None, workers=8, mock=False,
-                variants=("base",), wordings=None, max_repetitions=None):
+                variants=("base",), wordings=None, max_repetitions=None, shard=None):
     models = load_models(EXPERIMENT / "models.csv")
     if model_alias not in models:
         raise RunRefused(f"unknown model alias {model_alias!r}; experiment/models.csv has: {', '.join(models)}")
@@ -51,7 +55,7 @@ def run_answers(batch, model_alias, client, data_root, blocks=None, limit=None, 
     if problems:
         raise RunRefused("build_runs reports problems: " + "; ".join(problems[:5]))
     settings = load_settings("answers")
-    items = plan_items(runs, blocks, limit, list(variants), wordings, max_repetitions)
+    items = plan_items(runs, blocks, limit, list(variants), wordings, max_repetitions, shard)
     keys = {run["answer_keys"] for run in runs if run["variant"] in variants}
     if len(keys) > 1 and settings["json_schema"]:
         raise RunRefused("the chosen variants ask for different answer keys; with json_schema yes run one variant at a time")
@@ -59,11 +63,30 @@ def run_answers(batch, model_alias, client, data_root, blocks=None, limit=None, 
     # The manifest comes first: a batch that belongs to another model is refused before any call.
     fixed_fields = begin_stage(batch_dir / "manifest.json", "answers", batch, model_alias, model, mock, settings,
                                {"blocks": blocks, "limit": limit, "variants": list(variants), "wordings": wordings,
-                                "max_repetitions": max_repetitions}, client)
+                                "max_repetitions": max_repetitions, "shard": shard}, client)
     summary = run_calls(items, client, settings, model["extra_body"], answer_schema(next(iter(keys))), batch_dir / "answers.jsonl",
                         workers, fixed_fields)
     record_summary(batch_dir / "manifest.json", summary)
     return summary
+
+
+def count_remaining(batch, data_root, blocks=None, variants=("base",), wordings=None, max_repetitions=None, shard=None):
+    # How many calls of the plan are not done in the batch's raw file. Calls no model and needs no server.
+    runs, _, _, problems = build_runs(list(variants))
+    if problems:
+        raise RunRefused("build_runs reports problems: " + "; ".join(problems[:5]))
+    items = plan_items(runs, blocks, None, list(variants), wordings, max_repetitions, shard)
+    done = done_keys(Path(data_root) / "raw" / batch / "answers.jsonl")
+    return {"planned": len(items), "remaining": sum(item["key"] not in done for item in items)}
+
+
+def parse_shard(text):
+    if text is None:
+        return None
+    k, _, n = text.partition("/")
+    if not (k.isdigit() and n.isdigit() and 0 <= int(k) < int(n)):
+        raise ValueError(f"--shard must be K/N with 0 <= K < N, not {text!r}")
+    return int(k), int(n)
 
 
 def main(argv=None):
@@ -77,6 +100,9 @@ def main(argv=None):
                         help="only this task wording (repeatable); a pilot uses --wording 1")
     parser.add_argument("--max-repetitions", type=int,
                         help="at most N repetitions of each prompt; a pilot uses 1")
+    parser.add_argument("--shard", help="K/N: only every N-th call, starting at K (0 <= K < N); one batch name per shard")
+    parser.add_argument("--remaining", action="store_true",
+                        help="only print how many calls of the plan are not done yet (calls no model, needs no server)")
     parser.add_argument("--limit", type=int, help="only the first N calls")
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--mock", action="store_true", help="use the mock client, no server needed")
@@ -92,11 +118,25 @@ def main(argv=None):
               file=sys.stderr)
         return 2
     try:
+        shard = parse_shard(args.shard)
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    if args.remaining:
+        try:
+            summary = count_remaining(args.batch, Path(args.data_root), args.block, tuple(args.variant or ("base",)),
+                                      args.wording, args.max_repetitions, shard)
+        except RunRefused as exc:
+            print(f"refusing: {exc}", file=sys.stderr)
+            return 2
+        print(json.dumps(summary))
+        return 0
+    try:
         client = make_client("answers", models[args.model], args.batch, args.mock, args.base_url,
                              args.allow_real_calls)
         summary = run_answers(args.batch, args.model, client, Path(args.data_root), args.block, args.limit,
                               args.workers, args.mock, tuple(args.variant or ("base",)), args.wording,
-                              args.max_repetitions)
+                              args.max_repetitions, shard)
     except RunRefused as exc:
         print(f"refusing: {exc}", file=sys.stderr)
         return 2

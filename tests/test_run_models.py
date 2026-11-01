@@ -113,6 +113,26 @@ class RunModelsTest(unittest.TestCase):
 
     # --- planning
 
+    def test_shards_are_disjoint_and_complete(self):
+        runs = build_runs()[0]
+        whole = [i["key"] for i in plan_items(runs, [1], None)]
+        parts = [[i["key"] for i in plan_items(runs, [1], None, shard=(k, 4))] for k in range(4)]
+        self.assertEqual(sorted(sum(parts, [])), sorted(whole))
+        self.assertEqual(len({k for part in parts for k in part}), len(whole))
+
+    def test_remaining_counts_without_a_server(self):
+        from pipeline.run_models import count_remaining, parse_shard
+        with tempfile.TemporaryDirectory() as tmp:
+            first = count_remaining("mock_r", tmp, [1], wordings=[1], max_repetitions=1)
+            self.assertEqual(first, {"planned": 520, "remaining": 520})
+            run_answers("mock_r", "qwen3-32b", MockClient("answers"), Path(tmp), blocks=[1], limit=20, mock=True,
+                        wordings=[1], max_repetitions=1)
+            self.assertEqual(count_remaining("mock_r", tmp, [1], wordings=[1], max_repetitions=1)["remaining"], 500)
+        self.assertEqual(parse_shard("2/5"), (2, 5))
+        self.assertIsNone(parse_shard(None))
+        with self.assertRaises(ValueError):
+            parse_shard("5/5")
+
     def test_plan_items_pilot_filters(self):
         # The pilot: block 1, wording 1, one repetition = 20 applicants x 26 nationalities.
         runs = build_runs("all")[0]
