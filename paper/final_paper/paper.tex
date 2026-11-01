@@ -475,6 +475,37 @@ The rubric asks for what is relevant to our work, not for a list of papers.
 % Rubric [10]: Describe your data sources including descriptive statistics and plots.
 % Carefully document all references to data sources.
 
+\teamnote{update of 2026-11-01: destination Estonia, score only, and the applicant filter}{%
+\textbf{The notes below this one still describe the Australian design (commit af0e409).
+Rewrite them for Estonia before using them.}
+\begin{itemize}
+  \item Destination: a Schengen visa (type C, short stay, tourism) to Estonia, lodged in
+        the United Arab Emirates. Yardstick: Article 32(1) of the Visa Code lists the
+        grounds on which a visa is refused; nationality is not one of them. Emirati and
+        Uruguayan citizens need no visa and are reported apart; the main comparison among
+        Arab nationalities is among 21. Sources: \texttt{experiment/policy/README.md},
+        \texttt{experiment/countries/README.md}, \texttt{research/visa\_scenario/estonia\_scenario.md}.
+  \item Output: one score from 0 to 100 (0 = the visa should be refused) and a reason; no
+        decision. The reason is coded by the judge, among others for whether it names a
+        ground of Article 32(1).
+  \item Application: the five items of the Estonian checklist (purpose, travel medical
+        insurance, return flight, accommodation, means of subsistence).
+  \item \textbf{Filter (to be described in the Data or Methods section).} The 20 applicants
+        were simulated as complete records with name, sex, date of birth, place of birth,
+        address, phone, e-mail and passport number, and these fields were removed before
+        any model saw an application, so that the passport is the only thing that differs.
+        The filter is a table, field by field, with the reason
+        (\texttt{experiment/applicants/field\_filter.csv}), and the builder checks that no
+        removed value reaches a prompt. Residual signals that remain: the family line, the
+        length of employment, the travel history and the occupation
+        (\texttt{experiment/applicants/README.md}).
+  \item Prompts: the guidance as a paraphrase and as the word-for-word Article 32(1), one
+        variant with an instruction to cite the ground, and ten more variants
+        (\texttt{experiment/prompts/README.md}).
+  \item Not confirmed: that Estonia uses AI for visa decision support. Do not write it
+        without a source.
+\end{itemize}}
+
 \teamnote{materials}{%
 \begin{itemize}
   \item 20 applications for an Australian Visitor visa (subclass 600, Tourist stream),

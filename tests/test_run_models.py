@@ -29,7 +29,7 @@ SETTINGS_CSV = ("setting,answers,judge,status,note\n"
                 "json_schema,{answers_schema},no,open,\n")
 MSGS = [{"role": "user", "content": "hi"}]
 # The model the tests run, as the live experiment/models.csv has it.
-MODEL = load_models(EXPERIMENT / "models.csv")["qwen3-8b"]
+MODEL = load_models(EXPERIMENT / "models.csv")["qwen3-32b"]
 
 
 class CountingClient:
@@ -64,7 +64,7 @@ class RunModelsTest(unittest.TestCase):
         self.addCleanup(self._tmp.cleanup)
         self.tmp = Path(self._tmp.name)
 
-    def mock_run(self, batch="mock_t", model="qwen3-8b", limit=5, **kwargs):
+    def mock_run(self, batch="mock_t", model="qwen3-32b", limit=5, **kwargs):
         return run_answers(batch, model, MockClient("answers"), self.tmp, blocks=[1], limit=limit, mock=True, **kwargs)
 
     # --- settings and request parameters
@@ -202,7 +202,7 @@ class RunModelsTest(unittest.TestCase):
         recs = read_jsonl(self.tmp / "raw/mock_t/answers.jsonl")
         self.assertEqual(len(recs), 30)
         self.assertTrue(all(r["mock"] for r in recs))
-        self.assertTrue(all(r["kind"] == "answers" and r["model_alias"] == "qwen3-8b" and r["batch"] == "mock_t"
+        self.assertTrue(all(r["kind"] == "answers" and r["model_alias"] == "qwen3-32b" and r["batch"] == "mock_t"
                             for r in recs))
         self.assertTrue(all(r["error"] is None and r["text"] for r in recs))
         # The model's extra_body from models.csv goes into the request.
@@ -212,7 +212,7 @@ class RunModelsTest(unittest.TestCase):
         self.mock_run(limit=3)
         stored = json.loads((self.tmp / "raw/mock_t/manifest.json").read_text(encoding="utf-8"))
         self.assertEqual({k: stored[k] for k in ("batch", "kind", "model_alias", "model_id", "revision", "mock")},
-                         {"batch": "mock_t", "kind": "answers", "model_alias": "qwen3-8b",
+                         {"batch": "mock_t", "kind": "answers", "model_alias": "qwen3-32b",
                           "model_id": MODEL["model_id"], "revision": MODEL["revision"], "mock": True})
         (session,) = stored["sessions"]
         self.assertEqual(session["blocks"], [1])
@@ -253,7 +253,7 @@ class RunModelsTest(unittest.TestCase):
         self.mock_run(limit=2)
         before = (self.tmp / "raw/mock_t/answers.jsonl").read_text(encoding="utf-8")
         with self.assertRaisesRegex(RunRefused, "model_alias"):
-            self.mock_run(model="gemma-3-12b-it", limit=2)
+            self.mock_run(model="gemma-4-31b-it", limit=2)
         self.assertEqual((self.tmp / "raw/mock_t/answers.jsonl").read_text(encoding="utf-8"), before)
 
     def test_refuses_when_build_runs_reports_problems(self):
@@ -265,12 +265,12 @@ class RunModelsTest(unittest.TestCase):
     def test_mock_labelling_guards(self):
         # A mock client must not write unlabelled records, nor a real client records labelled as mock.
         with self.assertRaisesRegex(RunRefused, "mock"):
-            run_answers("mock_t", "qwen3-8b", MockClient("answers"), self.tmp, blocks=[1], limit=1, mock=False)
+            run_answers("mock_t", "qwen3-32b", MockClient("answers"), self.tmp, blocks=[1], limit=1, mock=False)
         with self.assertRaisesRegex(RunRefused, "mock"):
-            run_answers("mock_t", "qwen3-8b", CountingClient(), self.tmp, blocks=[1], limit=1, mock=True)
+            run_answers("mock_t", "qwen3-32b", CountingClient(), self.tmp, blocks=[1], limit=1, mock=True)
         # A mock batch name must start with "mock".
         with self.assertRaisesRegex(RunRefused, "mock"):
-            run_answers("pilot1", "qwen3-8b", MockClient("answers"), self.tmp, blocks=[1], limit=1, mock=True)
+            run_answers("pilot1", "qwen3-32b", MockClient("answers"), self.tmp, blocks=[1], limit=1, mock=True)
         self.assertFalse((self.tmp / "raw").exists())
 
     # --- the gate: only make_client can produce a client that may make real calls
@@ -279,7 +279,7 @@ class RunModelsTest(unittest.TestCase):
         client = OpenAICompatibleClient("http://127.0.0.1:9/v1", MODEL["model_id"])
         with mock.patch.object(OpenAICompatibleClient, "complete", side_effect=AssertionError("called")):
             with self.assertRaisesRegex(RunRefused, "make_client"):
-                run_answers("pilot1", "qwen3-8b", client, self.tmp, blocks=[1], limit=1, mock=False)
+                run_answers("pilot1", "qwen3-32b", client, self.tmp, blocks=[1], limit=1, mock=False)
         self.assertFalse((self.tmp / "raw").exists())
 
     def test_an_approved_client_passes_the_label_check(self):
@@ -297,11 +297,11 @@ class RunModelsTest(unittest.TestCase):
         client = OpenAICompatibleClient("http://127.0.0.1:9/v1", MODEL["model_id"])
         client.approved = True
         path = self.tmp / "manifest.json"
-        with mock.patch.dict(os.environ, {"MODEL_PATH": "/models/qwen3-8b", "VLLM_ARGS": "--max-model-len 8192"}):
-            begin_stage(path, "answers", "pilot1", "qwen3-8b", MODEL, False, SETTINGS, {}, client)
+        with mock.patch.dict(os.environ, {"MODEL_PATH": "/models/qwen3-32b", "VLLM_ARGS": "--max-model-len 8192"}):
+            begin_stage(path, "answers", "pilot1", "qwen3-32b", MODEL, False, SETTINGS, {}, client)
         (session,) = json.loads(path.read_text(encoding="utf-8"))["sessions"]
         self.assertEqual((session["model_path"], session["vllm_args"], session["base_url"]),
-                         ("/models/qwen3-8b", "--max-model-len 8192", "http://127.0.0.1:9/v1"))
+                         ("/models/qwen3-32b", "--max-model-len 8192", "http://127.0.0.1:9/v1"))
 
     def test_real_session_records_empty_strings_when_the_environment_is_not_set(self):
         client = OpenAICompatibleClient("http://127.0.0.1:9/v1", MODEL["model_id"])
@@ -310,7 +310,7 @@ class RunModelsTest(unittest.TestCase):
         with mock.patch.dict(os.environ):
             os.environ.pop("MODEL_PATH", None)
             os.environ.pop("VLLM_ARGS", None)
-            begin_stage(path, "answers", "pilot1", "qwen3-8b", MODEL, False, SETTINGS, {}, client)
+            begin_stage(path, "answers", "pilot1", "qwen3-32b", MODEL, False, SETTINGS, {}, client)
         (session,) = json.loads(path.read_text(encoding="utf-8"))["sessions"]
         self.assertEqual((session["model_path"], session["vllm_args"]), ("", ""))
 
@@ -322,7 +322,7 @@ class RunModelsTest(unittest.TestCase):
         with mock.patch("pipeline.client.dirty_files", return_value=[]),                 mock.patch.dict(os.environ, {"MODEL_PATH": "/models/m", "VLLM_ARGS": "--x"}):
             client = make_client("answers", dict(MODEL, model_id="org/m", revision=REVISION), "pilot1", False,
                                  stub.url, True)
-            summary = run_answers("pilot1", "qwen3-8b", client, self.tmp, blocks=[1], limit=2, workers=1)
+            summary = run_answers("pilot1", "qwen3-32b", client, self.tmp, blocks=[1], limit=2, workers=1)
         self.assertEqual((summary["called"], summary["errors"]), (2, 0))
         records = read_jsonl(self.tmp / "raw/pilot1/answers.jsonl")
         self.assertEqual([r["mock"] for r in records], [False, False])
@@ -332,7 +332,7 @@ class RunModelsTest(unittest.TestCase):
                          ("/models/m", "--x", stub.url))
 
     def test_mock_session_records_no_server_facts(self):
-        with mock.patch.dict(os.environ, {"MODEL_PATH": "/models/qwen3-8b", "VLLM_ARGS": "--x"}):
+        with mock.patch.dict(os.environ, {"MODEL_PATH": "/models/qwen3-32b", "VLLM_ARGS": "--x"}):
             self.mock_run(limit=1)
         stored = json.loads((self.tmp / "raw/mock_t/manifest.json").read_text(encoding="utf-8"))
         (session,) = stored["sessions"]
@@ -342,14 +342,14 @@ class RunModelsTest(unittest.TestCase):
 
     def test_cli_refuses_real_run_without_flag_and_writes_nothing(self):
         with mock.patch.object(OpenAICompatibleClient, "served_models", side_effect=AssertionError("network")):
-            code, _, err = run_cli(["--batch", "pilot1", "--model", "qwen3-8b", "--base-url",
+            code, _, err = run_cli(["--batch", "pilot1", "--model", "qwen3-32b", "--base-url",
                                     "http://127.0.0.1:9/v1", "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
         self.assertIn("refusing: ", err)
         self.assertFalse((self.tmp / "raw/pilot1").exists())
 
     def test_cli_mock_run(self):
-        code, out, _ = run_cli(["--batch", "mock_cli", "--model", "qwen3-8b", "--block", "1", "--limit", "3",
+        code, out, _ = run_cli(["--batch", "mock_cli", "--model", "qwen3-32b", "--block", "1", "--limit", "3",
                                 "--mock", "--data-root", str(self.tmp)])
         self.assertEqual(code, 0)
         self.assertEqual(json.loads(out)["called"], 3)
@@ -358,7 +358,7 @@ class RunModelsTest(unittest.TestCase):
     def test_cli_unknown_model_and_bad_mock_batch(self):
         self.assertEqual(run_cli(["--batch", "mock_cli", "--model", "nope", "--mock", "--data-root",
                                   str(self.tmp)])[0], 2)
-        self.assertEqual(run_cli(["--batch", "pilot1", "--model", "qwen3-8b", "--mock", "--data-root",
+        self.assertEqual(run_cli(["--batch", "pilot1", "--model", "qwen3-32b", "--mock", "--data-root",
                                   str(self.tmp)])[0], 2)
         self.assertFalse((self.tmp / "raw").exists())
 

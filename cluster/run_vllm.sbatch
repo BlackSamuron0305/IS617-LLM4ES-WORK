@@ -14,7 +14,7 @@
 # when ALLOW_REAL_CALLS=yes, which is set only after the team has approved the run.
 #
 # Submit from the repo root, after `mkdir -p logs` (Slurm does not create the log folder):
-#   sbatch --export=ALL,STAGE=answers,ALIAS=qwen3-8b,BATCH=pilot1,BLOCKS=1,MODEL_PATH=/path/to/qwen3-8b,ALLOW_REAL_CALLS=yes cluster/run_vllm.sbatch
+#   sbatch --export=ALL,STAGE=answers,ALIAS=qwen3-32b,BATCH=pilot1,BLOCKS=1,MODEL_PATH=/path/to/qwen3-32b,ALLOW_REAL_CALLS=yes cluster/run_vllm.sbatch
 #
 # Environment variables:
 #   STAGE             required: answers (pipeline.run_models) or judge (pipeline.run_judge)

@@ -9,8 +9,8 @@ judge_<alias>_manifest.json next to it; a run that stopped can be started again 
 command and continues where it ended.
 
 Usage:
-    python -m pipeline.run_judge --batch mock_x --judge gpt-oss-120b --mock --limit 30
-    python -m pipeline.run_judge --batch pilot1 --judge gpt-oss-120b --base-url URL --allow-real-calls
+    python -m pipeline.run_judge --batch mock_x --judge olmo-3.1-32b-instruct --mock --limit 30
+    python -m pipeline.run_judge --batch pilot1 --judge olmo-3.1-32b-instruct --base-url URL --allow-real-calls
 """
 
 import argparse

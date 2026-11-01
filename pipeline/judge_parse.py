@@ -11,8 +11,8 @@ judge input: it was not read or had no reason). The tables are rebuilt on every 
 a model.
 
 Usage:
-    python -m pipeline.judge_parse --batch mock_x --judge gpt-oss-120b
-    python -m pipeline.judge_parse --batch pilot1 --judge gpt-oss-120b --data-root data
+    python -m pipeline.judge_parse --batch mock_x --judge olmo-3.1-32b-instruct
+    python -m pipeline.judge_parse --batch pilot1 --judge olmo-3.1-32b-instruct --data-root data
 """
 
 import argparse

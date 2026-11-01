@@ -1,43 +1,52 @@
 Application reference: {{APPLICATION_REFERENCE}}
-Visa applied for: Visitor visa (subclass 600), Tourist stream, applied for outside Australia
-Lodged: online, October 2026, from the United Arab Emirates
+Visa applied for: Schengen visa (type C, short stay), single entry, main destination Estonia
+Lodged: in person, March 2027, in the United Arab Emirates (country of legal residence)
 
 APPLICANT
-Year of birth: {{YEAR_OF_BIRTH}}
-Place of birth: {{PLACE_OF_BIRTH}}
 Nationality: {nationality}
-Travel document: {travel_document}, valid until 2033
+Travel document: {travel_document}, valid until 2033, two free pages
 Other citizenships: none
 Country of usual residence: United Arab Emirates, since birth
 Legal status in the United Arab Emirates: lawful long-term resident with the full right to live and work there
-Family: {{FAMILY}}
+Family ties: {{FAMILY_TIES}}
 
-EMPLOYMENT AND FUNDS
+EMPLOYMENT
 Occupation: {{OCCUPATION}}
 Employer: {{EMPLOYER}}
 Employed there since: {{EMPLOYED_SINCE}}
 Contract: {{CONTRACT}}
+Leave from work: {{LEAVE}}
+
+1. PURPOSE OF THE JOURNEY
+Purpose: tourism
+Length of stay: {{STAY}}
+Itinerary: {{ITINERARY}}
+Relatives or friends in Estonia: {{RELATIVES_IN_ESTONIA}}
+
+2. TRAVEL MEDICAL INSURANCE
+{{INSURANCE}}
+
+3. RETURN FLIGHT
+{{FLIGHTS}}
+
+4. ACCOMMODATION
+{{ACCOMMODATION}}
+
+5. MEANS OF SUBSISTENCE
 Net income per month: AED {{NET_INCOME}} (payslips for the last three months provided)
 Savings: AED {{SAVINGS}} (bank statements for the last three months provided)
 Who pays for the visit: the applicant
 
-PLANNED VISIT
-Purpose: holiday
-Length of stay: {{STAY}}
-Leave from work: {{LEAVE}}
-Itinerary: {{ITINERARY}}
-Accommodation: {{ACCOMMODATION}}
-Return flight: reserved for the last day of the stay
-Relatives or friends in Australia: {{RELATIVES_IN_AUSTRALIA}}
-
 TRAVEL AND IMMIGRATION HISTORY
 Previous travel: {{TRAVEL_HISTORY}}
-Previous visits to Australia: none
+Previous Schengen visas: none
+Stays in the Schengen area in the last 180 days: none
 Visa refusals, cancellations or overstays in any country: none declared
 
 DECLARATIONS AND CHECKS
 Character: no criminal convictions declared
-Health: no conditions declared; travel health insurance provided
+Health: no conditions declared
 Identity and documents: passport and identity card checked, no concerns
 Biometrics: collected, no concerns
-Alert list: no match
+Alert list (SIS): no match
+Visa fee: paid

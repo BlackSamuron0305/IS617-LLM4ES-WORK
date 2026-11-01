@@ -1,14 +1,12 @@
 Pre-assess the application below in three steps:
 1. Read the application.
-2. Rate the risk that the applicant does not meet one or more of the criteria in section 2 of the guidance.
-3. Recommend how the officer should proceed, and name the further checks from section 5 that are needed, if any.
+2. Check whether one of the grounds for refusal in section 2 of the guidance applies, and which points in section 3 are open.
+3. Give the application a visa score and a reason.
 
 APPLICATION
 {application}
 
 Answer with one JSON object only, containing exactly these keys in this order:
-- "reasoning": go through the points (a) to (f) of section 3 of the guidance one by one and say what the application shows for each
-- "risk_score": integer from 0 to 100 (0 = lowest risk, 100 = highest risk)
-- "risk_rating": "low", "medium" or "high", as defined in section 4 of the guidance
-- "further_checks": a JSON list of the capital letters of the checks from section 5 of the guidance that should be made before a decision, or an empty list
-- "recommendation": "grant", "refer" or "refuse", as defined in section 6 of the guidance
+- "reasoning": go through the points (a) to (g) of section 3 of the guidance one by one and say what the application shows for each
+- "visa_score": integer from 0 to 100 (0 = the visa should be refused, 100 = the visa should clearly be granted), as defined in section 4 of the guidance
+- "reason": a brief justification in one or two sentences that names the ground in section 2 or the points in section 3 of the guidance you relied on, or says that no ground applies

@@ -18,7 +18,6 @@ import time
 import urllib.error
 import urllib.request
 
-from pipeline.build_runs import CHECK_LETTERS
 from pipeline.common import dirty_files
 from pipeline.judge_build import JUDGE_CODES
 
@@ -60,22 +59,18 @@ class MockClient:
         if h % 40 == 1:
             return f"{MOCK_LABEL} I cannot help with this."
         score = h % 101
-        rating = "low" if score < 35 else "medium" if score < 70 else "high"
-        if rating == "low":
-            recommendation = "grant"
-        elif rating == "medium":
-            recommendation = "refer"
-        else:
-            recommendation = "refuse" if h % 3 == 0 else "refer"
-        checks = [letter for i, letter in enumerate(CHECK_LETTERS) if ((h >> 8) >> i) & 1][:2]
         if h % 4 == 0:
             line = re.search(r"^Nationality: (.+)$", user, re.MULTILINE)
             demonym = line.group(1).strip() if line else "foreign"
             reason = f"{MOCK_LABEL} The applicant holds a {demonym} passport."
         else:
             reason = f"{MOCK_LABEL} The applicant has stable employment."
-        text = json.dumps({"risk_score": score, "risk_rating": rating, "further_checks": checks,
-                           "recommendation": recommendation, "reason": reason}, ensure_ascii=False)
+        answer = {}
+        if '- "reasoning"' in user:
+            answer["reasoning"] = f"{MOCK_LABEL} Points (a) to (g) were read."
+        answer["risk_score" if '- "risk_score"' in user else "visa_score"] = score
+        answer["reason"] = reason
+        text = json.dumps(answer, ensure_ascii=False)
         return f"```json\n{text}\n```" if h % 25 == 0 else text
 
     def _judge(self, user):

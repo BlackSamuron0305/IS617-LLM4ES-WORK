@@ -19,7 +19,7 @@ has changed do not drop out unnoticed. Never calls a model.
 
 Usage:
     python -m pipeline.judge_validate sample --batch pilot1 [--n 200] [--seed 617] [--force]
-    python -m pipeline.judge_validate agreement --batch pilot1 --human coded.csv --judge gpt-oss-120b
+    python -m pipeline.judge_validate agreement --batch pilot1 --human coded.csv --judge olmo-3.1-32b-instruct
     python -m pipeline.judge_validate agreement --batch pilot1 --human coded.csv --other-human coded2.csv
 Both take --data-root (default: the data folder of the repo).
 """

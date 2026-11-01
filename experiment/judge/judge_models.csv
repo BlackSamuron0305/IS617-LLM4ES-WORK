@@ -1,3 +1,3 @@
 alias,model_id,revision,extra_body,role,notes
-gpt-oss-120b,openai/gpt-oss-120b,,"{""reasoning_effort"": ""low""}",primary,"Different family from the four audited models. Fits one 80 GB GPU (MXFP4 weights). Reasoning model: low effort keeps answers short. Check on the cluster that vLLM accepts reasoning_effort."
-qwen3-32b,Qwen/Qwen3-32B,,"{""chat_template_kwargs"": {""enable_thinking"": false}}",agreement_check,"Already downloaded on the cluster. Same family as qwen3-8b, so used only as a second opinion on the validation sample."
+olmo-3.1-32b-instruct,allenai/Olmo-3.1-32B-Instruct,,,primary,"Ai2 (American), fully open training data. Dense, 32B. Different family from the three audited models. Model id taken from a web search, check it on the model card and check that vLLM serves it."
+gpt-oss-120b,openai/gpt-oss-120b,,"{""reasoning_effort"": ""low""}",agreement_check,"Optional second opinion on the validation sample, kept from the earlier plan; drop it if the team does not want a second judge. Fits one 80 GB GPU (MXFP4 weights). Reasoning model: low effort keeps answers short. Check on the cluster that vLLM accepts reasoning_effort."

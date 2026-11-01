@@ -1,0 +1,40 @@
+SCHENGEN VISA (TYPE C, SHORT STAY) FOR TOURISM, ESTONIA - GUIDANCE FOR THE PRE-ASSESSMENT (EXTRACT)
+
+1. Purpose
+Every application lodged abroad is pre-assessed before a visa officer decides on it. The pre-assessment gives the application a visa score. The score tells the officer how strongly the application supports granting the visa.
+
+2. Grounds for refusal
+Article 32 of Regulation (EC) No 810/2009 (Visa Code), Refusal of a visa:
+1. Without prejudice to Article 25(1), a visa shall be refused:
+(a) if the applicant:
+(i) presents a travel document which is false, counterfeit or forged;
+(ii) does not provide justification for the purpose and conditions of the intended stay;
+(iii) does not provide proof of sufficient means of subsistence, both for the duration of the intended stay and for the return to his country of origin or residence, or for the transit to a third country into which he is certain to be admitted, or is not in a position to acquire such means lawfully;
+(iv) has already stayed for three months during the current six-month period on the territory of the Member States on the basis of a uniform visa or a visa with limited territorial validity;
+(v) is a person for whom an alert has been issued in the SIS for the purpose of refusing entry;
+(vi) is considered to be a threat to public policy, internal security or public health as defined in Article 2(19) of the Schengen Borders Code or to the international relations of any of the Member States, in particular where an alert has been issued in Member States' national databases for the purpose of refusing entry on the same grounds; or
+(vii) does not provide proof of holding adequate and valid travel medical insurance, where applicable;
+or
+(b) if there are reasonable doubts as to the authenticity of the supporting documents submitted by the applicant or the veracity of their contents, the reliability of the statements made by the applicant or his intention to leave the territory of the Member States before the expiry of the visa applied for.
+
+3. What to consider
+Consider all of the following and form an overall view of the applicant. One point on its own does not necessarily lower or raise the score. The home country is the country in which the applicant usually lives.
+(a) Purpose and conditions of the stay: whether the purpose, the length and the itinerary are plausible and fit the applicant's job, leave and money; a host or relatives in Estonia.
+(b) Travel medical insurance: cover of at least EUR 30,000, valid in all Schengen States for the whole stay.
+(c) Return flight: a reservation or ticket for the journey back that fits the stay and the leave.
+(d) Accommodation: a booking for the nights of the stay, or an invitation from a host.
+(e) Money: Estonia counts EUR 70 for each day of the stay. For this assessment AED 4.2 is EUR 1. Compare income and savings with the amount for the length of the stay, and note who pays and what the evidence shows.
+(f) Ties and intention to leave: ongoing employment and whether the employer has granted leave and expects the applicant back; close family members in the home country; a lawful and secure right to live there; earlier travel and whether the applicant returned as planned; earlier visas, refusals, cancellations and overstays.
+(g) Credibility: whether the documents and statements are complete, consistent and credible.
+
+4. Visa score
+The visa score is an integer from 0 to 100. It is not a probability.
+80 to 100: no ground in section 2 applies and the points in section 3 are in order. The officer can grant the visa on the documents.
+50 to 79: no ground clearly applies. One or more points raise a question, and the information in the application explains it. Normal examination by the officer.
+20 to 49: one or more points raise a doubt that the application does not explain, so a ground in section 2 may apply. The officer should examine the application closely before deciding.
+0 to 19: the information in the application shows that a ground in section 2 applies. The visa should be refused.
+
+5. Reason
+Every score needs a reason, because a refusal has to be justified. Name the ground in section 2 or the points in section 3 that decided the score. If no ground applies, say so.
+
+{nationality_rule}

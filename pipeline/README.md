@@ -12,20 +12,20 @@ server. The output of a mock run is labelled as such and is never a result.
 | # | stage | what it does | command |
 |---|---|---|---|
 | 0 | `build_runs` | puts the prompts together from `experiment/`, checks them and prints the counts. Calls no model | `python -m pipeline.build_runs` |
-| 1 | `run_models` | sends the prompts of one batch to one model and stores the raw answers | `python -m pipeline.run_models --batch pilot1 --model qwen3-8b --block 1 --base-url http://localhost:8000/v1 --allow-real-calls` |
-| 2 | `parse_answers` | reads the answers (score, rating, checks, recommendation, reason) into one table | `python -m pipeline.parse_answers --batch pilot1` |
+| 1 | `run_models` | sends the prompts of one batch to one model and stores the raw answers | `python -m pipeline.run_models --batch pilot1 --model qwen3-32b --block 1 --base-url http://localhost:8000/v1 --allow-real-calls` |
+| 2 | `parse_answers` | reads the answers (score, reason; `reasoning` for the reasoning variant) into one table. A risk-scale answer is also written on the grant scale (`visa_score`) | `python -m pipeline.parse_answers --batch pilot1` |
 | 3 | `judge_build` | hides every nationality word in the reasons and prepares what the judge sees | `python -m pipeline.judge_build --batch pilot1` |
-| 4 | `run_judge` | sends the judge inputs to the judge model and stores the raw answers | `python -m pipeline.run_judge --batch pilot1 --judge gpt-oss-120b --base-url http://localhost:8000/v1 --allow-real-calls` |
-| 5 | `judge_parse` | reads the judge's codes and puts them on every answer | `python -m pipeline.judge_parse --batch pilot1 --judge gpt-oss-120b` |
+| 4 | `run_judge` | sends the judge inputs to the judge model and stores the raw answers | `python -m pipeline.run_judge --batch pilot1 --judge olmo-3.1-32b-instruct --base-url http://localhost:8000/v1 --allow-real-calls` |
+| 5 | `judge_parse` | reads the judge's codes and puts them on every answer | `python -m pipeline.judge_parse --batch pilot1 --judge olmo-3.1-32b-instruct` |
 | 6a | `judge_validate sample` | draws the items that the team codes by hand | `python -m pipeline.judge_validate sample --batch pilot1` |
-| 6b | `judge_validate agreement` | measures how well two sets of codes agree | `python -m pipeline.judge_validate agreement --batch pilot1 --human coded.csv --judge gpt-oss-120b` |
+| 6b | `judge_validate agreement` | measures how well two sets of codes agree | `python -m pipeline.judge_validate agreement --batch pilot1 --human coded.csv --judge olmo-3.1-32b-instruct` |
 
 The commands of stages 1 and 4 are real calls. They are shown as they are used on the
 cluster, where `cluster/run_vllm.sbatch` starts the server and passes `--allow-real-calls`
 (`cluster/README.md`). On a PC, add `--mock` and give a batch name that starts with `mock`
 instead of `--base-url` and `--allow-real-calls`.
 
-Other flags: `--block N` (repeatable) and `--limit N` on `run_models`, `--limit N` on
+Other flags: `--variant NAME` (repeatable; default `base`; the names are in `experiment/prompts/variants.csv`) and `--block N` (repeatable) and `--limit N` on `run_models`, `--limit N` on
 `run_judge`, `--workers N` on both, `--n N`, `--seed N` and `--force` on
 `judge_validate sample`, `--other-human FILE` in place of `--judge` on `judge_validate
 agreement`, and `--data-root DIR` on every stage that reads or writes data.
@@ -41,15 +41,15 @@ This runs every stage on 50 mock answers and takes a few seconds. The batch is c
 with `mock`.
 
 ```
-python -m pipeline.run_models --batch mock_demo --model qwen3-8b --mock --limit 50
+python -m pipeline.run_models --batch mock_demo --model qwen3-32b --mock --limit 50
 python -m pipeline.parse_answers --batch mock_demo
 python -m pipeline.judge_build --batch mock_demo
+python -m pipeline.run_judge --batch mock_demo --judge olmo-3.1-32b-instruct --mock
+python -m pipeline.judge_parse --batch mock_demo --judge olmo-3.1-32b-instruct
+python -m pipeline.judge_validate sample --batch mock_demo --n 20
 python -m pipeline.run_judge --batch mock_demo --judge gpt-oss-120b --mock
 python -m pipeline.judge_parse --batch mock_demo --judge gpt-oss-120b
-python -m pipeline.judge_validate sample --batch mock_demo --n 20
-python -m pipeline.run_judge --batch mock_demo --judge qwen3-32b --mock
-python -m pipeline.judge_parse --batch mock_demo --judge qwen3-32b
-python -m pipeline.judge_validate agreement --batch mock_demo --human data/processed/mock_demo/judge_codes_qwen3-32b.csv --judge gpt-oss-120b
+python -m pipeline.judge_validate agreement --batch mock_demo --human data/processed/mock_demo/judge_codes_gpt-oss-120b.csv --judge olmo-3.1-32b-instruct
 ```
 
 Every command exits with 0. The last two judge commands and the `agreement` command use the
@@ -142,7 +142,7 @@ judge's codes.
 - Save as "CSV UTF-8 (comma delimited)". Excel on a German-language computer saves a plain
   "CSV" with semicolons, and in an encoding that is not UTF-8. The program reads neither.
 - Two coders code separate copies. `agreement --human A.csv --other-human B.csv` measures
-  coder against coder. `agreement --human A.csv --judge gpt-oss-120b` measures coder against
+  coder against coder. `agreement --human A.csv --judge olmo-3.1-32b-instruct` measures coder against
   judge.
 
 `agreement` prints, for each code, the number of items that have a value on both sides, the

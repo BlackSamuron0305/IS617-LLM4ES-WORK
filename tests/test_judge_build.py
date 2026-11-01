@@ -147,12 +147,11 @@ class MaterialsTest(unittest.TestCase):
 
     def test_client_uses_the_shared_constants(self):
         self.assertIs(client.JUDGE_CODES, judge_build.JUDGE_CODES)
-        self.assertIs(client.CHECK_LETTERS, build_runs.CHECK_LETTERS)
 
     def test_judge_models_file(self):
         models = read_table(JUDGE / "judge_models.csv")
         self.assertEqual([m["role"] for m in models], ["primary", "agreement_check"])
-        self.assertEqual([m["alias"] for m in models], ["gpt-oss-120b", "qwen3-32b"])
+        self.assertEqual([m["alias"] for m in models], ["olmo-3.1-32b-instruct", "gpt-oss-120b"])
 
 
 class BuildItemsTest(unittest.TestCase):
@@ -165,7 +164,7 @@ class BuildItemsTest(unittest.TestCase):
         write_csv(self.tmp / "processed" / batch / "answers.csv", rows, ANSWER_COLUMNS)
 
     def test_build_items_end_to_end(self):
-        run_quietly(run_answers, "mock_j", "qwen3-8b", MockClient("answers"), self.tmp, blocks=[1], limit=60,
+        run_quietly(run_answers, "mock_j", "qwen3-32b", MockClient("answers"), self.tmp, blocks=[1], limit=60,
                     mock=True)
         run_quietly(parse_batch, "mock_j", self.tmp)
         summary = build_judge_items("mock_j", self.tmp)
@@ -198,7 +197,7 @@ class BuildItemsTest(unittest.TestCase):
         build_judge_items("mock_a", self.tmp)
         user = read_jsonl(self.tmp / "processed/mock_a/judge_items.jsonl")[0]["user"]
         self.assertIn("Nationality: [NATIONALITY]\n", user)
-        self.assertIn("Travel document: [NATIONALITY] passport, valid until 2033\n", user)
+        self.assertIn("Travel document: [NATIONALITY] passport, valid until 2033, two free pages\n", user)
         self.assertIn(f"Savings: AED {APPLICANTS[0]['savings']} ", user)
         self.assertNotIn("{", user)
 

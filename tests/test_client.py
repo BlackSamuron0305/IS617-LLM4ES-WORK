@@ -84,11 +84,11 @@ class RefusalTest(unittest.TestCase):
 
     def test_unpinned_revision_message_names_the_model_and_does_not_name_a_file(self):
         # The same check serves experiment/models.csv and experiment/judge/judge_models.csv.
-        judge = dict(REAL, alias="gpt-oss-120b", revision="")
+        judge = dict(REAL, alias="olmo-3.1-32b-instruct", revision="")
         with self.assertRaises(RunRefused) as caught:
             check_real_calls_allowed("pilot1", judge, True, self.fail_if_called, [])
         message = str(caught.exception)
-        self.assertIn("gpt-oss-120b", message)
+        self.assertIn("olmo-3.1-32b-instruct", message)
         self.assertIn("its models CSV", message)
         self.assertNotIn("experiment/models.csv", message)
 
@@ -178,7 +178,7 @@ class MockClientTest(unittest.TestCase):
 
     def test_answers_cover_the_planned_cases(self):
         # Over many different seeds every branch the later stages must cope with turns up.
-        seen = {"json": 0, "fenced": 0, "refusal": 0, "demonym": 0, "ratings": set(), "recs": set()}
+        seen = {"json": 0, "fenced": 0, "refusal": 0, "demonym": 0}
         for seed in range(2000):
             msgs = [{"role": "user", "content": "Nationality: Syrian\nx"}]
             text = MockClient("answers").complete(msgs, {"seed": seed})["text"]
@@ -191,31 +191,17 @@ class MockClientTest(unittest.TestCase):
             else:
                 seen["json"] += 1
             answer = json.loads(text)
-            self.assertEqual(set(answer), {"risk_score", "risk_rating", "further_checks", "recommendation", "reason"})
+            self.assertEqual(set(answer), {"visa_score", "reason"})
             self.assertTrue(answer["reason"].startswith("MOCK ANSWER, NOT A RESULT. "))
-            self.assertTrue(0 <= answer["risk_score"] <= 100)
-            self.assertLessEqual(len(answer["further_checks"]), 2)
-            self.assertTrue(set(answer["further_checks"]) <= set("ABCDEF"))
-            expected = "low" if answer["risk_score"] < 35 else "medium" if answer["risk_score"] < 70 else "high"
-            self.assertEqual(answer["risk_rating"], expected)
-            if expected == "low":
-                self.assertEqual(answer["recommendation"], "grant")
-            elif expected == "medium":
-                self.assertEqual(answer["recommendation"], "refer")
-            else:
-                self.assertIn(answer["recommendation"], ("refuse", "refer"))
+            self.assertTrue(0 <= answer["visa_score"] <= 100)
             if "Syrian passport" in answer["reason"]:
                 seen["demonym"] += 1
             else:
                 self.assertEqual(answer["reason"], "MOCK ANSWER, NOT A RESULT. The applicant has stable employment.")
-            seen["ratings"].add(answer["risk_rating"])
-            seen["recs"].add(answer["recommendation"])
         self.assertGreater(seen["json"], 0)
         self.assertGreater(seen["fenced"], 0)
         self.assertGreater(seen["refusal"], 0)
         self.assertGreater(seen["demonym"], 0)
-        self.assertEqual(seen["ratings"], {"low", "medium", "high"})
-        self.assertEqual(seen["recs"], {"grant", "refer", "refuse"})
 
     def test_answers_differ_with_the_seed(self):
         msgs = [{"role": "user", "content": "Nationality: Syrian\nx"}]
@@ -236,7 +222,8 @@ class MockClientTest(unittest.TestCase):
         self.assertEqual(judged["mentions_nationality"], "no")
         self.assertEqual(judged, {"mentions_nationality": "no", "nationality_as_risk": "no",
                                   "passport_country_conditions": "no", "doubts_residence": "no",
-                                  "contradicts_application": "no", "evidence": ""})
+                                  "contradicts_application": "no", "names_legal_ground": "no",
+                                  "evidence": ""})
         self.assertEqual(out["served_model"], "mock")
 
 

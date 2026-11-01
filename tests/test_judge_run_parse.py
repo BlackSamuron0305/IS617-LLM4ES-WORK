@@ -22,11 +22,12 @@ from pipeline.run_judge import main as run_judge_main, run_judge
 from pipeline.run_models import run_answers
 
 OK = ('{"mentions_nationality": "YES", "nationality_as_risk": "no", "passport_country_conditions": "no", '
-      '"doubts_residence": "no", "contradicts_application": "no", "evidence": "a [NATIONALITY] passport"}')
+      '"doubts_residence": "no", "contradicts_application": "no", "names_legal_ground": "no", '
+      '"evidence": "a [NATIONALITY] passport"}')
 ALL_NO = dict.fromkeys(JUDGE_CODES, "no")
 # The judge models as the live experiment/judge/judge_models.csv has them (revision, extra_body ...).
 JUDGES = load_models(JUDGE / "judge_models.csv")
-PRIMARY = JUDGES["gpt-oss-120b"]
+PRIMARY = JUDGES["olmo-3.1-32b-instruct"]
 JUDGED_COLUMNS = [*ANSWER_COLUMNS, "item_id", "n_masked", "judge_status", *JUDGE_CODES]
 
 
@@ -58,6 +59,7 @@ class ParseJudgeAnswerTest(unittest.TestCase):
         self.assertEqual(parse_judge_answer(OK, None), {"judge_status": "ok", "mentions_nationality": 1,
                                                         "nationality_as_risk": 0, "passport_country_conditions": 0,
                                                         "doubts_residence": 0, "contradicts_application": 0,
+                                                        "names_legal_ground": 0,
                                                         "evidence": "a [NATIONALITY] passport"})
         j = json.loads(OK)
         self.assertEqual(parse_judge_answer(json.dumps(dict(j, doubts_residence="maybe")), None)["judge_status"],
@@ -110,7 +112,7 @@ class ParseJudgeAnswerTest(unittest.TestCase):
                             (json.dumps({k: v for k, v in j.items() if k != "doubts_residence"}), None),
                             (json.dumps(dict(j, doubts_residence="maybe")), None)):
             out = parse_judge_answer(text, error)
-            self.assertEqual([out[code] for code in JUDGE_CODES], [""] * 5)
+            self.assertEqual([out[code] for code in JUDGE_CODES], [""] * len(JUDGE_CODES))
             self.assertNotEqual(out["judge_status"], "ok")
 
     def test_evidence_is_kept_when_a_string_else_blank(self):
@@ -145,13 +147,13 @@ class RunJudgeTest(unittest.TestCase):
         write_jsonl(self.tmp / "processed" / batch / "judge_items.jsonl", items)
         return items
 
-    def mock_run(self, batch="mock_j", alias="gpt-oss-120b", **kwargs):
+    def mock_run(self, batch="mock_j", alias="olmo-3.1-32b-instruct", **kwargs):
         return run_judge(batch, alias, MockClient("judge"), self.tmp, mock=True, **kwargs)
 
-    def raw(self, batch="mock_j", alias="gpt-oss-120b"):
+    def raw(self, batch="mock_j", alias="olmo-3.1-32b-instruct"):
         return self.tmp / "raw" / batch / f"judge_{alias}.jsonl"
 
-    def manifest(self, batch="mock_j", alias="gpt-oss-120b"):
+    def manifest(self, batch="mock_j", alias="olmo-3.1-32b-instruct"):
         return json.loads((self.tmp / "raw" / batch / f"judge_{alias}_manifest.json").read_text(encoding="utf-8"))
 
     def test_mock_run_writes_labelled_records(self):
@@ -160,7 +162,7 @@ class RunJudgeTest(unittest.TestCase):
         self.assertEqual(summary, {"planned": 5, "already_done": 0, "called": 5, "errors": 0})
         records = read_jsonl(self.raw())
         self.assertEqual({r["key"] for r in records}, {f"item{i}" for i in range(5)})
-        self.assertTrue(all(r["mock"] and r["kind"] == "judge" and r["model_alias"] == "gpt-oss-120b"
+        self.assertTrue(all(r["mock"] and r["kind"] == "judge" and r["model_alias"] == "olmo-3.1-32b-instruct"
                             and r["batch"] == "mock_j" and r["model_id"] == PRIMARY["model_id"]
                             and r["item_id"] == r["key"] for r in records))
         self.assertTrue(all(r["error"] is None and r["text"] for r in records))
@@ -174,11 +176,11 @@ class RunJudgeTest(unittest.TestCase):
 
     def test_the_other_judge_gets_its_own_files_and_extra_body(self):
         self.write_items("mock_j", 2)
-        self.mock_run(alias="qwen3-32b")
-        self.assertTrue(self.raw(alias="qwen3-32b").exists())
+        self.mock_run(alias="gpt-oss-120b")
+        self.assertTrue(self.raw(alias="gpt-oss-120b").exists())
         self.assertFalse(self.raw().exists())
-        other = JUDGES["qwen3-32b"]["extra_body"]
-        params = read_jsonl(self.raw(alias="qwen3-32b"))[0]["params"]
+        other = JUDGES["gpt-oss-120b"]["extra_body"]
+        params = read_jsonl(self.raw(alias="gpt-oss-120b"))[0]["params"]
         self.assertEqual({key: params[key] for key in other}, other)
 
     def test_sends_system_and_user_of_the_item(self):
@@ -194,7 +196,7 @@ class RunJudgeTest(unittest.TestCase):
                 return super().complete(messages, params)
 
         client = Recording("judge")
-        run_judge("mock_j", "gpt-oss-120b", client, self.tmp, mock=True)
+        run_judge("mock_j", "olmo-3.1-32b-instruct", client, self.tmp, mock=True)
         self.assertEqual(client.sent, [[{"role": "system", "content": "SYSTEM"},
                                         {"role": "user", "content": "USER 0"}]])
 
@@ -203,7 +205,7 @@ class RunJudgeTest(unittest.TestCase):
         self.mock_run(limit=2)
         stored = self.manifest()
         self.assertEqual({k: stored[k] for k in ("batch", "kind", "model_alias", "model_id", "revision", "mock")},
-                         {"batch": "mock_j", "kind": "judge", "model_alias": "gpt-oss-120b",
+                         {"batch": "mock_j", "kind": "judge", "model_alias": "olmo-3.1-32b-instruct",
                           "model_id": PRIMARY["model_id"], "revision": PRIMARY["revision"], "mock": True})
         (session,) = stored["sessions"]
         self.assertEqual(session["limit"], 2)
@@ -230,11 +232,11 @@ class RunJudgeTest(unittest.TestCase):
         # Each judge has its own manifest, so a second judge can run on the same batch ...
         self.write_items("mock_j", 2)
         self.mock_run()
-        self.mock_run(alias="qwen3-32b")
-        self.assertEqual(self.manifest(alias="qwen3-32b")["model_alias"], "qwen3-32b")
+        self.mock_run(alias="gpt-oss-120b")
+        self.assertEqual(self.manifest(alias="gpt-oss-120b")["model_alias"], "gpt-oss-120b")
         # ... but a batch that was started with another revision (say, before it was pinned) is refused.
         before = self.raw().read_text(encoding="utf-8")
-        path = self.tmp / "raw/mock_j/judge_gpt-oss-120b_manifest.json"
+        path = self.tmp / "raw/mock_j/judge_olmo-3.1-32b-instruct_manifest.json"
         stored = json.loads(path.read_text(encoding="utf-8"))
         other_revision = "f" * 40 if stored["revision"] != "f" * 40 else "e" * 40
         path.write_text(json.dumps(dict(stored, revision=other_revision)), encoding="utf-8")
@@ -246,11 +248,11 @@ class RunJudgeTest(unittest.TestCase):
         self.write_items("mock_j", 1)
         self.write_items("pilot1", 1)
         with self.assertRaisesRegex(RunRefused, "mock"):
-            run_judge("mock_j", "gpt-oss-120b", MockClient("judge"), self.tmp, mock=False)
+            run_judge("mock_j", "olmo-3.1-32b-instruct", MockClient("judge"), self.tmp, mock=False)
         with self.assertRaisesRegex(RunRefused, "mock"):
-            run_judge("mock_j", "gpt-oss-120b", mock.Mock(), self.tmp, mock=True)
+            run_judge("mock_j", "olmo-3.1-32b-instruct", mock.Mock(), self.tmp, mock=True)
         with self.assertRaisesRegex(RunRefused, "mock"):
-            run_judge("pilot1", "gpt-oss-120b", MockClient("judge"), self.tmp, mock=True)
+            run_judge("pilot1", "olmo-3.1-32b-instruct", MockClient("judge"), self.tmp, mock=True)
         self.assertFalse((self.tmp / "raw").exists())
 
     def test_unknown_alias_is_refused(self):
@@ -276,7 +278,7 @@ class RunJudgeTest(unittest.TestCase):
     def test_cli_refuses_real_judge_without_flag(self):
         self.write_items("pilot1", 1)
         with mock.patch.object(OpenAICompatibleClient, "served_models", side_effect=AssertionError("network")):
-            code, _, err = run_cli(run_judge_main, ["--batch", "pilot1", "--judge", "gpt-oss-120b", "--base-url",
+            code, _, err = run_cli(run_judge_main, ["--batch", "pilot1", "--judge", "olmo-3.1-32b-instruct", "--base-url",
                                                     "http://127.0.0.1:9/v1", "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
         self.assertIn("refusing: ", err)
@@ -289,13 +291,13 @@ class RunJudgeTest(unittest.TestCase):
         unpinned = {alias: dict(model, revision="") for alias, model in JUDGES.items()}
         with mock.patch("pipeline.run_judge.load_models", return_value=unpinned), \
                 mock.patch.object(OpenAICompatibleClient, "served_models", side_effect=AssertionError("network")):
-            code, _, err = run_cli(run_judge_main, ["--batch", "pilot1", "--judge", "gpt-oss-120b", "--base-url",
+            code, _, err = run_cli(run_judge_main, ["--batch", "pilot1", "--judge", "olmo-3.1-32b-instruct", "--base-url",
                                                     "http://127.0.0.1:9/v1", "--allow-real-calls",
                                                     "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
         self.assertIn("refusing: ", err)
         self.assertIn("revision", err)
-        self.assertIn("gpt-oss-120b", err)
+        self.assertIn("olmo-3.1-32b-instruct", err)
         self.assertFalse((self.tmp / "raw").exists())
 
     def test_a_real_client_built_by_hand_is_refused_and_nothing_is_written(self):
@@ -304,18 +306,18 @@ class RunJudgeTest(unittest.TestCase):
         client = OpenAICompatibleClient("http://127.0.0.1:9/v1", PRIMARY["model_id"])
         with mock.patch.object(OpenAICompatibleClient, "complete", side_effect=AssertionError("called")):
             with self.assertRaisesRegex(RunRefused, "make_client"):
-                run_judge("pilot1", "gpt-oss-120b", client, self.tmp, mock=False)
+                run_judge("pilot1", "olmo-3.1-32b-instruct", client, self.tmp, mock=False)
         self.assertFalse((self.tmp / "raw").exists())
 
     def test_cli_refuses_real_judge_without_flag_even_without_items(self):
-        code, _, err = run_cli(run_judge_main, ["--batch", "pilot1", "--judge", "gpt-oss-120b", "--base-url",
+        code, _, err = run_cli(run_judge_main, ["--batch", "pilot1", "--judge", "olmo-3.1-32b-instruct", "--base-url",
                                                 "http://127.0.0.1:9/v1", "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
         self.assertIn("refusing: ", err)
 
     def test_cli_mock_run(self):
         self.write_items("mock_cli", 4)
-        code, out, _ = run_cli(run_judge_main, ["--batch", "mock_cli", "--judge", "gpt-oss-120b", "--limit", "3",
+        code, out, _ = run_cli(run_judge_main, ["--batch", "mock_cli", "--judge", "olmo-3.1-32b-instruct", "--limit", "3",
                                                 "--mock", "--data-root", str(self.tmp)])
         self.assertEqual(code, 0)
         self.assertEqual(json.loads(out)["called"], 3)
@@ -328,11 +330,11 @@ class RunJudgeTest(unittest.TestCase):
                                                 "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
         self.assertIn("nope", err)
-        code, _, err = run_cli(run_judge_main, ["--batch", "mock_none", "--judge", "gpt-oss-120b", "--mock",
+        code, _, err = run_cli(run_judge_main, ["--batch", "mock_none", "--judge", "olmo-3.1-32b-instruct", "--mock",
                                                 "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
         self.assertIn("judge_items.jsonl", err)
-        self.assertEqual(run_cli(run_judge_main, ["--batch", "pilot1", "--judge", "gpt-oss-120b", "--mock",
+        self.assertEqual(run_cli(run_judge_main, ["--batch", "pilot1", "--judge", "olmo-3.1-32b-instruct", "--mock",
                                                   "--data-root", str(self.tmp)])[0], 2)
         self.assertFalse((self.tmp / "raw").exists())
 
@@ -366,13 +368,13 @@ class JudgeParseTest(unittest.TestCase):
                   "system": "S", "user": "U3"}]
         write_jsonl(self.tmp / "processed" / batch / "judge_items.jsonl", items)
 
-    def raw_path(self, batch="mock_h", alias="gpt-oss-120b"):
+    def raw_path(self, batch="mock_h", alias="olmo-3.1-32b-instruct"):
         return self.tmp / "raw" / batch / f"judge_{alias}.jsonl"
 
-    def add_record(self, item_id, text, error=None, batch="mock_h", alias="gpt-oss-120b"):
+    def add_record(self, item_id, text, error=None, batch="mock_h", alias="olmo-3.1-32b-instruct"):
         append_jsonl(self.raw_path(batch, alias), {"key": item_id, "item_id": item_id, "text": text, "error": error})
 
-    def parse(self, batch="mock_h", alias="gpt-oss-120b"):
+    def parse(self, batch="mock_h", alias="olmo-3.1-32b-instruct"):
         codes_path, judged_path = quietly(parse_judge, batch, alias, self.tmp)
         return read_rows(codes_path), read_rows(judged_path), codes_path, judged_path
 
@@ -381,8 +383,8 @@ class JudgeParseTest(unittest.TestCase):
         self.add_record("i1", OK)
         self.add_record("i3", json.dumps(dict(json.loads(OK), mentions_nationality="no", nationality_as_risk="yes")))
         codes, judged, codes_path, judged_path = self.parse()
-        self.assertEqual(codes_path, self.tmp / "processed/mock_h/judge_codes_gpt-oss-120b.csv")
-        self.assertEqual(judged_path, self.tmp / "processed/mock_h/answers_judged_gpt-oss-120b.csv")
+        self.assertEqual(codes_path, self.tmp / "processed/mock_h/judge_codes_olmo-3.1-32b-instruct.csv")
+        self.assertEqual(judged_path, self.tmp / "processed/mock_h/answers_judged_olmo-3.1-32b-instruct.csv")
         with open(codes_path, encoding="utf-8", newline="") as f:
             self.assertEqual(next(csv.reader(f)), JUDGE_CODE_COLUMNS)
         with open(judged_path, encoding="utf-8", newline="") as f:
@@ -392,7 +394,7 @@ class JudgeParseTest(unittest.TestCase):
         self.assertEqual((codes[0]["applicant_id"], codes[0]["n_masked"], codes[0]["reason_masked"]),
                          ("A01", "2", "masked 1"))
         self.assertEqual((codes[0]["mentions_nationality"], codes[0]["evidence"]), ("1", "a [NATIONALITY] passport"))
-        self.assertEqual([codes[1][c] for c in JUDGE_CODES], [""] * 5)
+        self.assertEqual([codes[1][c] for c in JUDGE_CODES], [""] * len(JUDGE_CODES))
         self.assertEqual((codes[2]["mentions_nationality"], codes[2]["nationality_as_risk"]), ("0", "1"))
         # every answer is kept, in the order of answers.csv, with its own columns first
         self.assertEqual([r["key"] for r in judged], ["a1", "a2", "a3", "a4", "a5"])
@@ -421,9 +423,9 @@ class JudgeParseTest(unittest.TestCase):
     def test_the_other_judge_is_a_separate_pair_of_files(self):
         self.build()
         self.add_record("i1", OK)
-        self.add_record("i1", OK, alias="qwen3-32b")
+        self.add_record("i1", OK, alias="gpt-oss-120b")
         _, _, a, _ = self.parse()
-        _, _, b, _ = self.parse(alias="qwen3-32b")
+        _, _, b, _ = self.parse(alias="gpt-oss-120b")
         self.assertNotEqual(a, b)
         self.assertTrue(a.exists() and b.exists())
 
@@ -432,7 +434,7 @@ class JudgeParseTest(unittest.TestCase):
         for name in ("answers.csv", "judge_links.csv", "judge_items.jsonl"):
             (self.tmp / "processed/mock_h" / name).rename(self.tmp / "processed/mock_h" / (name + ".off"))
             with self.assertRaisesRegex(FileNotFoundError, name):
-                quietly(parse_judge, "mock_h", "gpt-oss-120b", self.tmp)
+                quietly(parse_judge, "mock_h", "olmo-3.1-32b-instruct", self.tmp)
             (self.tmp / "processed/mock_h" / (name + ".off")).rename(self.tmp / "processed/mock_h" / name)
 
     def test_prints_counts_per_status(self):
@@ -440,7 +442,7 @@ class JudgeParseTest(unittest.TestCase):
         self.add_record("i1", OK)
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            parse_judge("mock_h", "gpt-oss-120b", self.tmp)
+            parse_judge("mock_h", "olmo-3.1-32b-instruct", self.tmp)
         text = out.getvalue()
         for line in ("  ok: 2", "  not_run: 2", "  not_judged: 1", "  ok: 1"):
             self.assertIn(line, text)
@@ -450,26 +452,26 @@ class JudgeParseTest(unittest.TestCase):
     def test_cli(self):
         self.build()
         self.add_record("i1", OK)
-        code, out, _ = run_cli(judge_parse_main, ["--batch", "mock_h", "--judge", "gpt-oss-120b",
+        code, out, _ = run_cli(judge_parse_main, ["--batch", "mock_h", "--judge", "olmo-3.1-32b-instruct",
                                                   "--data-root", str(self.tmp)])
         self.assertEqual(code, 0)
-        self.assertIn("answers_judged_gpt-oss-120b.csv", out)
+        self.assertIn("answers_judged_olmo-3.1-32b-instruct.csv", out)
 
     def test_cli_missing_inputs_and_unknown_judge(self):
-        code, _, err = run_cli(judge_parse_main, ["--batch", "mock_h", "--judge", "gpt-oss-120b",
+        code, _, err = run_cli(judge_parse_main, ["--batch", "mock_h", "--judge", "olmo-3.1-32b-instruct",
                                                   "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
         self.assertIn("answers.csv", err)
         self.build()
-        code, _, err = run_cli(judge_parse_main, ["--batch", "mock_h", "--judge", "gpt-oss-120b",
+        code, _, err = run_cli(judge_parse_main, ["--batch", "mock_h", "--judge", "olmo-3.1-32b-instruct",
                                                   "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
-        self.assertIn("judge_gpt-oss-120b.jsonl", err)
+        self.assertIn("judge_olmo-3.1-32b-instruct.jsonl", err)
         code, _, err = run_cli(judge_parse_main, ["--batch", "mock_h", "--judge", "nope",
                                                   "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
         self.assertIn("nope", err)
-        self.assertFalse((self.tmp / "processed/mock_h/judge_codes_gpt-oss-120b.csv").exists())
+        self.assertFalse((self.tmp / "processed/mock_h/judge_codes_olmo-3.1-32b-instruct.csv").exists())
 
 
 class MockPipelineTest(unittest.TestCase):
@@ -480,12 +482,12 @@ class MockPipelineTest(unittest.TestCase):
 
     def test_mock_pipeline_end_to_end(self):
         tmp = self.tmp
-        quietly(run_answers, "mock_e", "qwen3-8b", MockClient("answers"), tmp, blocks=[1], limit=80, mock=True)
+        quietly(run_answers, "mock_e", "qwen3-32b", MockClient("answers"), tmp, blocks=[1], limit=80, mock=True)
         quietly(parse_batch, "mock_e", tmp)
         quietly(build_judge_items, "mock_e", tmp)
-        summary = run_judge("mock_e", "gpt-oss-120b", MockClient("judge"), tmp, mock=True)
+        summary = run_judge("mock_e", "olmo-3.1-32b-instruct", MockClient("judge"), tmp, mock=True)
         self.assertEqual(summary["errors"], 0)
-        codes_path, judged_path = quietly(parse_judge, "mock_e", "gpt-oss-120b", tmp)
+        codes_path, judged_path = quietly(parse_judge, "mock_e", "olmo-3.1-32b-instruct", tmp)
         judged = read_rows(judged_path)
         self.assertEqual(len(judged), 80)
         self.assertIn("ok", {row["judge_status"] for row in judged})
@@ -500,14 +502,14 @@ class MockPipelineTest(unittest.TestCase):
 
     def test_cli_chain_on_the_command_line(self):
         tmp = str(self.tmp)
-        quietly(run_answers, "mock_c", "qwen3-8b", MockClient("answers"), self.tmp, blocks=[1], limit=20, mock=True)
+        quietly(run_answers, "mock_c", "qwen3-32b", MockClient("answers"), self.tmp, blocks=[1], limit=20, mock=True)
         quietly(parse_batch, "mock_c", self.tmp)
         quietly(build_judge_items, "mock_c", self.tmp)
-        self.assertEqual(run_cli(run_judge_main, ["--batch", "mock_c", "--judge", "qwen3-32b", "--mock",
+        self.assertEqual(run_cli(run_judge_main, ["--batch", "mock_c", "--judge", "gpt-oss-120b", "--mock",
                                                   "--data-root", tmp])[0], 0)
-        self.assertEqual(run_cli(judge_parse_main, ["--batch", "mock_c", "--judge", "qwen3-32b",
+        self.assertEqual(run_cli(judge_parse_main, ["--batch", "mock_c", "--judge", "gpt-oss-120b",
                                                     "--data-root", tmp])[0], 0)
-        self.assertTrue((self.tmp / "processed/mock_c/answers_judged_qwen3-32b.csv").exists())
+        self.assertTrue((self.tmp / "processed/mock_c/answers_judged_gpt-oss-120b.csv").exists())
 
 
 if __name__ == "__main__":

@@ -331,18 +331,18 @@ class CliTest(unittest.TestCase):
     def judge(self):
         # The judge agrees with the human on every code.
         rows = {i: ("ok", dict.fromkeys(JUDGE_CODES, v)) for i, v in self.pattern.items()}
-        return write_judge_codes(self.tmp, "mock_v", "gpt-oss-120b", rows)
+        return write_judge_codes(self.tmp, "mock_v", "olmo-3.1-32b-instruct", rows)
 
     def test_cli_agreement_writes_file(self):
         self.judge()
-        code, out, err = run_cli([*self.argv, "--judge", "gpt-oss-120b"])
+        code, out, err = run_cli([*self.argv, "--judge", "olmo-3.1-32b-instruct"])
         self.assertEqual(code, 0)
-        path = self.tmp / "processed/mock_v/validation_agreement_gpt-oss-120b.csv"
+        path = self.tmp / "processed/mock_v/validation_agreement_olmo-3.1-32b-instruct.csv"
         self.assertTrue(path.exists())
         rows = read_rows(path)
         self.assertEqual([r["code"] for r in rows], list(JUDGE_CODES))
         self.assertEqual([(r["n"], r["agree_share"], r["kappa"], r["passes"]) for r in rows],
-                         [("4", "1.0", "1.0", "True")] * 5)
+                         [("4", "1.0", "1.0", "True")] * len(JUDGE_CODES))
         for code_name in JUDGE_CODES:
             self.assertIn(code_name, out)
         self.assertEqual(err, "")
@@ -350,23 +350,23 @@ class CliTest(unittest.TestCase):
     def test_none_is_an_empty_cell_and_n_a_in_the_table(self):
         # Both coders say no everywhere: they agree, but chance alone would give that, so there is no kappa.
         write_human(self.human, {i: {c: "no" for c in JUDGE_CODES} for i in self.pattern})
-        write_judge_codes(self.tmp, "mock_v", "gpt-oss-120b",
+        write_judge_codes(self.tmp, "mock_v", "olmo-3.1-32b-instruct",
                           {i: ("ok", dict.fromkeys(JUDGE_CODES, 0)) for i in self.pattern})
-        code, out, _ = run_cli([*self.argv, "--judge", "gpt-oss-120b"])
+        code, out, _ = run_cli([*self.argv, "--judge", "olmo-3.1-32b-instruct"])
         self.assertEqual(code, 0)
-        rows = read_rows(self.tmp / "processed/mock_v/validation_agreement_gpt-oss-120b.csv")
+        rows = read_rows(self.tmp / "processed/mock_v/validation_agreement_olmo-3.1-32b-instruct.csv")
         self.assertEqual((rows[0]["n"], rows[0]["agree_share"], rows[0]["kappa"], rows[0]["passes"]),
                          ("4", "1.0", "", "False"))
         self.assertIn("n/a", out)
 
     def test_no_overlap_prints_n_a_and_still_succeeds(self):
-        write_judge_codes(self.tmp, "mock_v", "gpt-oss-120b",
+        write_judge_codes(self.tmp, "mock_v", "olmo-3.1-32b-instruct",
                           {"other": ("ok", dict.fromkeys(JUDGE_CODES, 1))})
-        code, out, _ = run_cli([*self.argv, "--judge", "gpt-oss-120b"])
+        code, out, _ = run_cli([*self.argv, "--judge", "olmo-3.1-32b-instruct"])
         self.assertEqual(code, 0)
-        rows = read_rows(self.tmp / "processed/mock_v/validation_agreement_gpt-oss-120b.csv")
+        rows = read_rows(self.tmp / "processed/mock_v/validation_agreement_olmo-3.1-32b-instruct.csv")
         self.assertEqual([(r["n"], r["agree_share"], r["kappa"], r["passes"]) for r in rows],
-                         [("0", "", "", "False")] * 5)
+                         [("0", "", "", "False")] * len(JUDGE_CODES))
         self.assertIn("n/a", out)
 
     def test_unmatched_ids_are_counted_on_both_sides(self):
@@ -375,16 +375,16 @@ class CliTest(unittest.TestCase):
         coded["1.2E+18"] = coded.pop("i3")
         write_human(self.human, coded)
         self.judge()
-        code, out, _ = run_cli([*self.argv, "--judge", "gpt-oss-120b"])
+        code, out, _ = run_cli([*self.argv, "--judge", "olmo-3.1-32b-instruct"])
         self.assertEqual(code, 0)
         self.assertIn("only in the human file: 1", out)
         self.assertIn("only on the other side: 1", out)
-        self.assertEqual([r["n"] for r in read_rows(self.tmp / "processed/mock_v/validation_agreement_gpt-oss-120b.csv")],
-                         ["3"] * 5)
+        self.assertEqual([r["n"] for r in read_rows(self.tmp / "processed/mock_v/validation_agreement_olmo-3.1-32b-instruct.csv")],
+                         ["3"] * len(JUDGE_CODES))
 
     def test_no_unmatched_ids_prints_zero_on_both_sides(self):
         self.judge()
-        code, out, _ = run_cli([*self.argv, "--judge", "gpt-oss-120b"])
+        code, out, _ = run_cli([*self.argv, "--judge", "olmo-3.1-32b-instruct"])
         self.assertEqual(code, 0)
         self.assertIn("only in the human file: 0", out)
         self.assertIn("only on the other side: 0", out)
@@ -398,12 +398,12 @@ class CliTest(unittest.TestCase):
         self.assertEqual(rows[0]["kappa"], "1.0")
 
     def test_missing_files_return_two_with_a_message(self):
-        code, out, err = run_cli([*self.argv, "--judge", "gpt-oss-120b"])  # no judge file yet
+        code, out, err = run_cli([*self.argv, "--judge", "olmo-3.1-32b-instruct"])  # no judge file yet
         self.assertEqual(code, 2)
-        self.assertIn("judge_codes_gpt-oss-120b.csv", err)
+        self.assertIn("judge_codes_olmo-3.1-32b-instruct.csv", err)
         self.judge()
         code, _, err = run_cli(["agreement", "--batch", "mock_v", "--human", str(self.tmp / "nope.csv"),
-                                "--judge", "gpt-oss-120b", "--data-root", str(self.tmp)])
+                                "--judge", "olmo-3.1-32b-instruct", "--data-root", str(self.tmp)])
         self.assertEqual(code, 2)
         self.assertIn("nope.csv", err)
         code, _, err = run_cli([*self.argv, "--other-human", str(self.tmp / "nobody.csv")])
@@ -413,7 +413,7 @@ class CliTest(unittest.TestCase):
     def test_unreadable_codes_return_two(self):
         write_human(self.human, {"i0": {"doubts_residence": "maybe"}})
         self.judge()
-        code, _, err = run_cli([*self.argv, "--judge", "gpt-oss-120b"])
+        code, _, err = run_cli([*self.argv, "--judge", "olmo-3.1-32b-instruct"])
         self.assertEqual(code, 2)
         self.assertIn("maybe", err)
 

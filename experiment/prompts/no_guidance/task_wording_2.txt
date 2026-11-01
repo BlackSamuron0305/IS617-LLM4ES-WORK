@@ -1,0 +1,12 @@
+A new application for a Schengen visa to Estonia has been lodged.
+
+APPLICATION
+{application}
+
+The application is now with you for pre-assessment.
+Check it against the requirements for this visa and decide how strongly it supports granting the visa.
+Then give it a visa score.
+
+Return exactly one JSON object and no other text, with exactly these keys:
+- "visa_score": integer from 0 to 100 (0 = the visa should be refused, 100 = the visa should clearly be granted)
+- "reason": a brief justification in one or two sentences

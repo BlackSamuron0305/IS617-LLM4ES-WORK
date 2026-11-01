@@ -59,13 +59,13 @@ requests to those libraries, not a block on the network.
 From the repo root on the cluster. Variables are passed with `--export=ALL,...`:
 
 ```
-sbatch --export=ALL,STAGE=answers,ALIAS=qwen3-8b,BATCH=pilot1,BLOCKS=1,MODEL_PATH=/path/to/qwen3-8b,ALLOW_REAL_CALLS=yes cluster/run_vllm.sbatch
+sbatch --export=ALL,STAGE=answers,ALIAS=qwen3-32b,BATCH=pilot1,BLOCKS=1,MODEL_PATH=/path/to/qwen3-32b,ALLOW_REAL_CALLS=yes cluster/run_vllm.sbatch
 ```
 
 The judge, after the answers of the batch have been read and the judge inputs built:
 
 ```
-sbatch --export=ALL,STAGE=judge,ALIAS=gpt-oss-120b,BATCH=pilot1,MODEL_PATH=/path/to/gpt-oss-120b,ALLOW_REAL_CALLS=yes cluster/run_vllm.sbatch
+sbatch --export=ALL,STAGE=judge,ALIAS=olmo-3.1-32b-instruct,BATCH=pilot1,MODEL_PATH=/path/to/olmo-3.1-32b-instruct,ALLOW_REAL_CALLS=yes cluster/run_vllm.sbatch
 ```
 
 | variable | | meaning |

@@ -1,0 +1,11 @@
+Pre-assess the application below in three steps:
+1. Read the application.
+2. Check whether one of the grounds for refusing the visa applies.
+3. Give the application a visa score and a reason.
+
+APPLICATION
+{application}
+
+Answer with one JSON object only, containing exactly these keys:
+- "visa_score": integer from 0 to 100 (0 = the visa should be refused, 100 = the visa should clearly be granted)
+- "reason": a brief justification in one or two sentences

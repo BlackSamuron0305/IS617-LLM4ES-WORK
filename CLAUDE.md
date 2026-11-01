@@ -46,7 +46,7 @@ their commits were already in `Arabs-in-Visa`. Work happens on `main`.
 **What the project is about (Laith, 2026-10-10, said twice in one session).** Bias among
 Arabs: do models treat the 22 Arab League nationalities differently from one another
 when the application is identical? The yardstick is the **official rules** of the
-destination for these countries, which are the same for all 22. It is **not** passport
+destination for these countries, which are the same for all 22 under the Australian design and for the 21 that need a visa under the Estonian one. It is **not** passport
 strength, and the project is **not** a comparison of Arab with non-Arab countries.
 Claude's first draft of that day had added both (22 comparison passports matched on the
 Henley Passport Index, five non-Arab Muslim-majority passports, a research question on
@@ -68,28 +68,50 @@ saying, and what must not be dropped: a model may know more about a passport tha
 application states, so a difference is described as the weight the model gives the
 passport, not as proven prejudice.
 
+**Move from the Australian visitor visa to a Schengen visa for Estonia (2026-11-01).** At
+Laith's request. Reason given by Laith: EU law demands a valid reason for a visa refusal
+(Article 32 of the Visa Code, supplied as a screenshot), and Estonia is said to be adding AI
+to public services including visa decision support (**not confirmed**: a search on
+2026-11-01 found nothing about visas; see `research/visa_scenario/estonia_scenario.md`; do not
+state it as fact). Changes decided that day: the model gives **only a score from 0 to 100
+(0 = refuse, 100 = clearly grant) and a reason**, no rating, no further checks and no
+recommendation; the reason is coded by the judge; the application has five items (purpose,
+travel medical insurance, return flight, accommodation, means of subsistence); a realistic
+full record (name, sex, age, address ...) is simulated and then removed by a documented
+filter before any model sees it; and some prompts carry the regulation directly (the text of
+Article 32(1), and an instruction to cite its grounds). Whether Aleksander and Nico have
+agreed is not recorded here. Consequence that Claude flagged: Emirati citizens (and the
+placebo Uruguayans) need no Schengen visa, so the rules are flat for 21 of the 22 Arab
+League nationalities, not for all; the two rows stay in the data and are reported apart.
+The Australian design is in git history (commit af0e409, with its real grant and refusal
+rates by nationality). Nico's prompt revisions and variants (merged on 2026-10-2x) were
+carried over to the new scenario as `experiment/prompts/variants.csv`.
+
 ## Repository layout
 
 - `experiment/README.md`: overview of the experiment and the run plan. Start here.
-- `experiment/policy/`: the guidance the model is given (`visa_guidance.txt`, a
-  paraphrase of the public rules for the Australian visitor visa) and the paragraph on
-  nationality that the second version adds (`nationality_rule.txt`). The README names
-  the public rule behind each section.
-- `experiment/applicants/`: `applicants.csv` (20 applicants) and the layout of an
+- `experiment/policy/`: the guidance the model is given (`visa_guidance.txt`, a paraphrase
+  of Article 32(1) of the Visa Code and of the Estonian ministry's page on the Schengen
+  visa), its variants (`visa_guidance_risk.txt`, `regulation_text.txt`,
+  `regulation_instruction.txt`) and three versions of section 6 on nationality
+  (`nationality_rule.txt`, `regulation_rule.txt`, `info_rule.txt`).
+- `experiment/applicants/`: `applicants_full.csv` (20 complete simulated records),
+  `field_filter.csv` (which fields the model never sees, and why), `applicants.csv` (the
+  filtered result, written by `python -m pipeline.filter_applicants`) and the layout of an
   application.
-- `experiment/countries/`: `applicant_nationalities.csv` (26 nationality rows: the 22
-  Arab League nationalities and 4 placebo nationalities) and `official_rules.csv` (what
-  the official Australian rules say about each of them, plus real grant and refusal
-  rates for context). The README explains the yardstick.
-- `experiment/prompts/`: the main prompt and three wordings of the task.
-- `experiment/costs/`: the cost measures and `cost_assumptions.csv` (prices and rates
-  with sources).
+- `experiment/countries/`: `applicant_nationalities.csv` (26 nationality rows: the 22 Arab
+  League nationalities and 4 placebo nationalities; column `visa_required`) and
+  `official_rules.csv` (what the rules for a Schengen visa to Estonia say about each). The
+  README explains the yardstick.
+- `experiment/prompts/`: the main prompt, three wordings of the task, and `variants.csv`
+  with twelve variants (folders per variant).
+- `experiment/costs/`: the cost measures and `cost_assumptions.csv` (prices and rates with
+  sources).
 - `experiment/models.csv`: the four planned models.
 - `experiment/judge/`: the judge that codes the free-text reason of each answer (prompt
   files, `mask_terms.csv`, `judge_models.csv`). Its README is authoritative.
-- `experiment/run_settings.csv`: the sampling settings (temperature, top_p, max_tokens,
-  seed, answer format) for the audited models and for the judge; all provisional or open.
-- `pipeline/`: the code, one module per stage: `build_runs` (builds and checks the
+- `experiment/run_settings.csv`: the sampling settings; all provisional or open.
+- `pipeline/`: the code, one module per stage: `filter_applicants`, `build_runs` (builds and checks the
   prompts, never calls a model), `run_models`, `parse_answers`, `judge_build`,
   `run_judge`, `judge_parse`, `judge_validate`. `pipeline/README.md` has the commands, a
   mock walk-through and the refusal rules.
@@ -127,7 +149,7 @@ Countries.* Earlier titles: *... Rate Bank Customers ... in Money-Laundering Che
 *Beyond "Arab" as a Single Category*.
 
 > When an LLM pre-assesses otherwise identical synthetic applications for a visitor
-> visa, does its risk rating change when only the stated nationality changes, does a
+> visa, does its visa score (since 2026-11-01 a score from 0 to 100 and a reason) change when only the stated nationality changes, does a
 > single "Arab" category hide systematic differences among the 22 Arab League
 > nationalities, and what would the difference cost an applicant?
 
@@ -143,12 +165,12 @@ countries, and (2) can the countries be grouped into rich, normal and poor?** La
 2026-10-12: question 1 compares the single countries, each of the 22 with the others;
 the three groups are a different research question and not the way the countries are
 compared. Slides and documents must not present the project as a comparison of groups. In the
-proposal (`paper/proposal/proposal.tex`): RQ1, do ratings and recommendations differ
+proposal (`paper/proposal/proposal.tex`): RQ1, do ratings and recommendations (now: scores) differ
 across the 22 Arab League nationalities when the application is identical and the
 official rules are the same for all of them; RQ2, do the models sort the 22 along three
 groups, rich, normal and poor. Two further questions: RQ3, do the differences remain
 when the guidance says that nationality is not a ground for a higher rating; RQ4, what
-do the differences cost an applicant. Every question is answered for four models.
+do the differences cost an applicant. Every question is answered for three models.
 
 The three groups are fixed before any run from the World Bank income classification
 (retrieved 10 October 2026): rich = high income (Bahrain, Kuwait, Oman, Qatar, Saudi
@@ -170,73 +192,69 @@ for hiring. For visa applications only limited searches were done on 2026-10-10
 ## Design at a glance
 
 The current design is described in `experiment/README.md` and the READMEs of its
-folders. Those are authoritative. `research/old_design/` is not. The design was drafted
-by Claude on 2026-10-10 and has not been confirmed by the team.
+folders. Those are authoritative. `research/old_design/` and the Australian files in git
+history (commit af0e409) are not. The design was drafted by Claude on 2026-11-01 and has
+not been confirmed by the team.
 
-- Setting: the model is a case assistant that pre-assesses applications for an
-  Australian Visitor visa (subclass 600, Tourist stream); a visa officer decides. Real
-  systems of this kind sort or rate applicants by fixed rules (United Kingdom until
-  2020, Netherlands) or with machine learning (Australia: to "predict risk in visa
-  programs"; Canada calls its system "advanced analytics"), not with language models; no
-  authority is documented as letting a language model rate visa applications. Checked on
-  the original documents on 2026-10-12 (`research/visa_scenario/ai_in_visa_processing.md`,
-  addendum). Do not say "Australia rates every applicant with AI": the document names no
-  inputs and no rating per application.
-- Yardstick: the official rules. For the Australian visitor visa they are the same for
-  all 22 Arab League nationalities: same visa, same form, same fee, same legal test, no
-  list of risk nationalities in force, no ban (`experiment/countries/official_rules.csv`;
-  `pipeline/build_runs.py` checks it). Expected result by the rules: no difference. A
-  systematic difference among the 22 is what the project calls bias.
-- Why Australia: the only destination checked where the rules are the same for all 22.
-  The United States bars six of the 22 by proclamation, the Schengen area exempts
-  Emirati citizens: there a different answer follows from a rule and is not a bias.
+- Setting: the model is a case assistant that pre-assesses applications for a Schengen
+  visa (type C, short stay, tourism) to Estonia; a visa officer decides. Real systems of
+  this kind sort applications by fixed rules or machine learning, not with language
+  models; no authority is documented as letting a language model rate visa applications
+  (`research/visa_scenario/ai_in_visa_processing.md`). Do not say "Estonia uses AI for
+  visa decisions" until a source is found.
+- Yardstick: Article 32(1) of the Visa Code. Its list of grounds for refusal names no
+  nationality and is the same for every applicant. Expected result by the rules: no
+  difference among nationalities that need the visa. A systematic difference is what the
+  project calls bias. Not checked: Article 22 (prior consultation) and Article 25a (visa
+  measures) for the 21 nationalities.
+- Emirati (and Uruguayan, a placebo) citizens need no visa (Annex II of Regulation
+  2018/1806, not read again). They stay in the data and are reported apart; the main
+  comparison among the Arab nationalities is among **21**.
 - Applicants: 20 synthetic applications. Everyone was born in the United Arab Emirates,
-  has lived there since birth, is employed there and has a clean record. 10
-  applications are plain, 10 carry one mild point the guidance names. Savings are on
-  five levels (AED 16,000 to 81,000).
-- Manipulation: the `Nationality:` line and the `Travel document:` line. No names, no
-  gender. `applicant_nationalities.csv` has the 22 Arab League nationalities and 4
-  placebo nationalities (Uruguayan, Malawian, Maldivian, Cambodian; the four of the
-  earlier designs). The placebo rows are a noise check, not a research question. There
-  is no not-stated row.
+  has lived there since birth, is employed there, applies there, and has a clean record.
+  10 applications are plain, 10 carry one mild point. Savings are on five levels (AED
+  2,000 to 10,500): the lowest is below the EUR 70 per day that Estonia counts, so a
+  model has one level where a lower score follows from the rules.
+- The application has five items: purpose of the journey, travel medical insurance,
+  return flight, accommodation, means of subsistence.
+- **The filter.** The simulated records contain name, sex, date of birth, place of birth,
+  address, phone, e-mail and passport number. `experiment/applicants/field_filter.csv`
+  removes them before any prompt is built; `pipeline/build_runs.py` checks that no removed
+  value reaches a prompt. The paper must document this filter (Laith, 2026-11-01).
+  Residual age and sex signals are listed in `experiment/applicants/README.md`.
+- Manipulation: the `Nationality:` line and the `Travel document:` line. The 22 Arab League
+  nationalities and 4 placebo nationalities (Uruguayan, Malawian, Maldivian, Cambodian).
+  No not-stated row.
 - Legal status: every application states the same line, "lawful long-term resident with
-  the full right to live and work there". All applications differ in two lines only;
-  `pipeline/build_runs.py` checks it. The six Gulf nationalities are marked in the `note`
-  column of the nationality table; a check without them is listed among the comparisons.
-- Real grant and refusal rates (Australia 2019-20, United States 2025) are in
-  `official_rules.csv` as context and for the slides: they show that the 22 fare very
-  differently in practice although the rules are the same. They are not rules and not a
-  yardstick, and they come from real applicants in different circumstances.
-- The published Australian rules define the home country as the country of usual
-  residence and count it in an applicant's favour to live in a low-risk country
-  whatever the passport; Emirati citizens are a low-risk group in the Australian
-  figures. For applicants born and living in the Emirates with the full right to stay,
-  the rules point towards rating the passports alike. A model may still act on what it
-  believes about a passport (for example that a foreigner's stay depends on the job).
-  The instruction read is the version of 2016.
-- Comoros, Djibouti and Somalia are flagged `arab_identity_contested`. The flag does
-  not exclude them from any comparison; the paper should point them out.
-- Prompts: a main prompt with the guidance, then a message with one application, in
-  three wordings. Two versions of the guidance: without and with a paragraph saying that
-  nationality is not a ground for a higher rating.
-- Outcomes: a 0-100 risk score, a rating (low, medium, high), a list of further checks
-  from a menu of six, and a recommendation (grant, refer, refuse). Never call the score
-  a probability.
-- Cost: three measures (`experiment/costs/README.md`). Main one: the savings an
-  applicant would need to make up for a passport. Also fees lost per 1,000 identical
-  applicants (AUD 250 per refusal) and the number of further checks. All are
-  illustrations of model behaviour, never forecasts.
-- Run plan: four models, three blocks, 21,840 runs per model. Block 3 repeats block 1
-  with the other savings levels.
-- Judge (added on 2026-10-24 at Laith's request, drafted by Claude, **not confirmed by the
-  team**): a second model codes the free-text `reason` of each answer, and only that
-  field, with five yes/no codes (mentions nationality, treats it as a risk, refers to
-  conditions in the passport country, doubts the right to stay in the Emirates,
-  contradicts the application). It is blinded: it sees the reason and the application
-  with the nationality words and lines hidden, never the score, rating or
-  recommendation. The codes describe how a model justifies its rating, not why it gave
-  it; they are exploratory, and a code is used only if it agrees with the team's own
-  coding of a sample by hand. `experiment/judge/README.md` is authoritative.
+  the full right to live and work there". All applications differ in two lines only; the
+  builder checks it.
+- Prompts: a main prompt with the guidance, then a message with one application, in three
+  wordings. Block 2 adds the instruction that nationality is not a ground. Twelve
+  variants (`experiment/prompts/variants.csv`) change one thing each, among them
+  `regulation_text` (the word-for-word Article 32(1) as the guidance), `regulation_instruction`
+  (an order to cite the ground), `no_guidance`, `reasoning`, `risk_scale`, `decider`,
+  the two time framings and the two personas.
+- Outcome: `visa_score` 0-100 (0 = the visa should be refused, 100 = clearly granted) and
+  a `reason` naming the ground. Never call the score a probability. The direction of the
+  scale is an open decision (variant `risk_scale` turns it round).
+- Cost: three measures (`experiment/costs/README.md`): the savings an applicant would need
+  to make up for a passport (main); fees lost per 1,000 identical applications (EUR 90 per
+  refusal, a refusal line below 20 and a doubt line below 50); the share of scores that
+  send an application to a closer look (20 to 49). All are illustrations of model
+  behaviour, never forecasts.
+- Run plan: four models; blocks 1 to 3 are 21,840 runs per model (block 3 repeats block 1
+  with the other savings levels); block 4 is 18,720 runs per model for the twelve
+  variants.
+- Judge (drafted by Claude on 2026-10-24, extended on 2026-11-01 with the code
+  `names_legal_ground`, **not confirmed by the team**): a second model codes the free-text
+  `reason` of each answer, and only that field, with six yes/no codes (mentions
+  nationality, treats it as a risk, refers to conditions in the passport country, doubts
+  the right to stay in the Emirates, contradicts the application, names a ground of Article
+  32 or one of the five items). It is blinded: it sees the reason and the application with
+  the nationality words and lines hidden, never the score. The codes describe how a model
+  justifies its score, not why it gave it; they are exploratory, and a code is used only
+  if it agrees with the team's own coding of a sample by hand. `experiment/judge/README.md`
+  is authoritative.
 
 ## Compute and models
 
@@ -287,7 +305,9 @@ were built
 by Claude at Laith's explicit request, including their wording: the team rewrites the
 wording or declares it. The judge prompt, the codebook and `mask_terms.csv` in
 `experiment/judge/` were drafted by Claude on 2026-10-24 at Laith's request and have to
-be listed when AI use is declared.
+be listed when AI use is declared. So have the Estonian guidance, the prompt variants, the
+simulated applicant records, the filter and the sixth judge code, all drafted by Claude on
+2026-11-01.
 
 **No fabricated results or citations.** Output of mock or test runs is labelled as
 such and is never reported as a result. Every citation carries a verification level in
@@ -306,7 +326,7 @@ Confirmatory and exploratory analyses stay separate.
 **Novelty and scope discipline.** Do not add experimental factors to chase novelty.
 New ideas go to the parked list. The rubric rewards a finished, defensible
 experiment: Data [10] + Methods [10] + Results [10] = 30 of 50 report points, and
-15 of 25 final-presentation points are Q&A. The scenario has now changed four times;
+15 of 25 final-presentation points are Q&A. The scenario has now changed five times;
 further changes cost time the midterm needs.
 
 ## Parked — publication extension, not the course project
@@ -316,7 +336,7 @@ further changes cost time the midterm needs.
 - A version of the guidance with the sentence from real practice that officers may use
   statistics about other nationals of the applicant's country to look closer
 - Arab League passports against non-Arab passports (matched on passport strength, or
-  every nationality that needs the Australian visa); material in
+  every nationality that needs the Schengen visa); material in
   `research/visa_scenario/parked_comparison_set/`
 - Comparing the model's order of the 22 with real grant and refusal rates
 - The same applications set in a country with a permanent right to stay (the German
@@ -333,13 +353,13 @@ further changes cost time the midterm needs.
 ## Open decisions
 
 See "Open" in `experiment/README.md`. The largest ones: the team has not confirmed the
-visa design; the design has no written hypotheses or analysis plan; and no pilot has
+Estonia design; the design has no written hypotheses or analysis plan; and no pilot has
 shown that the answers vary at all or react to savings. Hypotheses, analysis plan and
 cost measures come before the first real run; the pilot needs explicit approval. Before
 the pitch on 13.10. the team has to go through `paper/first_presentation/pitch.pptx`
-and check its numbers (`paper/first_presentation/README.md`). Before any run, check the
-Australian legislation register for a travel suspension by nationality
+and check its numbers (`paper/first_presentation/README.md`). Before any run, check Articles 22 and 25a of the Visa Code for the 21 nationalities, the Estonian
+amount for means (EUR 70 per day), and the checklist of the Estonian mission in the United Arab Emirates
 (`experiment/countries/README.md`). For the judge: the team has to confirm the agreement
 threshold (Cohen's kappa of 0.7 is provisional) and the size of the validation sample,
-and choose the judge model (`experiment/judge/judge_models.csv` lists two). The
+and decide whether the optional second judge stays (`experiment/judge/judge_models.csv`; the main judge is OLMo 3.1 32B). The
 validation sample has to be coded by hand before any judge code is used.

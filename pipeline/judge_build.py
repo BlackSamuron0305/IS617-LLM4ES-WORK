@@ -4,7 +4,7 @@ Reads data/processed/<batch>/answers.csv (written by parse_answers). For each an
 read, has a reason and whose prompt still is the one the experiment files give now (prompt_matches
 is 1), the nationality words in the reason are replaced by placeholders, the
 application is rebuilt with [NATIONALITY] in its two nationality lines, and the judge's two
-messages are put together. The judge never sees the score, the rating or the recommendation.
+messages are put together. The judge never sees the score.
 Identical judge inputs are written once. Writes data/processed/<batch>/judge_items.jsonl
 (one line per unique input) and judge_links.csv (which answer belongs to which input). Both
 are written fresh on every run. Never calls a model.
@@ -28,7 +28,7 @@ from pipeline.common import DATA, EXPERIMENT, read_table, read_text, sha256_text
 
 JUDGE = EXPERIMENT / "judge"
 JUDGE_CODES = ("mentions_nationality", "nationality_as_risk", "passport_country_conditions", "doubts_residence",
-               "contradicts_application")
+               "contradicts_application", "names_legal_ground")
 MASK_KINDS = ("alias", "capital", "region", "keep")
 NATIONALITY_MASK = "[NATIONALITY]"
 PASSPORT_MASK = "[PASSPORT COUNTRY]"

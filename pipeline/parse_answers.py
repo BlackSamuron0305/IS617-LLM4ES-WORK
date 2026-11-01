@@ -17,32 +17,28 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from pipeline.build_runs import ANSWER_KEYS, CHECK_LETTERS, build_runs
+from pipeline.build_runs import DEFAULT_ANSWER_KEYS, SCORE_KEYS, build_runs
 from pipeline.common import DATA, last_by_key, messages_sha256, read_jsonl, write_csv
 
-RATINGS = ("low", "medium", "high")
-RECOMMENDATIONS = ("grant", "refer", "refuse")
 
-# The shape of an answer, sent to the server when the setting json_schema is yes.
-ANSWER_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "risk_score": {"type": "integer", "minimum": 0, "maximum": 100},
-        "risk_rating": {"type": "string", "enum": list(RATINGS)},
-        "further_checks": {"type": "array", "items": {"type": "string", "enum": list(CHECK_LETTERS)}},
-        "recommendation": {"type": "string", "enum": list(RECOMMENDATIONS)},
-        "reason": {"type": "string"},
-    },
-    "required": list(ANSWER_KEYS),
-    "additionalProperties": False,
-}
+def answer_schema(answer_keys=DEFAULT_ANSWER_KEYS):
+    # The shape of an answer, sent to the server when the setting json_schema is yes.
+    properties = {}
+    for key in answer_keys:
+        properties[key] = {"type": "integer", "minimum": 0, "maximum": 100} if key in SCORE_KEYS else {"type": "string"}
+    return {"type": "object", "properties": properties, "required": list(answer_keys), "additionalProperties": False}
 
-RUN_COLUMNS = ["policy_version", "applicant_id", "file_profile", "indicator", "savings", "country", "demonym",
-               "group", "wealth_group", "wording"]
+
+ANSWER_SCHEMA = answer_schema()
+
+RUN_COLUMNS = ["variant", "policy_version", "applicant_id", "file_profile", "indicator", "savings", "country", "demonym",
+               "group", "wealth_group", "visa_required", "wording"]
+# score_raw is the number the model gave; score_scale says what it means (visa: 100 = grant, risk: 100 = refuse);
+# visa_score is the same on the grant scale for every row (100 - score_raw when the scale is risk).
 ANSWER_COLUMNS = ["batch", "model_alias", "key", "run_id", "repetition", "block", *RUN_COLUMNS, "prompt_matches",
-                  "parse_status", "risk_score", "risk_rating", "further_checks", "n_checks", "recommendation",
-                  "reason", "finish_reason", "error"]
-VALUE_FIELDS = ("risk_score", "risk_rating", "further_checks", "n_checks", "recommendation")
+                  "parse_status", "score_raw", "score_scale", "visa_score", "reasoning", "reason", "finish_reason",
+                  "error"]
+VALUE_FIELDS = ("score_raw", "score_scale", "visa_score", "reasoning")
 
 
 def extract_json(text):
@@ -80,27 +76,8 @@ def _score(value):
     return value if 0 <= value <= 100 else None
 
 
-def _checks(value):
-    # The sorted unique letters, or None if the value is not a list of single letters from the menu.
-    if not isinstance(value, list):
-        return None
-    letters = set()
-    for item in value:
-        letter = item.strip().upper() if isinstance(item, str) else ""
-        # A letter is exactly one character: "" and "AB" are substrings of the menu but not letters.
-        if len(letter) != 1 or letter not in CHECK_LETTERS:
-            return None
-        letters.add(letter)
-    return sorted(letters)
-
-
-def _choice(value, allowed):
-    value = value.strip().lower() if isinstance(value, str) else None
-    return value if value in allowed else None
-
-
-def parse_answer(text, error):
-    # The five answer fields plus parse_status; first status that applies wins.
+def parse_answer(text, error, answer_keys=DEFAULT_ANSWER_KEYS):
+    # The answer fields plus parse_status; first status that applies wins.
     # When the status is not ok every value field is "" except reason (kept if it was a string).
     blank = {"parse_status": "", **dict.fromkeys(VALUE_FIELDS, ""), "reason": ""}
     if error:
@@ -110,16 +87,16 @@ def parse_answer(text, error):
         return {**blank, "parse_status": "no_json"}
     reason = answer.get("reason")
     kept = {**blank, "reason": reason if isinstance(reason, str) else ""}
-    if any(key not in answer for key in ANSWER_KEYS):
+    if any(key not in answer for key in answer_keys):
         return {**kept, "parse_status": "missing_key"}
-    score = _score(answer["risk_score"])
-    rating = _choice(answer["risk_rating"], RATINGS)
-    checks = _checks(answer["further_checks"])
-    recommendation = _choice(answer["recommendation"], RECOMMENDATIONS)
-    if score is None or rating is None or checks is None or recommendation is None or not isinstance(reason, str):
+    score_key = next(key for key in answer_keys if key in SCORE_KEYS)
+    score = _score(answer[score_key])
+    reasoning = answer.get("reasoning", "")
+    if score is None or not isinstance(reason, str) or not isinstance(reasoning, str):
         return {**kept, "parse_status": "bad_value"}
-    return {"parse_status": "ok", "risk_score": score, "risk_rating": rating, "further_checks": ";".join(checks),
-            "n_checks": len(checks), "recommendation": recommendation, "reason": reason}
+    scale = SCORE_KEYS[score_key]
+    return {"parse_status": "ok", "score_raw": score, "score_scale": scale,
+            "visa_score": score if scale == "visa" else 100 - score, "reasoning": reasoning, "reason": reason}
 
 
 def parse_batch(batch, data_root):
@@ -129,7 +106,7 @@ def parse_batch(batch, data_root):
     raw_path = Path(data_root) / "raw" / batch / "answers.jsonl"
     if not raw_path.exists():
         raise FileNotFoundError(f"no raw answers for batch {batch!r}: {raw_path} does not exist")
-    runs = {run["run_id"]: run for run in build_runs()[0]}
+    runs = {run["run_id"]: run for run in build_runs("all")[0]}
     expected = {}  # run_id -> hash of the messages build_runs builds today
     rows = []
     for key, record in sorted(last_by_key(read_jsonl(raw_path)).items()):
@@ -141,7 +118,8 @@ def parse_batch(batch, data_root):
         row = {"batch": batch, "model_alias": record["model_alias"], "key": key, "run_id": record["run_id"],
                "repetition": record["repetition"], "block": record["block"],
                **{column: run[column] if run is not None else "" for column in RUN_COLUMNS},
-               "prompt_matches": int(matches), **parse_answer(record["text"], record["error"]),
+               "prompt_matches": int(matches), **parse_answer(record["text"], record["error"],
+                                                    run["answer_keys"] if run is not None else DEFAULT_ANSWER_KEYS),
                "finish_reason": record["finish_reason"], "error": record["error"]}
         rows.append(row)
     out_path = Path(data_root) / "processed" / batch / "answers.csv"

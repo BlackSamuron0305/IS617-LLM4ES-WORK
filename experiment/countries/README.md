@@ -1,60 +1,78 @@
 # Countries
 
-Rewritten on 2026-10-10 for the visitor-visa design. The tables of the bank design are
-in `research/old_design/bank_2026-10-08/countries/`.
+Rewritten on 2026-11-01 for the Estonian design. The tables of the Australian design
+(with the real grant and refusal rates of Australia and the United States) are in git
+history (commit af0e409); the tables of the bank design are in
+`research/old_design/bank_2026-10-08/countries/`.
 
 | file | what it is |
 |---|---|
-| `applicant_nationalities.csv` | the 26 nationalities an applicant can have: the 22 Arab League nationalities and 4 unrelated ones |
-| `official_rules.csv` | what the official Australian rules say about each of the 26, and, for context, how real applicants of each nationality fared |
+| `applicant_nationalities.csv` | the 26 nationalities an applicant can have: the 22 Arab League nationalities and 4 unrelated ones, with the column `visa_required` |
+| `official_rules.csv` | what the official rules for a Schengen visa to Estonia say about each of the 26 |
 
-## The yardstick: the official rules are the same for all 22
+## The yardstick: the grounds for refusal are the same for everyone
 
 The project asks about bias among the 22 Arab League nationalities. The yardstick is
-what the official rules of the destination say about them, not how strong a passport is
-or how a country is seen. `official_rules.csv` has one row per nationality:
+what the official rules say, not how strong a passport is or how a country is seen. For
+a Schengen visa the rule that matters is Article 32(1) of the Visa Code (Regulation (EC)
+No 810/2009): it lists the grounds on which a visa shall be refused, and nationality is
+not one of them (text read from the screenshot Laith supplied; the grounds are quoted in
+`../policy/regulation_text.txt`). Estonia applies the same Visa Code to every applicant.
 
-| column | what it says | the same for all 26? | source, read on 2026-10-10 |
+`official_rules.csv` has one row per nationality:
+
+| column | what it says | the same for all 24 that need a visa? | source |
 |---|---|---|---|
-| `visa_needed` | Visitor visa (subclass 600) | yes | the department's lists for the two electronic permits, read in full: no Arab League country is on either |
-| `electronic_travel_authority_601`, `evisitor_651` | whether the simpler electronic permits are open to this passport | yes: no | same; and not one such permit was granted to any of the 22 in 2024-25 or 2025-26 (grant data on data.gov.au) |
-| `application_form` | form 1419, online | yes | Migration instrument LIN 21/056: applications "must be made using form 1419 (Internet) through ImmiAccount" |
-| `fee_aud` | 250 | yes | Migration Regulations, Schedule 1, item 1236, compilation of 1 July 2026 |
-| `legal_test` | genuine intention to stay temporarily, adequate means, health and character | yes | Migration Regulations, Schedule 2, clauses 600.211 to 600.213 |
-| `on_a_risk_list_in_force` | whether the nationality is in a group that has to show "very little likelihood" of overstaying | yes: no | the law allows such a list (public interest criterion 4011); none was found in force. The search was not exhaustive |
-| `on_the_risk_list_revoked_in_2009` | whether the nationality was on the last such list | **no, it differs** | the list of 2008 (IMMI 08/033) had Egyptian, Iraqi, Jordanian, Lebanese and Syrian groups by sex and age, and Cambodian and Uruguayan ones. It was revoked on 15 May 2009. History, not a rule in force |
-| `entry_ban_or_travel_suspension_2026_10_10` | whether holders of this passport are barred | yes: no | none found for any of the 26. See the warning below |
+| `visa_needed` | Schengen visa, type C (short stay); or none for the two visa-exempt nationalities | yes | see "Two nationalities need no visa" |
+| `application_form` | online form (eelviisataotlus.vm.ee), printed, signed, lodged in person | yes | Estonian Ministry of Foreign Affairs, page on the Schengen visa: "The form must be filled in online, printed and signed"; "All visa applications must be submitted in person." |
+| `fee_eur` | 90 | yes | same page: "Schengen visa 90 Euros". Reduced fees (35 euros) exist for eleven other nationalities, none of them in this experiment |
+| `legal_test` | the grounds of Article 32(1) | yes | Visa Code, Article 32(1), read from the screenshot |
+| `nationality_is_a_ground_in_art_32` | no | yes | same: the list names no nationality |
+| `means_per_day_eur`, `insurance_min_eur` | 70, 30000 | yes | same page of the ministry |
+| `entry_ban_or_visa_measure_2026_11_01` | none known; **not checked** | yes (as far as known) | see the warning below |
 
-`pipeline/build_runs.py` checks that every column of rules in force has one value for all
-26 rows.
+`pipeline/build_runs.py` checks that every column of this table has one value across the
+nationalities that need a visa, that the exempt ones say so, and that the amounts in the
+guidance are the amounts in this table.
 
-Three more columns start with `real_`. They are **not rules**. They show how real
-applicants fared, and they are in the table for context and for the slides:
+## Two nationalities need no visa
 
-| column | content | source |
-|---|---|---|
-| `real_au_600_granted_2019_20`, `real_au_600_refused_2019_20`, `real_au_600_grant_rate_2019_20` | Australian visitor visas (subclass 600, all streams) granted and refused by citizenship, July 2019 to June 2020; rate = granted / (granted + refused), our calculation | Department of Home Affairs, freedom of information release FA 20/10/00106. Counts below 5 are hidden; then there is no rate (Comoros, Djibouti, Mauritania). Nothing newer by nationality is published |
-| `real_us_b_visa_refusal_fy2025` | share of US visitor visa applications refused, by nationality, October 2024 to September 2025 | US Department of State, adjusted refusal rate, B visas |
+`applicant_nationalities.csv` has `visa_required = no` for two of the 26:
 
-These figures come from real applicants in very different circumstances, most of whom
-live in the country of their passport. They show that the 22 fare very differently in
-practice although the Australian rules are the same for all of them. They do not show
-what an office does with identical applications.
+- **United Arab Emirates (Emirati).** Citizens need no visa for short stays in the
+  Schengen area. This is the case that the Australian design avoided, and it is the
+  price of the Estonia setting. Source: Annex II of Regulation (EU) 2018/1806 and the
+  earlier project note (`research/visa_scenario/destination_and_requirements.md`); not
+  read again in full text, check before the first run.
+- **Uruguay (Uruguayan), a placebo.** Visa-exempt for short stays. Same source, same
+  caveat.
 
-**Warning: check the rules again before the pitch and before the runs.** Since March
-2026 the Australian minister can stop holders of a visa from travelling, by class of
-persons, for a limited time (according to law-firm summaries; the Act was not read). It
-was used once, for holders of this visa with an Iranian passport (26 March to 25
-September 2026; the instrument was read). A new one that names an Arab League
-nationality would be a rule, and the yardstick would no longer be the same for all 22.
+They stay in the experiment on purpose (the application states the same legal status for
+everyone, Laith's rule of 2026-10-10, and the rows cost almost nothing), but they are
+**reported apart** from the 24 nationalities that need a visa. Their row says what a
+model does when it is given a visa application that, in reality, nobody from that country
+would hand in. For the Emirati row there is a second reason to read it apart: in reality
+an Emirati born in the Emirates is a citizen, and the application says "lawful long-term
+resident". The main comparison among the Arab nationalities is therefore among **21**
+(the 22 without the Emirates). A check that also leaves out the five other Gulf states is
+listed among the comparisons.
 
-**What the published instruction adds.** The department's instruction for officers
-(version of 2016, released in 2018) says a profile "is not grounds to refuse to grant a
-visa" and that "all applications must be considered on their own merits". It lets
-officers ask for more evidence if statistics show that nationals of the applicant's home
-country overstay more often, and it defines the home country as the country of usual
-residence, which is the United Arab Emirates for every applicant here. Details and
-quotes: `../policy/README.md`.
+**Warning: check the rules again before the runs.** Not checked: (1) Council measures
+under Article 25a of the Visa Code that make the processing of visas for a country's
+nationals harder or easier; (2) the list of nationalities whose applications are sent to
+other Member States for consultation (Article 22), which lengthens the processing and
+does not change the grounds; (3) whether a travel ban or special rule exists for an Arab
+League nationality at the time of the runs. A rule that names one of the 21 would mean
+the yardstick is no longer flat.
+
+## What practice adds
+
+Real consulates refuse and grant different nationalities at different rates, although
+the grounds are the same. European Commission statistics give the share of Schengen visas
+not issued by country; they were **not** read for this design, and comparing the model's
+order of the 22 with the real rates stays on the parked list. If the figures are added
+later they are context, not a yardstick: they come from real applicants in different
+circumstances.
 
 ## Three wealth groups: rich, normal, poor
 
@@ -83,22 +101,21 @@ API on 10 October 2026:
   normal, Malawi poor). The question is about the 22; the placebo rows only show whether
   a pattern is special to the Arab League countries.
 
-## Why Australia is the destination
+## Why Estonia is the destination
 
-The yardstick only works where the rules are the same for all 22. Tested on 2026-10-10
-(`research/visa_scenario/destination_and_requirements.md`, section 2):
+Laith's decision of 2026-11-01. Reasons given: the Visa Code requires that a refusal has a
+valid reason (Article 32, which Laith supplied as a screenshot), so a score and a stated
+reason can be checked against a written list of grounds; and Laith reports that Estonia is
+adding AI to many public services, including support for visa decisions. **That last claim
+was not confirmed.** A search on 2026-11-01 found the national AI programme Eesti.ai
+(launched January 2026) and a plan for digital identities for AI agents, and nothing
+about visa decisions; the ministry's website search returned no result for "artificial
+intelligence". Do not state it in the report until a source is found
+(`research/visa_scenario/estonia_scenario.md`).
 
-| destination | same rules for all 22? | where the rules differ |
-|---|---|---|
-| **Australia** | **yes** | nowhere |
-| Canada | no | Emirati and Qatari citizens travel on an electronic permit |
-| United Kingdom, New Zealand | no | the six Gulf states travel on an electronic permit or without a visa |
-| Schengen area, Ireland | no | Emirati citizens need no visa |
-| United States | no | entry suspended by proclamation for Libyan, Somali, Sudanese, Syrian and Yemeni citizens and holders of Palestinian Authority documents; visitor visas suspended for Mauritanian citizens |
-| Japan, South Korea | no | several Arab League nationalities need no visa (Wikipedia only) |
-
-Where the rules differ, a different answer for two nationalities follows from a rule and
-is not a bias.
+The cost of the choice is the one the Australian design avoided: the rules are not flat
+for all 22, because one of them (Emirati) needs no visa. See "Two nationalities need no
+visa".
 
 ## `applicant_nationalities.csv`
 
@@ -112,6 +129,7 @@ is not a bias.
 | `wb_income_group` | the World Bank class the wealth group is taken from |
 | `arab_identity_contested` | `true` for Comoros, Djibouti and Somalia. A flag only; these countries stay in every comparison |
 | `travel_document` | the line in the application: `<demonym> passport` |
+| `visa_required` | `yes`, or `no` for the Emirati and the Uruguayan nationality (see above) |
 | `note` | remarks |
 
 | group | rows | which |
@@ -126,7 +144,7 @@ model's answers move a little. The four show how much, so that the differences a
 22 can be told from noise. They are a check, not a research question: the project is
 about the differences among the 22. They are the four of the earlier designs, chosen on
 2026-10-04 before any data, from four World Bank regions and the four income groups, one
-of them Muslim-majority. All four need the same Australian visa under the same rules.
+of them Muslim-majority. Three of the four need the same Schengen visa under the same rules; Uruguay needs none.
 They can be dropped by deleting their rows in both tables.
 
 **Legal status in the United Arab Emirates.** The applicants live there

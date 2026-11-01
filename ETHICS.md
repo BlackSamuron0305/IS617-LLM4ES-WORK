@@ -14,12 +14,13 @@ the one for the hiring design in commit 272792d.
 - The 20 applications in `experiment/applicants/applicants.csv` were written for this
   project. No real person, visa application or employer record was used or adapted.
   Incomes and savings are invented and were not taken from statistics.
-- Applicants carry a reference number instead of a name. There are no photos, gender
-  markers, religion fields or addresses. The application states a year and a city of
-  birth; the city is in the United Arab Emirates for everybody.
-- No visa office is named. The prompt speaks of "an Australian visa office". The
-  Australian Department of Home Affairs does not run this system and has not seen this
-  material. Employers are described, not named.
+- Applicants carry a reference number instead of a name. The simulated records have a
+  name, sex, date of birth, address, phone number, e-mail and passport number, all invented
+  (`experiment/applicants/applicants_full.csv`); a documented filter removes them before
+  any model sees an application (`experiment/applicants/field_filter.csv`), so that these
+  cannot act on the result. There are no photos or religion fields.
+- No visa office is named. The prompt speaks of "an Estonian visa office". The Estonian
+  Ministry of Foreign Affairs does not run this system and has not seen this material. Employers are described, not named.
 - The guidance text is a paraphrase of public rules written for the experiment. It is
   not an official text and not legal advice.
 - Because no human participants are involved and no personal data is processed, the
@@ -59,18 +60,15 @@ estimates appear.
   against Muslims" or against any ethnic group. What the design can show is whether a
   model treats the 22 Arab League nationalities differently from one another although
   the application and the official rules are the same.
-- Visa law works with nationalities. Real systems grant and refuse at very different
-  rates by nationality, Australian law still allows a list of risk groups defined by
-  nationality (none in force since 2009, as far as could be checked), and the
-  department's instruction lets officers use statistics about other nationals of a
-  country to look closer. The same instruction defines the home country as the country
-  of usual residence. The sources and the passages read are in
-  `experiment/policy/README.md`. The study does not assess legality, nobody on the team
-  is a lawyer, and practice may differ from the published rules. A model that rates a
-  passport worse may be reproducing that practice. That explains where a difference
-  may come from; it does not justify it for identical applications. The yardstick of
-  the project is the official rules in force, which are the same for all 22
-  (`experiment/countries/official_rules.csv`).
+- Visa law works with nationalities: they decide who needs a visa at all, and real
+  consulates grant and refuse nationalities at very different rates. The grounds for
+  refusal in Article 32(1) of the Visa Code do not name nationality, and a refusal has to
+  state its reasons. The sources and the passages read are in `experiment/policy/README.md`.
+  The study does not assess legality, nobody on the team is a lawyer, and practice may
+  differ from the published rules. A model that scores a passport lower may be reproducing
+  that practice. That explains where a difference may come from; it does not justify it
+  for identical applications. The yardstick of the project is the list of grounds, which is
+  the same for all nationalities that need the visa (`experiment/countries/official_rules.csv`).
 - Real grant and refusal rates by nationality describe real applicants in very different
   circumstances. They are never presented as a statement about the people of a country,
   and never as evidence that a difference is justified or unjustified.
