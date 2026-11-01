@@ -143,7 +143,7 @@ cannot be applied for without a passport.
 | 3 | block 1 again with the four other savings amounts | 20 x 4 x 26 x 3 = 6,240 | 1 | 6,240 |
 | | **total** | **9,360** | | **21,840** |
 
-With four models: 87,360 runs. A prompt has about 1,000 to 1,100 words. Block 1 on all
+With four models: 87,360 runs. A prompt has about 1,100 to 1,200 words. Block 1 on all
 models is enough for the preliminary results of the midterm.
 
 Block 3 is there for the cost figure and as a check of the instrument: it shows how much
