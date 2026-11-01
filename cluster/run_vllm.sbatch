@@ -74,6 +74,10 @@ if [ "$STAGE" = "judge" ] && [ -n "${BLOCKS:-}${VARIANTS:-}${WORDINGS:-}${MAX_RE
 fi
 # The environment of the working cluster setup (WS, ENROOT_DATA_PATH, VLLM_IMAGE, HF_HOME).
 source "${ENV_FILE:-$HOME/llm/env.sh}" || exit 1
+# Enroot keeps its runtime files in $XDG_RUNTIME_DIR/enroot; the login node's /run/user/<id> does not exist
+# on a compute node (the first pilot job died with "failed to open .../enroot/fstab"). Use the node-local disk.
+export ENROOT_RUNTIME_PATH="${TMPDIR:-/tmp}/enroot-runtime-${SLURM_JOB_ID:-$$}"
+mkdir -p "$ENROOT_RUNTIME_PATH"
 if [ -n "${PYTHON_MODULE:-}" ]; then
     module load "$PYTHON_MODULE" || exit 1
 fi
