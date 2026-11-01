@@ -44,7 +44,7 @@ never been run there.
 |---|---|
 | `experiment/README.md` | overview of the experiment and the run plan. Start here |
 | `experiment/policy/` | the guidance the model is given (a paraphrase of the public rules for the Australian visitor visa) and the paragraph on nationality added in the second version |
-| `experiment/applicants/` | `applicants.csv` (20 synthetic applicants) and `application_template.txt` (the layout of an application) |
+| `experiment/applicants/` | `applicants.csv` (30 synthetic applicants) and `application_template.txt` (the layout of an application) |
 | `experiment/countries/` | `applicant_nationalities.csv` (26 rows: the 22 Arab League nationalities and 4 placebo nationalities), `official_rules.csv` (what the official Australian rules say about each: the same for all) |
 | `experiment/prompts/` | the main prompt and three wordings of the task |
 | `experiment/costs/` | how a difference is turned into money, with prices and sources |

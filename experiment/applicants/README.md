@@ -5,7 +5,7 @@ person, visa application or employer was used.
 
 | file | what it is |
 |---|---|
-| `applicants_full.csv` | the complete simulated record of each of the 20 applicants, with every field a real application carries (name, sex, date of birth, address, phone, e-mail, passport number ...) |
+| `applicants_full.csv` | the complete simulated record of each of the 30 applicants, with every field a real application carries (name, sex, date of birth, address, phone, e-mail, passport number ...) |
 | `field_filter.csv` | for each field: is it shown to the model (`yes`), hidden (`no`), or only for the analysis (`analysis_only`), and why |
 | `applicants.csv` | what is left after the filter: one row per applicant. No nationality; it is filled in when the prompt is built |
 | `application_template.txt` | the layout that turns one row into the application the model reads |
@@ -47,7 +47,7 @@ numbered blocks of the template:
 | 2. Travel medical insurance | policy attached, cover EUR 30,000, valid in all Schengen States, for the dates of the stay | (a)(vii) |
 | 3. Return flight | round trip reserved for the dates of the stay; booking confirmation attached, not yet ticketed | (b) intention to leave |
 | 4. Accommodation | hotel bookings for every night, confirmed and paid; or a host, with an invitation | (a)(ii) |
-| 5. Means of subsistence | funds available for the trip (the bank balance, the variable "savings" in the files), monthly net income, who pays; payslips and bank statements for three months provided | (a)(iii) |
+| 5. Means of subsistence | funds available for the trip in dirhams and in euros, the funds the rule requires for the stay (EUR 70 per day), the funds available for the trip (the bank balance, the variable "savings" in the files), monthly net income, who pays; payslips and bank statements for three months provided | (a)(iii) |
 
 The page of the Estonian Ministry of Foreign Affairs says a reservation or a ticket may
 show the intention to return and an invitation or a booking may show the accommodation.
@@ -81,6 +81,7 @@ checklist of the Estonian mission before the report.
 | `long_stay` | 15 days (10 to 24 May), 8 of them unpaid leave; the money needed rises to 15 x EUR 70 | administrative assistant, management consultant |
 | `relative_in_estonia` | a brother or sister who is an Estonian resident invites the applicant; 5 nights with them, 2 in a hotel | warehouse associate, registered nurse |
 | `contract_ending` | the job contract ends on 30 June 2027 and its renewal is not confirmed | cook, civil engineer |
+| two of the above (`two_indicators`) | any two of new job, no travel abroad, contract ending, long stay, relative in Estonia (added 2026-11-02, `../deviations.md`) | pharmacy assistant, sales manager, receptionist, mechanical engineer, primary school teacher, accounts clerk, waiter, laboratory technician, warehouse supervisor, sales assistant |
 
 The indicator is a property of the applicant, not of the nationality.
 

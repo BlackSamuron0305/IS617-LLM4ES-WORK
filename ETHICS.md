@@ -11,7 +11,7 @@ the one for the hiring design in commit 272792d.
 
 ## 1. Synthetic applicants and employers
 
-- The 20 applications in `experiment/applicants/applicants.csv` were written for this
+- The 30 applications in `experiment/applicants/applicants.csv` were written for this
   project. No real person, visa application or employer record was used or adapted.
   Incomes and savings are invented and were not taken from statistics.
 - Applicants carry a reference number instead of a name. The simulated records have a

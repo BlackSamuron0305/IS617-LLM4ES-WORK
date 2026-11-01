@@ -61,7 +61,7 @@ format helps small models to comply (`atreja2025prompt`).
 
 `variants.csv` is read by `pipeline/build_runs.py`. The `base` row is blocks 1 to 3 of the
 run plan. Every other row is one variant, built as block 4 with one repetition, on the same
-20 applicants x 26 nationalities x 3 wordings = 1,560 prompts per variant. Every variant
+30 applicants x 26 nationalities x 3 wordings = 2,340 prompts per variant. Every variant
 changes one thing only.
 
 | variant | what changes | what it tests |
@@ -80,7 +80,7 @@ changes one thing only.
 
 `python -m pipeline.build_runs --variants` builds and counts all of them. A run takes one
 or more variants with `python -m pipeline.run_models --variant NAME`. Which variants are
-run is for the team to decide: all twelve are 18,720 runs per model on top of the 21,840
+run is for the team to decide: all twelve are 28,080 runs per model on top of the 32,760
 of the base design.
 
 ## Rules when editing

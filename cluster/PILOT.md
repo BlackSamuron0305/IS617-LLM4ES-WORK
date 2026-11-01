@@ -5,7 +5,7 @@ approval** (CLAUDE.md, "Compute and models"). The go / no-go rules are in
 `experiment/analysis_plan.md`, section 5.
 
 **What:** `qwen3-32b` (already downloaded on the cluster), base variant, blocks 1 and 3,
-wording 1, one repetition. 520 + 2,080 = 2,600 calls, each about 700 words in and under 100
+wording 1, one repetition. 520 + 2,080 = 3,900 calls, each about 700 words in and under 100
 tokens out. One H100 for about an hour including the start of the server.
 
 **Why this one:** it needs no download and it is one of the three audited models. If the

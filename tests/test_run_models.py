@@ -124,10 +124,10 @@ class RunModelsTest(unittest.TestCase):
         from pipeline.run_models import count_remaining, parse_shard
         with tempfile.TemporaryDirectory() as tmp:
             first = count_remaining("mock_r", tmp, [1], wordings=[1], max_repetitions=1)
-            self.assertEqual(first, {"planned": 520, "remaining": 520})
+            self.assertEqual(first, {"planned": 780, "remaining": 780})
             run_answers("mock_r", "qwen3-32b", MockClient("answers"), Path(tmp), blocks=[1], limit=20, mock=True,
                         wordings=[1], max_repetitions=1)
-            self.assertEqual(count_remaining("mock_r", tmp, [1], wordings=[1], max_repetitions=1)["remaining"], 500)
+            self.assertEqual(count_remaining("mock_r", tmp, [1], wordings=[1], max_repetitions=1)["remaining"], 760)
         self.assertEqual(parse_shard("2/5"), (2, 5))
         self.assertIsNone(parse_shard(None))
         with self.assertRaises(ValueError):
@@ -137,18 +137,18 @@ class RunModelsTest(unittest.TestCase):
         # The pilot: block 1, wording 1, one repetition = 20 applicants x 26 nationalities.
         runs = build_runs("all")[0]
         pilot = plan_items(runs, [1], None, ["base"], [1], 1)
-        self.assertEqual(len(pilot), 520)
+        self.assertEqual(len(pilot), 780)
         self.assertEqual({i["meta"]["repetition"] for i in pilot}, {1})
         self.assertEqual({i["meta"]["block"] for i in pilot}, {1})
         self.assertTrue(all(i["key"].endswith("__w1__r1") for i in pilot))
         # Without the filters block 1 is five repetitions of three wordings.
-        self.assertEqual(len(plan_items(runs, [1], None, ["base"])), 7800)
-        self.assertEqual(len(plan_items(runs, [4], None, ["no_guidance"], [2, 3], 5)), 1040)
+        self.assertEqual(len(plan_items(runs, [1], None, ["base"])), 11700)
+        self.assertEqual(len(plan_items(runs, [4], None, ["no_guidance"], [2, 3], 5)), 1560)
 
     def test_plan_items_repetitions_and_keys(self):
         runs = build_runs()[0]
         items = plan_items(runs, [1], None)
-        self.assertEqual(len(items), 7800)
+        self.assertEqual(len(items), 11700)
         self.assertEqual(items[0]["key"], items[0]["meta"]["run_id"] + "__r1")
         self.assertEqual(plan_items(runs, [3], 10)[9]["meta"]["block"], 3)
         first = items[0]
@@ -157,7 +157,7 @@ class RunModelsTest(unittest.TestCase):
         self.assertEqual(first["messages"][0]["content"], runs[0]["system"])
         self.assertEqual(items[4]["meta"]["repetition"], 5)
         self.assertEqual(items[5]["meta"]["run_id"], runs[1]["run_id"])
-        self.assertEqual(len(plan_items(runs, None, None)), 21840)
+        self.assertEqual(len(plan_items(runs, None, None)), 32760)
 
     # --- the call loop
 

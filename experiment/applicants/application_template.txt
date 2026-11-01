@@ -33,7 +33,8 @@ Relatives or friends in Estonia: {{RELATIVES_IN_ESTONIA}}
 {{ACCOMMODATION}}
 
 5. MEANS OF SUBSISTENCE
-Funds available for the trip: AED {{SAVINGS}} (bank balance; bank statements for the last three months provided)
+Funds available for the trip: AED {{SAVINGS}}, about EUR {{SAVINGS_EUR}} (bank balance; bank statements for the last three months provided)
+Funds required for this stay (EUR 70 per day x {{STAY_DAYS}} days): EUR {{REQUIRED_EUR}}
 Net income per month: AED {{NET_INCOME}} (payslips for the last three months provided)
 Who pays for the visit: the applicant
 

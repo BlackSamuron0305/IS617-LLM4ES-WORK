@@ -211,9 +211,9 @@ not been confirmed by the team.
 - Emirati (and Uruguayan, a placebo) citizens need no visa (Annex II of Regulation
   2018/1806, not read again). They stay in the data and are reported apart; the main
   comparison among the Arab nationalities is among **21**.
-- Applicants: 20 synthetic applications. Everyone was born in the United Arab Emirates,
+- Applicants: 30 synthetic applications. Everyone was born in the United Arab Emirates,
   has lived there since birth, is employed there, applies there, and has a clean record.
-  10 applications are plain, 10 carry one mild point. Savings are on five levels (AED
+  10 applications are plain, 10 carry one mild point, 10 carry two (added on 2026-11-02, see `../deviations.md`). Savings are on five levels (AED
   2,000 to 10,500): the lowest is below the EUR 70 per day that Estonia counts, so a
   model has one level where a lower score follows from the rules.
 - The application has five items: purpose of the journey, travel medical insurance,
@@ -243,8 +243,8 @@ not been confirmed by the team.
   refusal, a refusal line below 20 and a doubt line below 50); the share of scores that
   send an application to a closer look (20 to 49). All are illustrations of model
   behaviour, never forecasts.
-- Run plan: three models; blocks 1 to 3 are 21,840 runs per model (block 3 repeats block 1
-  with the other savings levels); block 4 is 18,720 runs per model for the twelve
+- Run plan: three models; blocks 1 to 3 are 32,760 runs per model (block 3 repeats block 1
+  with the other savings levels); block 4 is 28,080 runs per model for the twelve
   variants.
 - Judge (drafted by Claude on 2026-10-24, extended on 2026-11-01 with the code
   `names_legal_ground`, **not confirmed by the team**): a second model codes the free-text

@@ -49,7 +49,7 @@ Australia.
 | folder | content |
 |---|---|
 | `policy/` | the guidance the model is given, the three versions of section 6 on nationality, and the regulation-based variants |
-| `applicants/` | 20 simulated applicants: the full record, the filter that removes name, age, sex and more, and what the model sees |
+| `applicants/` | 30 simulated applicants: the full record, the filter that removes name, age, sex and more, and what the model sees |
 | `countries/` | the 26 nationalities an applicant can have, and the official rules for each |
 | `prompts/` | the main prompt, three wordings of the task, and `variants.csv` with the twelve variants |
 | `costs/` | how a difference in the scores is turned into money |
@@ -77,7 +77,7 @@ travel medical insurance, round-trip flight, accommodation, means of subsistence
 
 ### The filter: what the model does not see
 
-The 20 applicants were simulated as complete records, with name, sex, date of birth,
+The 30 applicants were simulated as complete records, with name, sex, date of birth,
 address, phone, e-mail and passport number. A documented filter (`applicants/field_filter.csv`)
 removes all of these before a prompt is built, so that the passport is the only thing
 that differs between runs, and `build_runs` checks that no removed value reaches a prompt.
@@ -88,7 +88,7 @@ history) remain and are stated in `applicants/README.md`.
 
 | | values | number |
 |---|---|---|
-| applicant | 20 applicants with different jobs, incomes and savings; 10 plain and 10 with one mild point (`applicants/`) | 20 |
+| applicant | 30 applicants with different jobs, incomes and savings; 10 plain, 10 with one mild point and 10 with two (`applicants/`) | 30 |
 | nationality | the 22 Arab League nationalities, and 4 unrelated ones as a noise check (`countries/`); 2 of the 26 need no visa | 26 |
 | guidance version (blocks 1, 2) | without and with the paragraph that says nationality is not a ground for a lower score | 2 |
 | wording of the task | three structures of the same request | 3 |
@@ -101,14 +101,14 @@ history) remain and are stated in `applicants/README.md`.
 
 | block | what | prompts | repetitions | runs per model |
 |---|---|---|---|---|
-| 1 | guidance without the paragraph on nationality | 20 x 26 x 3 = 1,560 | 5 | 7,800 |
-| 2 | guidance with the paragraph on nationality | 1,560 | 5 | 7,800 |
-| 3 | block 1 again with the four other savings amounts | 6,240 | 1 | 6,240 |
-| 4 | twelve variants, one repetition each | 12 x 1,560 = 18,720 | 1 | 18,720 |
-| | **base design (blocks 1 to 3)** | **9,360** | | **21,840** |
-| | **with all variants** | **28,080** | | **40,560** |
+| 1 | guidance without the paragraph on nationality | 30 x 26 x 3 = 2,340 | 5 | 11,700 |
+| 2 | guidance with the paragraph on nationality | 2,340 | 5 | 11,700 |
+| 3 | block 1 again with the four other savings amounts | 9,360 | 1 | 9,360 |
+| 4 | twelve variants, one repetition each | 12 x 2,340 = 28,080 | 1 | 28,080 |
+| | **base design (blocks 1 to 3)** | **14,040** | | **32,760** |
+| | **with all variants** | **28,080** | | **60,840** |
 
-With three models: 65,520 runs for the base design and 121,680 with all variants. A prompt
+With three models: 98,280 runs for the base design and 182,520 with all variants. A prompt
 has 550 to 1,400 words. Block 1 on all models is enough for the midterm; block 3 and the
 variants are the first things to cut if time is short. Run in small batches (one model and
 one block or variant at a time).

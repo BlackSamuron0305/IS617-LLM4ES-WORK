@@ -35,7 +35,7 @@ class PilotReportTest(unittest.TestCase):
                      "4. Plain applications", "5. Nationalities", "Go / no-go:"):
             self.assertIn(part, text)
         self.assertEqual(len(checks), 4)
-        self.assertIn("2600 calls", text)
+        self.assertIn("3900 calls", text)
         self.assertIn("visa-exempt rows, read apart: ", text)
 
     def test_money_step_uses_every_level_of_a_cell(self):

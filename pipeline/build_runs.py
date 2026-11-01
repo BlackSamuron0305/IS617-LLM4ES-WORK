@@ -66,10 +66,25 @@ def build_policy(guidance_file, rule=None):
     return policy.replace(RULE_PLACEHOLDER, text).rstrip("\n") + "\n"
 
 
+_AED_PER_EUR = []
+
+
+def aed_per_eur():
+    # The exchange rate assumed for the experiment (costs/cost_assumptions.csv, item eur_to_aed).
+    if not _AED_PER_EUR:
+        rows = {r["item"]: r for r in read_table("costs/cost_assumptions.csv")}
+        _AED_PER_EUR.append(float(rows["eur_to_aed"]["value"]))
+    return _AED_PER_EUR[0]
+
+
 def build_application(template, applicant, nationality, savings=None):
     text = template
     if savings is not None:
         applicant = dict(applicant, savings=savings)
+    # Calculated by the case system, the same for every nationality: the funds in euros and the funds the
+    # Estonian rule requires for the stay (EUR 70 per day; the template states the rate, check_rules checks it).
+    applicant = dict(applicant, savings_eur=f"{round(int(applicant['savings']) / aed_per_eur()):,}",
+                     required_eur=f"{70 * int(applicant['stay_days']):,}")
     for column, value in applicant.items():
         text = text.replace("{{" + column.upper() + "}}", value)
     text = text.replace("{nationality}", nationality["demonym"])
@@ -140,8 +155,11 @@ def check_rules(problems, nationalities, guidance_texts):
         if needs_visa.get(r["country"]) == "no" and not r["visa_needed"].startswith("none"):
             problems.append(f"official_rules.csv: {r['country']} is visa-exempt but visa_needed says {r['visa_needed']!r}")
     if in_scope:
-        # The amounts the guidance states must be the amounts in the table.
+        # The amounts the guidance and the application state must be the amounts in the table.
         means, insurance = in_scope[0]["means_per_day_eur"], int(in_scope[0]["insurance_min_eur"])
+        if means != "70" or f"EUR {means} per day" not in read_text("applicants/application_template.txt"):
+            problems.append("application_template.txt and build_application assume EUR 70 per day, "
+                            "which official_rules.csv does not say")
         for name, text in guidance_texts.items():
             if f"EUR {means} for each day" not in text:
                 problems.append(f"{name}: does not state EUR {means} per day as official_rules.csv does")

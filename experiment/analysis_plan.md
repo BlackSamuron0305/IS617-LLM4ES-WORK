@@ -64,7 +64,7 @@ The pilot has one purpose: to find out whether the instrument works before the f
 is not a result and is not analysed for H1 to H3.
 
 - **Run:** `qwen3-32b` (the model already on the cluster), base variant, blocks 1 and 3,
-  wording 1, one repetition: 520 + 2,080 = 2,600 calls (`cluster/PILOT.md`).
+  wording 1, one repetition: 520 + 2,080 = 3,900 calls (`cluster/PILOT.md`).
 - **Report:** `python -m pipeline.pilot_report --batch pilot1`. It prints the four checks
   below, which are coded in `pipeline/pilot_report.py`.
 

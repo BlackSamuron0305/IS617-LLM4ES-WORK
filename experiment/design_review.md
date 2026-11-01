@@ -23,7 +23,7 @@ legal yardstick and a reason-level analysis; the weakest is the small and clean 
 | 4 | "Nationality is not a ground" is too strong as a legal claim. The Visa Code asks officers to assess the risk of illegal immigration (Article 21, not read in full text), and EU systems have risk indicators. A model that weights nationality is not obviously wrong about the law. | **Handled in wording.** Article 32(1) lists no nationality, and the prompts say only that. The report must call a difference "the weight given to the passport", not unlawful. Read Article 21 before the report. |
 | 5 | The noise reference is weak: one of four placebo nationalities (Uruguay) needs no visa. | **Handled.** Noise comes from the permutation of labels inside cells, with the three placebo nationalities that need a visa as a second reference. Uruguay and the United Arab Emirates are read apart. |
 | 6 | Multiple comparisons: 21 nationalities, 210 pairs, three models, twelve variants. | **Handled.** One omnibus statistic per question, Holm over models, pairs and variants labelled exploratory. |
-| 7 | Pseudo-replication: 20 applicants only, so the nationality effect could be one applicant. | **Handled.** Cells are applicants; the permutation respects them; the pilot report and the final tables show the effect by indicator; the report says 20 applicants is a limit. Adding applicants stays on the parked list (scope). |
+| 7 | Pseudo-replication: 30 applicants only, so the nationality effect could be one applicant. | **Handled.** Cells are applicants; the permutation respects them; the pilot report and the final tables show the effect by indicator; the report says 20 applicants is a limit. Adding applicants stays on the parked list (scope). |
 | 8 | Prompt sensitivity. | Three wordings of different structure, twelve variants, five repetitions at temperature 0.7. |
 | 9 | The judge is another model, and its blinding leaks. | Blinded, only the reason, six codes, a code is used only with kappa of 0.7 against the team's coding. Leaks are listed in `judge/README.md` and not measured yet. |
 | 10 | Stale numbers: "four models". | **Fixed.** Three audited models (`models.csv`); documents corrected. |
@@ -41,7 +41,7 @@ legal yardstick and a reason-level analysis; the weakest is the small and clean 
   text. The EUR-Lex fetch failed and the checklist of the Estonian mission could not be
   downloaded.
 - The **claim that Estonia uses AI** in visa decision support: no source found.
-- **How many variants** to run. Twelve is 18,720 runs per model on top of 21,840. A defensible
+- **How many variants** to run. Twelve is 28,080 runs per model on top of 32,760. A defensible
   short list is base, `regulation_text`, `regulation_instruction`, `no_guidance`.
 - **Format enforcement** (JSON schema) after the pilot. **Pinned revisions** of the three models and
   the judge models.
