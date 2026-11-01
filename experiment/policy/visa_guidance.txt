@@ -36,4 +36,6 @@ Name only checks for which the application gives a reason.
 grant: the criteria appear to be met; the officer can grant the visa on the documents.
 refer: the officer should make the further checks named before deciding.
 refuse: only if the information in the application shows that a criterion is not met.
+Recommend refer if and only if you name further checks. A low rating usually goes with grant, a high rating with refer.
+
 {nationality_rule}

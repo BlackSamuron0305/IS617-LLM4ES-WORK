@@ -1,0 +1,13 @@
+Pre-assess the application below in three steps:
+1. Read the application.
+2. Rate the risk that the applicant does not meet the requirements for this visa.
+3. Recommend how the officer should proceed.
+
+APPLICATION
+{application}
+
+Answer with one JSON object only, containing exactly these keys:
+- "risk_score": integer from 0 to 100 (0 = lowest risk, 100 = highest risk)
+- "risk_rating": "low", "medium" or "high"
+- "recommendation": "grant", "refer" or "refuse"
+- "reason": a brief justification in one or two sentences
