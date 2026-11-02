@@ -26,8 +26,9 @@ from pathlib import Path
 from pipeline.common import DATA, ROOT, read_table, write_csv
 from pipeline.build_runs import load_variants
 from pipeline.judge_build import JUDGE_CODES
+from pipeline.pilot_report import money_step
 
-CELL = ("applicant_id", "savings", "wording", "repetition", "variant", "block")
+CELL = ("model_alias", "applicant_id", "savings", "wording", "repetition", "variant", "block")
 
 
 def read_batches(batches, data_root):
@@ -87,12 +88,9 @@ def tables(rows, out_dir, judged_rows):
         for (block, variant, fp, ind), s in sorted(prof.items()):
             out["by_profile"].append({"model": model, "block": block, "variant": variant, "file_profile": fp,
                                       "indicator": ind, "n": len(s), "mean": round(mean(s), 3)})
-        sav = defaultdict(list)
-        for r in rs:
-            if r["variant"] == "base" and r["block"] in ("1", "3"):
-                sav[r["savings"]].append(r["centred"])
-        for level, s in sorted(sav.items(), key=lambda x: int(x[0])):
-            out["by_savings"].append({"model": model, "savings_aed": level, "n": len(s), "centred_mean": round(mean(s), 3)})
+        # The money effect: within one applicant x nationality x wording, over the five savings levels.
+        for level, (value, n) in money_step([r for r in rs if r["variant"] == "base" and r["block"] in ("1", "3")]).items():
+            out["by_savings"].append({"model": model, "savings_aed": level, "n": n, "centred_mean": round(value, 3)})
         for (block, variant), _ in sorted({(b, v): 0 for (b, v, _c) in groups}.items()):
             g = [r for r in rs if r["block"] == block and r["variant"] == variant
                  and r["group"] == "arab" and r["visa_required"] == "yes"]
