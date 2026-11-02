@@ -107,3 +107,10 @@ no chat template) and Mistral Medium 3.5 (249 GB). The three audited models stay
 **What.** The base design, unchanged: blocks 1, 2, 3, 5 and 6 (40,560 answers per model), same prompts, same settings, split into
 small shards so that several 30-minute jobs run at the same time. Revisions are pinned from the download metadata (`experiment/models.csv`).
 The analysis is the same tests as for the audited models (`analyze_main`), reported as a separate table.
+
+## D6, 2026-11-02: the parser reads a whole number written as text
+
+In the smoke test of the extra models, Mistral 7B wrote `"visa_score": "80"` (a string) once in 40 answers. The parser took it as a bad value.
+It now reads a whole number between 0 and 999 written as text ("80") and still rejects words and decimals; a number outside 0 to 100 is still a bad value.
+No answer of the three audited models changes: all their answers were read before (the only bad values were the object-valued reasoning
+field, D-parser note in `pipeline/parse_answers.py`). Re-parsing the audited batches gives the same tables.

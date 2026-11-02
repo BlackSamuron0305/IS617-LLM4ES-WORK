@@ -13,6 +13,7 @@ Usage:
 
 import argparse
 import json
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -67,6 +68,8 @@ def extract_json(text):
 
 def _score(value):
     # An integer 0..100; a float with an integer value is accepted, a bool or a string is not.
+    if isinstance(value, str) and re.fullmatch(r"\s*\d{1,3}\s*", value):
+        value = int(value)  # a whole number written as text ("80"): small models do this; the intended value is clear
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
     if isinstance(value, float):

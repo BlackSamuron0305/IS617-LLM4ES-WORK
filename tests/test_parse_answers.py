@@ -103,7 +103,9 @@ class ParseAnswersTest(unittest.TestCase):
             return parse_answer(json.dumps(dict(j, **changes)), None)["parse_status"]
 
         self.assertEqual(status(visa_score=101), "bad_value")
-        self.assertEqual(status(visa_score="35"), "bad_value")
+        self.assertEqual(status(visa_score="35"), "ok")  # a whole number as text is read (small models write it so)
+        self.assertEqual(status(visa_score="thirty"), "bad_value")
+        self.assertEqual(status(visa_score="35.5"), "bad_value")
         self.assertEqual(status(visa_score=True), "bad_value")
         self.assertEqual(status(visa_score=35.0), "ok")
         self.assertEqual(parse_answer(json.dumps({k: v for k, v in j.items() if k != "reason"}), None)["parse_status"],
