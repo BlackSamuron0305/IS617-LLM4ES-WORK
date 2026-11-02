@@ -127,9 +127,10 @@ def holm(pvalues):
     return adjusted
 
 
-def analyse_model(model, ok, permutations, rng):
+def analyse_model(model, ok, permutations, rng, blocks=(1, 2)):
     lines, out = [], {}
-    b1 = sample(ok, 1)
+    first, second = blocks
+    b1 = sample(ok, first)
     if not b1:
         return [f"{model}: no readable block 1 answers"], {"h1_p": 1.0}
     values, cells = centred(b1)
@@ -158,7 +159,7 @@ def analyse_model(model, ok, permutations, rng):
                  f"adjusted Rand index of a three-way split against the wealth groups = {ari:+.2f}, p = {p2b:.4f}")
     ordered = sorted(means.items(), key=lambda kv: kv[1])
     lines.append("   ordered means (centred, points): " + ", ".join(f"{c} {v:+.1f}" for c, v in ordered))
-    placebo = [r for r in ok if r["block"] == "1" and r["variant"] == "base" and r["group"] == "placebo"
+    placebo = [r for r in ok if r["block"] == str(first) and r["variant"] == "base" and r["group"] == "placebo"
                and r["visa_required"] == "yes"]
     if len({r["country"] for r in placebo}) > 1:
         pv, pc = centred(placebo)
@@ -167,7 +168,7 @@ def analyse_model(model, ok, permutations, rng):
                      f"that need a visa = {ps:.2f}")
 
     # H3: block 2 against block 1, the same units, paired.
-    b2 = sample(ok, 2)
+    b2 = sample(ok, second)
     key = lambda r: (r["applicant_id"], r["savings"], r["wording"], r["repetition"], r["country"])
     one, two = {key(r): r for r in b1}, {key(r): r for r in b2}
     common = sorted(set(one) & set(two))
@@ -209,6 +210,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--batch", required=True, nargs="+", help="one or more batches under data/processed")
     parser.add_argument("--permutations", type=int, default=10000)
+    parser.add_argument("--blocks", type=int, nargs=2, default=(1, 2),
+                        help="without and with the paragraph on nationality: 1 2 (main) or 5 6 (boundary applicants)")
     parser.add_argument("--data-root", default=str(DATA))
     args = parser.parse_args(argv)
     if hasattr(sys.stdout, "reconfigure"):
@@ -222,7 +225,7 @@ def main(argv=None):
             print(f"error: no parsed answers for batch {batch!r}", file=sys.stderr)
             return 2
         for model in sorted({r["model_alias"] for r in ok}):
-            lines, out = analyse_model(model, [r for r in ok if r["model_alias"] == model], args.permutations, rng)
+            lines, out = analyse_model(model, [r for r in ok if r["model_alias"] == model], args.permutations, rng, tuple(args.blocks))
             all_lines += (["MOCK BATCH, NOT A RESULT"] if batch.startswith("mock") else []) + lines
             results[f"{batch}/{model}"] = out
     adjusted = holm([v["h1_p"] for v in results.values()])

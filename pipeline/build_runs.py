@@ -42,8 +42,10 @@ RULE_COLUMNS = ("visa_needed", "application_form", "fee_eur", "legal_test", "nat
                 "means_per_day_eur", "insurance_min_eur", "entry_ban_or_visa_measure_2026_11_01")
 # Blocks 1 and 2 use each applicant's own savings. Block 3 repeats block 1 with the other savings levels,
 # once per wording, to measure how the answers react to money. Block 4 holds the variants.
-REPETITIONS = {1: 5, 2: 5, 3: 1, 4: 1}
+REPETITIONS = {1: 5, 2: 5, 3: 1, 4: 1, 5: 5, 6: 5}
 VARIANT_BLOCK = 4
+# Blocks 5 and 6 (added 2026-11-02, experiment/deviations.md D4): the boundary applicants, each with three mild
+# points, without and with the paragraph on nationality. Blocks 1 to 4 use the main applicants only.
 # A removed field with fewer distinct values than this (sex, civil status) is made of common words and
 # cannot be searched for in a prompt.
 MIN_DISTINCT_TO_SEARCH = 6
@@ -168,14 +170,16 @@ def check_rules(problems, nationalities, guidance_texts):
 
 
 def build_runs(which=None):
-    applicants = read_table("applicants/applicants.csv")
+    all_applicants = read_table("applicants/applicants.csv")
+    applicants = [a for a in all_applicants if a["applicant_set"] == "main"]
+    boundary = [a for a in all_applicants if a["applicant_set"] == "boundary"]
     nationalities = read_table("countries/applicant_nationalities.csv")
     template = read_text("applicants/application_template.txt")
     variants = load_variants()
     chosen = wanted_variants(which)
 
     problems = []
-    check_filter(problems, applicants, nationalities, template)
+    check_filter(problems, all_applicants, nationalities, template)
 
     # Checks that hold for every variant of the files, not only the chosen ones.
     guidance_texts = {}
@@ -228,17 +232,18 @@ def build_runs(which=None):
             problems.append(f"{name}: the answer format differs between the wordings")
 
         if name == BASE_VARIANT:
-            versions = ((1, WITHOUT_RULE, None, "own"), (2, "with_nationality_rule", "nationality_rule", "own"),
-                        (3, WITHOUT_RULE, None, "others"))
+            versions = ((1, WITHOUT_RULE, None, "own", applicants), (2, "with_nationality_rule", "nationality_rule", "own", applicants),
+                        (3, WITHOUT_RULE, None, "others", applicants),
+                        (5, WITHOUT_RULE, None, "own", boundary), (6, "with_nationality_rule", "nationality_rule", "own", boundary))
         else:
             rule = variant["rule"] or None
-            versions = ((VARIANT_BLOCK, f"with_{rule}" if rule else WITHOUT_RULE, rule, "own"),)
-        for block, version, rule, which_levels in versions:
+            versions = ((VARIANT_BLOCK, f"with_{rule}" if rule else WITHOUT_RULE, rule, "own", applicants),)
+        for block, version, rule, which_levels, these in versions:
             if variant["guidance"]:
                 system = main_prompt.replace(POLICY_PLACEHOLDER, build_policy(variant["guidance"], rule)).rstrip("\n") + "\n"
             else:
                 system = main_prompt.rstrip("\n") + "\n"
-            for applicant in applicants:
+            for applicant in these:
                 levels = ([applicant["savings"]] if which_levels == "own"
                           else [x for x in savings_levels if x != applicant["savings"]])
                 for savings in levels:
@@ -302,7 +307,7 @@ def main():
     groups = {}
     for nationality in nationalities:
         groups[nationality["group"]] = groups.get(nationality["group"], 0) + 1
-    print(f"applicants:       {len(applicants)}")
+    print(f"applicants:       {len(applicants)} main + {sum(a['applicant_set'] == 'boundary' for a in read_table('applicants/applicants.csv'))} boundary")
     print(f"nationalities:    {len(nationalities)}  {groups}")
     print(f"  of which need the visa: {sum(n['visa_required'] == 'yes' for n in nationalities)}")
     wealth = {g: sum(n["group"] == "arab" and n["wealth_group"] == g for n in nationalities) for g in WEALTH_GROUPS}

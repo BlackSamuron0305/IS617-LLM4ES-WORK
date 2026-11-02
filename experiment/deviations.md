@@ -73,3 +73,22 @@ judge had read the code as "names a ground *for refusal that applies*". The code
 it is also yes when a ground is said not to apply or an item is in order (`experiment/judge/judge_prompt.txt`).
 No result on nationality was looked at. The judge is exploratory and still has to agree with the team's own
 coding of a sample by hand before any code is used.
+
+## D4, 2026-11-02: a boundary set of applicants (blocks 5 and 6), added after the main run
+
+**Why.** The main run (blocks 1 to 3) showed what pilot 2 had suggested: the scores of all three models
+sit near the ceiling (mean 79 to 87) because almost every application is clean, so the room in which a
+passport can move the score is small (the 21 nationalities differ by 1.6 to 3.4 points between the highest and
+the lowest). That is a limit of the instrument, not a finding about the models. The extension asks the same question where applications are
+close to the decision line.
+
+**What.** Ten more applicants, `applicant_set = boundary`: **every one of the ten ways to choose three of the five mild
+points** (new job, no travel abroad, contract ending, long stay, relative in Estonia). The set was fixed by this rule,
+not by looking at which applications gave large differences; no result by nationality was looked at to choose it. Savings are
+AED 3,000 to 10,500 (not the AED 2,000 level, which is a ground of its own); the long stays have AED 7,000 or 10,500.
+They run as block 5 (guidance without the paragraph on nationality) and block 6 (with it), 10 x 26 x 3 x 5 = 3,900 runs each
+per model.
+
+**Status.** Exploratory extension, reported apart from the confirmatory H1 to H3 (which keep their blocks 1 and 2). The same
+test is computed on blocks 5 and 6 (`python -m pipeline.analyze_main --blocks 5 6`). Blocks 1 to 4 are unchanged: the builder
+puts only the 30 main applicants in them.
