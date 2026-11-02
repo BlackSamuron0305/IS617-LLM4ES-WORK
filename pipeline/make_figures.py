@@ -169,9 +169,9 @@ def fig_models(plt, audited, extra, out):
     ax.set_yticklabels([LABEL.get(m, m) for _, m, _, _ in rows])
     ax.set_xlabel("gap between the highest and the lowest of the 21 nationalities (score points)")
     ax.set_title("How big is the passport gap, model by model?")
-    ax.barh([], [], color="#1f6fb2", label="audited models")
-    ax.barh([], [], color="#8a8a8a", label="extra models (exploratory)")
-    ax.legend(frameon=False, loc="lower right")
+    from matplotlib.patches import Patch
+    ax.legend(handles=[Patch(color="#1f6fb2", label="audited models"), Patch(color="#8a8a8a", label="extra models (exploratory)")],
+              frameon=False, loc="lower right")
     ax.grid(axis="x", alpha=0.25)
     fig.tight_layout()
     fig.savefig(out / "models.png", dpi=170)
