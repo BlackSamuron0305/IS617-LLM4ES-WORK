@@ -100,8 +100,10 @@ worth noting); Syria, Yemen, Sudan, Iraq, Libya and Somalia are lowest in all mo
 removes them for Qwen and Gemma; the reasons name the passport in about 0% of cases (the judge is not validated yet). The
 instrument is limited: scores sit near the ceiling, and Mistral ignores the money rule. The slides' wording was drafted by Claude
 at Laith's explicit request (declare AI use); the final report was prepared only as visible `\teamnote` blocks in
-`paper/final_paper/paper.tex` (results, limits, AI declaration). Not done: hand validation of the judge, the cost measures, the
-check without the six Gulf states, the pre-run checks of Articles 21, 22 and 25a.
+`paper/final_paper/paper.tex` (results, limits, AI declaration). Also done: the check without the Gulf states (spread unchanged; wealth order holds for Gemma and Qwen, weaker for Mistral), the cost measures
+(`pipeline/costs.py`: a Syrian passport weighs about AED 290 of savings for Gemma, undefined for the other two; fees lost about nothing), and a
+validation sample of 200 reasons for the team to code by hand (`experiment/judge/validation/`). Not done: that hand coding, the pre-run checks of
+Articles 21, 22 and 25a. Raw answers are backed up on this PC in `data/raw/` (305 MB, not committed).
 
 ## Repository layout
 

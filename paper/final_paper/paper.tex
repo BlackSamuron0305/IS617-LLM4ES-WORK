@@ -670,7 +670,14 @@ of Mistral could not be read, none of the others). Scores are on the grant scale
         or the passport; 99 (Qwen), 89 (Mistral) and 97 (Gemma) per cent rest on a ground of Article 32(1) or one of the five items of the application.
         Doubts about the right to stay in the Emirates appear in 0.1 to 0.6 per cent of block 1 reasons and in 0.1 to 3 per cent on the boundary applicants.
         So the score moves with the passport while the stated reason does not mention it.
-  \item Not done yet: validation of the judge by hand, the cost measures, the check without the six Gulf states.
+  \item \textbf{Check without the Gulf states} (the rich group; 16 nationalities left). The spread is unchanged (gap 1.5, 2.7 and 3.4 points, $p = 0.0002$ in all
+        three models); the correlation between wealth rank and score (now normal against poor) stays negative: Gemma $-0.69$, Qwen $-0.63$, Mistral $-0.38$
+        ($p = 0.09$). So the order is not only the Gulf states being better scored.
+  \item \textbf{What a gap costs (illustrations, \texttt{results/main/costs.csv}).} Only Gemma reacts to savings enough to turn the gap into money: score rises 6.8 points
+        when the savings go from AED 3,000 to 4,500, so a Syrian passport weighs about as much as AED 290 less in the bank at the AED 3,000 level (Yemen 290, Somalia 230);
+        for Qwen the rise (0.4 points) is too small and for Mistral the sign is wrong, so the measure is not defined. Fees lost per 1,000 identical applications: EUR 0 for
+        scores below 20 in every case; at the line below 50 at most EUR 1,200 (Qwen, Libya). Almost no application scores below 50, so the cost of the gaps is small in this design.
+  \item Not done yet: validation of the judge by hand (the sample of 200 is in \texttt{experiment/judge/validation/}), the pre-run checks of Articles 21, 22 and 25a.
 \end{itemize}
 \begin{center}
 \small
