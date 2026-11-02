@@ -112,7 +112,7 @@ def fig_money(plt, rows, out):
 def fig_variants(plt, rows, out):
     base = {(r["model"], r["block"]): r for r in rows if r["variant"] == "base"}
     variants = [v for v in dict.fromkeys(r["variant"] for r in rows if r["block"] == "4")]
-    names = ["base (block 1)", "with the rule (block 2)"] + variants
+    names = ["base (block 1)", "with the rule (block 2)"] + variants + ["boundary (block 5)", "boundary with rule (block 6)"]
     fig, ax = plt.subplots(figsize=(10, 5.2))
     width = 0.27
     for k, model in enumerate(MODELS):
@@ -122,13 +122,18 @@ def fig_variants(plt, rows, out):
                 r = base.get((model, "1"))
             elif n == "with the rule (block 2)":
                 r = base.get((model, "2"))
+            elif n == "boundary (block 5)":
+                r = base.get((model, "5"))
+            elif n == "boundary with rule (block 6)":
+                r = base.get((model, "6"))
             else:
                 r = next((x for x in rows if x["model"] == model and x["variant"] == n), None)
-            vals.append(float(r["range"]) if r and r["range"] != "" else 0.0)
+            vals.append(float(r["range_rep1"]) if r and r.get("range_rep1", "") != "" else 0.0)
         ax.bar([i + (k - 1) * width for i in range(len(names))], vals, width, label=LABEL[model])
     ax.set_xticks(range(len(names)))
     ax.set_xticklabels(names, rotation=40, ha="right")
-    ax.set_ylabel("gap between the highest and the lowest of the 21 nationalities (points)")
+    ax.set_ylabel("gap highest to lowest of the 21 nationalities,
+one repetition (points)")
     ax.set_title("What shrinks or grows the gap?")
     ax.legend(frameon=False)
     ax.grid(axis="y", alpha=0.25)

@@ -92,15 +92,21 @@ def tables(rows, out_dir, judged_rows):
         for level, (value, n) in money_step([r for r in rs if r["variant"] == "base" and r["block"] in ("1", "3")]).items():
             out["by_savings"].append({"model": model, "savings_aed": level, "n": n, "centred_mean": round(value, 3)})
         for (block, variant), _ in sorted({(b, v): 0 for (b, v, _c) in groups}.items()):
-            g = [r for r in rs if r["block"] == block and r["variant"] == variant
-                 and r["group"] == "arab" and r["visa_required"] == "yes"]
-            by_c = defaultdict(list)
-            for r in g:
-                by_c[r["country"]].append(r["centred"])
-            means = [mean(v) for v in by_c.values()]
-            out["by_variant"].append({"model": model, "block": block, "variant": variant, "n": len(g),
-                                      "mean": round(mean([r["score"] for r in rs if r["block"] == block and r["variant"] == variant]), 3),
-                                      "spread_sd": round(sd(means), 3), "range": round(max(means) - min(means), 3) if means else ""})
+            row = {"model": model, "block": block, "variant": variant,
+                   "mean": round(mean([r["score"] for r in rs if r["block"] == block and r["variant"] == variant]), 3)}
+            # Two spreads: with every repetition, and with repetition 1 only (the variants have one repetition, so
+            # only the second is comparable across blocks and variants).
+            for label, only_first in (("", False), ("_rep1", True)):
+                g = [r for r in rs if r["block"] == block and r["variant"] == variant and r["group"] == "arab"
+                     and r["visa_required"] == "yes" and (not only_first or r["repetition"] == "1")]
+                by_c = defaultdict(list)
+                for r in g:
+                    by_c[r["country"]].append(r["centred"])
+                means = [mean(v) for v in by_c.values()]
+                row["n" + label] = len(g)
+                row["spread_sd" + label] = round(sd(means), 3)
+                row["range" + label] = round(max(means) - min(means), 3) if means else ""
+            out["by_variant"].append(row)
     bad = defaultdict(int)
     for r in rows:
         if r["parse_status"] != "ok":
