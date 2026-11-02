@@ -6,7 +6,8 @@ The Australian design of 2026-10-10 is in git history (commit af0e409); the bank
 of 2026-10-08 is in `research/old_design/bank_2026-10-08/`.
 
 **Status.** Drafted by Claude Code with Laith on 2026-11-01. The other team members have
-not confirmed it. Nothing has been run with a real model.
+not confirmed it. The runs were done on 2026-11-02 (three models, blocks 1 to 6, twelve variants, the judge); results in
+`../results/main/`, changes after the freeze in `deviations.md`, the figures in `../paper/second_presentation/figures/`.
 
 ## The two questions
 

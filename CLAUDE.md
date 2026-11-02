@@ -87,6 +87,22 @@ The Australian design is in git history (commit af0e409, with its real grant and
 rates by nationality). Nico's prompt revisions and variants (merged on 2026-10-2x) were
 carried over to the new scenario as `experiment/prompts/variants.csv`.
 
+**Runs on bwUniCluster (2026-11-02, at Laith's instruction to run to completion).** Pilots 1 and 2
+(Qwen3 32B), then the main run: Qwen3 32B, Gemma 4 31B and Mistral Small 3.2 24B, blocks 1 to 3 (32,760 answers each),
+twelve prompt variants (28,080 each), a boundary set of ten more applicants (blocks 5 and 6, 7,800 each; deviation D4) and
+the judge OLMo 3.1 32B on block 1, three variants and block 5. Everything is in `experiment/deviations.md` (D1 to D4:
+required-funds line and ten two-point applicants after pilot 1; go-ahead after pilot 2 missed two checks narrowly; clearer
+judge code; boundary set), the tables in `results/main/`, the figures and the midterm deck in `paper/second_presentation/`.
+Findings (confirmatory tests of `experiment/analysis_plan.md`): the 21 Arab nationalities that need a visa differ by 1.6 to 3.4
+score points between highest and lowest (permutation p = 0.0002 in all three models, far below the 5 points the plan calls
+worth noting); Syria, Yemen, Sudan, Iraq, Libya and Somalia are lowest in all models; the order rich > normal > poor holds
+(Spearman -0.72, -0.52, -0.76); the paragraph "nationality is not a ground" does not shrink the gaps; no prompt variant
+removes them for Qwen and Gemma; the reasons name the passport in about 0% of cases (the judge is not validated yet). The
+instrument is limited: scores sit near the ceiling, and Mistral ignores the money rule. The slides' wording was drafted by Claude
+at Laith's explicit request (declare AI use); the final report was prepared only as visible `\teamnote` blocks in
+`paper/final_paper/paper.tex` (results, limits, AI declaration). Not done: hand validation of the judge, the cost measures, the
+check without the six Gulf states, the pre-run checks of Articles 21, 22 and 25a.
+
 ## Repository layout
 
 - `experiment/README.md`: overview of the experiment and the run plan. Start here.
@@ -243,7 +259,7 @@ not been confirmed by the team.
   refusal, a refusal line below 20 and a doubt line below 50); the share of scores that
   send an application to a closer look (20 to 49). All are illustrations of model
   behaviour, never forecasts.
-- Run plan: three models; blocks 1 to 3 are 32,760 runs per model (block 3 repeats block 1
+- Run plan: three models; blocks 5 and 6 (boundary applicants) add 7,800 runs per model; blocks 1 to 3 are 32,760 runs per model (block 3 repeats block 1
   with the other savings levels); block 4 is 28,080 runs per model for the twelve
   variants.
 - Judge (drafted by Claude on 2026-10-24, extended on 2026-11-01 with the code

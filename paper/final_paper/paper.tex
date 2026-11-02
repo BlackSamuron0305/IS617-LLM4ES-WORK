@@ -641,27 +641,55 @@ Source: \texttt{experiment/costs/README.md}.}
 % Rubric [10]: Present the results of your analysis including tables and figures that
 % communicate and illustrate those results.
 
-\teamnote{nothing to report yet}{%
-As of 2026-10-10 no run exists. The proposal lists what to compare:
+\teamnote{results of the runs of 2026-11-02 (Estonia design; not report text)}{%
+All numbers are from \texttt{results/main/} (the files \texttt{analyze\_*.txt} and the tables written by
+\texttt{pipeline/summarize.py}). Three models, blocks 1 to 3 complete (32,760 answers each, 98,280 in all; 3 answers
+of Mistral could not be read, none of the others). Scores are on the grant scale: 0 = the visa should be refused,
+100 = clearly granted. Mean score in block 1: Qwen3 32B 86.5, Mistral Small 3.2 24B 82.6, Gemma 4 31B 79.1; 86 (Qwen),
+82 (Mistral) and 73 (Gemma) per cent of the scores lie at 80 or more.
 \begin{itemize}
-  \item the spread of risk scores, ratings, further checks and recommendations across
-        the 22 Arab League nationalities; by the rules it should be zero;
-  \item whether the three wealth groups differ, and in the order rich, normal, poor;
-  \item the other way round: the 22 sorted into three groups by the models' ratings
-        alone, compared with the three wealth groups; which countries land in another
-        group; whether this is the same across models, wordings and applicants;
-  \item the four unrelated nationalities as a noise check;
-  \item with versus without the paragraph on nationality;
-  \item the three cost measures;
-  \item plain applications against applications with one indicator; whether the score
-        reacts to savings (block 3);
-  \item the same without the six Gulf nationalities, as a check;
-  \item how often a model refuses to answer or gives an unreadable answer, by
-        nationality.
+  \item \textbf{H1, is there a spread among the 21 nationalities that need a visa (block 1)?} Yes, small. Standard
+        deviation of the 21 nationality means (after removing the application's own mean) and gap between the highest and the
+        lowest nationality, in score points; permutation test with 5,000 shuffles, one-sided, Holm correction over models:
+        see the table. Lowest in all three models: Syria, Yemen, Sudan, Iraq, Libya, Somalia. The three placebo nationalities that need a visa
+        differ by 0.2 to 0.4 points (standard deviation of their means). The differences are far below the 5 points that the analysis plan calls
+        worth noting; they are real in the sense that chance does not give them.
+  \item \textbf{H2, order rich, normal, poor.} Spearman correlation between wealth rank and nationality mean across the 21 countries is
+        negative in all three models (table). The three-way split of the means matches the World Bank groups only weakly. Limits: the rich group
+        is the five Gulf states, the poor group is four countries at war.
+  \item \textbf{H3, does the paragraph ``nationality is not a ground'' help?} No. The change of the gap is within chance for all models
+        (table).
+  \item \textbf{H4, does the instrument work?} The score at AED 3,000 minus the score at AED 2,000 (the funds below EUR 560 for 8 days) is
+        +28.4 for Gemma, +8.8 for Qwen and +2.1 for Mistral against a threshold of 10: Mistral does not use the money rule; Qwen narrowly misses.
+  \item \textbf{Boundary applicants (extension D4, blocks 5 and 6, 10 applicants with three mild points each).} Gaps of 3.8 (Gemma), 3.7 (Mistral)
+        and 2.4 (Qwen) points; wealth order again for Gemma and Qwen (rho $-0.69$, $-0.75$), not for Mistral ($-0.20$). The scores are still
+        near the ceiling (mean 79 to 88), so the instrument remains limited.
+  \item \textbf{Variants (exploratory; block 4, one repetition).} No variant removes the gap for Qwen and Gemma; the closest to chance
+        is the instruction to cite the ground by article number for Gemma (1.1 points against 0.9 by chance). Figure~\ref{fig:variants}.
+  \item \textbf{What the reasons say (judge OLMo 3.1 32B; not yet validated).} In block 1 about 0.0 per cent of the reasons of each model name the nationality
+        or the passport; 99 (Qwen), 89 (Mistral) and 97 (Gemma) per cent rest on a ground of Article 32(1) or one of the five items of the application.
+        Doubts about the right to stay in the Emirates appear in 0.1 to 0.6 per cent of block 1 reasons and in 0.1 to 3 per cent on the boundary applicants.
+        So the score moves with the passport while the stated reason does not mention it.
+  \item Not done yet: validation of the judge by hand, the cost measures, the check without the six Gulf states.
 \end{itemize}
-The hypotheses and the analysis have to be written down before the first real run.
-A pilot has to show first whether the answers vary at all. Block 1 on all four models is
-the plan for the midterm.}
+\begin{center}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+ & gap (points) & sd of means & p (H1) & Spearman & change of gap with rule (p) & score step AED 2,000 to 3,000 \\
+\midrule
+Qwen3 32B & 3.38 & 1.05 & 0.0002 & $-0.72$ & $+0.06$ (0.81) & $+8.8$ \\
+Mistral Small 3.2 24B & 2.71 & 0.62 & 0.0002 & $-0.52$ & $-0.11$ (0.11) & $+2.1$ \\
+Gemma 4 31B & 1.57 & 0.49 & 0.0002 & $-0.76$ & $-0.04$ (0.09) & $+28.4$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{center}
+\includegraphics[width=\linewidth]{figures/nationalities.png}\\
+\includegraphics[width=0.8\linewidth]{figures/wealth_groups.png}\\
+\includegraphics[width=0.6\linewidth]{figures/money.png}\\
+\includegraphics[width=\linewidth]{figures/variants.png}\label{fig:variants}
+\end{center}}
 
 \section{Conclusion and Discussion}
 \label{sec:conclusion}
@@ -709,8 +737,15 @@ the plan for the midterm.}
 
 \teamnote{limits to state}{%
 \begin{itemize}
-  \item FILL IN AFTER THE RUNS: which blocks and which models were actually run. As of
-        2026-10-10 nothing has been run.
+  \item Run on 2026-11-02 on bwUniCluster with vLLM: Qwen3 32B, Gemma 4 31B, Mistral Small 3.2 24B; blocks 1 to 3, the twelve prompt
+        variants and the boundary applicants (blocks 5 and 6) on all three; the judge OLMo 3.1 32B on block 1, the three most important
+        variants and block 5. Pilots: two (\texttt{experiment/deviations.md} D1 to D4 lists every change after the freeze).
+  \item Scores sit near the ceiling (all applications are clean or mildly doubtful): gaps are small and the instrument has little room.
+        Pilot 2 missed two of its four pre-set checks by 1.2 and 0.7 points and the run went ahead (D2).
+  \item Mistral does not react to the money rule; its other results are read with that in mind.
+  \item The judge has not yet been validated against a hand-coded sample; its codes are exploratory.
+  \item Not read in full text: Articles 14, 15, 21, 22 and 25a of the Visa Code; the visa exemption of the Emirates and Uruguay.
+        Not confirmed: that Estonia uses AI for visa decisions.
   \item No authority is documented as using a language model to rate visa applications.
         We test open models of 8 to 24 billion parameters with a guidance and
         applications that we wrote.
@@ -738,17 +773,13 @@ the plan for the midterm.}
 % tools) at the end of the report.
 
 \teamnote{what to declare}{%
-As of 2026-10-10, assisted by Claude Code: literature and source search and research
-notes (\texttt{research/visa\_scenario/}); the choice of the destination country; the
-design documents; the guidance text, the applications and the prompts; the table of
-official rules; the cost measures; the first drafts of all three project proposals
-(2026-10-04, 2026-10-08, 2026-10-10); the slides and the question-and-answer notes for
-the pitch; repository code and structure; the working title and title suggestions; and
-these notes. On 2026-10-12 also: the check of which countries use AI to rate visa
-applicants, with the quotes in the introduction notes, the two paragraphs on it in the
-proposal, and the slide on Australia in \texttt{pitch\_v5.pptx}. For the earlier hiring
-and bank designs also their materials, which are no longer used. Keep the list up to
-date.}
+Assisted by Claude Code (Anthropic; model Claude Sonnet 5.5 in the sessions of 2026-11-01 and 2026-11-02; earlier sessions other Claude
+models): literature and source search and research notes (\texttt{research/}); the choice of the destination and the move from Australia to Estonia
+(2026-11-01); the guidance text and its variants, the simulated applicants and the filter, the prompts and the twelve variants; the judge prompt and
+codebook; the analysis plan, the pilot and analysis code (\texttt{pipeline/}), the job scripts for the cluster, the runs on bwUniCluster and the
+result tables and figures; the review of the design (\texttt{experiment/design\_review.md}); the first drafts of the proposals (2026-10-04,
+2026-10-08, 2026-10-10); the pitch slides and the midterm slides (\texttt{paper/second\_presentation/}, wording included); repository code and
+structure; the working title; and these notes. The notes in this file are not report text. Keep the list up to date.}
 
 \section*{Declaration}
 % AI usage policy: a declaration at the end stating that you have written the whole

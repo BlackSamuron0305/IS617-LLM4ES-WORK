@@ -187,10 +187,29 @@ s = slide("Rich, normal, poor: the models sort them", notes=(
 picture(s, FIG / "wealth_groups.png", 0.6, 1.2, 12.1, 5.2)
 
 # 10 telling the model
+def vrow(model, variant, block="4"):
+    return next((r for r in table("by_variant") if r["model"] == model and r["variant"] == variant and r["block"] == block), None)
+
+
+def vtxt(variant, block="4"):
+    parts = []
+    for m, label in MODELS:
+        r = vrow(m, variant, block)
+        if r:
+            parts.append(f"{label} {float(r['range_rep1']):.1f} (chance {float(r['null_range_rep1']):.1f})")
+    return "; ".join(parts)
+
+
 s = slide("Does telling the model to ignore nationality help?", notes=(
-    "H3: gap with the paragraph 'nationality is not a ground for a lower score' (block 2) minus the gap without it (block 1): Qwen %(q)s points (p = %(qp)s), Mistral %(m)s (p = %(mp)s), Gemma %(g)s (p = %(gp)s). None is significant; the instruction does not shrink the differences. Variants (exploratory, one repetition): see the figure; the word-for-word Article 32 text and an instruction to cite the ground are among them." % {
-        "q": A["qwen3-32b"]["h3"], "qp": A["qwen3-32b"]["p3"], "m": A["mistral-small-3.2-24b-instruct"]["h3"], "mp": A["mistral-small-3.2-24b-instruct"]["p3"],
-        "g": A["gemma-4-31b-it"]["h3"], "gp": A["gemma-4-31b-it"]["p3"]}),
+    f"H3 (confirmatory): gap with the paragraph 'nationality is not a ground for a lower score' (block 2) minus the gap without it (block 1): Qwen {A['qwen3-32b']['h3']} points (p = {A['qwen3-32b']['p3']}), "
+    f"Mistral {A['mistral-small-3.2-24b-instruct']['h3']} (p = {A['mistral-small-3.2-24b-instruct']['p3']}), Gemma {A['gemma-4-31b-it']['h3']} (p = {A['gemma-4-31b-it']['p3']}). None is significant: the instruction does not shrink the differences.\n"
+    "Figure (exploratory, one repetition each, so the gaps are larger than the ones in block 1 with five repetitions; black ticks show the gap that shuffling the nationality labels gives, i.e. chance): "
+    "Qwen and Gemma are above their chance tick in nearly every case; Mistral is close to chance in several (reasoning first, the paragraph in block 2, the boundary applicants) and above it in block 1 (3.7 against 2.6). For Qwen and Gemma the differences do not disappear under any of the twelve changes of the prompt.\n"
+    f"regulation_text (word-for-word Article 32): {vtxt('regulation_text')}.\n"
+    f"regulation_instruction (cite the ground by article number): {vtxt('regulation_instruction')}. It brings Gemma close to chance and does not help Qwen.\n"
+    f"no_guidance: {vtxt('no_guidance')}. reasoning first: {vtxt('reasoning')}.\n"
+    "Boundary applicants (blocks 5 and 6, exploratory extension D4): gaps 2.4 to 3.8 points over all repetitions; wealth order again for Qwen (rho -0.75) and Gemma (-0.69), not for Mistral (-0.20). "
+    "No variant consistently removes the gap."),
     question="Is the gap in the model's knowledge, not in its instructions?")
 if not picture(s, FIG / "variants.png", 0.6, 1.2, 12.1, 5.2):
     text(s, 1, 2.5, 11, 2, "variants pending", 28)
