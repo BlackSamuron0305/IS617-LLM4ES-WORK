@@ -92,3 +92,18 @@ per model.
 **Status.** Exploratory extension, reported apart from the confirmatory H1 to H3 (which keep their blocks 1 and 2). The same
 test is computed on blocks 5 and 6 (`python -m pipeline.analyze_main --blocks 5 6`). Blocks 1 to 4 are unchanged: the builder
 puts only the 30 main applicants in them.
+
+## D5, 2026-11-02: six more models as a robustness extension (E2)
+
+**Why.** Asked by the project lead to run more and finish by Sunday. The three audited models differ in origin (China, USA, Europe) but
+are all 24 to 32 billion parameters. The main finding (small, systematic gaps; poor and war-affected countries lowest) should be
+checked on other models: do small models or a large reasoning model show larger gaps?
+
+**Which.** Every instruction-tuned chat model that was already downloaded on the cluster and fits one GPU, taken from the list on the cluster
+before any result of these models was seen: Qwen2.5 7B (China), Falcon3 7B (United Arab Emirates), Phi-3.5 mini (USA), OLMo 2 7B (USA),
+Mistral 7B v0.3 (France) and gpt-oss-120b (USA, a reasoning model). Left out for a stated reason, not for a result: DeepSeek V4 flash (156 GB,
+no chat template) and Mistral Medium 3.5 (249 GB). The three audited models stay the audited models; the six are **exploratory** and never replace them.
+
+**What.** The base design, unchanged: blocks 1, 2, 3, 5 and 6 (40,560 answers per model), same prompts, same settings, split into
+small shards so that several 30-minute jobs run at the same time. Revisions are pinned from the download metadata (`experiment/models.csv`).
+The analysis is the same tests as for the audited models (`analyze_main`), reported as a separate table.
