@@ -93,7 +93,7 @@ def write_jsonl(path, records):
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
 
-def build_judge_items(batch, data_root):
+def build_judge_items(batch, data_root, blocks=None):
     data_root = Path(data_root)
     answers_path = data_root / "processed" / batch / "answers.csv"
     if not answers_path.exists():
@@ -116,6 +116,8 @@ def build_judge_items(batch, data_root):
     for row in answers:
         if row["parse_status"] != "ok" or not row["reason"].strip():
             continue
+        if blocks is not None and row["block"] not in blocks:
+            continue  # the judge is exploratory: it may be run on some blocks only
         if row["prompt_matches"] != "1":
             continue  # the files of the experiment changed after the run: the application cannot be rebuilt
         country, applicant = by_country.get(row["country"]), applicants.get(row["applicant_id"])
@@ -147,9 +149,10 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--batch", required=True, help="name of the batch under data/processed")
     parser.add_argument("--data-root", default=str(DATA))
+    parser.add_argument("--block", action="append", help="only the answers of this block (repeatable)")
     args = parser.parse_args(argv)
     try:
-        summary = build_judge_items(args.batch, Path(args.data_root))
+        summary = build_judge_items(args.batch, Path(args.data_root), args.block)
     except FileNotFoundError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

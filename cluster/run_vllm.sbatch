@@ -68,8 +68,8 @@ case "$STAGE" in
     judge) TABLE=experiment/judge/judge_models.csv ;;
     *) echo "error: STAGE must be answers or judge, not '$STAGE'" >&2; exit 1 ;;
 esac
-if [ "$STAGE" = "judge" ] && [ -n "${BLOCKS:-}${VARIANTS:-}${WORDINGS:-}${MAX_REPETITIONS:-}${SHARD:-}${LIMIT:-}" ]; then
-    echo "error: BLOCKS, VARIANTS, WORDINGS, MAX_REPETITIONS, SHARD and LIMIT only apply to STAGE=answers" >&2
+if [ "$STAGE" = "judge" ] && [ -n "${BLOCKS:-}${VARIANTS:-}${WORDINGS:-}${MAX_REPETITIONS:-}${SHARD:-}" ]; then
+    echo "error: BLOCKS, VARIANTS, WORDINGS, MAX_REPETITIONS and SHARD only apply to STAGE=answers" >&2
     exit 1
 fi
 # The environment of the working cluster setup (WS, ENROOT_DATA_PATH, VLLM_IMAGE, HF_HOME).
@@ -197,6 +197,7 @@ if [ "$STAGE" = "answers" ]; then
     cmd=("$PYTHON" -m pipeline.run_models --batch "$BATCH" --model "$ALIAS" "${PLAN[@]}")
 else
     cmd=("$PYTHON" -m pipeline.run_judge --batch "$BATCH" --judge "$ALIAS")
+    if [ -n "${LIMIT:-}" ]; then cmd+=(--limit "$LIMIT"); fi
 fi
 cmd+=(--base-url "http://localhost:$PORT/v1" --allow-real-calls --workers "$WORKERS")
 "${cmd[@]}"
