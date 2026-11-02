@@ -195,6 +195,38 @@ s = slide("Does telling the model to ignore nationality help?", notes=(
 if not picture(s, FIG / "variants.png", 0.6, 1.2, 12.1, 5.2):
     text(s, 1, 2.5, 11, 2, "variants pending", 28)
 
+# 10b reasons
+def pooled(block, code):
+    out = {}
+    for m, _ in MODELS:
+        rows = [r for r in table("judged_by_country") if r["model"] == m and r["block"] == block]
+        n = sum(int(r["n"]) for r in rows)
+        out[m] = (sum(float(r[code]) * int(r["n"]) for r in rows) / n * 100) if n else float("nan")
+    return out
+
+
+nat, legal, doubt = pooled("1", "mentions_nationality"), pooled("1", "names_legal_ground"), pooled("5", "doubts_residence")
+q, mi, g = "qwen3-32b", "mistral-small-3.2-24b-instruct", "gemma-4-31b-it"
+reasons_notes = (
+    "Judge: OLMo 3.1 32B codes only the free-text reason, blinded to the nationality (nationality words replaced by placeholders). "
+    "Six yes/no codes. NOT validated yet: a code may be used only if it agrees with our own coding of a hand-coded sample "
+    "(Cohen's kappa of at least 0.7, sample of 200). Everything on this slide is exploratory.\n"
+    f"Block 1 (main run, about 11,700 reasons per model): share of reasons that mention the nationality or passport: Qwen {nat[q]:.1f}%, "
+    f"Mistral {nat[mi]:.1f}%, Gemma {nat[g]:.1f}%. Share that rest on a ground of Article 32(1) or one of the five items of the application: "
+    f"Qwen {legal[q]:.0f}%, Mistral {legal[mi]:.0f}%, Gemma {legal[g]:.0f}%.\n"
+    f"Boundary applicants (block 5): share of reasons that doubt the applicant's right to stay in the Emirates (because of residence or citizenship status): "
+    f"Qwen {doubt[q]:.1f}%, Mistral {doubt[mi]:.1f}%, Gemma {doubt[g]:.1f}%; highest for Tunisian, Libyan, Iraqi, Lebanese and Yemeni applicants "
+    "(pooled over the three models, 2 to 3%), lowest for Emirati, Saudi and Moroccan.\n"
+    "Reading: the scores differ by passport, but the stated reasons almost never name the passport. A reason is a model's own account, "
+    "not proof of why it scored as it did (Turpin et al. 2023).")
+s = slide("What do the reasons say?", notes=reasons_notes, question="The score moves with the passport. The reason never says so.")
+for i, (m, label) in enumerate(MODELS):
+    text(s, 0.6 + i * 4.1, 1.4, 3.9, 0.6, label, 22, True, INK, PP_ALIGN.CENTER)
+    text(s, 0.6 + i * 4.1, 2.1, 3.9, 1.3, f"{nat[m]:.1f}%", 60, True, ORANGE, PP_ALIGN.CENTER)
+    text(s, 0.6 + i * 4.1, 3.4, 3.9, 0.8, "of reasons name the passport", 18, False, MUTED, PP_ALIGN.CENTER)
+    text(s, 0.6 + i * 4.1, 4.4, 3.9, 1.0, f"{legal[m]:.0f}%", 48, True, ACCENT, PP_ALIGN.CENTER)
+    text(s, 0.6 + i * 4.1, 5.4, 3.9, 0.8, "rest on a ground of Article 32\nor an item of the application", 16, False, MUTED, PP_ALIGN.CENTER)
+
 # 11 caveats and next steps
 s = slide("What this does not show, and what comes next", notes=(
     "Not shown: prejudice, anything about real consulates, anything about Islam, or that Estonia uses a model. 30 invented applicants who all live in the Emirates; three open models of 24 to 32 billion parameters; scores near the ceiling; Mistral ignores the money rule; the judge is not validated yet.\n"

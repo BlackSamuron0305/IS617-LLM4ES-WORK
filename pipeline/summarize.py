@@ -18,6 +18,7 @@ Usage:
 
 import argparse
 import csv
+import random
 import statistics
 import sys
 from collections import defaultdict
@@ -58,6 +59,31 @@ def centre(rows, key=CELL):
         m = mean([r["score"] for r in cell])
         for r in cell:
             r["centred"] = r["score"] - m
+
+
+def null_range(rows, permutations=200, seed=617):
+    # The gap between the highest and the lowest nationality that chance alone gives: the nationality labels are
+    # shuffled inside each application cell (same applicant, savings, wording, repetition), and the range of the
+    # nationality means is taken, averaged over the shuffles. rows carry "centred" and "country".
+    cells = defaultdict(list)
+    for i, r in enumerate(rows):
+        cells[(r["model_alias"], r["applicant_id"], r["savings"], r["wording"], r["repetition"], r["block"], r["variant"])].append(i)
+    rng = random.Random(seed)
+    labels = [r["country"] for r in rows]
+    total = 0.0
+    for _ in range(permutations):
+        shuffled = labels[:]
+        for idx in cells.values():
+            picked = [labels[i] for i in idx]
+            rng.shuffle(picked)
+            for i, label in zip(idx, picked):
+                shuffled[i] = label
+        by = defaultdict(list)
+        for r, label in zip(rows, shuffled):
+            by[label].append(r["centred"])
+        means = [mean(v) for v in by.values()]
+        total += max(means) - min(means)
+    return total / permutations
 
 
 def tables(rows, out_dir, judged_rows):
@@ -103,6 +129,8 @@ def tables(rows, out_dir, judged_rows):
                 for r in g:
                     by_c[r["country"]].append(r["centred"])
                 means = [mean(v) for v in by_c.values()]
+                if only_first:
+                    row["null_range_rep1"] = round(null_range(g), 3) if g else ""
                 row["n" + label] = len(g)
                 row["spread_sd" + label] = round(sd(means), 3)
                 row["range" + label] = round(max(means) - min(means), 3) if means else ""

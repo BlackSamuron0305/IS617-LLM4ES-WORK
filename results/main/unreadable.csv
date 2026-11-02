@@ -1,4 +1,7 @@
 model,country,status,n
+mistral-small-3.2-24b-instruct,Djibouti,no_json,1
 mistral-small-3.2-24b-instruct,Malawi,no_json,1
 mistral-small-3.2-24b-instruct,Qatar,no_json,1
+mistral-small-3.2-24b-instruct,Saudi Arabia,no_json,1
 mistral-small-3.2-24b-instruct,Syria,no_json,1
+qwen3-32b,Malawi,no_json,1

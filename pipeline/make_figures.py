@@ -130,11 +130,18 @@ def fig_variants(plt, rows, out):
                 r = next((x for x in rows if x["model"] == model and x["variant"] == n), None)
             vals.append(float(r["range_rep1"]) if r and r.get("range_rep1", "") != "" else 0.0)
         ax.bar([i + (k - 1) * width for i in range(len(names))], vals, width, label=LABEL[model])
+        nulls = []
+        for n in names:
+            key = {"base (block 1)": "1", "with the rule (block 2)": "2", "boundary (block 5)": "5", "boundary with rule (block 6)": "6"}.get(n)
+            r_ = base.get((model, key)) if key else next((x for x in rows if x["model"] == model and x["variant"] == n), None)
+            nulls.append(float(r_["null_range_rep1"]) if r_ and r_.get("null_range_rep1", "") != "" else None)
+        for i, v in enumerate(nulls):
+            if v is not None:
+                ax.hlines(v, i + (k - 1) * width - width / 2, i + (k - 1) * width + width / 2, color="black", lw=2)
     ax.set_xticks(range(len(names)))
     ax.set_xticklabels(names, rotation=40, ha="right")
-    ax.set_ylabel("gap highest to lowest of the 21 nationalities,
-one repetition (points)")
-    ax.set_title("What shrinks or grows the gap?")
+    ax.set_ylabel("gap highest to lowest of the 21 nationalities,\none repetition (points)")
+    ax.set_title("What shrinks or grows the gap?  (black tick: the gap chance alone gives)")
     ax.legend(frameon=False)
     ax.grid(axis="y", alpha=0.25)
     fig.tight_layout()
