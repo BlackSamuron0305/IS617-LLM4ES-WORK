@@ -37,3 +37,29 @@ the 21 was 3.4 points. Reasons never named a nationality. These are not tests.
 
 **Pilot 2** runs the new setup the same way (blocks 1 and 3, wording 1, one repetition: 780 + 3,120 =
 3,900 calls) and decides again with the same four checks.
+
+## D2, 2026-11-02: pilot 2 misses two checks narrowly; the full run goes ahead
+
+**Pilot 2** (`qwen3-32b`, new setup, job 8223873, 3,900 calls, all readable). Result against the four
+checks (thresholds unchanged):
+
+| check | pilot 1 | pilot 2 | needs |
+|---|---|---|---|
+| answers can be read | 100% | 100% | 95% |
+| share of scores at 80 or more | 99.5% | 91.2% | at most 90% |
+| standard deviation of the scores | 4.1 | 6.0 | at least 5 |
+| score at AED 3,000 minus score at AED 2,000 | +0.6 | +9.3 | at least 10 |
+
+The two that still fail miss by 1.2 points and 0.7 points. The instrument works: the AED 2,000
+applications now score 8.2 points below their own average while the others are within 3 points of it;
+the scores spread over 40 to 100; applications with two weak points score lower than plain ones
+(for example 83.8 for contract ending + no travel against 89.6 for plain).
+
+**Decision.** The thresholds are not changed and the failure is not hidden: the report states that
+`qwen3-32b` missed two pilot checks narrowly and that its scores sit near the ceiling (a limitation for
+the size of any difference that can be seen). A third pilot would cost most of a day for a
+difference this small, and the main run measures H4 (the money check) on all answers anyway
+(`analyze_main`). Decided by Claude Code on the instruction of the project lead to run to completion; the
+other team members have not seen it. Nothing in this decision looked at nationality results.
+
+**Frozen for the main run:** tag `prereg-main` (the prompts, applicants, guidance and countries as of that commit).
