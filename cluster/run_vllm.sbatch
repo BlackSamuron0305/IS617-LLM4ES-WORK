@@ -82,7 +82,9 @@ if [ -n "${PYTHON_MODULE:-}" ]; then
     module load "$PYTHON_MODULE" || exit 1
 fi
 WORKERS="${WORKERS:-16}"
-PORT="${PORT:-8000}"
+# Several jobs can share a node: a fixed port 8000 let two jobs talk to each other's server (seen on 2026-11-02:
+# a Gemma job found a Mistral server ready on its port; the runner refused, correctly). One port per job.
+PORT="${PORT:-$((20000 + ${SLURM_JOB_ID:-0} % 20000))}"
 VLLM_ARGS="${VLLM_ARGS:-}"
 PYTHON="${PYTHON:-python3}"
 
