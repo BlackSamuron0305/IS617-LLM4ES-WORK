@@ -17,7 +17,10 @@ from pipeline.common import ROOT
 
 COLORS = {"rich": "#1f6fb2", "normal": "#8a8a8a", "poor": "#e07b00"}
 MODELS = ["qwen3-32b", "mistral-small-3.2-24b-instruct", "gemma-4-31b-it"]
-LABEL = {"qwen3-32b": "Qwen3 32B", "mistral-small-3.2-24b-instruct": "Mistral Small 3.2 24B", "gemma-4-31b-it": "Gemma 4 31B"}
+LABEL = {"qwen3-32b": "Qwen3 32B", "mistral-small-3.2-24b-instruct": "Mistral Small 3.2 24B", "gemma-4-31b-it": "Gemma 4 31B",
+         "qwen2.5-7b-instruct": "Qwen2.5 7B", "falcon3-7b-instruct": "Falcon3 7B", "phi-3.5-mini-instruct": "Phi-3.5 mini 3.8B",
+         "olmo-2-7b-instruct": "OLMo 2 7B", "mistral-7b-instruct-v0.3": "Mistral 7B", "gpt-oss-120b": "gpt-oss-120b"}
+EXTRA_MODELS = ["qwen2.5-7b-instruct", "falcon3-7b-instruct", "phi-3.5-mini-instruct", "olmo-2-7b-instruct", "mistral-7b-instruct-v0.3", "gpt-oss-120b"]
 
 
 def table(results, name):
@@ -28,15 +31,16 @@ def table(results, name):
         return list(csv.DictReader(f))
 
 
-def fig_nationalities(plt, rows, out):
+def fig_nationalities(plt, rows, out, models=None, fname="nationalities.png"):
+    models = models or MODELS
     # One dot per nationality and model: mean score after removing the cell mean (block 1, base, no rule).
     rows = [r for r in rows if r["block"] == "1" and r["variant"] == "base" and r["visa_required"] == "yes"]
     avg = defaultdict(list)
     for r in rows:
         avg[r["country"]].append(float(r["centred_mean"]))
     order = sorted(avg, key=lambda c: sum(avg[c]) / len(avg[c]))
-    fig, axes = plt.subplots(1, 3, figsize=(13, 7.2), sharey=True)
-    for ax, model in zip(axes, MODELS):
+    fig, axes = plt.subplots(1, len(models), figsize=(4.3 * len(models), 7.2), sharey=True)
+    for ax, model in zip(axes, models):
         data = {r["country"]: r for r in rows if r["model"] == model}
         for i, c in enumerate(order):
             if c not in data:
@@ -52,12 +56,12 @@ def fig_nationalities(plt, rows, out):
     axes[0].set_yticks(range(len(order)))
     axes[0].set_yticklabels(order, fontsize=10)
     for k, g in enumerate(("rich", "normal", "poor")):
-        axes[2].scatter([], [], color=COLORS[g], label=g, s=60)
-    axes[2].scatter([], [], facecolors="none", edgecolors="#333", label="placebo (not Arab League)", s=60)
-    axes[2].legend(loc="lower right", frameon=False)
+        axes[-1].scatter([], [], color=COLORS[g], label=g, s=60)
+    axes[-1].scatter([], [], facecolors="none", edgecolors="#333", label="placebo (not Arab League)", s=60)
+    axes[-1].legend(loc="lower right", frameon=False)
     fig.suptitle("Same application, different passport: how far each nationality moves the score", fontsize=14)
     fig.tight_layout()
-    fig.savefig(out / "nationalities.png", dpi=170)
+    fig.savefig(out / fname, dpi=170)
     plt.close(fig)
 
 
@@ -149,10 +153,36 @@ def fig_variants(plt, rows, out):
     plt.close(fig)
 
 
+def fig_models(plt, audited, extra, out):
+    # One bar per model: the gap between the highest and the lowest of the 21 nationalities (block 1, all repetitions).
+    rows = []
+    for table_rows, tag in ((audited, "audited"), (extra, "extra")):
+        for r_ in table_rows:
+            if r_["block"] == "1" and r_["variant"] == "base":
+                rows.append((float(r_["range"]), r_["model"], tag, float(r_["null_range_rep1"]) if r_.get("null_range_rep1") else None))
+    rows.sort()
+    fig, ax = plt.subplots(figsize=(9, 4.8))
+    for i, (v, m, tag, _) in enumerate(rows):
+        ax.barh(i, v, color="#1f6fb2" if tag == "audited" else "#8a8a8a")
+        ax.text(v + 0.3, i, f"{v:.1f}", va="center", fontsize=10)
+    ax.set_yticks(range(len(rows)))
+    ax.set_yticklabels([LABEL.get(m, m) for _, m, _, _ in rows])
+    ax.set_xlabel("gap between the highest and the lowest of the 21 nationalities (score points)")
+    ax.set_title("How big is the passport gap, model by model?")
+    ax.barh([], [], color="#1f6fb2", label="audited models")
+    ax.barh([], [], color="#8a8a8a", label="extra models (exploratory)")
+    ax.legend(frameon=False, loc="lower right")
+    ax.grid(axis="x", alpha=0.25)
+    fig.tight_layout()
+    fig.savefig(out / "models.png", dpi=170)
+    plt.close(fig)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--name", default="main")
     parser.add_argument("--out", required=True)
+    parser.add_argument("--extra", help="name of a second results folder with the extra models (results/<name>)")
     args = parser.parse_args(argv)
     import matplotlib
     matplotlib.use("Agg")
@@ -168,6 +198,16 @@ def main(argv=None):
         if rows:
             function(plt, rows, out)
             made.append(name)
+    if args.extra:
+        extra_dir = ROOT / "results" / args.extra
+        ex_country, ex_variant = table(extra_dir, "by_country"), table(extra_dir, "by_variant")
+        if ex_country:
+            fig_nationalities(plt, ex_country, out, EXTRA_MODELS[:3], "nationalities_extra_a.png")
+            fig_nationalities(plt, ex_country, out, EXTRA_MODELS[3:], "nationalities_extra_b.png")
+            made += ["nationalities_extra"]
+        if ex_variant and table(results, "by_variant"):
+            fig_models(plt, table(results, "by_variant"), ex_variant, out)
+            made += ["models"]
     print("figures:", ", ".join(made), "->", out)
     return 0
 
