@@ -1,0 +1,16 @@
+model,country,best_country,gap_points,score_step_points,savings_cost_aed,fees_lost_per_1000_lt20_eur,fees_lost_per_1000_lt50_eur,share_lt50
+gemma-4-31b-it,Syria,Bahrain,1.57,6.81,293,0,0,0.2
+gemma-4-31b-it,Yemen,Bahrain,1.53,6.81,286,0,0,0.2
+gemma-4-31b-it,Somalia,Bahrain,1.24,6.81,230,0,0,0.2
+gemma-4-31b-it,Palestine,Bahrain,1.17,6.81,216,0,0,0.2
+gemma-4-31b-it,Iraq,Bahrain,1.06,6.81,195,0,0,0.2
+mistral-small-3.2-24b-instruct,Syria,Morocco,2.71,-5.54,,0,0,0.0
+mistral-small-3.2-24b-instruct,Iraq,Morocco,2.12,-5.54,,0,0,0.0
+mistral-small-3.2-24b-instruct,Sudan,Morocco,2.0,-5.54,,0,0,0.0
+mistral-small-3.2-24b-instruct,Comoros,Morocco,1.59,-5.54,,0,0,0.0
+mistral-small-3.2-24b-instruct,Lebanon,Morocco,1.48,-5.54,,0,198,0.0022
+qwen3-32b,Syria,Jordan,3.38,0.38,,0,801,0.0111
+qwen3-32b,Libya,Jordan,3.0,0.38,,0,1206,0.0156
+qwen3-32b,Yemen,Jordan,2.85,0.38,,0,0,0.0022
+qwen3-32b,Sudan,Jordan,2.37,0.38,,0,603,0.0089
+qwen3-32b,Iraq,Jordan,2.25,0.38,,0,603,0.0089

@@ -210,6 +210,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--batch", required=True, nargs="+", help="one or more batches under data/processed")
     parser.add_argument("--permutations", type=int, default=10000)
+    parser.add_argument("--without-gulf", action="store_true",
+                        help="sensitivity check: leave out the Gulf states (the rich group), whose status line simplifies reality most")
     parser.add_argument("--blocks", type=int, nargs=2, default=(1, 2),
                         help="without and with the paragraph on nationality: 1 2 (main) or 5 6 (boundary applicants)")
     parser.add_argument("--data-root", default=str(DATA))
@@ -225,7 +227,8 @@ def main(argv=None):
             print(f"error: no parsed answers for batch {batch!r}", file=sys.stderr)
             return 2
         for model in sorted({r["model_alias"] for r in ok}):
-            lines, out = analyse_model(model, [r for r in ok if r["model_alias"] == model], args.permutations, rng, tuple(args.blocks))
+            kept = [r for r in ok if r["model_alias"] == model and not (args.without_gulf and r["group"] == "arab" and r["wealth_group"] == "rich")]
+            lines, out = analyse_model(model, kept, args.permutations, rng, tuple(args.blocks))
             all_lines += (["MOCK BATCH, NOT A RESULT"] if batch.startswith("mock") else []) + lines
             results[f"{batch}/{model}"] = out
     adjusted = holm([v["h1_p"] for v in results.values()])
