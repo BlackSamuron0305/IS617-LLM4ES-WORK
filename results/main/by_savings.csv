@@ -1,0 +1,16 @@
+model,savings_aed,n,centred_mean
+gemma-4-31b-it,2000,4212,-35.827
+gemma-4-31b-it,3000,4212,2.529
+gemma-4-31b-it,4500,4212,9.343
+gemma-4-31b-it,7000,4212,11.469
+gemma-4-31b-it,10500,4212,12.487
+mistral-small-3.2-24b-instruct,2000,4211,-1.159
+mistral-small-3.2-24b-instruct,3000,4212,1.769
+mistral-small-3.2-24b-instruct,4500,4210,-3.773
+mistral-small-3.2-24b-instruct,7000,4212,1.317
+mistral-small-3.2-24b-instruct,10500,4212,1.843
+qwen3-32b,2000,4212,-10.266
+qwen3-32b,3000,4212,1.808
+qwen3-32b,4500,4212,2.188
+qwen3-32b,7000,4212,3.288
+qwen3-32b,10500,4212,2.982

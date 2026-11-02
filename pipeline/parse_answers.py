@@ -92,6 +92,10 @@ def parse_answer(text, error, answer_keys=DEFAULT_ANSWER_KEYS):
     score_key = next(key for key in answer_keys if key in SCORE_KEYS)
     score = _score(answer[score_key])
     reasoning = answer.get("reasoning", "")
+    # The reasoning variant asks for a walk through points (a) to (g): models answer with a text, a list or an
+    # object keyed by the points. All three are kept (an object or a list as JSON text).
+    if isinstance(reasoning, (list, dict)):
+        reasoning = json.dumps(reasoning, ensure_ascii=False)
     if score is None or not isinstance(reason, str) or not isinstance(reasoning, str):
         return {**kept, "parse_status": "bad_value"}
     scale = SCORE_KEYS[score_key]

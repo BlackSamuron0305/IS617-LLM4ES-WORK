@@ -1,0 +1,4 @@
+model,country,status,n
+mistral-small-3.2-24b-instruct,Malawi,no_json,1
+mistral-small-3.2-24b-instruct,Qatar,no_json,1
+mistral-small-3.2-24b-instruct,Syria,no_json,1

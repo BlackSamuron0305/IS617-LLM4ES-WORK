@@ -93,6 +93,8 @@ class ParseAnswersTest(unittest.TestCase):
         self.assertEqual((out["parse_status"], out["reasoning"], out["visa_score"]), ("ok", "(a) ok", 90))
         self.assertEqual(parse_answer('{"reasoning": 5, "visa_score": 90, "reason": "x"}', None, keys)["parse_status"],
                          "bad_value")
+        obj = parse_answer('{"reasoning": {"a": "fine", "b": "ok"}, "visa_score": 90, "reason": "x"}', None, keys)
+        self.assertEqual((obj["parse_status"], obj["reasoning"]), ("ok", '{"a": "fine", "b": "ok"}'))
 
     def test_parse_statuses(self):
         j = json.loads(VALID)

@@ -1,0 +1,23 @@
+[qwen3-32b] H1 spread among 21 nationalities: sd of the means 1.05 points, range 3.38; p = 0.0002 (one-sided, 5000 shuffles)
+[qwen3-32b] H2 Spearman(wealth rank, mean) = -0.72, p = 0.0002 (expected negative); adjusted Rand index of a three-way split against the wealth groups = +0.26, p = 0.0090
+   ordered means (centred, points): Syria -2.3, Libya -1.9, Yemen -1.7, Sudan -1.2, Iraq -1.1, Somalia -0.9, Morocco +0.2, Tunisia +0.2, Palestine +0.2, Algeria +0.3, Qatar +0.4, Comoros +0.5, Mauritania +0.5, Djibouti +0.6, Lebanon +0.6, Egypt +0.7, Saudi Arabia +0.8, Kuwait +0.9, Oman +1.0, Bahrain +1.0, Jordan +1.1
+   reference: sd of the means of the 3 placebo nationalities that need a visa = 0.43
+[qwen3-32b] H3 spread with the paragraph minus spread without it: +0.06 points (9450 paired answers); p = 0.8106 (expected negative)
+[qwen3-32b] H4 score at AED 3000 minus AED 2000: +8.8 points (does NOT meet the 10-point rule)
+
+H1 p-values after Holm correction over the models: main_qwen3-32b/qwen3-32b 0.0002
+
+============================= JOB FEEDBACK =============================
+
+NodeName=uc2n872
+Job ID: 8225795
+Cluster: uc3
+User/Group: ma_lsandouk/ma_ma
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 2
+CPU Utilized: 00:02:40
+CPU Efficiency: 46.51% of 00:05:44 core-walltime
+Job Wall-clock time: 00:02:52
+Memory Utilized: 100.37 MB
+Memory Efficiency: 1.23% of 8.00 GB (8.00 GB/node)

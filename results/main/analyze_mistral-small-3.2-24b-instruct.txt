@@ -1,0 +1,23 @@
+[mistral-small-3.2-24b-instruct] H1 spread among 21 nationalities: sd of the means 0.62 points, range 2.71; p = 0.0002 (one-sided, 5000 shuffles)
+[mistral-small-3.2-24b-instruct] H2 Spearman(wealth rank, mean) = -0.52, p = 0.0108 (expected negative); adjusted Rand index of a three-way split against the wealth groups = +0.02, p = 0.3437
+   ordered means (centred, points): Syria -1.6, Iraq -1.0, Sudan -0.8, Comoros -0.4, Lebanon -0.3, Djibouti -0.3, Libya -0.2, Yemen -0.2, Mauritania -0.2, Somalia -0.1, Saudi Arabia +0.1, Tunisia +0.2, Kuwait +0.3, Egypt +0.3, Oman +0.3, Palestine +0.4, Algeria +0.5, Bahrain +0.6, Qatar +0.6, Jordan +0.6, Morocco +1.2
+   reference: sd of the means of the 3 placebo nationalities that need a visa = 0.34
+[mistral-small-3.2-24b-instruct] H3 spread with the paragraph minus spread without it: -0.11 points (9448 paired answers); p = 0.1146 (expected negative)
+[mistral-small-3.2-24b-instruct] H4 score at AED 3000 minus AED 2000: +2.1 points (does NOT meet the 10-point rule)
+
+H1 p-values after Holm correction over the models: main_mistral-small-3.2-24b-instruct/mistral-small-3.2-24b-instruct 0.0002
+
+============================= JOB FEEDBACK =============================
+
+NodeName=uc2n872
+Job ID: 8225796
+Cluster: uc3
+User/Group: ma_lsandouk/ma_ma
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 2
+CPU Utilized: 00:02:36
+CPU Efficiency: 46.43% of 00:05:36 core-walltime
+Job Wall-clock time: 00:02:48
+Memory Utilized: 98.85 MB
+Memory Efficiency: 1.21% of 8.00 GB (8.00 GB/node)
