@@ -1,0 +1,16 @@
+{'by_country': 780, 'by_profile': 408, 'by_savings': 30, 'by_variant': 30, 'unreadable': 50} -> /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/results/x2
+
+============================= JOB FEEDBACK =============================
+
+NodeName=uc2n872
+Job ID: 8242915
+Cluster: uc3
+User/Group: ma_lsandouk/ma_ma
+State: FAILED (exit code 2)
+Nodes: 1
+Cores per node: 2
+CPU Utilized: 00:00:10
+CPU Efficiency: 21.74% of 00:00:46 core-walltime
+Job Wall-clock time: 00:00:23
+Memory Utilized: 634.89 MB
+Memory Efficiency: 3.88% of 16.00 GB (16.00 GB/node)

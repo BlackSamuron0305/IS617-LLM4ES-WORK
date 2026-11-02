@@ -1,0 +1,51 @@
+model,country,status,n
+falcon3-7b-instruct,Sudan,no_json,1
+gpt-oss-120b,Algeria,no_json,5
+gpt-oss-120b,Bahrain,no_json,4
+gpt-oss-120b,Cambodia,no_json,5
+gpt-oss-120b,Comoros,no_json,3
+gpt-oss-120b,Djibouti,no_json,6
+gpt-oss-120b,Egypt,no_json,4
+gpt-oss-120b,Iraq,no_json,4
+gpt-oss-120b,Jordan,no_json,4
+gpt-oss-120b,Kuwait,no_json,6
+gpt-oss-120b,Lebanon,no_json,5
+gpt-oss-120b,Libya,no_json,8
+gpt-oss-120b,Malawi,no_json,9
+gpt-oss-120b,Maldives,no_json,3
+gpt-oss-120b,Mauritania,no_json,4
+gpt-oss-120b,Morocco,no_json,7
+gpt-oss-120b,Oman,no_json,4
+gpt-oss-120b,Palestine,no_json,4
+gpt-oss-120b,Qatar,no_json,4
+gpt-oss-120b,Saudi Arabia,no_json,4
+gpt-oss-120b,Somalia,no_json,1
+gpt-oss-120b,Sudan,no_json,6
+gpt-oss-120b,Syria,no_json,7
+gpt-oss-120b,Tunisia,no_json,6
+gpt-oss-120b,United Arab Emirates,no_json,2
+gpt-oss-120b,Uruguay,no_json,2
+gpt-oss-120b,Yemen,no_json,8
+olmo-2-7b-instruct,Bahrain,no_json,2
+olmo-2-7b-instruct,Comoros,no_json,2
+olmo-2-7b-instruct,Djibouti,no_json,1
+olmo-2-7b-instruct,Egypt,no_json,1
+olmo-2-7b-instruct,Iraq,no_json,3
+olmo-2-7b-instruct,Jordan,no_json,1
+olmo-2-7b-instruct,Kuwait,no_json,2
+olmo-2-7b-instruct,Lebanon,no_json,2
+olmo-2-7b-instruct,Libya,no_json,2
+olmo-2-7b-instruct,Malawi,no_json,2
+olmo-2-7b-instruct,Maldives,no_json,1
+olmo-2-7b-instruct,Mauritania,no_json,2
+olmo-2-7b-instruct,Palestine,no_json,1
+olmo-2-7b-instruct,Qatar,no_json,2
+olmo-2-7b-instruct,Saudi Arabia,no_json,1
+olmo-2-7b-instruct,Somalia,no_json,1
+olmo-2-7b-instruct,Sudan,no_json,2
+olmo-2-7b-instruct,Syria,no_json,3
+olmo-2-7b-instruct,Tunisia,no_json,2
+olmo-2-7b-instruct,United Arab Emirates,no_json,1
+olmo-2-7b-instruct,Uruguay,no_json,3
+olmo-2-7b-instruct,Yemen,no_json,1
+qwen2.5-7b-instruct,Yemen,no_json,1

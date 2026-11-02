@@ -114,3 +114,15 @@ In the smoke test of the extra models, Mistral 7B wrote `"visa_score": "80"` (a 
 It now reads a whole number between 0 and 999 written as text ("80") and still rejects words and decimals; a number outside 0 to 100 is still a bad value.
 No answer of the three audited models changes: all their answers were read before (the only bad values were the object-valued reasoning
 field, D-parser note in `pipeline/parse_answers.py`). Re-parsing the audited batches gives the same tables.
+
+## D7, 2026-11-02: bigger models (E3), after the extra small models
+
+**Why.** In E2 (D5) one small model, Qwen2.5 7B, showed a gap of 29 points between nationalities (the audited models: 1.6 to 3.4; the other extra
+models: 0 to 2), and its reasons raised doubts about money and credibility far more often for Somali, Syrian and Iraqi applicants. The project
+lead asked for bigger models for the report. Two questions: does that gap shrink with size inside one family, and does a large model behave like
+the audited ones?
+
+**Which.** Qwen2.5 32B and 72B (the same family as the 7B model, from the same maker; downloaded on 2026-11-02, revisions pinned to the current head
+before any answer was seen) and Mistral Medium 3.5 128B (already on the cluster). Exploratory, like E2; the audited models stay the three of 2026-11-01.
+
+**What.** The base design unchanged (blocks 1, 2, 3, 5, 6), sharded; two to four GPUs per job for the large ones (tensor parallel).
