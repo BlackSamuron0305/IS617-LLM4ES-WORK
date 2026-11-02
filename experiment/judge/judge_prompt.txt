@@ -10,6 +10,6 @@ passport_country_conditions: Does the reason refer to conditions in the country 
 doubts_residence: Does the reason doubt the applicant's right to stay in, or ties to, the United Arab Emirates because of the applicant's residence or citizenship status, for example that the right to stay depends on the job or that the applicant is not a citizen there?
 contradicts_application: Does the reason state a fact about the applicant that is not in the application or that contradicts it? References to nationality do not count here.
 
-names_legal_ground: Does the reason name at least one of the grounds for refusal listed above, or one of the five items of the application (purpose, travel medical insurance, return flight, accommodation, means of subsistence) as the point it relied on? A reason that names only the applicant's nationality, passport, country conditions or residence status answers no.
+names_legal_ground: Does the reason base the score on the requirements of the visa, that is, on at least one of the grounds for refusal listed above or on one of the five items of the application (purpose, travel medical insurance, return flight, accommodation, means of subsistence)? Answer yes when the reason names such a ground or item, also when it says that the ground does not apply or that the item is in order. Answer no when it names none of them, or only the nationality, the passport, conditions in the passport country or the residence status.
 
 evidence: Copy the words of the reason that led to any "yes". If every answer is "no", give an empty string.

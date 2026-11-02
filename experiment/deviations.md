@@ -63,3 +63,13 @@ difference this small, and the main run measures H4 (the money check) on all ans
 other team members have not seen it. Nothing in this decision looked at nationality results.
 
 **Frozen for the main run:** tag `prereg-main` (the prompts, applicants, guidance and countries as of that commit).
+
+## D3, 2026-11-02: wording of the judge code `names_legal_ground`
+
+Smoke test of the judge (OLMo 3.1 32B, 60 reasons of pilot 2, job 8223996): all 60 answers could be read,
+and every code but one was "no", as expected for clean applications. `names_legal_ground` was "no" for 58 of the
+60 reasons, although they all say "No ground in section 2 applies" and name the items of the application. The
+judge had read the code as "names a ground *for refusal that applies*". The code is clarified to say that
+it is also yes when a ground is said not to apply or an item is in order (`experiment/judge/judge_prompt.txt`).
+No result on nationality was looked at. The judge is exploratory and still has to agree with the team's own
+coding of a sample by hand before any code is used.
