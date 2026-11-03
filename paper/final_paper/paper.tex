@@ -87,13 +87,14 @@ from it. (press) is a press report, (party) a statement by one side of a dispute
         (2) Can the 22 countries be grouped into rich, normal and poor by how the models
         rate them? (3) Does a paragraph saying that nationality is not a ground for a
         higher rating change this? (4) What do the differences cost an applicant?
-  \item Method: 20 synthetic applications for an Australian visitor visa, from people
-        born and living in the United Arab Emirates; 26 nationalities (the 22 and four
-        unrelated ones as a noise check), changed in the nationality and passport lines
-        only; a one-page guidance in two versions; risk score 0--100, rating, further
-        checks, recommendation; four open-weight models.
-  \item Results: nothing has been run as of 2026-10-10. Write this part last, and only
-        from the blocks that were run.
+  \item Method: 30 synthetic applications (plus a boundary set of 10) for a Schengen visa to Estonia, lodged by people born and living in the United Arab
+        Emirates; 26 nationalities (the 22 and four unrelated ones as a noise check), changed in the nationality and passport lines only; a guidance
+        paraphrasing Article 32(1) of the Visa Code, a score from 0 to 100 and a reason, three audited open-weight models (Qwen3 32B, Gemma 4 31B, Mistral Small 3.2 24B)
+        and nine more as an exploratory extension; a judge model codes the reasons.
+  \item Results (2026-11-03; details in the results note below): among the 21 nationalities that need a visa the highest and the lowest score differ by 1.6 to 3.4
+        points in the audited models (permutation test, $p = 0.0002$), against 5 points we called worth noting; Syria, Yemen, Sudan, Iraq, Libya and Somalia are lowest;
+        the paragraph ``nationality is not a ground'' does not shrink the gaps; one small extra model (Qwen2.5 7B) shows 29 points and reasons that raise unsupported
+        doubts about money for some passports; the gap falls to 1.7 points at 32B and 72B.
   \item Last sentence: what follows. The data decide: the models treat the 22 alike, as
         the rules do, or they do not.
 \end{itemize}}
@@ -121,106 +122,33 @@ from it. (press) is a press report, (party) a statement by one side of a dispute
         apart: Libya, Sudan and Tunisia among the five most negative demonyms in GPT-2
         text. Sources: \texttt{abid2021persistent} (F), \texttt{hemmatian2023muslim}
         (F), \texttt{venkit2023nationality} (F).
-  \item \textbf{3. From a religion to a passport.} The Australian visa form asks for the
-        country of the passport, the place of birth, other citizenships, the country the
-        person lives in and the legal status there. It asks for no religion. Link to the
-        motivation: in a hiring experiment in five European countries, applicants from
-        Muslim-majority countries were at a disadvantage in four of them even without
-        any sign of religion. Against the link: in a US survey experiment people
-        penalised the label ``Muslim'' but not the label ``Arab''; in a study of asylum
-        preferences religion counted for more than the country. Sources:
-        \texttt{homeaffairs2018form1419} (F, old paper form in a third-party copy),
-        \texttt{distasio2021muslim} (F), \texttt{calfano2021evaluating} (A),
+  \item \textbf{3. From a religion to a passport.} The Schengen visa application asks for the travel document, not for a religion; the Australian form 1419 (older design,
+        \texttt{homeaffairs2018form1419}, F) asks for the country of the passport, the place of birth, other citizenships, the country the person lives in and the legal
+        status there, also no religion. Link to the motivation: in a hiring experiment in five European countries, applicants from Muslim-majority countries were at a
+        disadvantage in four of them even without any sign of religion. Against the link: in a US survey experiment people penalised the label ``Muslim'' but not the label
+        ``Arab''; in a study of asylum preferences religion counted for more than the country. Sources: \texttt{distasio2021muslim} (F), \texttt{calfano2021evaluating} (A),
         \texttt{bansak2016economic} (F).
   \item \textbf{4. Why the 22.} 53 countries had a Muslim majority in 2020, on three
         continents. The 22 Arab League members are all among them (lowest share:
         Lebanon, 68\%), share a language and are commonly put under one label. Source:
         \texttt{pew2025religious} (F, data file).
-  \item \textbf{5. The yardstick: the official rules are the same for all 22.} We do not
-        ask how strong a passport is. For the Australian visitor visa: none of the 22
-        can use the two electronic permits, so all need the same visa; the same online
-        form; the same fee (AUD 250); the same legal test (genuine intention to stay
-        temporarily, adequate means). The law allows a list of risk groups by
-        nationality; the last list was revoked in 2009 and none was found in force. No
-        ban or suspension for any of the 22 as of 10 October 2026. The department's
-        instruction (version of 2016): a profile is ``merely an alert'', ``is not
-        grounds to refuse to grant a visa'', and ``all applications must be considered
-        on their own merits''. So identical applications should get the same assessment;
-        a systematic difference among the 22 is what we call bias. Sources:
-        \texttt{homeaffairs2026eta} (F), \texttt{homeaffairs2026evisitor} (F),
-        \texttt{au2021lin21056} (F), \texttt{au1994migrationregs} (F, named clauses),
-        \texttt{au2008riskfactor} (F), \texttt{au2009revocation} (F),
-        \texttt{homeaffairs2018genguide} (F, the sections on genuine temporary stay and
-        criterion 4011). Table: \texttt{experiment/countries/official\_rules.csv}.
-  \item \textbf{6. Why Australia.} The only destination checked where the rules are the
-        same for all 22. Elsewhere the rules sort the nationalities: Emirati citizens
-        need no visa for the Schengen area; Gulf citizens travel to the United Kingdom,
-        Canada and New Zealand on an electronic permit; the United States bars six of
-        the 22 by proclamation. There a different answer follows from a rule and is not
-        a bias. Sources: \texttt{crs2025proclamation} (A), research note
-        \texttt{destination\_and\_requirements.md}.
-  \item \textbf{7. Same rules, different outcomes in practice.} Australian visitor visas
-        granted in 2019--20: 96.5\% for Omani, 21.9\% for Somali citizens (our
-        calculation from the counts). Granted applications decided at the median in
-        about one day for the Gulf states, in 29 days for Syrian and 30 days for
-        Palestinian applicants. US visitor visas refused in fiscal year 2025: 2.2\% of
-        Emirati, 83.5\% of Somali applicants. These are real applicants in different
-        circumstances: they show what a model may have learned, not a bias by
-        themselves. Sources: \texttt{homeaffairs2020foi106} (F),
-        \texttt{homeaffairs2025da449} (F), \texttt{state2025refusal} (F).
-  \item \textbf{8. Machines already sort and rate visa applicants} (extended on
-        2026-10-12; the exact wording of every source is in the note after this one).
-        \emph{In use.} United Kingdom 2015--2020: green, amber, red; 96.36\% of green and
-        48.59\% of red visit applications issued in one office in early 2017;
-        nationality was one factor; stopped in August 2020 after a legal challenge.
-        Netherlands: profiles with nationality, age group and gender; 33\% rejected on
-        the intensive track, 3.5\% on the normal one. Canada: sorts all visitor visa
-        applications from abroad into tiers, approves routine ones, ``never refuses
-        applications nor does it recommend refusals''. \textbf{Australia, our
-        destination}: analytics based on machine learning are used to ``predict risk in
-        visa programs''; the department says it ``does not use machine learning to make
-        administrative decisions''; what goes into the prediction is not public. United
-        States: a pilot gives visa cases that are already decided a score from 0 to 1
-        for review by managers; it is ``not used as an applicant risk determination''.
-        \emph{Planned.} EU travel authorisation for visitors without a visa: ``an
-        algorithm enabling profiling'' on ``age range, sex, nationality''; start
-        scheduled for the last quarter of 2026. Germany: a bill on AI in migration
-        offices, first reading on 8 October 2026. South Africa: one press report of a
-        plan to let machine learning take yes or no decisions on travel permits.
-        \emph{What kind of software.} The British tool was a decision tree and the Dutch
-        one is rules written by officials. Machine learning is named in the Australian
-        document and for the US pilot; Canada speaks of ``advanced analytics''. EU law
-        classes systems that assist in examining visa applications as high-risk. None of
-        these is a language model. Sources: \texttt{icibi2017entry} (F),
-        \texttt{ukhrb2020streaming} (F, secondary), \texttt{foxglove2020visa} (party),
-        \texttt{lighthouse2023ethnic} (F in the passages used, journalism),
-        \texttt{nlminister2023iob} (F, two answers), \texttt{ircc2022aia} (F),
-        \texttt{ircc2025qpnote} (F), \texttt{homeaffairs2024foi} (F),
-        \texttt{state2026aiinventory} (F), \texttt{eu2018etias} (F, one article),
-        \texttt{meier2026algorithmic} (F), \texttt{aabmi2025kieckpunkte} (F),
-        \texttt{bundestag2026kimvg} (F, one paragraph), \texttt{mawson2026machine}
-        (press), \texttt{eu2021vis} (A), \texttt{eu2024aiact} (A).
-  \item \textbf{9. Why the applicants live in the United Arab Emirates} (Laith's
-        decision of 2026-10-10: the most realistic setting). Birth there gives no
-        citizenship to the child of two foreign parents. 88.5\% of the residents were
-        foreigners in the last official figures that give the split. 298,064
-        applications for a Schengen visa were made in the Emirates in 2025, although
-        Emirati citizens need none; 24.2\% were not issued (our calculation). Every
-        application states the same legal status: a lawful long-term resident with the
-        full right to live and work there. Such a status exists for foreigners, for
-        example the Golden Visa: ``a long-term, renewable residence visa valid for 5 or
-        10 years'' without a sponsor; it is not given by birth. Sources:
-        \texttt{uae1972nationality} (A, English abstract of the law),
-        \texttt{khaleej2011expats} (press, reporting the statistics office),
-        \texttt{ec2026visa} (F, data file), \texttt{uae2026goldenvisa} (A).
-  \item \textbf{10. Gap and what we do.} Closest study: GPT-3.5 and GPT-4 choose between
-        two immigrants; ten countries, among them Iraq, Sudan and Somalia; most country
-        effects not significant. A public test set has a visitor visa case but varies
-        age, gender and race. No study was found that changes only the nationality in a
-        visa application or compares the 22. This rests on limited searches of 10
-        October 2026: write ``to our knowledge'' only after a systematic search. Sources:
-        \texttt{mao2025gatekeepers} (F), \texttt{tamkin2023evaluating} (F),
-        \texttt{anthropic2023discrimeval} (F, data files).
+  \item \textbf{5. The yardstick: Article 32(1) of the Visa Code.} We do not ask how strong a passport is. Article 32(1) of Regulation (EC) No 810/2009 lists the grounds on which a
+        visa shall be refused (false travel document; no justification of the purpose and conditions of the stay; no proof of sufficient means of subsistence; three months
+        already stayed in the current six; an alert in the Schengen Information System; a threat to public policy, internal security, public health or international relations;
+        no adequate travel medical insurance; reasonable doubts about the documents, the statements or the intention to leave). Nationality is not among them, and a refusal has
+        to state its reasons (Article 32(2)). The Estonian ministry's page (read through a fetch tool) gives the fee (EUR 90, not refunded), travel medical insurance of at least
+        EUR 30,000 and EUR 70 per day of stay as sufficient means. For the 21 nationalities that need the visa the grounds are the same, so identical applications should get
+        the same assessment; a systematic difference is what we call bias. Source text: screenshot supplied by Laith (EUR-Lex layout); \texttt{experiment/policy/README.md},
+        \texttt{experiment/countries/README.md}. Not read in full text: Articles 14, 15, 21 (risk of illegal immigration), 22 and 25a.
+  \item \textbf{6. Why Estonia, and what it costs.} Laith's choice of 2026-11-01: a written list of grounds and the duty to give reasons let a model's reason be held against the
+        regulation, and Laith reports that Estonia is adding AI to public services including visa decision support. \textbf{That claim is not confirmed}: searches found the
+        national AI programme Eesti.ai and nothing about visas. Cost of the choice: Emirati citizens (and Uruguayans, a placebo) need no Schengen visa, so the rules are the
+        same for 21 of the 22 and the two exempt rows are reported apart. The Australian design had the opposite property (same rules for all 22).
+  \item \textbf{7. Same rules, different outcomes in practice.} Real consulates refuse and grant nationalities at different rates although the grounds are the same.
+        We did not read the Schengen statistics by nationality for this design. For the Australian design (older notes, git history) granted visitor visas in 2019--20 were
+        96.5\% for Omani and 21.9\% for Somali citizens (our calculation), and US visitor visas refused in fiscal year 2025 were 2.2\% of Emirati and 83.5\% of Somali
+        applicants (\texttt{homeaffairs2020foi106} F, \texttt{state2025refusal} F). These are real applicants in different circumstances: they show what a model may have learned,
+        not a bias by themselves.
 \end{itemize}}
 
 \teamnote{exact wording behind step 8 (fact check of 2026-10-12)}{%
@@ -475,166 +403,58 @@ The rubric asks for what is relevant to our work, not for a list of papers.
 % Rubric [10]: Describe your data sources including descriptive statistics and plots.
 % Carefully document all references to data sources.
 
-\teamnote{update of 2026-11-01: destination Estonia, score only, and the applicant filter}{%
-\textbf{The notes below this one still describe the Australian design (commit af0e409).
-Rewrite them for Estonia before using them.}
+\teamnote{materials (Estonia design; replaces the Australian notes of 2026-10-10; not report text)}{%
 \begin{itemize}
-  \item Destination: a Schengen visa (type C, short stay, tourism) to Estonia, lodged in
-        the United Arab Emirates. Yardstick: Article 32(1) of the Visa Code lists the
-        grounds on which a visa is refused; nationality is not one of them. Emirati and
-        Uruguayan citizens need no visa and are reported apart; the main comparison among
-        Arab nationalities is among 21. Sources: \texttt{experiment/policy/README.md},
-        \texttt{experiment/countries/README.md}, \texttt{research/visa\_scenario/estonia\_scenario.md}.
-  \item Output: one score from 0 to 100 (0 = the visa should be refused) and a reason; no
-        decision. The reason is coded by the judge, among others for whether it names a
-        ground of Article 32(1).
-  \item Application: the five items of the Estonian checklist (purpose, travel medical
-        insurance, return flight, accommodation, means of subsistence).
-  \item \textbf{Filter (to be described in the Data or Methods section).} The 20 applicants
-        were simulated as complete records with name, sex, date of birth, place of birth,
-        address, phone, e-mail and passport number, and these fields were removed before
-        any model saw an application, so that the passport is the only thing that differs.
-        The filter is a table, field by field, with the reason
-        (\texttt{experiment/applicants/field\_filter.csv}), and the builder checks that no
-        removed value reaches a prompt. Residual signals that remain: the family line, the
-        length of employment, the travel history and the occupation
-        (\texttt{experiment/applicants/README.md}).
-  \item Prompts: the guidance as a paraphrase and as the word-for-word Article 32(1), one
-        variant with an instruction to cite the ground, and ten more variants
-        (\texttt{experiment/prompts/README.md}).
-  \item Not confirmed: that Estonia uses AI for visa decision support. Do not write it
-        without a source.
+  \item \textbf{Applications.} 30 invented applications (10 plain, 10 with one mild point, 10 with two) and 10 boundary applications with three mild points each (every way to choose three
+        of five: new job, no travel abroad, contract ending, long stay, relative in Estonia). Everyone was born in the United Arab Emirates, has lived there since birth, is employed
+        there and applies there; every application states the same legal status (``lawful long-term resident with the full right to live and work there''). The application has
+        the five items of the Estonian checklist (purpose, travel medical insurance, return flight, accommodation, means of subsistence); funds are on five levels, AED 2,000 to
+        10,500, of which the lowest is below the EUR 560 that 8 days at EUR 70 need; the application states funds and required funds in euros (rate AED 4.2, assumption).
+        Files: \texttt{experiment/applicants/}.
+  \item \textbf{Filter (to document).} Complete records with name, sex, date of birth, place of birth, address, phone, e-mail and passport number were simulated and removed before any
+        prompt was built (\texttt{field\_filter.csv}, field by field with the reason); the builder checks that no removed value reaches a prompt. Residual signals: family line,
+        length of employment, travel history, occupation. Background on the Emirates (nationality law, 88.5\% foreign residents, 298,064 Schengen applications in 2025) is in
+        \texttt{experiment/applicants/README.md}.
+  \item \textbf{Nationalities.} 22 Arab League nationalities and 4 placebo nationalities (Uruguay, Malawi, Maldives, Cambodia); the Emirati and Uruguayan rows need no visa in reality and
+        are reported apart; Comoros, Djibouti and Somalia are flagged as contested Arab identity. Wealth groups from the World Bank classification of 10 October 2026: rich (six
+        Gulf states), normal (12), poor (four, Somalia, Sudan, Syria, Yemen), fixed before any run.
+  \item \textbf{Prompts.} A main prompt (role, task, decision, procedure, output format, guidance) and one application in three wordings. The guidance paraphrases Article 32(1) and the
+        ministry's page; the score bands are 80--100 no ground applies, 50--79 a question that the application explains, 20--49 an unexplained doubt, 0--19 refuse. Block 2 adds
+        ``nationality is not a ground for a lower score''. Twelve variants change one thing each (word-for-word Article 32, an instruction to cite the ground, no guidance,
+        reasoning first, risk scale, a final say, two time framings, two personas, two other versions of the nationality paragraph). Appendix: \texttt{experiment/prompts/},
+        \texttt{experiment/policy/}.
+  \item \textbf{Models and runs.} Audited: Qwen3 32B (China), Gemma 4 31B (USA), Mistral Small 3.2 24B (Europe). Exploratory extension: Qwen2.5 7B, 32B and 72B, Falcon3 7B, Phi-3.5 mini,
+        OLMo 2 7B, Mistral 7B, Mistral Medium 3.5 128B, gpt-oss-120b. Open weights, revisions pinned (\texttt{experiment/models.csv}), served with vLLM on bwUniCluster. Temperature 0.7,
+        top\_p 1, at most 800 new tokens, five repetitions in blocks 1, 2, 5 and 6. Per model: block 1 11,700 answers, block 2 11,700, block 3 (other savings) 9,360, block 4
+        (twelve variants, one repetition) 28,080, blocks 5 and 6 (boundary) 7,800 each. Total about 571,000 answers; unreadable answers: 3 of Mistral Small, 2 of Mistral Medium, 1 each of Qwen2.5 7B and
+        Falcon3 7B, 38 of OLMo 2 7B and 125 of gpt-oss-120b.
+  \item \textbf{Judge.} OLMo 3.1 32B codes only the free-text reason, blinded (nationality words replaced), with six yes/no codes; not validated: the sample of 200 is waiting for the
+        team's hand coding (\texttt{experiment/judge/validation/}).
+  \item \textbf{Data.} Raw answers are in \texttt{data/raw/} (compressed, 77 MB in the repository); tables in \texttt{results/}.
 \end{itemize}}
-
-\teamnote{materials}{%
-\begin{itemize}
-  \item 20 applications for an Australian Visitor visa (subclass 600, Tourist stream),
-        one per occupation (the 20 occupations of the earlier designs). Incomes and
-        savings are invented.
-  \item Held constant in every application: born in the United Arab Emirates, has lived
-        there since birth, employed there on a fixed-term contract, pays for the visit
-        alone, a holiday with a reserved return flight and confirmed leave, no earlier
-        visit to Australia, no refusal or overstay anywhere, no convictions, documents
-        and biometrics checked.
-  \item 10 plain applications, 10 with one mild point named in the guidance: a new job
-        (2), no travel outside the Emirates so far (2), a stay of 56 days (2), a brother
-        or sister in Australia (2), a job contract that ends in June 2027 without a
-        confirmed renewal (2).
-  \item Savings on five levels (AED 16,000 to 81,000, each 1.5 times the one before),
-        four applicants per level, assigned so that they are unrelated to income and to
-        the indicators.
-  \item Nationality: 26 conditions. The 22 Arab League nationalities, and four unrelated
-        nationalities as a noise check (Uruguayan, Malawian, Maldivian, Cambodian; the
-        four of the earlier designs, chosen before any data). No version without a
-        nationality.
-  \item Three wealth groups among the 22, from the World Bank's income classes: rich
-        (6), normal (12), poor (4). Column \texttt{wealth\_group} in
-        \texttt{applicant\_nationalities.csv}. Fixed before any run; do not move a
-        country after seeing results.
-  \item Legal status in the Emirates: the same line in every application, ``lawful
-        long-term resident with the full right to live and work there'' (Laith's
-        decision; no special case for any nationality).
-  \item What changes with the nationality: the nationality line and the passport line.
-        Nothing else; a script checks this for all 520 applications.
-  \item The official rules for each of the 26 nationalities are in
-        \texttt{official\_rules.csv}: visa needed, electronic permits, form, fee, legal
-        test, risk list, ban. A script checks that they are the same for all. The same
-        table has the real grant and refusal rates, for context only.
-  \item The guidance: one page, a paraphrase of the public criteria. Second version: one
-        more paragraph saying that nationality is not a ground for a higher rating.
-  \item Everything is synthetic: no real applicant or employer.
-  \item Still needed for the rubric: descriptive statistics and plots of the answers.
-\end{itemize}
-Source: the README files under \texttt{experiment/}.}
-
-\teamnote{what an application looks like}{%
-The application shows a reference number instead of a name. The two lines that change
-(nationality and travel document), and the ones around them:
-\begin{quote}\ttfamily
-Place of birth: Dubai, United Arab Emirates\\
-Nationality: Jordanian\\
-Travel document: Jordanian passport, valid until 2033\\
-Country of usual residence: United Arab Emirates, since birth\\
-Legal status in the United Arab Emirates: lawful long-term resident with the full
-right to live and work there
-\end{quote}
-\begin{itemize}
-  \item A name cannot tell Arab countries apart, and it adds signals we do not want
-        (gender, religion).
-  \item The real form asks for the sex of the applicant; ours does not. Say so as a
-        limitation.
-  \item Not every one of the 26 nationalities has a sizeable community in the Emirates,
-        and the lower-paid jobs are in reality mostly done by people who came as adults.
-        Say so as a limitation.
-\end{itemize}}
-
-\teamnote{nationalities whose Arab identity is contested}{%
-Comoros, Djibouti and Somalia are Arab League members whose Arab identity is contested.
-They stay in every comparison. Point them out as especially interesting cases and look
-at where they fall in the results.}
 
 \section{Methods}
 \label{sec:methods}
-% Rubric [10]: Explain how you filtered data, normalized values, computed additional
-% variables, etc. Detail the statistical analyses and other methods you will apply to
-% assess your research question(s). Carefully document all references to methods and
-% packages used.
+% Rubric [10]: Explain how you filtered data, normalized values, computed additional variables,
+% etc. Detail the statistical analyses and other methods you will apply to assess your
+% research question(s). Carefully document all references to data sources.
 
-\teamnote{experiment setup}{%
+\teamnote{methods (not report text)}{%
 \begin{itemize}
-  \item One run: a main prompt (the model is a case assistant who pre-assesses
-        applications; a visa officer takes every decision; the guidance), then a message
-        with one application and the request.
-  \item Answer: a JSON object with a risk score 0--100, a rating (low, medium, high), a
-        list of further checks from a menu of six, a recommendation (grant, refer,
-        refuse) and a short reason.
-  \item Why this form: real tools sort into three levels, send the highest level to
-        extra checks and leave the decision to a person. ``Refuse'' as a recommendation
-        is not documented for any real system; it is there to measure the harshest
-        outcome.
-  \item Two versions of the guidance; three wordings of the request.
-  \item Five repetitions per prompt are planned in blocks 1 and 2; the decoding settings
-        are not decided.
-  \item Models: Qwen3 8B, Llama 3.1 8B, Gemma 3 12B, Mistral Small 3.2 24B. State the
-        exact versions and settings.
-  \item \texttt{pipeline/build\_runs.py} builds and checks the prompts. It calls no
-        model. The code that sends the runs does not exist yet.
-  \item How the answers are analysed: not decided as of 2026-10-10.
-\end{itemize}
-Planned runs per model:\par\smallskip
-\begin{tabular}{@{}lr@{}}
-\toprule
-Block & Runs \\
-\midrule
-1 Guidance without the nationality paragraph & 7,800 \\
-2 Guidance with the nationality paragraph & 7,800 \\
-3 Block 1 with the four other savings levels & 6,240 \\
-\midrule
-Total & 21,840 \\
-\bottomrule
-\end{tabular}\par\smallskip
-Blocks 1 and 2: 20 applications $\times$ 26 nationalities $\times$ 3 wordings $\times$ 5
-repetitions. Block 3: 20 $\times$ 4 $\times$ 26 $\times$ 3, one run each. Source:
-\texttt{experiment/README.md}.}
-
-\teamnote{cost measures (draft; fix them before the first run)}{%
-\begin{itemize}
-  \item \textbf{1. Savings needed (main).} From block 3: how many points the score falls
-        when savings are 1.5 times as high. From blocks 1 and 2: the gap in points
-        between two passports. Gap divided by fall per step gives steps of savings;
-        from a stated starting amount this is a sum in dirhams. Report a range, and each
-        model on its own. If a model does not react to savings, the measure cannot be
-        computed for it: say so.
-  \item \textbf{2. Fees lost per 1,000 identical applicants (illustration).} Difference
-        in the share of ``refuse'' recommendations times 1,000 times AUD 250. If the
-        models hardly ever refuse: apply the refusal shares the UK tool had for its
-        three levels (3.6\%, 18.9\%, 51.4\%; one office, two months of 2017) to the
-        model's ratings, and label the result as borrowed from another country and year.
-  \item \textbf{3. Further checks.} The number of checks named. A burden in time; no
-        price list was found.
-  \item No total for a country: it would assume that a model decides real applications.
-\end{itemize}
-Source: \texttt{experiment/costs/README.md}.}
+  \item \textbf{Outcome and effect.} The score (0 = refuse, 100 = clearly grant). For each application cell (same applicant, savings, wording and repetition) the mean over the
+        nationalities is removed, so the applicant mix cancels; a nationality's effect is its mean of these deviations. Spread = standard deviation of the 21 nationality means
+        that need a visa, and gap = highest minus lowest.
+  \item \textbf{Confirmatory tests} (\texttt{experiment/analysis\_plan.md}, fixed before the first run; \texttt{pipeline/analyze\_main.py}). H1: spread across the 21, permutation test
+        (nationality labels shuffled within application cells, 5,000 shuffles, one-sided), Holm correction over models. H2: Spearman correlation of wealth rank and nationality mean,
+        same shuffles; adjusted Rand index of a three-way split. H3: change of the spread with the paragraph on nationality (paired permutation). H4: the score at AED 3,000 minus AED
+        2,000, at least 10 points (does the model react to a real ground). Smallest effect of interest: 5 points.
+  \item \textbf{Exploratory.} Variants (gap with one repetition against the gap that chance gives, from the same shuffles), the boundary set, the Gulf check, the cost measures
+        (\texttt{pipeline/costs.py}), the judge's codes, the nine extra models.
+  \item \textbf{Changes after the plan was fixed} (\texttt{experiment/deviations.md}): D1 funds in euros and ten two-point applicants after pilot 1 (99.5\% of scores at 80 or more,
+        no reaction to missing funds); D2 pilot 2 missed two of four checks narrowly (91.2\% against 90\%, 9.3 against 10 points) and the main run went ahead; D3 clearer wording of one
+        judge code; D4 boundary set; D5 and D7 extra models; D6 the parser reads a whole number written as text. No result by nationality was used for any of them.
+  \item \textbf{Software.} Python standard library for the pipeline and the tests (229 unit tests), matplotlib for figures, vLLM 0.29 for serving, Slurm on bwUniCluster.
+\end{itemize}}
 
 \section{Results}
 \label{sec:results}
@@ -751,7 +571,7 @@ Gemma 4 31B & 1.57 & 0.49 & 0.0002 & $-0.76$ & $-0.04$ (0.09) & $+28.4$ \\
         are the yardstick for that; with only four it is a rough one.
   \item Models may notice that this is a test (\texttt{vohra2026audit}, F;
         \texttt{needham2025large}, A).
-  \item All 20 applicants are ordinary. If a model answers ``low'' and ``grant'' for
+  \item The applications are clean or mildly doubtful, so scores sit near the ceiling; if a model answers the same for
         everybody, the rating cannot show a difference; the score may.
   \item A result of ``no difference'' is an answer too: the models then do what the
         rules ask.
