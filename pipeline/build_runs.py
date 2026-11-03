@@ -112,6 +112,25 @@ def answer_block(task, first_key):
     return task[task.index(marker):] if marker in task else None
 
 
+APPLICATION_CHANGES = ("", "home_country_line", "no_nationality_line", "no_document_line")
+DROPS_A_LINE = ("no_nationality_line", "no_document_line")
+
+
+def change_application(text, key):
+    # A variant may change the application itself, for the same text for every nationality (variants.csv, column application).
+    if not key:
+        return text
+    lines = text.split("\n")
+    if key == "no_nationality_line":
+        lines = [l for l in lines if not l.startswith("Nationality:")]
+    elif key == "no_document_line":
+        lines = [l for l in lines if not l.startswith("Travel document:")]
+    elif key == "home_country_line":
+        i = next(i for i, l in enumerate(lines) if l.startswith("Country of usual residence:"))
+        lines.insert(i + 1, "Home country (country of usual residence): United Arab Emirates")
+    return "\n".join(lines)
+
+
 def load_variants():
     variants = {}
     for row in read_table("prompts/variants.csv"):
@@ -230,6 +249,11 @@ def build_runs(which=None):
         if bool(variant["guidance"]) != (POLICY_PLACEHOLDER in main_prompt) or main_prompt.count(POLICY_PLACEHOLDER) > 1:
             problems.append(f"{name}: {POLICY_PLACEHOLDER} in the main prompt does not match the guidance column")
         tasks = {n: read_text(f"prompts/{variant['wordings']}/task_wording_{n}.txt") for n in WORDINGS}
+        change = variant.get("application", "")
+        if change not in APPLICATION_CHANGES:
+            problems.append(f"{name}: unknown application change {change!r}")
+        these_nationalities = (read_table("countries/" + variant["nationality_set"]) if variant.get("nationality_set") else nationalities)
+        expected = 2 - (1 if change in DROPS_A_LINE else 0)
         for n, task in tasks.items():
             if task.count("{application}") != 1:
                 problems.append(f"{name}: task_wording_{n}.txt must contain {{application}} exactly once")
@@ -258,20 +282,20 @@ def build_runs(which=None):
                 levels = ([applicant["savings"]] if which_levels == "own"
                           else [x for x in savings_levels if x != applicant["savings"]])
                 for savings in levels:
-                    reference = build_application(template, applicant, nationalities[0], savings).split("\n")
-                    for nationality in nationalities:
-                        application = build_application(template, applicant, nationality, savings)
+                    reference = change_application(build_application(template, applicant, these_nationalities[0], savings), change).split("\n")
+                    for nationality in these_nationalities:
+                        application = change_application(build_application(template, applicant, nationality, savings), change)
                         demonym = nationality["demonym"]
                         # An application may show the nationality in two lines only, and two
                         # nationalities may differ in those two lines only.
-                        if application.count(demonym) != 2:
+                        if application.count(demonym) != expected and not variant.get("nationality_set"):
                             problems.append(f"{applicant['applicant_id']} / {demonym}: the demonym occurs "
-                                            f"{application.count(demonym)} times, expected 2")
+                                            f"{application.count(demonym)} times, expected {expected}")
                         lines = application.split("\n")
                         differing = sum(a != b for a, b in zip(reference, lines))
-                        if len(lines) != len(reference) or differing not in (0, 2):
+                        if len(lines) != len(reference) or differing not in (0, expected):
                             problems.append(f"{applicant['applicant_id']} / {demonym}: differs from the first "
-                                            f"nationality in {differing} lines, expected 2")
+                                            f"nationality in {differing} lines, expected {expected}")
                         for n in WORDINGS:
                             user = tasks[n].replace("{application}", application)
                             for part in (system, user):
@@ -295,7 +319,7 @@ def build_runs(which=None):
                                 "wealth_group": nationality["wealth_group"],
                                 "visa_required": nationality["visa_required"],
                                 "wording": n,
-                                "repetitions": REPETITIONS[block],
+                                "repetitions": int(variant.get("repetitions") or REPETITIONS[block]),
                                 "system": system,
                                 "user": user,
                             })

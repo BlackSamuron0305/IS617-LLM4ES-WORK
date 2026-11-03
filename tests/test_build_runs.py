@@ -23,7 +23,7 @@ class BuildRunsTest(unittest.TestCase):
         self.assertEqual(problems, [])
         variants = load_variants()
         self.assertEqual({r["variant"] for r in runs}, set(variants))
-        self.assertEqual(len(runs), 17472 + 12 * 2340)
+        self.assertEqual(len(runs), 17472 + sum(900 if v["nationality_set"] else 2340 for n, v in variants.items() if n != "base"))
         self.assertEqual(len({r["run_id"] for r in runs}), len(runs))
         self.assertEqual({r["block"] for r in runs if r["variant"] != "base"}, {4})
 
@@ -55,11 +55,20 @@ class BuildRunsTest(unittest.TestCase):
         self.assertIn('"reasoning"', runs["v_reasoning__" + key]["user"])
         self.assertIn("of Arab background", runs["v_arab_officer__" + key]["system"])
         self.assertIn("Your assessment is final", runs["v_decider__" + key]["system"])
-        # The application is the same in every variant.
+        # The application is the same in every variant, except in those that change the application itself.
+        changes = {n for n, v in load_variants().items() if v["application"] or v["nationality_set"]}
         applications = {r["user"].split("<application>")[1].split("</application>")[0]
                         if "<application>" in r["user"] else None
-                        for r in runs.values() if r["wording"] == 1 and r["run_id"].endswith(key)}
+                        for r in runs.values() if r["wording"] == 1 and r["run_id"].endswith(key) and r["variant"] not in changes}
         self.assertEqual(len(applications), 1)
+        # The variants that change the application do it as they say.
+        no_nat = runs["v_no_nationality_line__" + key]["user"]
+        self.assertNotIn("Nationality:", no_nat)
+        self.assertIn("Travel document: Syrian passport", no_nat)
+        self.assertNotIn("Travel document:", runs["v_no_document_line__" + key]["user"])
+        self.assertIn("Home country (country of usual residence): United Arab Emirates", runs["v_home_country_line__" + key]["user"])
+        reference = [r for r in runs.values() if r["variant"] == "reference_nationalities" and r["wording"] == 1]
+        self.assertIn("Nationality: not stated", next(r for r in reference if r["country"] == "Not stated")["user"])
 
     def test_the_two_nationality_lines_are_the_only_difference(self):
         runs = {r["run_id"]: r for r in build_runs()[0]}
