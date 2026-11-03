@@ -1,0 +1,13 @@
+model,variant,n,range,sd_of_means,syria,mean_score
+falcon3-7b-instruct,base,1890,2.4,0.61,-0.9,89.56
+gemma-4-31b-it,base,1890,1.72,0.46,-1.18,78.9
+gpt-oss-120b,base,1883,2.97,0.79,0.01,74.48
+mistral-7b-instruct-v0.3,base,1890,2.38,0.58,-0.68,79.97
+mistral-medium-3.5,base,1890,1.39,0.38,-0.41,86.03
+mistral-small-3.2-24b-instruct,base,1890,3.72,0.84,-2.29,82.41
+olmo-2-7b-instruct,base,1890,1.5,0.38,-0.07,92.55
+phi-3.5-mini-instruct,base,1890,0.06,0.02,-0.01,80.01
+qwen2.5-32b-instruct,base,1890,2.34,0.49,0.26,81.64
+qwen2.5-72b-instruct,base,1890,1.79,0.55,0.66,80.16
+qwen2.5-7b-instruct,base,1890,32.26,8.86,-18.24,76.79
+qwen3-32b,base,1890,4.44,1.2,-3.11,86.31

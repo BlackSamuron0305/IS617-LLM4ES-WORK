@@ -1,0 +1,54 @@
+  ok: 4680   bad_value: 0 
+  ok: 4678   bad_value: 0 
+9360 rows from 2 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_falcon3-7b-instruct/answers.csv
+  ok: 4680   bad_value: 0 
+  ok: 4680   bad_value: 0 
+9360 rows from 2 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_gemma-4-31b-it/answers.csv
+  ok: 4602   bad_value: 0 
+  ok: 4597   bad_value: 0 
+9360 rows from 2 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_gpt-oss-120b/answers.csv
+  ok: 4680   bad_value: 0 
+  ok: 4680   bad_value: 0 
+9360 rows from 2 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_mistral-7b-instruct-v0.3/answers.csv
+  ok: 3120   bad_value: 0 
+  ok: 3120   bad_value: 0 
+  ok: 3120   bad_value: 0 
+9360 rows from 3 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_mistral-medium-3.5/answers.csv
+  ok: 4679   bad_value: 0 
+  ok: 4680   bad_value: 0 
+9360 rows from 2 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_mistral-small-3.2-24b-instruct/answers.csv
+  ok: 4671   bad_value: 0 
+  ok: 4674   bad_value: 0 
+9360 rows from 2 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_olmo-2-7b-instruct/answers.csv
+  ok: 4680   bad_value: 0 
+  ok: 4680   bad_value: 0 
+9360 rows from 2 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_phi-3.5-mini-instruct/answers.csv
+  ok: 4680   bad_value: 0 
+  ok: 4680   bad_value: 0 
+9360 rows from 2 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_qwen2.5-32b-instruct/answers.csv
+  ok: 3120   bad_value: 0 
+  ok: 3120   bad_value: 0 
+  ok: 3120   bad_value: 0 
+9360 rows from 3 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_qwen2.5-72b-instruct/answers.csv
+  ok: 4680   bad_value: 0 
+  ok: 4680   bad_value: 0 
+9360 rows from 2 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_qwen2.5-7b-instruct/answers.csv
+  ok: 4680   bad_value: 0 
+  ok: 4680   bad_value: 0 
+9360 rows from 2 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/dd_neg_qwen3-32b/answers.csv
+/opt/bwhpc/common/devel/python/3.11.7_gnu_11.4/bin/python3: No module named pipeline.deep_dive_report
+
+============================= JOB FEEDBACK =============================
+
+NodeName=uc2n872
+Job ID: 8265374
+Cluster: uc3
+User/Group: ma_lsandouk/ma_ma
+State: FAILED (exit code 1)
+Nodes: 1
+Cores per node: 2
+CPU Utilized: 00:00:52
+CPU Efficiency: 25.74% of 00:03:22 core-walltime
+Job Wall-clock time: 00:01:41
+Memory Utilized: 288.59 MB
+Memory Efficiency: 1.17% of 24.00 GB (24.00 GB/node)
