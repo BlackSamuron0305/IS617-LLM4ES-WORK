@@ -677,6 +677,21 @@ of Mistral could not be read, none of the others). Scores are on the grant scale
         when the savings go from AED 3,000 to 4,500, so a Syrian passport weighs about as much as AED 290 less in the bank at the AED 3,000 level (Yemen 290, Somalia 230);
         for Qwen the rise (0.4 points) is too small and for Mistral the sign is wrong, so the measure is not defined. Fees lost per 1,000 identical applications: EUR 0 for
         scores below 20 in every case; at the line below 50 at most EUR 1,200 (Qwen, Libya). Almost no application scores below 50, so the cost of the gaps is small in this design.
+  \item \textbf{Nine more models (exploratory, \texttt{experiment/deviations.md} D5 and D7; 365,040 answers; same design, blocks 1 to 3, 5 and 6).}
+        Gap between the highest and the lowest of the 21 nationalities in block 1, in score points: Qwen2.5 7B 29.0 (sd of the means 8.9), Mistral 7B 2.1,
+        Falcon3 7B 1.8, Qwen2.5 72B 1.7, Qwen2.5 32B 1.7, gpt-oss-120b 1.6, OLMo 2 7B 1.2, Mistral Medium 3.5 128B 1.0, Phi-3.5 mini 0.0 (it answers 80 to almost
+        everything); the audited models are 3.4 (Qwen3), 2.7 (Mistral Small) and 1.6 (Gemma). So the large gap belongs to one small model, and inside the Qwen2.5 family it
+        falls from 29.0 (7B) to 1.7 (32B and 72B). Somalia ($-21$), Syria ($-19$), Iraq ($-13$) are lowest for Qwen2.5 7B and the Gulf states about $+7$; for that model the
+        paragraph on nationality \emph{raises} the spread (+6.6 points). The wealth order is negative in the small models (Falcon3 $-0.79$, Mistral 7B $-0.87$, OLMo 2 $-0.54$,
+        Qwen2.5 7B $-0.76$) and absent or weak in the large ones (gpt-oss $+0.18$, Qwen2.5 72B $+0.13$, Qwen2.5 32B $-0.25$, Mistral Medium $-0.36$, $p = 0.054$).
+        Money rule (score at AED 3,000 minus AED 2,000): gpt-oss $+25.6$, Gemma $+28.4$; Mistral Medium $+9.4$, Qwen2.5 32B $+8.5$, Qwen2.5 72B $+8.2$; about 0 for Falcon3,
+        Mistral 7B, OLMo 2 and Phi-3.5.
+  \item \textbf{The outlier gives a reason that the application does not support (Qwen2.5 7B, keyword count of our own, not the judge).} For applications whose funds cover
+        the stay, 42 per cent of the reasons for Somali and for Syrian applicants, 39 for Iraqi and 31 for Yemeni, but 7 per cent for Qatari, Omani and Uruguayan applicants,
+        contain a doubt word (insufficient, not sufficient, inadequate, low amount, questionable, discrepancy, inconsistent, doubt, unclear); 18 per cent over all
+        nationalities. The same count is 4.1 per cent for Qwen3 32B, 1.1 for gpt-oss and 0.2 for Gemma, with no order by nationality. Example for a Somali applicant with
+        AED 3,000: ``funds ... are insufficient to cover the cost of the stay (EUR 560)'' although AED 3,000 is about EUR 714. The judge does not catch it (it codes
+        contradiction in 0.1 per cent) because it does not do the sum. The judge finds 0.0 to 0.8 per cent of reasons mentioning the nationality in every model.
   \item Not done yet: validation of the judge by hand (the sample of 200 is in \texttt{experiment/judge/validation/}), the pre-run checks of Articles 21, 22 and 25a.
 \end{itemize}
 \begin{center}
@@ -695,7 +710,9 @@ Gemma 4 31B & 1.57 & 0.49 & 0.0002 & $-0.76$ & $-0.04$ (0.09) & $+28.4$ \\
 \includegraphics[width=\linewidth]{figures/nationalities.png}\\
 \includegraphics[width=0.8\linewidth]{figures/wealth_groups.png}\\
 \includegraphics[width=0.6\linewidth]{figures/money.png}\\
-\includegraphics[width=\linewidth]{figures/variants.png}\label{fig:variants}
+\includegraphics[width=\linewidth]{figures/variants.png}\label{fig:variants}\\
+\includegraphics[width=0.8\linewidth]{figures/models.png}\\
+\includegraphics[width=\linewidth]{figures/nationalities_qwen25.png}
 \end{center}}
 
 \section{Conclusion and Discussion}

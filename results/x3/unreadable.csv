@@ -1,0 +1,3 @@
+model,country,status,n
+mistral-medium-3.5,Bahrain,no_json,1
+qwen2.5-32b-instruct,Iraq,no_json,1

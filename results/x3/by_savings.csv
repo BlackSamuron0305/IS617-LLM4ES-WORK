@@ -1,0 +1,16 @@
+model,savings_aed,n,centred_mean
+mistral-medium-3.5,2000,4212,-12.832
+mistral-medium-3.5,3000,4212,0.216
+mistral-medium-3.5,4500,4212,2.999
+mistral-medium-3.5,7000,4212,4.612
+mistral-medium-3.5,10500,4212,5.005
+qwen2.5-32b-instruct,2000,4212,-10.357
+qwen2.5-32b-instruct,3000,4212,1.371
+qwen2.5-32b-instruct,4500,4212,2.434
+qwen2.5-32b-instruct,7000,4212,3.243
+qwen2.5-32b-instruct,10500,4212,3.308
+qwen2.5-72b-instruct,2000,4212,-10.132
+qwen2.5-72b-instruct,3000,4212,1.695
+qwen2.5-72b-instruct,4500,4212,2.189
+qwen2.5-72b-instruct,7000,4212,3.083
+qwen2.5-72b-instruct,10500,4212,3.165

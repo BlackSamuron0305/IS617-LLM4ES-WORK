@@ -19,7 +19,8 @@ COLORS = {"rich": "#1f6fb2", "normal": "#8a8a8a", "poor": "#e07b00"}
 MODELS = ["qwen3-32b", "mistral-small-3.2-24b-instruct", "gemma-4-31b-it"]
 LABEL = {"qwen3-32b": "Qwen3 32B", "mistral-small-3.2-24b-instruct": "Mistral Small 3.2 24B", "gemma-4-31b-it": "Gemma 4 31B",
          "qwen2.5-7b-instruct": "Qwen2.5 7B", "falcon3-7b-instruct": "Falcon3 7B", "phi-3.5-mini-instruct": "Phi-3.5 mini 3.8B",
-         "olmo-2-7b-instruct": "OLMo 2 7B", "mistral-7b-instruct-v0.3": "Mistral 7B", "gpt-oss-120b": "gpt-oss-120b"}
+         "olmo-2-7b-instruct": "OLMo 2 7B", "mistral-7b-instruct-v0.3": "Mistral 7B", "gpt-oss-120b": "gpt-oss-120b",
+         "qwen2.5-32b-instruct": "Qwen2.5 32B", "qwen2.5-72b-instruct": "Qwen2.5 72B", "mistral-medium-3.5": "Mistral Medium 3.5 128B"}
 EXTRA_MODELS = ["qwen2.5-7b-instruct", "falcon3-7b-instruct", "phi-3.5-mini-instruct", "olmo-2-7b-instruct", "mistral-7b-instruct-v0.3", "gpt-oss-120b"]
 
 
@@ -161,7 +162,7 @@ def fig_models(plt, audited, extra, out):
             if r_["block"] == "1" and r_["variant"] == "base":
                 rows.append((float(r_["range"]), r_["model"], tag, float(r_["null_range_rep1"]) if r_.get("null_range_rep1") else None))
     rows.sort()
-    fig, ax = plt.subplots(figsize=(9, 4.8))
+    fig, ax = plt.subplots(figsize=(9, 0.42 * len(rows) + 1.6))
     for i, (v, m, tag, _) in enumerate(rows):
         ax.barh(i, v, color="#1f6fb2" if tag == "audited" else "#8a8a8a")
         ax.text(v + 0.3, i, f"{v:.1f}", va="center", fontsize=10)
@@ -182,7 +183,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--name", default="main")
     parser.add_argument("--out", required=True)
-    parser.add_argument("--extra", help="name of a second results folder with the extra models (results/<name>)")
+    parser.add_argument("--extra", nargs="+", help="names of results folders with extra models (results/<name>), for example x2 x3")
     args = parser.parse_args(argv)
     import matplotlib
     matplotlib.use("Agg")
@@ -199,11 +200,14 @@ def main(argv=None):
             function(plt, rows, out)
             made.append(name)
     if args.extra:
-        extra_dir = ROOT / "results" / args.extra
-        ex_country, ex_variant = table(extra_dir, "by_country"), table(extra_dir, "by_variant")
+        ex_country, ex_variant = [], []
+        for name in args.extra:
+            extra_dir = ROOT / "results" / name
+            ex_country += table(extra_dir, "by_country") or []
+            ex_variant += table(extra_dir, "by_variant") or []
         if ex_country:
-            fig_nationalities(plt, ex_country, out, EXTRA_MODELS[:3], "nationalities_extra_a.png")
-            fig_nationalities(plt, ex_country, out, EXTRA_MODELS[3:], "nationalities_extra_b.png")
+            fig_nationalities(plt, ex_country, out, ["qwen2.5-7b-instruct", "qwen2.5-32b-instruct", "qwen2.5-72b-instruct"], "nationalities_qwen25.png")
+            fig_nationalities(plt, ex_country, out, ["gpt-oss-120b", "mistral-medium-3.5", "olmo-2-7b-instruct"], "nationalities_extra_b.png")
             made += ["nationalities_extra"]
         if ex_variant and table(results, "by_variant"):
             fig_models(plt, table(results, "by_variant"), ex_variant, out)

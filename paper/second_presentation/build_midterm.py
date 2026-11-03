@@ -33,6 +33,21 @@ def table(name):
     return list(csv.DictReader(open(path, encoding="utf-8", newline=""))) if path.exists() else []
 
 
+def table_all(name):
+    # the tables of the audited models and of the extra models (results/x2, results/x3)
+    rows = list(table(name))
+    for extra in ("x2", "x3"):
+        path = ROOT / "results" / extra / f"{name}.csv"
+        if path.exists():
+            rows += list(csv.DictReader(open(path, encoding="utf-8", newline="")))
+    return rows
+
+
+def gap(model):
+    r = next((x for x in table_all("by_variant") if x["model"] == model and x["block"] == "1" and x["variant"] == "base"), None)
+    return float(r["range"]) if r else float("nan")
+
+
 def analysis(model):
     path = RES / f"analyze_{model}.txt"
     text = path.read_text(encoding="utf-8") if path.exists() else ""
@@ -153,8 +168,8 @@ s = slide("The size of it", notes=(
 for i, (n, l) in enumerate((("30", "applicants"), ("26", "nationalities"), ("3", "wordings"), ("5", "repetitions"))):
     text(s, 0.6 + i * 3.2, 1.7, 3, 1.2, n, 64, True, ACCENT, PP_ALIGN.CENTER)
     text(s, 0.6 + i * 3.2, 2.9, 3, 0.6, l, 22, False, MUTED, PP_ALIGN.CENTER)
-text(s, 0.6, 4.2, 12.1, 1.3, "98,280 answers from 3 models\n+ 84,240 for 12 prompt variants", 36, True, INK, PP_ALIGN.CENTER)
-text(s, 0.6, 5.9, 12.1, 0.6, "Qwen3 (China)   |   Gemma 4 (USA)   |   Mistral Small (Europe)", 20, False, MUTED, PP_ALIGN.CENTER)
+text(s, 0.6, 4.0, 12.1, 1.5, "3 audited models: 98,280 answers\n+ 84,240 for 12 prompt variants\n+ 9 more models: 365,040 answers", 30, True, INK, PP_ALIGN.CENTER)
+text(s, 0.6, 5.9, 12.1, 0.6, "Qwen3 (China)   |   Gemma 4 (USA)   |   Mistral Small (Europe)   |   9 more from 3.8B to 128B", 20, False, MUTED, PP_ALIGN.CENTER)
 
 def money2000(m):
     return next((r["centred_mean"] for r in table("by_savings") if r["model"] == m and r["savings_aed"] == "2000"), "?")
@@ -185,6 +200,28 @@ s = slide("Rich, normal, poor: the models sort them", notes=(
         "q": A["qwen3-32b"]["rho"], "m": A["mistral-small-3.2-24b-instruct"]["rho"], "g": A["gemma-4-31b-it"]["rho"]}),
     question="Wealth, war, or what the model knows about the Gulf?")
 picture(s, FIG / "wealth_groups.png", 0.6, 1.2, 12.1, 5.2)
+
+# 9b models
+s = slide("Twelve models, one outlier", notes=(
+    "Extra models (exploratory, deviations D5 and D7): every instruction-tuned chat model already on the cluster that fits one to four GPUs, taken before any of their answers was seen, plus Qwen2.5 32B and 72B added to see whether the 7B result shrinks with size. Same design, 40,560 answers each; the audited models stay Qwen3 32B, Gemma 4 31B and Mistral Small 3.2 24B.\n"
+    f"Gap between the highest and the lowest of the 21 nationalities, block 1: Qwen2.5 7B {gap('qwen2.5-7b-instruct'):.1f}, Qwen2.5 32B {gap('qwen2.5-32b-instruct'):.1f}, Qwen2.5 72B {gap('qwen2.5-72b-instruct'):.1f}; Mistral 7B {gap('mistral-7b-instruct-v0.3'):.1f}, Mistral Small {gap('mistral-small-3.2-24b-instruct'):.1f}, Mistral Medium 128B {gap('mistral-medium-3.5'):.1f}; Falcon3 7B {gap('falcon3-7b-instruct'):.1f}, OLMo 2 7B {gap('olmo-2-7b-instruct'):.1f}, gpt-oss-120b {gap('gpt-oss-120b'):.1f}, Gemma 4 {gap('gemma-4-31b-it'):.1f}, Qwen3 32B {gap('qwen3-32b'):.1f}. Phi-3.5 mini answers 80 to almost everything (gap 0.0).\n"
+    "Wealth order (Spearman, wealth rank against nationality mean): present in the small models (Falcon3 -0.79, Mistral 7B -0.87, OLMo 2 -0.54, Qwen2.5 7B -0.76) and in the audited ones; absent or weak in the large ones (gpt-oss +0.18, Qwen2.5 72B +0.13, Qwen2.5 32B -0.25, Mistral Medium -0.36, p = 0.054).\n"
+    "Money rule (score at AED 3,000 minus AED 2,000): gpt-oss +25.6, Gemma +28.4, Mistral Medium +9.4, Qwen2.5 32B +8.5, Qwen2.5 72B +8.2, Qwen3 +8.8; Falcon3, Mistral 7B, OLMo 2, Phi-3.5 about 0.\n"
+    "Careful: the extra models were not pre-registered as audited models; one outlier is one model, and 7B models are not what a consulate would use."),
+    question="Is the big gap a small-model accident?")
+picture(s, FIG / "models.png", 0.6, 1.1, 12.1, 5.4)
+
+# 9c outlier
+s = slide("The outlier hides the passport behind money doubts", notes=(
+    "Qwen2.5 7B (block 1, 11,699 readable reasons). Somali, Syrian and Iraqi applicants score 13 to 21 points below the average of the same application, applicants from the Gulf states about 7 above. The reasons almost never name the passport (about 0.5 per cent by string match, the judge finds 0.4 per cent), but they raise doubts about money, credibility or consistency far more often for some passports.\n"
+    "Crude keyword count (exploratory, our own count, not the judge): share of reasons that contain 'insufficient', 'not sufficient', 'inadequate', 'low amount', 'questionable', 'discrepan', 'inconsisten', 'do (does) not cover/meet', 'doubt' or 'unclear', for applications whose funds are at least AED 3,000 (more than the EUR 560 the rules ask for): Somalia 42.2 per cent, Syria 41.9, Iraq 39.2, Yemen 30.8; Oman 7.2, Qatar 7.5, Uruguay 7.5; all nationalities 18.0 per cent. The same count for Qwen3 32B is 4.1 per cent, gpt-oss-120b 1.1, Gemma 4 0.2, with no pattern by nationality.\n"
+    "Example reason for a Somali applicant with AED 3,000: 'The funds available for the trip (AED 3000, about EUR 714) are insufficient to cover the cost of the stay (EUR 560).' That is wrong: 714 is more than 560. The judge (OLMo) does not catch this (it codes contradiction with the application in 0.1 per cent of reasons), because it does not do the arithmetic.\n"
+    "Reading: the passport effect is carried by stated doubts that the application does not support. That is what a reviewer would see on the file, and why the reason field matters."),
+    question="Would an officer notice a wrong sum?")
+for i, (n, l) in enumerate((("42%", "of reasons for Somali applicants raise a doubt"), ("42%", "for Syrian applicants"), ("7%", "for Qatari and Omani applicants"))):
+    text(s, 0.6 + i * 4.1, 1.7, 3.9, 1.5, n, 72, True, ORANGE if i < 2 else ACCENT, PP_ALIGN.CENTER)
+    text(s, 0.6 + i * 4.1, 3.3, 3.9, 1.0, l, 20, False, MUTED, PP_ALIGN.CENTER)
+text(s, 0.6, 4.6, 12.1, 1.4, "Same application, same funds (EUR 714 against EUR 560 needed).\nExample reason of Qwen2.5 7B: \"the funds are insufficient\".", 24, False, INK, PP_ALIGN.CENTER)
 
 # 10 telling the model
 def vrow(model, variant, block="4"):
@@ -250,7 +287,7 @@ for i, (m, label) in enumerate(MODELS):
 s = slide("What this does not show, and what comes next", notes=(
     "Not shown: prejudice, anything about real consulates, anything about Islam, or that Estonia uses a model. 30 invented applicants who all live in the Emirates; three open models of 24 to 32 billion parameters; scores near the ceiling; Mistral ignores the money rule; the judge is not validated yet.\n"
     "Next steps: (1) validate the judge on a hand-coded sample of 200 reasons (kappa of at least 0.7) and report which reasons rest on a ground of Article 32 and which on the passport; (2) variants and the judge by nationality; (3) the cost measures (savings a passport costs, fees lost per 1,000 identical applications); (4) check Articles 21, 22 and 25a; (5) write the report (due 08.01.2027)."))
-for i, (t, b) in enumerate((("Limits", "invented applicants\nscores near the ceiling\nMistral ignores the money rule"),
+for i, (t, b) in enumerate((("Limits", "invented applicants\nscores near the ceiling\nthe 9 extra models are exploratory\njudge not validated yet"),
                             ("Next", "validate the judge by hand\nwhat the reasons say\nwhat a gap costs an applicant"))):
     box(s, 0.6 + i * 6.3, 1.6, 5.9, 3.6, t, b, tsize=28, bsize=22)
 text(s, 0.6, 5.7, 12, 0.8, "Thank you. Questions?", 30, True, ACCENT)

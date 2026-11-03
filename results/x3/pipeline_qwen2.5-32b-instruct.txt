@@ -1,0 +1,37 @@
+  ok: 10140   no_json: 0   missing_key: 0   bad_value: 0 
+  ok: 10139   no_json: 1   missing_key: 0   bad_value: 0 
+  ok: 10140   no_json: 0   missing_key: 0   bad_value: 0 
+  ok: 10140   no_json: 0   missing_key: 0   bad_value: 0 
+40560 rows from 4 shard batches in /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/data/processed/x3_qwen2.5-32b-instruct/answers.csv
+40560 answers: 11700 linked to 11668 unique judge inputs, 28860 skipped (answer not read, empty reason, prompt changed since the run, or run not in the experiment files)
+[qwen2.5-32b-instruct] H1 spread among 21 nationalities: sd of the means 0.43 points, range 1.66; p = 0.0002 (one-sided, 5000 shuffles)
+[qwen2.5-32b-instruct] H2 Spearman(wealth rank, mean) = -0.25, p = 0.1386 (expected negative); adjusted Rand index of a three-way split against the wealth groups = +0.02, p = 0.3393
+   ordered means (centred, points): Comoros -1.1, Syria -0.7, Libya -0.5, Somalia -0.4, Yemen -0.3, Oman -0.2, Djibouti -0.0, Algeria -0.0, Bahrain -0.0, Saudi Arabia +0.0, Lebanon +0.0, Palestine +0.1, Sudan +0.2, Iraq +0.2, Kuwait +0.2, Qatar +0.3, Mauritania +0.3, Egypt +0.4, Tunisia +0.5, Jordan +0.6, Morocco +0.6
+   reference: sd of the means of the 3 placebo nationalities that need a visa = 0.35
+[qwen2.5-32b-instruct] H3 spread with the paragraph minus spread without it: -0.15 points (9450 paired answers); p = 0.0024 (expected negative)
+[qwen2.5-32b-instruct] H4 score at AED 3000 minus AED 2000: +8.5 points (does NOT meet the 10-point rule)
+
+H1 p-values after Holm correction over the models: x3_qwen2.5-32b-instruct/qwen2.5-32b-instruct 0.0002
+[qwen2.5-32b-instruct] H1 spread among 21 nationalities: sd of the means 0.18 points, range 0.60; p = 0.7065 (one-sided, 5000 shuffles)
+[qwen2.5-32b-instruct] H2 Spearman(wealth rank, mean) = -0.41, p = 0.0336 (expected negative); adjusted Rand index of a three-way split against the wealth groups = -0.07, p = 0.7718
+   ordered means (centred, points): Bahrain -0.3, Tunisia -0.3, Morocco -0.2, Jordan -0.2, Palestine -0.2, Yemen -0.2, Iraq -0.1, Syria -0.0, Somalia -0.0, Sudan +0.0, Algeria +0.0, Djibouti +0.0, Egypt +0.0, Libya +0.0, Comoros +0.1, Lebanon +0.2, Saudi Arabia +0.2, Mauritania +0.2, Qatar +0.2, Kuwait +0.3, Oman +0.3
+   reference: sd of the means of the 3 placebo nationalities that need a visa = 0.11
+[qwen2.5-32b-instruct] H3 spread with the paragraph minus spread without it: +0.16 points (3149 paired answers); p = 0.9986 (expected negative)
+[qwen2.5-32b-instruct] H4 score at AED 3000 minus AED 2000: +8.5 points (does NOT meet the 10-point rule)
+
+H1 p-values after Holm correction over the models: x3_qwen2.5-32b-instruct/qwen2.5-32b-instruct 0.7065
+
+============================= JOB FEEDBACK =============================
+
+NodeName=uc2n646
+Job ID: 8253123
+Cluster: uc3
+User/Group: ma_lsandouk/ma_ma
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 2
+CPU Utilized: 00:08:14
+CPU Efficiency: 48.15% of 00:17:06 core-walltime
+Job Wall-clock time: 00:08:33
+Memory Utilized: 118.51 MB
+Memory Efficiency: 0.96% of 12.00 GB (12.00 GB/node)
