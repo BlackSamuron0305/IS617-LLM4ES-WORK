@@ -150,8 +150,8 @@ class MaterialsTest(unittest.TestCase):
 
     def test_judge_models_file(self):
         models = read_table(JUDGE / "judge_models.csv")
-        self.assertEqual([m["role"] for m in models], ["primary", "agreement_check"])
-        self.assertEqual([m["alias"] for m in models], ["olmo-3.1-32b-instruct", "gpt-oss-120b"])
+        self.assertEqual([m["role"] for m in models], ["primary", "agreement_check", "comparison"])
+        self.assertEqual([m["alias"] for m in models], ["olmo-3.1-32b-instruct", "gpt-oss-120b", "qwen3-32b"])
 
 
 class BuildItemsTest(unittest.TestCase):

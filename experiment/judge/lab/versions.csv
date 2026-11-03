@@ -1,0 +1,4 @@
+version,masked,codes,description
+v1_unmasked,no,mentions_nationality;nationality_as_risk;passport_country_conditions;doubts_residence;contradicts_application;names_legal_ground,"The codebook of the main judge, but the judge sees the nationality: does knowing it change the coding?"
+v2,yes,unsupported_doubt;funds_claim_wrong;doubts_return_or_ties;mentions_nationality;invented_fact,"A codebook that checks the reason against the numbers of the application: unsupported doubts and wrong claims about funds"
+v3,yes,reason_valid;reason_supported;reason_would_hold_for_everyone,"Three quality questions: is the reason valid under the guidance, true, and the same for any passport"

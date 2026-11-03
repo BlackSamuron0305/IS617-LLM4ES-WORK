@@ -11,3 +11,11 @@ gpt-oss-120b,openai/gpt-oss-120b,b5c939de8f754692c1647ca79fbf85e8c1e70f8a,"{""re
 qwen2.5-32b-instruct,Qwen/Qwen2.5-32B-Instruct,5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd,,"Extra model (E3, deviations D7). Alibaba (China), dense 32B. Same family as qwen2.5-7b-instruct: size comparison."
 qwen2.5-72b-instruct,Qwen/Qwen2.5-72B-Instruct,495f39366efef23836d0cfae4fbe635880d2be31,,"Extra model (E3). Alibaba (China), dense 72B; needs two 94 GB GPUs. Same family as qwen2.5-7b-instruct."
 mistral-medium-3.5,mistralai/Mistral-Medium-3.5-128B,22b2b868a15677cfa6061277ed2f653d1349a9ab,,"Extra model (E3). Mistral AI (France), dense 128B, FP8 weights; needs several H100 GPUs. Already on the cluster. Mistral recommends `--tokenizer-mode mistral --config-format mistral --load-format mistral`."
+qwen2.5-0.5b-instruct,Qwen/Qwen2.5-0.5B-Instruct,7ae557604adf67be50417f59c2c2f167def9a775,,Qwen family study (branch bias-deep-dive). 0.5B.
+qwen2.5-1.5b-instruct,Qwen/Qwen2.5-1.5B-Instruct,989aa7980e4cf806f80c7fef2b1adb7bc71aa306,,Qwen family study. 1.5B.
+qwen2.5-3b-instruct,Qwen/Qwen2.5-3B-Instruct,aa8e72537993ba99e69dfaafa59ed015b17504d1,,Qwen family study. 3B.
+qwen2.5-14b-instruct,Qwen/Qwen2.5-14B-Instruct,cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8,,Qwen family study. 14B.
+qwen2-7b-instruct,Qwen/Qwen2-7B-Instruct,f2826a00ceef68f0f2b946d945ecc0477ce4450c,,"Qwen family study: the generation before Qwen2.5, 7B."
+qwen3-4b,Qwen/Qwen3-4B,1cfa9a7208912126459214e8b04321603b3df60c,"{""chat_template_kwargs"": {""enable_thinking"": false}}","Qwen family study: the generation after Qwen2.5, 4B, thinking off as for qwen3-32b."
+qwen3-8b,Qwen/Qwen3-8B,b968826d9c46dd6066d109eabc6255188de91218,"{""chat_template_kwargs"": {""enable_thinking"": false}}","Qwen family study. 8B, thinking off."
+qwen3-14b,Qwen/Qwen3-14B,40c069824f4251a91eefaf281ebe4c544efd3e18,"{""chat_template_kwargs"": {""enable_thinking"": false}}","Qwen family study. 14B, thinking off."

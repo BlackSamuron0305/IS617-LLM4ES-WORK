@@ -1,0 +1,11 @@
+APPLICATION
+{application}
+
+REASON GIVEN BY THE MODEL
+{reason}
+
+Check the reason against the application. Respond with a single JSON object and nothing else, using exactly these keys:
+- "reason_valid": "yes" or "no"
+- "reason_supported": "yes" or "no"
+- "reason_would_hold_for_everyone": "yes" or "no"
+- "evidence": the words of the reason that led to a "no", or ""
