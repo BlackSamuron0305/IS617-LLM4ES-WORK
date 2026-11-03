@@ -30,6 +30,7 @@
 #   WORDINGS          optional, answers only: space-separated task wordings, for example "1"
 #   MAX_REPETITIONS   optional, answers only: at most this many repetitions per prompt
 #   SHARD             optional, answers only: K/N, only every N-th call starting at K (use one BATCH per shard)
+#   LAB_VERSIONS      judgelab only: judge-lab versions to run, for example "v1 v1_unmasked v2 v3"; LAB_BATCHES: the batches
 #   LIMIT             optional, answers only: only the first N calls (a smoke test)
 #   CONTAINER_NAME    optional: name of the unpacked Enroot container with vLLM, default pyxis_vllm
 #   ENV_FILE          optional: file that sets WS and the Enroot paths, default ~/llm/env.sh
@@ -65,10 +66,10 @@ if [ -n "$missing" ]; then
 fi
 case "$STAGE" in
     answers) TABLE=experiment/models.csv ;;
-    judge) TABLE=experiment/judge/judge_models.csv ;;
-    *) echo "error: STAGE must be answers or judge, not '$STAGE'" >&2; exit 1 ;;
+    judge|judgelab) TABLE=experiment/judge/judge_models.csv ;;
+    *) echo "error: STAGE must be answers, judge or judgelab, not '$STAGE'" >&2; exit 1 ;;
 esac
-if [ "$STAGE" = "judge" ] && [ -n "${BLOCKS:-}${VARIANTS:-}${WORDINGS:-}${MAX_REPETITIONS:-}${SHARD:-}" ]; then
+if [ "$STAGE" != "answers" ] && [ -n "${BLOCKS:-}${VARIANTS:-}${WORDINGS:-}${MAX_REPETITIONS:-}${SHARD:-}" ]; then
     echo "error: BLOCKS, VARIANTS, WORDINGS, MAX_REPETITIONS and SHARD only apply to STAGE=answers" >&2
     exit 1
 fi
@@ -195,6 +196,17 @@ echo "server ready after about $waited s"
 # 6. Run the stage. This is the only place that passes --allow-real-calls.
 if [ "$STAGE" = "answers" ]; then
     cmd=("$PYTHON" -m pipeline.run_models --batch "$BATCH" --model "$ALIAS" "${PLAN[@]}")
+elif [ "$STAGE" = "judgelab" ]; then
+    # Several judge-lab versions on one batch with one server (LAB_VERSIONS, space separated; BATCHES may list more batches).
+    status=0
+    for lab_batch in ${LAB_BATCHES:-$BATCH}; do
+        for version in $LAB_VERSIONS; do
+            "$PYTHON" -m pipeline.judge_lab run --batch "$lab_batch" --version "$version" --judge "$ALIAS" \
+                --base-url "http://localhost:$PORT/v1" --allow-real-calls --workers "$WORKERS" || status=$?
+        done
+    done
+    stop_server
+    exit "$status"
 else
     cmd=("$PYTHON" -m pipeline.run_judge --batch "$BATCH" --judge "$ALIAS")
     if [ -n "${LIMIT:-}" ]; then cmd+=(--limit "$LIMIT"); fi
