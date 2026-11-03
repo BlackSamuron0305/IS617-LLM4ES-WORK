@@ -96,6 +96,23 @@ Gap of the 21 nationalities in block 1 (all repetitions), Syria's effect, and th
 - The small ones (0.5B to 3B) do not react to the money rule either (step about 0): their scores are close to noise and the instrument is not valid for them.
 - Qwen2.5 7B does react to money a little (+5.6), more than the other small models, but much less than the 14B-and-larger models of its family (+14).
 
-## 6. Judge lab (version and judge model)
+## 6. Judge lab: does the finding depend on the judge?
 
-Pending: runs of the four versions (v1, v1_unmasked, v2, v3) with three judge models on 2,500 answers each of Qwen2.5 7B, Qwen3 32B and Gemma 4 are queued; see the last section once they are analysed.
+Four versions (v1 the main judge, v1_unmasked the same without the blinding, v2 a codebook that checks the reason against the numbers of the application,
+v3 three quality questions) with three judge models (OLMo 3.1 32B, gpt-oss-120b, Qwen3 32B) on 2,500 answers each of Qwen2.5 7B, Qwen3 32B and Gemma 4
+(`results/dd_judge/`, 171 agreement rows). The hand-coded validation is still missing, so all of this shows agreement between judges, not correctness.
+
+- **The blinding does not change the codes.** The same judge, with and without the nationality: the share of reasons that mention the nationality is 0.48% against 0.44% (OLMo, Qwen2.5 7B), kappa 0.96;
+  `doubts_residence` kappa 0.85, `contradicts_application` 1.0. So the finding that the reasons almost never name the passport does not come from the blinding.
+- **Judge models agree on simple codes and not on broad ones.** `mentions_nationality`: kappa 0.88 to 0.96 between OLMo, gpt-oss and Qwen3. `names_legal_ground` of the main judge: OLMo says yes
+  for 69% of the Qwen2.5 7B reasons, gpt-oss for 77%, Qwen3 for 97% (kappa 0.09 to 0.19): this code is not reliable across judges and should not be reported without the
+  hand validation. v2 `unsupported_doubt`: kappa 0.62 and 0.74, usable. v2 `funds_claim_wrong`: kappa 0.31 and 0.47, and its share is 12 to 30% even for the Gulf states (a fifth of the applications
+  really have too little money, and judges make sums wrong): not usable. v2 `invented_fact`: gpt-oss says 18%, OLMo 0.4%: not usable.
+- **v2 and v3 find in the reasons what v1 could not: the passport effect of Qwen2.5 7B.** `unsupported_doubt` for Syrian applications: 52% (OLMo), 44% (gpt-oss), 61% (Qwen3) against
+  10%, 7% and 11% for the Gulf states: the same picture with all three judges. `doubts_return_or_ties`: Syria 18 to 21% against 1% for the Gulf. v3 `reason_valid`: Syria 32 to 43% against 56 to 88% for the Gulf;
+  `reason_would_hold_for_everyone`: 34 to 45% against 61 to 91%. Other poor countries lie in between.
+- **For the audited models the picture depends on the judge.** Qwen3 32B `unsupported_doubt` for Syria: 21% (OLMo) and 27% (Qwen3 as judge, which judges its own model: read with care) against 11 to 14%
+  for the others; gpt-oss finds 2 to 4% for everyone. Gemma 4: 5% (OLMo) against 7 to 8% for others, no pattern. So only the Qwen2.5 7B case is robust across judges.
+
+**What follows.** Of the six codes of the main judge, `mentions_nationality` is solid (and says about 0%). The broader codes depend on the judge. If the report wants to show that reasons of the biased model carry
+unsupported doubts, use v2 `unsupported_doubt` and `doubts_return_or_ties` with at least two judges, and say that they have not been checked by hand.
