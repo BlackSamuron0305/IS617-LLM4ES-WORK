@@ -45,9 +45,12 @@ data/raw/mock*/
 data/processed/mock*/
 results/mock*/
 #
-# Real-run raw outputs (data/raw/<run_id>/) are deliberately NOT ignored: they are
-# the primary evidence and are committed. Do not add an ignore rule for them.
-# Processed tables are regenerable from raw but are small and are committed too.
+# Real-run raw outputs (data/raw/<run_id>/) are the primary evidence and are committed, as compressed
+# files (answers.jsonl.gz; pipeline/common.py reads them like the plain file). The plain .jsonl copies are
+# ignored. Processed tables are regenerable from raw with the pipeline and are 800 MB together, so they
+# are not committed; the small summary tables are in results/.
+data/raw/**/*.jsonl
+data/processed/
 
 # Job logs from the cluster (cluster/README.md) and notes of the AI working sessions
 logs/

@@ -5,3 +5,7 @@ data/** text eol=lf
 *.py text eol=lf
 # The Slurm script runs on Linux; a CRLF line ending would break it.
 cluster/** text eol=lf
+*.gz binary
+*.pptx binary
+*.pdf binary
+*.png binary

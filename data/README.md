@@ -1,6 +1,8 @@
 # data
 
-The output of our model runs is saved here. It is empty until the first real run.
+The output of our model runs is saved here. The runs of 2026-11-01 to 2026-11-03 are in `raw/`, one folder per batch (about
+87 folders, 792 MB; stored as `.jsonl.gz`, 77 MB; `pipeline/common.py` reads them like the plain files, or unpack them with `gunzip -k`).
+`processed/` is rebuilt with the pipeline and is not committed; the summary tables are in `../results/`.
 
 Everything is kept by **batch**: one batch is one named group of calls to one model, for
 example `pilot1`. The stages that write these files are in `pipeline/` (`pipeline/README.md`

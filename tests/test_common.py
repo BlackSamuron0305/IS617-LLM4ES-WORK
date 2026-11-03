@@ -81,7 +81,7 @@ class CommonTest(unittest.TestCase):
 
     def test_read_text_and_table(self):
         self.assertIn("alias", read_text(EXPERIMENT / "models.csv"))
-        self.assertEqual(len(read_table(EXPERIMENT / "models.csv")), 3)
+        self.assertEqual(len(read_table(EXPERIMENT / "models.csv")), 12)
 
     def test_load_models_parses_extra_body(self):
         # A file of the test's own: the rows of experiment/models.csv may change.

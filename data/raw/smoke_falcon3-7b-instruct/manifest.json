@@ -1,0 +1,43 @@
+{
+  "batch": "smoke_falcon3-7b-instruct",
+  "kind": "answers",
+  "model_alias": "falcon3-7b-instruct",
+  "model_id": "tiiuae/Falcon3-7B-Instruct",
+  "revision": "1e57a0ecd176c7c139f289c60a74e57f887c3dfb",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-02T18:01:27Z",
+      "git_commit": "18d8f5d3dd178b66d757737c671c940f4c5ec8b0",
+      "dirty": [],
+      "blocks": [
+        1
+      ],
+      "limit": 40,
+      "variants": [
+        "base"
+      ],
+      "wordings": [
+        1
+      ],
+      "max_repetitions": 1,
+      "shard": null,
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/falcon3-7b",
+      "vllm_args": "",
+      "base_url": "http://localhost:21854/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 40,
+        "already_done": 0,
+        "called": 40,
+        "errors": 0
+      }
+    }
+  ]
+}

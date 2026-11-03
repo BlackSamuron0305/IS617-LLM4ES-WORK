@@ -1,0 +1,95 @@
+{
+  "batch": "var_qwen3-32b_s0",
+  "kind": "answers",
+  "model_alias": "qwen3-32b",
+  "model_id": "Qwen/Qwen3-32B",
+  "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-02T01:24:03Z",
+      "git_commit": "fb660e2e044d79d79c29ddf273c5839c37c7f16f",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "regulation_rule",
+        "info_rule",
+        "regulation_text",
+        "regulation_instruction",
+        "no_guidance",
+        "reasoning",
+        "risk_scale",
+        "decider",
+        "time_pressure",
+        "time_careful",
+        "arab_officer",
+        "estonian_officer"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        0,
+        2
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/qwen3-32b",
+      "vllm_args": "",
+      "base_url": "http://localhost:25771/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": null
+    },
+    {
+      "started_utc": "2026-11-02T01:55:34Z",
+      "git_commit": "fb660e2e044d79d79c29ddf273c5839c37c7f16f",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "regulation_rule",
+        "info_rule",
+        "regulation_text",
+        "regulation_instruction",
+        "no_guidance",
+        "reasoning",
+        "risk_scale",
+        "decider",
+        "time_pressure",
+        "time_careful",
+        "arab_officer",
+        "estonian_officer"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        0,
+        2
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/qwen3-32b",
+      "vllm_args": "",
+      "base_url": "http://localhost:25772/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 14040,
+        "already_done": 8669,
+        "called": 5371,
+        "errors": 0
+      }
+    }
+  ]
+}

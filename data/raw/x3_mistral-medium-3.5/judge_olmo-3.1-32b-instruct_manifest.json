@@ -1,0 +1,54 @@
+{
+  "batch": "x3_mistral-medium-3.5",
+  "kind": "judge",
+  "model_alias": "olmo-3.1-32b-instruct",
+  "model_id": "allenai/Olmo-3.1-32B-Instruct",
+  "revision": "ac0587e4a7744a551c059d8cd17ba220bc940dae",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-03T10:19:58Z",
+      "git_commit": "299f347ece7b4d3293ef01d8fc2d13ea5fd3c347",
+      "dirty": [],
+      "limit": null,
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/olmo-3.1-32b-instruct",
+      "vllm_args": "",
+      "base_url": "http://localhost:33121/v1",
+      "settings": {
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1000,
+        "seed": 0,
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 11017,
+        "already_done": 0,
+        "called": 11017,
+        "errors": 0
+      }
+    },
+    {
+      "started_utc": "2026-11-03T10:40:53Z",
+      "git_commit": "299f347ece7b4d3293ef01d8fc2d13ea5fd3c347",
+      "dirty": [],
+      "limit": null,
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/olmo-3.1-32b-instruct",
+      "vllm_args": "",
+      "base_url": "http://localhost:33122/v1",
+      "settings": {
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1000,
+        "seed": 0,
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 11017,
+        "already_done": 11017,
+        "called": 0,
+        "errors": 0
+      }
+    }
+  ]
+}

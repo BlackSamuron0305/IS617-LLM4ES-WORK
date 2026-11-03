@@ -1,0 +1,95 @@
+{
+  "batch": "var_gemma-4-31b-it_s1",
+  "kind": "answers",
+  "model_alias": "gemma-4-31b-it",
+  "model_id": "google/gemma-4-31B-it",
+  "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-02T01:39:37Z",
+      "git_commit": "fb660e2e044d79d79c29ddf273c5839c37c7f16f",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "regulation_rule",
+        "info_rule",
+        "regulation_text",
+        "regulation_instruction",
+        "no_guidance",
+        "reasoning",
+        "risk_scale",
+        "decider",
+        "time_pressure",
+        "time_careful",
+        "arab_officer",
+        "estonian_officer"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        1,
+        2
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/gemma-4-31b-it",
+      "vllm_args": "",
+      "base_url": "http://localhost:25782/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": null
+    },
+    {
+      "started_utc": "2026-11-02T02:10:25Z",
+      "git_commit": "fb660e2e044d79d79c29ddf273c5839c37c7f16f",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "regulation_rule",
+        "info_rule",
+        "regulation_text",
+        "regulation_instruction",
+        "no_guidance",
+        "reasoning",
+        "risk_scale",
+        "decider",
+        "time_pressure",
+        "time_careful",
+        "arab_officer",
+        "estonian_officer"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        1,
+        2
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/gemma-4-31b-it",
+      "vllm_args": "",
+      "base_url": "http://localhost:25783/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 14040,
+        "already_done": 6684,
+        "called": 7356,
+        "errors": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "batch": "var_mistral-small-3.2-24b-instruct_s0",
+  "kind": "answers",
+  "model_alias": "mistral-small-3.2-24b-instruct",
+  "model_id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+  "revision": "95a6d26c4bfb886c58daf9d3f7332c857cb27b43",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-02T01:34:33Z",
+      "git_commit": "fb660e2e044d79d79c29ddf273c5839c37c7f16f",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "regulation_rule",
+        "info_rule",
+        "regulation_text",
+        "regulation_instruction",
+        "no_guidance",
+        "reasoning",
+        "risk_scale",
+        "decider",
+        "time_pressure",
+        "time_careful",
+        "arab_officer",
+        "estonian_officer"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        0,
+        2
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/mistral-small-3.2-24b-instruct",
+      "vllm_args": "",
+      "base_url": "http://localhost:25775/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 14040,
+        "already_done": 0,
+        "called": 14040,
+        "errors": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "batch": "x2_olmo-2-7b-instruct_s2",
+  "kind": "answers",
+  "model_alias": "olmo-2-7b-instruct",
+  "model_id": "allenai/OLMo-2-1124-7B-Instruct",
+  "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-02T18:30:48Z",
+      "git_commit": "94b89ea50d25433190f98a8f5a8d3a7cc27f4042",
+      "dirty": [],
+      "blocks": [
+        1,
+        2,
+        3,
+        5,
+        6
+      ],
+      "limit": null,
+      "variants": [
+        "base"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        2,
+        4
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/olmo2-7b",
+      "vllm_args": "--max-model-len 4096",
+      "base_url": "http://localhost:22099/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 10140,
+        "already_done": 0,
+        "called": 10140,
+        "errors": 0
+      }
+    }
+  ]
+}

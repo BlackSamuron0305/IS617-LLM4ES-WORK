@@ -4,6 +4,7 @@ Nothing here calls a model. Standard library only.
 """
 
 import csv
+import gzip
 import hashlib
 import json
 import subprocess
@@ -29,10 +30,16 @@ def read_jsonl(path):
     # A raw file that does not exist yet is an empty file. A line that cannot be read (a record torn
     # by a killed job) is skipped and counted; its key is simply called again on the next start.
     path = Path(path)
-    if not path.exists():
+    # A raw file may be kept compressed (answers.jsonl.gz, as in the repository); it is read the same way.
+    compressed = path.with_name(path.name + ".gz")
+    if path.exists():
+        opener = open(path, "rb")
+    elif compressed.exists():
+        opener = gzip.open(compressed, "rb")
+    else:
         return []
     records, skipped = [], 0
-    with open(path, "rb") as f:
+    with opener as f:
         for line in f:
             if not line.strip():
                 continue

@@ -1,0 +1,43 @@
+{
+  "batch": "smoke_mistral-small-3.2-24b-instruct",
+  "kind": "answers",
+  "model_alias": "mistral-small-3.2-24b-instruct",
+  "model_id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+  "revision": "95a6d26c4bfb886c58daf9d3f7332c857cb27b43",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-01T23:56:46Z",
+      "git_commit": "8e74e1b3fd3c3243cb06f00d5782791920e9072e",
+      "dirty": [],
+      "blocks": [
+        1
+      ],
+      "limit": 40,
+      "variants": [
+        "base"
+      ],
+      "wordings": [
+        1
+      ],
+      "max_repetitions": 1,
+      "shard": null,
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/mistral-small-3.2-24b-instruct",
+      "vllm_args": "",
+      "base_url": "http://localhost:8000/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 40,
+        "already_done": 0,
+        "called": 40,
+        "errors": 0
+      }
+    }
+  ]
+}
