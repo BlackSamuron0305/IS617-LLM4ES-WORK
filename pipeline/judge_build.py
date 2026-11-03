@@ -23,7 +23,7 @@ import re
 import sys
 from pathlib import Path
 
-from pipeline.build_runs import build_application
+from pipeline.build_runs import application_template, build_application
 from pipeline.common import DATA, EXPERIMENT, read_table, read_text, sha256_text, write_csv
 
 JUDGE = EXPERIMENT / "judge"
@@ -103,7 +103,6 @@ def build_judge_items(batch, data_root, blocks=None, variants=None):
     nationalities = read_table(EXPERIMENT / "countries/applicant_nationalities.csv")
     by_country = {n["country"]: n for n in nationalities}
     applicants = {a["applicant_id"]: a for a in read_table(EXPERIMENT / "applicants/applicants.csv")}
-    template = read_text(EXPERIMENT / "applicants/application_template.txt")
     mask_rows = read_table(JUDGE / "mask_terms.csv")
     system = read_text(JUDGE / "judge_prompt.txt")
     task = read_text(JUDGE / "judge_task.txt")
@@ -130,7 +129,7 @@ def build_judge_items(batch, data_root, blocks=None, variants=None):
         reason, n_masked = mask(row["reason"], maskers[row["country"]])
         application_key = (row["applicant_id"], row["savings"])
         if application_key not in applications:
-            applications[application_key] = build_application(template, applicant, placeholder, row["savings"])
+            applications[application_key] = build_application(application_template(applicant), applicant, placeholder, row["savings"])
         user = task.replace("{application}", applications[application_key]).replace("{reason}", reason)
         item_id = sha256_text(system + "\n" + user)[:16]
         if item_id not in items:

@@ -157,7 +157,7 @@ class RunModelsTest(unittest.TestCase):
         self.assertEqual(first["messages"][0]["content"], runs[0]["system"])
         self.assertEqual(items[4]["meta"]["repetition"], 5)
         self.assertEqual(items[5]["meta"]["run_id"], runs[1]["run_id"])
-        self.assertEqual(len(plan_items(runs, None, None)), 40560)
+        self.assertEqual(len(plan_items(runs, None, None)), 49920)
 
     # --- the call loop
 

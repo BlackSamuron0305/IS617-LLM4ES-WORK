@@ -13,9 +13,9 @@ class BuildRunsTest(unittest.TestCase):
     def test_counts_and_checks(self):
         runs, applicants, nationalities, problems = build_runs()
         self.assertEqual(problems, [])
-        self.assertEqual(len(runs), 15600)
-        self.assertEqual(sum(r["repetitions"] for r in runs), 40560)
-        self.assertEqual(len({r["run_id"] for r in runs}), 15600)
+        self.assertEqual(len(runs), 17472)
+        self.assertEqual(sum(r["repetitions"] for r in runs), 49920)
+        self.assertEqual(len({r["run_id"] for r in runs}), 17472)
         self.assertEqual({r["variant"] for r in runs}, {"base"})
 
     def test_every_variant_builds_and_has_its_own_run_ids(self):
@@ -23,7 +23,7 @@ class BuildRunsTest(unittest.TestCase):
         self.assertEqual(problems, [])
         variants = load_variants()
         self.assertEqual({r["variant"] for r in runs}, set(variants))
-        self.assertEqual(len(runs), 15600 + 12 * 2340)
+        self.assertEqual(len(runs), 17472 + 12 * 2340)
         self.assertEqual(len({r["run_id"] for r in runs}), len(runs))
         self.assertEqual({r["block"] for r in runs if r["variant"] != "base"}, {4})
 

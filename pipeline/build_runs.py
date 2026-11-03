@@ -42,8 +42,12 @@ RULE_COLUMNS = ("visa_needed", "application_form", "fee_eur", "legal_test", "nat
                 "means_per_day_eur", "insurance_min_eur", "entry_ban_or_visa_measure_2026_11_01")
 # Blocks 1 and 2 use each applicant's own savings. Block 3 repeats block 1 with the other savings levels,
 # once per wording, to measure how the answers react to money. Block 4 holds the variants.
-REPETITIONS = {1: 5, 2: 5, 3: 1, 4: 1, 5: 5, 6: 5}
+REPETITIONS = {1: 5, 2: 5, 3: 1, 4: 1, 5: 5, 6: 5, 7: 5, 8: 5}
 VARIANT_BLOCK = 4
+# Blocks 7 and 8 (branch bias-deep-dive): the negative applicants, each with one clear ground for refusal, without and with the
+# paragraph on nationality. They have their own template (more lines are placeholders).
+TEMPLATES = {"main": "applicants/application_template.txt", "boundary": "applicants/application_template.txt",
+             "negative": "applicants/application_template_negative.txt"}
 # Blocks 5 and 6 (added 2026-11-02, experiment/deviations.md D4): the boundary applicants, each with three mild
 # points, without and with the paragraph on nationality. Blocks 1 to 4 use the main applicants only.
 # A removed field with fewer distinct values than this (sex, civil status) is made of common words and
@@ -77,6 +81,11 @@ def aed_per_eur():
         rows = {r["item"]: r for r in read_table("costs/cost_assumptions.csv")}
         _AED_PER_EUR.append(float(rows["eur_to_aed"]["value"]))
     return _AED_PER_EUR[0]
+
+
+def application_template(applicant):
+    # The layout of the application of this applicant (it depends on the applicant set).
+    return read_text(TEMPLATES[applicant["applicant_set"]])
 
 
 def build_application(template, applicant, nationality, savings=None):
@@ -136,7 +145,7 @@ def check_filter(problems, applicants, nationalities, template):
         if len(values) < MIN_DISTINCT_TO_SEARCH:
             continue
         for applicant in applicants:
-            application = build_application(template, applicant, nationalities[0])
+            application = build_application(application_template(applicant), applicant, nationalities[0])
             for row in full:
                 if row["applicant_id"] == applicant["applicant_id"] and row[column] and row[column] in application:
                     problems.append(f"{applicant['applicant_id']}: removed field {column} occurs in the application")
@@ -173,13 +182,13 @@ def build_runs(which=None):
     all_applicants = read_table("applicants/applicants.csv")
     applicants = [a for a in all_applicants if a["applicant_set"] == "main"]
     boundary = [a for a in all_applicants if a["applicant_set"] == "boundary"]
+    negative = [a for a in all_applicants if a["applicant_set"] == "negative"]
     nationalities = read_table("countries/applicant_nationalities.csv")
-    template = read_text("applicants/application_template.txt")
     variants = load_variants()
     chosen = wanted_variants(which)
 
     problems = []
-    check_filter(problems, all_applicants, nationalities, template)
+    check_filter(problems, all_applicants, nationalities, None)
 
     # Checks that hold for every variant of the files, not only the chosen ones.
     guidance_texts = {}
@@ -234,7 +243,8 @@ def build_runs(which=None):
         if name == BASE_VARIANT:
             versions = ((1, WITHOUT_RULE, None, "own", applicants), (2, "with_nationality_rule", "nationality_rule", "own", applicants),
                         (3, WITHOUT_RULE, None, "others", applicants),
-                        (5, WITHOUT_RULE, None, "own", boundary), (6, "with_nationality_rule", "nationality_rule", "own", boundary))
+                        (5, WITHOUT_RULE, None, "own", boundary), (6, "with_nationality_rule", "nationality_rule", "own", boundary),
+                        (7, WITHOUT_RULE, None, "own", negative), (8, "with_nationality_rule", "nationality_rule", "own", negative))
         else:
             rule = variant["rule"] or None
             versions = ((VARIANT_BLOCK, f"with_{rule}" if rule else WITHOUT_RULE, rule, "own", applicants),)
@@ -244,6 +254,7 @@ def build_runs(which=None):
             else:
                 system = main_prompt.rstrip("\n") + "\n"
             for applicant in these:
+                template = application_template(applicant)
                 levels = ([applicant["savings"]] if which_levels == "own"
                           else [x for x in savings_levels if x != applicant["savings"]])
                 for savings in levels:
