@@ -19,7 +19,7 @@ from collections import Counter
 from pathlib import Path
 
 from pipeline.build_runs import DEFAULT_ANSWER_KEYS, SCORE_KEYS, build_runs
-from pipeline.common import DATA, last_by_key, messages_sha256, read_jsonl, write_csv
+from pipeline.common import raw_exists, DATA, last_by_key, messages_sha256, read_jsonl, write_csv
 
 
 def answer_schema(answer_keys=DEFAULT_ANSWER_KEYS):
@@ -111,7 +111,7 @@ def parse_batch(batch, data_root):
     from pipeline.run_models import plan_items
 
     raw_path = Path(data_root) / "raw" / batch / "answers.jsonl"
-    if not raw_path.exists():
+    if not raw_exists(raw_path):
         raise FileNotFoundError(f"no raw answers for batch {batch!r}: {raw_path} does not exist")
     runs = {run["run_id"]: run for run in build_runs("all")[0]}
     expected = {}  # run_id -> hash of the messages build_runs builds today

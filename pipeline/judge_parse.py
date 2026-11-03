@@ -20,7 +20,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from pipeline.common import DATA, last_by_key, load_models, read_jsonl, read_table, write_csv
+from pipeline.common import raw_exists, DATA, last_by_key, load_models, read_jsonl, read_table, write_csv
 from pipeline.judge_build import JUDGE, JUDGE_CODES
 from pipeline.parse_answers import ANSWER_COLUMNS, extract_json
 
@@ -133,7 +133,7 @@ def main(argv=None):
     raw_path = Path(args.data_root) / "raw" / args.batch / f"judge_{args.judge}.jsonl"
     try:
         check_inputs(args.batch, Path(args.data_root))
-        if not raw_path.exists():
+        if not raw_exists(raw_path):
             raise FileNotFoundError(f"no raw judge answers for batch {args.batch!r}: {raw_path} does not exist "
                                     "(run run_judge first)")
         parse_judge(args.batch, args.judge, Path(args.data_root))

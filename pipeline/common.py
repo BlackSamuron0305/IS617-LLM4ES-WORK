@@ -26,6 +26,12 @@ def read_table(path):
         return list(csv.DictReader(f))
 
 
+def raw_exists(path):
+    # A raw file exists if it is there as plain text or compressed (path + ".gz").
+    path = Path(path)
+    return path.exists() or path.with_name(path.name + ".gz").exists()
+
+
 def read_jsonl(path):
     # A raw file that does not exist yet is an empty file. A line that cannot be read (a record torn
     # by a killed job) is skipped and counted; its key is simply called again on the next start.
