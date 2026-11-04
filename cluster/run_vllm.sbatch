@@ -37,6 +37,7 @@
 #   PYTHON_MODULE     optional: a module to load for Python 3.11 or newer, for example devel/python/3.11.7-gnu-11.4
 #   WORKERS           optional: parallel calls, default 16
 #   PORT              optional: port of the server, default 8000
+#   TEMPERATURE, MAX_TOKENS  optional: override the sampling settings of run_settings.csv (answers stage)
 #   VLLM_ARGS         optional: extra arguments for `vllm serve`, for example "--max-model-len 8192"
 #   PYTHON            optional: Python 3.11 or newer, default python3 (the cluster's system
 #                     python may be older; use the venv's python)
@@ -123,6 +124,8 @@ if [ "$STAGE" = "answers" ]; then
     for wording in ${WORDINGS:-}; do PLAN+=(--wording "$wording"); done
     if [ -n "${MAX_REPETITIONS:-}" ]; then PLAN+=(--max-repetitions "$MAX_REPETITIONS"); fi
     if [ -n "${SHARD:-}" ]; then PLAN+=(--shard "$SHARD"); fi
+    if [ -n "${TEMPERATURE:-}" ]; then PLAN+=(--temperature "$TEMPERATURE"); fi
+    if [ -n "${MAX_TOKENS:-}" ]; then PLAN+=(--max-tokens "$MAX_TOKENS"); fi
     # Nothing left to do: leave before the server is started (it takes minutes to load a model).
     # This is what makes a chain of identical jobs cheap: the later ones end here.
     LEFT=$("$PYTHON" -m pipeline.answers.run_models --batch "$BATCH" --model "$ALIAS" "${PLAN[@]}" --remaining) || exit 1

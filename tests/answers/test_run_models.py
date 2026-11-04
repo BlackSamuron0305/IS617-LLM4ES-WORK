@@ -67,6 +67,19 @@ class RunModelsTest(unittest.TestCase):
     def mock_run(self, batch="mock_t", model="qwen3-32b", limit=5, **kwargs):
         return run_answers(batch, model, MockClient("answers"), self.tmp, blocks=[1], limit=limit, mock=True, **kwargs)
 
+    def test_temperature_and_max_tokens_override_is_recorded(self):
+        self.mock_run(batch="mock_ov", limit=2, temperature=0.3, max_tokens=5000)
+        manifest = json.loads((batch_dir(self.tmp, "raw", "mock_ov") / "manifest.json").read_text(encoding="utf-8"))
+        settings = manifest["sessions"][0]["settings"]
+        self.assertEqual((settings["temperature"], settings["max_tokens"]), (0.3, 5000))
+
+    def test_thinking_batches_have_their_own_folders(self):
+        from pipeline.core.common import batch_subpath
+        self.assertEqual(batch_subpath("tt_temp_qwen3-32b_t03_s0"),
+                         Path("07_thinking_and_temperature/temperature/qwen3-32b/tt_temp_qwen3-32b_t03_s0"))
+        self.assertEqual(batch_subpath("tt_think_gpt-oss-120b-high_s2"),
+                         Path("07_thinking_and_temperature/thinking_on/gpt-oss-120b-high/tt_think_gpt-oss-120b-high_s2"))
+
     # --- settings and request parameters
 
     def settings_file(self, answers_schema="no"):

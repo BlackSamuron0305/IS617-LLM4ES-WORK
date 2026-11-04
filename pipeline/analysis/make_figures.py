@@ -2,9 +2,14 @@
 
 Needs matplotlib. Writes PNG files to the folder given by --out. A figure whose table is missing is
 skipped. Standard colours: rich = blue, normal = grey, poor = orange, placebo = hollow.
+--style deck uses the colours and font of the slide decks (navy and gold of the pitch: rich = gold,
+normal = light blue, poor = navy, as on the pitch's wealth map) and leaves out the figure titles,
+which the slide titles carry.
 
 Usage:
-    python -m pipeline.analysis.make_figures --name audited_models --out paper/second_presentation/figures
+    python -m pipeline.analysis.make_figures --name audited_models --out paper/final_paper/figures
+    python -m pipeline.analysis.make_figures --name audited_models --style deck --out paper/second_presentation/figures \
+        --extra extra_models/round_1_small_and_mid extra_models/round_2_large
 """
 
 import argparse

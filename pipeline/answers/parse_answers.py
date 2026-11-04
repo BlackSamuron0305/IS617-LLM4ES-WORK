@@ -47,6 +47,8 @@ def extract_json(text):
     # and <think> blocks that contain braces.
     if not isinstance(text, str):
         return None
+    if "</think>" in text:  # a model that thinks first: the answer is what follows the last thinking block
+        text = text.rsplit("</think>", 1)[1]
     try:
         whole = json.loads(text.strip())
         if isinstance(whole, dict):

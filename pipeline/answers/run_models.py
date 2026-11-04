@@ -45,7 +45,8 @@ def plan_items(runs, blocks, limit, variants=None, wordings=None, max_repetition
 
 
 def run_answers(batch, model_alias, client, data_root, blocks=None, limit=None, workers=8, mock=False,
-                variants=("base",), wordings=None, max_repetitions=None, shard=None):
+                variants=("base",), wordings=None, max_repetitions=None, shard=None,
+                temperature=None, max_tokens=None):
     models = load_models(EXPERIMENT / "config/models.csv")
     if model_alias not in models:
         raise RunRefused(f"unknown model alias {model_alias!r}; experiment/config/models.csv has: {', '.join(models)}")
@@ -55,6 +56,11 @@ def run_answers(batch, model_alias, client, data_root, blocks=None, limit=None, 
     if problems:
         raise RunRefused("build_runs reports problems: " + "; ".join(problems[:5]))
     settings = load_settings("answers")
+    # Deep-dive runs of other sampling settings: the override is written to the manifest with the settings.
+    if temperature is not None:
+        settings["temperature"] = float(temperature)
+    if max_tokens is not None:
+        settings["max_tokens"] = int(max_tokens)
     items = plan_items(runs, blocks, limit, list(variants), wordings, max_repetitions, shard)
     keys = {run["answer_keys"] for run in runs if run["variant"] in variants}
     if len(keys) > 1 and settings["json_schema"]:
@@ -103,6 +109,10 @@ def main(argv=None):
     parser.add_argument("--shard", help="K/N: only every N-th call, starting at K (0 <= K < N); one batch name per shard")
     parser.add_argument("--remaining", action="store_true",
                         help="only print how many calls of the plan are not done yet (calls no model, needs no server)")
+    parser.add_argument("--temperature", type=float,
+                        help="override the temperature of run_settings.csv (deep-dive runs of other sampling settings)")
+    parser.add_argument("--max-tokens", type=int,
+                        help="override max_tokens of run_settings.csv (a model that thinks first needs far more)")
     parser.add_argument("--limit", type=int, help="only the first N calls")
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--mock", action="store_true", help="use the mock client, no server needed")
@@ -136,7 +146,7 @@ def main(argv=None):
                              args.allow_real_calls)
         summary = run_answers(args.batch, args.model, client, Path(args.data_root), args.block, args.limit,
                               args.workers, args.mock, tuple(args.variant or ("base",)), args.wording,
-                              args.max_repetitions, shard)
+                              args.max_repetitions, shard, args.temperature, args.max_tokens)
     except RunRefused as exc:
         print(f"refusing: {exc}", file=sys.stderr)
         return 2

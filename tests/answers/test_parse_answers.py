@@ -63,6 +63,10 @@ class ParseAnswersTest(unittest.TestCase):
         self.assertIsNone(extract_json(""))
         self.assertIsNone(extract_json(None))
 
+    def test_extract_skips_the_thinking_block(self):
+        self.assertEqual(extract_json('<think>draft {"a": 0}</think>{"a": 2}'), {"a": 2})
+        self.assertIsNone(extract_json('<think>only thinking</think>'))
+
     def test_extract_survives_endless_nesting(self):
         # A model stuck in a loop can emit [[[[... or {"a":[[[... up to the token limit. The JSON parser
         # gives up with RecursionError on such text; that must be "no JSON", not a crash of the stage.

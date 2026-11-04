@@ -31,6 +31,7 @@ BATCH_GROUPS = (  # (name prefix, folder, whether the model is part of the name)
     ("x3", "05_extra_models/round_2_large", True), ("dd_fam", "06_deep_dive/qwen_family", True),
     ("dd_neg", "06_deep_dive/negative_applicants", True), ("dd_var", "06_deep_dive/new_prompt_variants", True),
     ("dd_rep", "06_deep_dive/five_repetitions", True), ("dd_conf", "06_deep_dive/conflict_nationalities", True),
+    ("tt_think", "07_thinking_and_temperature/thinking_on", True), ("tt_temp", "07_thinking_and_temperature/temperature", True),
 )
 
 
@@ -40,7 +41,7 @@ def batch_subpath(batch):
         if batch == prefix or batch.startswith(prefix + "_"):
             if not has_model:
                 return Path(folder) / batch
-            model = re.sub(r"_s\d+$", "", batch[len(prefix) + 1:])
+            model = re.sub(r"(_t\d+)?(_s\d+)?$", "", batch[len(prefix) + 1:])
             return Path(folder) / model / batch if model else Path(folder) / batch
     return None
 
