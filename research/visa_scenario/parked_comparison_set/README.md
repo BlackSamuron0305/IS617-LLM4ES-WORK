@@ -9,8 +9,8 @@ how strong a passport is.
 | file | what it is |
 |---|---|
 | `world_reference.csv` | 199 countries: Australian visa route, passport strength (Henley Passport Index, 10 October 2026), Australian grant rates 2019-20, US refusal rates 2025, Muslim share (Pew, 2020), World Bank income data |
-| `select_comparison_countries.py` | the rule that picked the comparison countries. It expects the two tables in `experiment/countries/` and no longer runs from here |
+| `select_comparison_countries.py` | the rule that picked the comparison countries. It expects the two tables in `experiment/inputs/countries/` and no longer runs from here |
 
 Kept only in case the question "Arab League passports against others" is taken up
 later. The figures for the 26 nationalities of the experiment are in
-`experiment/countries/official_rules.csv`.
+`experiment/inputs/countries/official_rules.csv`.

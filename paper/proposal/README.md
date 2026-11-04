@@ -35,7 +35,7 @@ bibliography is `../final_paper/custom.bib`.
   proclamation, the EU AI Act annex, Calfano et al. (2021), and the four sources on the
   United Arab Emirates (an abstract of the nationality law, two government web pages,
   and a newspaper report of official population figures from 2011).
-  The level of each source is in `research/literature_matrix.csv`.
+  The level of each source is in `research/literature/literature_matrix.csv`.
 - Four decisions of Laith of 2026-10-10 shape the text: the project is about LLM bias
   among the 22 Arab League countries, measured against the official rules (no passport
   strength, no non-Arab comparison groups); the second question is whether the countries

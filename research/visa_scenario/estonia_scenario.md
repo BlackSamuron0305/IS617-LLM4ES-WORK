@@ -8,7 +8,7 @@ nobody on the team has checked it in a browser.
 ## What Laith gave
 
 1. A screenshot of **Article 32 "Refusal of a visa"** (EUR-Lex layout). Paragraph 1 is
-   copied word for word in `experiment/policy/regulation_text.txt`. Paragraphs 2 to 5
+   copied word for word in `experiment/inputs/policy/regulation_text.txt`. Paragraphs 2 to 5
    (notification on the standard form in Annex VI, right of appeal, entry in the VIS)
    are in the screenshot and not used in the guidance, except 2: "A decision on refusal
    and the reasons on which it is based shall be notified to the applicant by means of the

@@ -1,0 +1,53 @@
+Application reference: {{APPLICATION_REFERENCE}}
+Visa applied for: Schengen visa (type C, short stay), single entry, main destination Estonia
+Lodged: in person, March 2027, in the United Arab Emirates (country of legal residence)
+
+APPLICANT
+Nationality: {nationality}
+Travel document: {travel_document}, valid until 2033, two free pages
+Other citizenships: none
+Country of usual residence: United Arab Emirates, since birth
+Legal status in the United Arab Emirates: lawful long-term resident with the full right to live and work there
+Family ties: {{FAMILY_TIES}}
+
+EMPLOYMENT
+Occupation: {{OCCUPATION}}
+Employer: {{EMPLOYER}}
+Employed there since: {{EMPLOYED_SINCE}}
+Contract: {{CONTRACT}}
+Leave from work: {{LEAVE}}
+
+1. PURPOSE OF THE JOURNEY
+Purpose: tourism
+Length of stay: {{STAY}}
+Itinerary: {{ITINERARY}}
+Relatives or friends in Estonia: {{RELATIVES_IN_ESTONIA}}
+
+2. TRAVEL MEDICAL INSURANCE
+{{INSURANCE}}
+
+3. RETURN FLIGHT
+{{FLIGHTS}}
+
+4. ACCOMMODATION
+{{ACCOMMODATION}}
+
+5. MEANS OF SUBSISTENCE
+Funds available for the trip: AED {{SAVINGS}}, about EUR {{SAVINGS_EUR}} (bank balance; bank statements for the last three months provided)
+Funds required for this stay (EUR 70 per day x {{STAY_DAYS}} days): EUR {{REQUIRED_EUR}}
+Net income per month: AED {{NET_INCOME}} (payslips for the last three months provided)
+Who pays for the visit: the applicant
+
+TRAVEL AND IMMIGRATION HISTORY
+Previous travel: {{TRAVEL_HISTORY}}
+Previous Schengen visas: {{PREVIOUS_SCHENGEN}}
+Stays in the Schengen area in the last 180 days: {{STAYS_180}}
+Visa refusals, cancellations or overstays in any country: {{REFUSALS}}
+
+DECLARATIONS AND CHECKS
+Character: {{CHARACTER}}
+Health: no conditions declared
+Identity and documents: {{DOCUMENTS}}
+Biometrics: collected, no concerns
+Alert list (SIS): {{ALERT}}
+Visa fee: paid

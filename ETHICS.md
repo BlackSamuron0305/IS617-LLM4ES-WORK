@@ -11,13 +11,13 @@ the one for the hiring design in commit 272792d.
 
 ## 1. Synthetic applicants and employers
 
-- The 30 applications in `experiment/applicants/applicants.csv` were written for this
+- The 30 applications in `experiment/inputs/applicants/applicants.csv` were written for this
   project. No real person, visa application or employer record was used or adapted.
   Incomes and savings are invented and were not taken from statistics.
 - Applicants carry a reference number instead of a name. The simulated records have a
   name, sex, date of birth, address, phone number, e-mail and passport number, all invented
-  (`experiment/applicants/applicants_full.csv`); a documented filter removes them before
-  any model sees an application (`experiment/applicants/field_filter.csv`), so that these
+  (`experiment/inputs/applicants/applicants_full.csv`); a documented filter removes them before
+  any model sees an application (`experiment/inputs/applicants/field_filter.csv`), so that these
   cannot act on the result. There are no photos or religion fields.
 - No visa office is named. The prompt speaks of "an Estonian visa office". The Estonian
   Ministry of Foreign Affairs does not run this system and has not seen this material. Employers are described, not named.
@@ -63,12 +63,12 @@ estimates appear.
 - Visa law works with nationalities: they decide who needs a visa at all, and real
   consulates grant and refuse nationalities at very different rates. The grounds for
   refusal in Article 32(1) of the Visa Code do not name nationality, and a refusal has to
-  state its reasons. The sources and the passages read are in `experiment/policy/README.md`.
+  state its reasons. The sources and the passages read are in `experiment/inputs/policy/README.md`.
   The study does not assess legality, nobody on the team is a lawyer, and practice may
   differ from the published rules. A model that scores a passport lower may be reproducing
   that practice. That explains where a difference may come from; it does not justify it
   for identical applications. The yardstick of the project is the list of grounds, which is
-  the same for all nationalities that need the visa (`experiment/countries/official_rules.csv`).
+  the same for all nationalities that need the visa (`experiment/inputs/countries/official_rules.csv`).
 - Real grant and refusal rates by nationality describe real applicants in very different
   circumstances. They are never presented as a statement about the people of a country,
   and never as evidence that a difference is justified or unjustified.
@@ -104,7 +104,7 @@ estimates appear.
 - Findings about a country are not framed in ways that invite ridicule or hostility
   toward its people, for example headlines that rank nationalities by "risk".
 - Money figures are illustrations of a model's behaviour, not forecasts of what visas
-  cost anybody. Every figure says which measure it is (`experiment/costs/README.md`).
+  cost anybody. Every figure says which measure it is (`experiment/inputs/costs/README.md`).
 - How the estimates are tested is not decided yet. The analysis plan has to be written
   before the first real run and this section updated with it.
 

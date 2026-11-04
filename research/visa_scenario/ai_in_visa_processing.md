@@ -2,7 +2,7 @@
 
 Internal research note, written by Claude (AI) on 2026-10-10 at Laith's request. Not report
 text. Nothing here has been checked by the team. Before anything goes into the paper it has to
-be verified against the full text and entered in `research/literature_matrix.csv` with a
+be verified against the full text and entered in `research/literature/literature_matrix.csv` with a
 verification level.
 
 Purpose: a factual basis for a possible audit in which an LLM gets a visa-officer instruction
@@ -576,7 +576,7 @@ text itself, not through the fetch tool's summary. That raises the level of seve
 sources of section 2 from "page (tool)" to "direct" for the passages quoted:
 `[UK2]`, `[UK5]`, `[NL1]`, `[NL3]` (answers 5 and 6), `[EU1]`, `[AU1]` (now all three
 pages), `[CA1]` and `[US1]` (read again). `[CA2]` could not be downloaded again. The
-exact wording is in `research/literature_matrix.csv` (column `main_result`) and in the
+exact wording is in `research/literature/literature_matrix.csv` (column `main_result`) and in the
 note "exact wording behind step 8" in `paper/final_paper/paper.tex`.
 
 | Country | What the source says, in its words | Kind of software | Status | Key |

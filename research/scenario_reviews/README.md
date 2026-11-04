@@ -30,6 +30,6 @@ Things to know when reading them:
   nationality). The correction is marked in the first note.
 - `bank_onboarding_scenario.md` says the 2021 version of the EBA guidelines and annex 2
   of the German act had not been read. Both were read later the same day; the result is
-  in `experiment/policy/README.md`.
+  in `experiment/inputs/policy/README.md`.
 - The redaction test was a test of a tool on the old CVs, not an experiment result. Its
   script was in a temporary folder and is not in the repository.

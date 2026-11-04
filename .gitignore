@@ -28,14 +28,14 @@ paper/**/*.fls
 paper/**/*.log
 paper/**/*.out
 paper/**/*.synctex.gz
-research/*.aux
-research/*.bbl
-research/*.blg
-research/*.fdb_latexmk
-research/*.fls
-research/*.log
-research/*.out
-research/*.synctex.gz
+research/**/*.aux
+research/**/*.bbl
+research/**/*.blg
+research/**/*.fdb_latexmk
+research/**/*.fls
+research/**/*.log
+research/**/*.out
+research/**/*.synctex.gz
 
 # --- Run outputs policy (see data/README.md) ---
 # Mock runs are synthetic, regenerable in seconds, and must never be mistaken for

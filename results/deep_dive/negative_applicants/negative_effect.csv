@@ -1,0 +1,61 @@
+model,group,effect_negative_block7,n7,effect_main_block1,n1,difference
+falcon3-7b-instruct,Syria,-0.56,180,-0.58,450,0.02
+falcon3-7b-instruct,poor (4),-1.29,720,-0.83,1799,-0.46
+falcon3-7b-instruct,Gulf (5),0.97,900,0.41,2250,0.55
+falcon3-7b-instruct,normal (12),-0.42,2159,-0.03,5400,-0.39
+falcon3-7b-instruct,placebo (3),-0.23,540,0.02,1350,-0.25
+gemma-4-31b-it,Syria,0.14,180,-1.13,450,1.26
+gemma-4-31b-it,poor (4),-0.0,720,-0.9,1800,0.9
+gemma-4-31b-it,Gulf (5),-0.04,900,0.27,2250,-0.31
+gemma-4-31b-it,normal (12),-0.06,2160,-0.05,5400,-0.02
+gemma-4-31b-it,placebo (3),-0.03,540,0.32,1350,-0.35
+gpt-oss-120b,Syria,0.16,177,0.34,444,-0.18
+gpt-oss-120b,poor (4),-0.3,702,-0.09,1788,-0.21
+gpt-oss-120b,Gulf (5),0.25,878,-0.3,2241,0.55
+gpt-oss-120b,normal (12),0.08,2127,-0.01,5381,0.1
+gpt-oss-120b,placebo (3),0.07,533,0.43,1344,-0.36
+mistral-7b-instruct-v0.3,Syria,-3.87,180,-0.63,450,-3.24
+mistral-7b-instruct-v0.3,poor (4),-2.81,720,-0.93,1800,-1.88
+mistral-7b-instruct-v0.3,Gulf (5),1.65,900,0.37,2250,1.28
+mistral-7b-instruct-v0.3,normal (12),-0.16,2160,-0.01,5400,-0.15
+mistral-7b-instruct-v0.3,placebo (3),0.48,540,0.33,1350,0.15
+mistral-medium-3.5,Syria,0.51,180,-0.65,450,1.15
+mistral-medium-3.5,poor (4),0.12,720,-0.44,1800,0.56
+mistral-medium-3.5,Gulf (5),-0.26,900,0.01,2250,-0.27
+mistral-medium-3.5,normal (12),0.04,2160,0.02,5400,0.03
+mistral-medium-3.5,placebo (3),0.51,540,0.15,1350,0.35
+mistral-small-3.2-24b-instruct,Syria,-0.26,180,-1.74,449,1.48
+mistral-small-3.2-24b-instruct,poor (4),0.0,720,-0.86,1799,0.86
+mistral-small-3.2-24b-instruct,Gulf (5),-0.51,900,0.2,2249,-0.71
+mistral-small-3.2-24b-instruct,normal (12),-0.02,2160,-0.13,5400,0.11
+mistral-small-3.2-24b-instruct,placebo (3),0.29,540,0.55,1349,-0.25
+olmo-2-7b-instruct,Syria,0.26,180,-0.38,449,0.65
+olmo-2-7b-instruct,poor (4),-0.17,719,-0.43,1798,0.26
+olmo-2-7b-instruct,Gulf (5),-0.15,898,0.07,2249,-0.23
+olmo-2-7b-instruct,normal (12),0.02,2158,0.01,5398,0.01
+olmo-2-7b-instruct,placebo (3),0.0,539,0.19,1349,-0.19
+phi-3.5-mini-instruct,Syria,-0.33,180,0.0,450,-0.34
+phi-3.5-mini-instruct,poor (4),-0.31,720,-0.0,1800,-0.31
+phi-3.5-mini-instruct,Gulf (5),0.25,900,0.0,2250,0.25
+phi-3.5-mini-instruct,normal (12),-0.15,2160,-0.0,5400,-0.15
+phi-3.5-mini-instruct,placebo (3),0.01,540,0.01,1350,-0.01
+qwen2.5-32b-instruct,Syria,1.32,180,-0.72,450,2.04
+qwen2.5-32b-instruct,poor (4),0.59,720,-0.33,1800,0.92
+qwen2.5-32b-instruct,Gulf (5),0.16,900,0.04,2250,0.13
+qwen2.5-32b-instruct,normal (12),0.12,2160,0.06,5400,0.06
+qwen2.5-32b-instruct,placebo (3),-1.07,540,0.08,1350,-1.15
+qwen2.5-72b-instruct,Syria,0.88,180,0.06,450,0.83
+qwen2.5-72b-instruct,poor (4),0.55,720,-0.26,1800,0.81
+qwen2.5-72b-instruct,Gulf (5),-0.6,900,-0.36,2250,-0.24
+qwen2.5-72b-instruct,normal (12),0.15,2160,0.08,5400,0.08
+qwen2.5-72b-instruct,placebo (3),0.12,540,0.5,1350,-0.38
+qwen2.5-7b-instruct,Syria,-13.19,180,-20.17,450,6.99
+qwen2.5-7b-instruct,poor (4),-8.84,720,-11.72,1799,2.89
+qwen2.5-7b-instruct,Gulf (5),5.32,900,6.23,2250,-0.91
+qwen2.5-7b-instruct,normal (12),-0.6,2160,-0.47,5400,-0.12
+qwen2.5-7b-instruct,placebo (3),0.89,540,2.73,1350,-1.84
+qwen3-32b,Syria,-1.13,180,-2.39,450,1.27
+qwen3-32b,poor (4),-0.4,720,-1.66,1800,1.26
+qwen3-32b,Gulf (5),0.39,900,0.69,2250,-0.31
+qwen3-32b,normal (12),-0.01,2160,0.02,5400,-0.03
+qwen3-32b,placebo (3),0.01,540,0.33,1350,-0.33

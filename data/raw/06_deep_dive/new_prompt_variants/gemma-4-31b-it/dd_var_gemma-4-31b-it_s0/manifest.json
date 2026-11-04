@@ -1,0 +1,93 @@
+{
+  "batch": "dd_var_gemma-4-31b-it_s0",
+  "kind": "answers",
+  "model_alias": "gemma-4-31b-it",
+  "model_id": "google/gemma-4-31B-it",
+  "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-03T15:07:22Z",
+      "git_commit": "683f6278480964a924719026f03cebc6a9d1b686",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "reason_first",
+        "short_reason",
+        "strict_officer",
+        "lenient_officer",
+        "security_officer",
+        "fairness_first",
+        "fairness_last",
+        "home_country_line",
+        "no_nationality_line",
+        "no_document_line",
+        "reference_nationalities"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        0,
+        2
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/gemma-4-31b-it",
+      "vllm_args": "",
+      "base_url": "http://localhost:35780/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": null
+    },
+    {
+      "started_utc": "2026-11-03T15:56:12Z",
+      "git_commit": "683f6278480964a924719026f03cebc6a9d1b686",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "reason_first",
+        "short_reason",
+        "strict_officer",
+        "lenient_officer",
+        "security_officer",
+        "fairness_first",
+        "fairness_last",
+        "home_country_line",
+        "no_nationality_line",
+        "no_document_line",
+        "reference_nationalities"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        0,
+        2
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/gemma-4-31b-it",
+      "vllm_args": "",
+      "base_url": "http://localhost:35781/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 13050,
+        "already_done": 7791,
+        "called": 5259,
+        "errors": 0
+      }
+    }
+  ]
+}

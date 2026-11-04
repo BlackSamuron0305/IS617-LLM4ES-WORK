@@ -1,0 +1,51 @@
+{
+  "batch": "main_qwen3-32b",
+  "kind": "judge",
+  "model_alias": "gpt-oss-120b",
+  "model_id": "openai/gpt-oss-120b",
+  "revision": "b5c939de8f754692c1647ca79fbf85e8c1e70f8a",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-03T17:22:33Z",
+      "git_commit": "9a400f3506041a21230ea278842e4e66a881bb59",
+      "dirty": [],
+      "limit": null,
+      "lab_version": "v1_unmasked",
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/gpt-oss-120b",
+      "vllm_args": "",
+      "base_url": "http://localhost:25688/v1",
+      "settings": {
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1000,
+        "seed": 0,
+        "json_schema": false
+      },
+      "summary": null
+    },
+    {
+      "started_utc": "2026-11-03T17:28:42Z",
+      "git_commit": "9a400f3506041a21230ea278842e4e66a881bb59",
+      "dirty": [],
+      "limit": null,
+      "lab_version": "v1_unmasked",
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/gpt-oss-120b",
+      "vllm_args": "",
+      "base_url": "http://localhost:25689/v1",
+      "settings": {
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1000,
+        "seed": 0,
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 2500,
+        "already_done": 564,
+        "called": 1936,
+        "errors": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+  no_json: 185   bad_value: 43   no_json: 173   bad_value: 48 31980 rows from 2 shard batches in /pfs/
+  no_json: 0   bad_value: 0   no_json: 0   bad_value: 0   no_json: 0   bad_value: 0 31980 rows from 3 shard batches in /pfs/
+  no_json: 32   bad_value: 2   no_json: 31   bad_value: 3 31980 rows from 2 shard batches in /pfs/
+  no_json: 2   bad_value: 0   no_json: 1   bad_value: 0 31980 rows from 2 shard batches in /pfs/
+  no_json: 0   bad_value: 0   no_json: 2   bad_value: 0 31980 rows from 2 shard batches in /pfs/
+  no_json: 0   bad_value: 0   no_json: 0   bad_value: 0   no_json: 0   bad_value: 0 31980 rows from 3 shard batches in /pfs/
+  no_json: 0   bad_value: 0   no_json: 0   bad_value: 0 31980 rows from 2 shard batches in /pfs/
+  no_json: 1   bad_value: 0   no_json: 2   bad_value: 0 31980 rows from 2 shard batches in /pfs/
+  no_json: 0   bad_value: 0   no_json: 0   bad_value: 0 26100 rows from 2 shard batches in /pfs/
+  no_json: 0   bad_value: 0   no_json: 4   bad_value: 0 26100 rows from 2 shard batches in /pfs/
+  no_json: 0   bad_value: 0   no_json: 0   bad_value: 0 26100 rows from 2 shard batches in /pfs/
+  no_json: 0   bad_value: 0   no_json: 0   bad_value: 0 26100 rows from 2 shard batches in /pfs/
+{'negative': 1200, 'effect': 100, 'ablation': 64, 'reference': 40, 'family': 20} -> /pfs/work9/workspace/scratch/ma_lsandouk-llm/is617_work/repo/results/dd
+
+============================= JOB FEEDBACK =============================
+
+NodeName=uc2n872
+Job ID: 8265611
+Cluster: uc3
+User/Group: ma_lsandouk/ma_ma
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 2
+CPU Utilized: 00:01:27
+CPU Efficiency: 30.42% of 00:04:46 core-walltime
+Job Wall-clock time: 00:02:23
+Memory Utilized: 795.30 MB
+Memory Efficiency: 3.24% of 24.00 GB (24.00 GB/node)

@@ -8,7 +8,7 @@ note, **not report text**. It continues `prompt_realism_review.md` and
 
 Limits: one round of web search, mostly secondary sources (news, NGO reports, law-firm
 summaries). Two pages were read through a summarising fetch tool. Nothing here is in
-`research/literature_matrix.csv` yet. Levels are in section 8. No claim about novelty is
+`research/literature/literature_matrix.csv` yet. Levels are in section 8. No claim about novelty is
 made: I did not search systematically for LLM studies in these fields.
 
 ## 1. Short answer

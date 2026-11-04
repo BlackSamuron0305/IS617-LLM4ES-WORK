@@ -8,7 +8,7 @@
 #SBATCH --output=%x_%j.out
 #SBATCH --error=%x_%j.err
 #
-# Download ONE model at the exact revision pinned in experiment/models.csv (or judge_models.csv),
+# Download ONE model at the exact revision pinned in experiment/config/models.csv (or judge_models.csv),
 # into $WS/models/<dir>. Unlike ~/llm/download_one.sbatch it does not take the newest version.
 #   sbatch cluster/download_model.sbatch google/gemma-4-31B-it gemma-4-31b-it <40-character-commit-hash>
 # Written on 2026-11-01. Not a real model call; it only copies files. Ask the user before submitting.

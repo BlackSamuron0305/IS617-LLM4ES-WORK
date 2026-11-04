@@ -1,0 +1,45 @@
+{
+  "batch": "dd_neg_phi-3.5-mini-instruct_s0",
+  "kind": "answers",
+  "model_alias": "phi-3.5-mini-instruct",
+  "model_id": "microsoft/Phi-3.5-mini-instruct",
+  "revision": "2fe192450127e6a83f7441aef6e3ca586c338b77",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-03T13:54:35Z",
+      "git_commit": "683f6278480964a924719026f03cebc6a9d1b686",
+      "dirty": [],
+      "blocks": [
+        7,
+        8
+      ],
+      "limit": null,
+      "variants": [
+        "base"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        0,
+        2
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/phi3.5-mini",
+      "vllm_args": "",
+      "base_url": "http://localhost:35730/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 4680,
+        "already_done": 0,
+        "called": 4680,
+        "errors": 0
+      }
+    }
+  ]
+}

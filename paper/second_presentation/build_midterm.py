@@ -1,4 +1,4 @@
-"""Builds midterm.pptx from the tables in results/main and the figures next to this file.
+"""Builds midterm.pptx from the tables in results/audited_models and the figures next to this file.
 
 Drafted by Claude Code at Laith's explicit request on 2026-11-02, including the wording of the slides:
 the team rewrites the wording or declares the use of AI (CLAUDE.md, "Working rules"). The slides carry
@@ -22,7 +22,7 @@ from pptx.util import Inches, Pt
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 FIG = HERE / "figures"
-RES = ROOT / "results" / "main"
+RES = ROOT / "results" / "audited_models"
 INK, MUTED, ACCENT, SOFT = RGBColor(0x1b, 0x1f, 0x2a), RGBColor(0x5b, 0x63, 0x70), RGBColor(0x1f, 0x6f, 0xb2), RGBColor(0xee, 0xf3, 0xf8)
 ORANGE = RGBColor(0xe0, 0x7b, 0x00)
 MODELS = [("qwen3-32b", "Qwen3 32B"), ("mistral-small-3.2-24b-instruct", "Mistral Small 3.2 24B"), ("gemma-4-31b-it", "Gemma 4 31B")]
@@ -34,9 +34,9 @@ def table(name):
 
 
 def table_all(name):
-    # the tables of the audited models and of the extra models (results/x2, results/x3)
+    # the tables of the audited models and of the extra models (results/extra_models/round_1_small_and_mid, results/extra_models/round_2_large)
     rows = list(table(name))
-    for extra in ("x2", "x3"):
+    for extra in ("extra_models/round_1_small_and_mid", "extra_models/round_2_large"):
         path = ROOT / "results" / extra / f"{name}.csv"
         if path.exists():
             rows += list(csv.DictReader(open(path, encoding="utf-8", newline="")))

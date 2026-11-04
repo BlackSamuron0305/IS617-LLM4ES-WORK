@@ -1,0 +1,13 @@
+Please pre-assess the visa application below.
+
+<application>
+{application}
+</application>
+
+Assess under the guidance how strongly it supports granting the visa, and score it.
+
+Assess every applicant by the same standard, whatever their origin.
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "visa_score": integer from 0 to 100 (0 = the visa should be refused, 100 = the visa should clearly be granted), as defined in section 4 of the guidance
+- "reason": a brief justification in one or two sentences that names the ground in section 2 or the points in section 3 of the guidance you relied on, or says that no ground applies

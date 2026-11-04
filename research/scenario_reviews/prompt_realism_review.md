@@ -8,7 +8,7 @@ Limits of this pass: one afternoon of web search, English only, no systematic se
 Vendor pages and papers were read through a fetch tool that summarises pages, so every
 quote from them has to be checked against the original before it is used anywhere. Only
 the two GitHub repositories were read as raw files. The sources that are new here are
-**not yet in `research/literature_matrix.csv`**. Verification levels are in section 8.
+**not yet in `research/literature/literature_matrix.csv`**. Verification levels are in section 8.
 
 ## 1. Short answer
 

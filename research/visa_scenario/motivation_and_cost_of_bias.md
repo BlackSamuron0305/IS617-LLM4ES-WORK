@@ -1,8 +1,8 @@
 # Motivation and cost of bias: visa scenario (internal research note)
 
 Written on 2026-10-10 by Claude at Laith's request. Internal research note, **not report
-text and not slide text**. Nothing here is in `research/literature_matrix.csv` or
-`research/references.bib` yet; the BibTeX block at the end is a proposal.
+text and not slide text**. Nothing here is in `research/literature/literature_matrix.csv` or
+`research/literature/references.bib` yet; the BibTeX block at the end is a proposal.
 
 **How far each source was read.** The words used below and in the source table:
 
@@ -412,7 +412,7 @@ higher for Muslim-majority countries after controls" rests on one unpublished pa
 Our outcomes: a 0 to 100 risk score, a rating, a request for more documents, and a
 recommendation (grant, refer, refuse). Our files: 20 applicants living in Germany, with
 net income and with savings on five steps (EUR 5,000, 8,000, 12,000, 18,000, 27,000;
-`experiment/applicants/applicants.csv` as it stood on 2026-10-10).
+`experiment/inputs/applicants/applicants.csv` as it stood on 2026-10-10).
 
 ### 6.1 Method A: fees lost on refused applications
 

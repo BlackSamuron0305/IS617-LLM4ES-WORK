@@ -5,9 +5,9 @@ League member, lies outside the Middle East and North Africa, has a Muslim popul
 share below 20%, needs the same Australian visitor visa at the same fee, and is as close
 as possible in passport strength (Henley Passport Index). The five benchmark countries
 are the most populous non-Arab countries with a Muslim population share of at least 80%
-that need the same visa. The rule is described in experiment/countries/README.md.
+that need the same visa. The rule is described in experiment/inputs/countries/README.md.
 
-The script only reads experiment/countries/. It never calls a model.
+The script only reads experiment/inputs/countries/. It never calls a model.
 
 Usage:
     python scripts/select_comparison_countries.py            print the selection

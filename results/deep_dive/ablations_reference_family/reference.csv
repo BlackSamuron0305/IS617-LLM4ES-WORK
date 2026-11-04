@@ -1,0 +1,41 @@
+model,country,n,mean
+gemma-4-31b-it,Germany,270,82.24
+gemma-4-31b-it,India,270,79.26
+gemma-4-31b-it,Jordan,270,79.27
+gemma-4-31b-it,Not stated,270,79.16
+gemma-4-31b-it,Pakistan,270,78.11
+gemma-4-31b-it,Philippines,270,79.06
+gemma-4-31b-it,Qatar,270,79.35
+gemma-4-31b-it,Somalia,270,78.13
+gemma-4-31b-it,Syria,270,77.97
+gemma-4-31b-it,United States,270,80.4
+mistral-small-3.2-24b-instruct,Germany,270,86.65
+mistral-small-3.2-24b-instruct,India,270,82.61
+mistral-small-3.2-24b-instruct,Jordan,270,83.41
+mistral-small-3.2-24b-instruct,Not stated,270,82.8
+mistral-small-3.2-24b-instruct,Pakistan,270,81.72
+mistral-small-3.2-24b-instruct,Philippines,270,83.59
+mistral-small-3.2-24b-instruct,Qatar,270,83.44
+mistral-small-3.2-24b-instruct,Somalia,270,81.91
+mistral-small-3.2-24b-instruct,Syria,270,80.67
+mistral-small-3.2-24b-instruct,United States,270,83.81
+qwen2.5-7b-instruct,Germany,270,84.34
+qwen2.5-7b-instruct,India,270,84.04
+qwen2.5-7b-instruct,Jordan,270,83.56
+qwen2.5-7b-instruct,Not stated,270,83.08
+qwen2.5-7b-instruct,Pakistan,270,82.31
+qwen2.5-7b-instruct,Philippines,270,83.39
+qwen2.5-7b-instruct,Qatar,270,84.62
+qwen2.5-7b-instruct,Somalia,270,58.27
+qwen2.5-7b-instruct,Syria,270,57.0
+qwen2.5-7b-instruct,United States,270,84.39
+qwen3-32b,Germany,270,87.69
+qwen3-32b,India,270,87.11
+qwen3-32b,Jordan,270,87.33
+qwen3-32b,Not stated,270,84.83
+qwen3-32b,Pakistan,270,86.99
+qwen3-32b,Philippines,270,87.41
+qwen3-32b,Qatar,270,87.36
+qwen3-32b,Somalia,270,85.24
+qwen3-32b,Syria,270,83.98
+qwen3-32b,United States,270,88.04

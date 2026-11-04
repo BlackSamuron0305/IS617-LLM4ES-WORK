@@ -7,21 +7,34 @@ run from the repo root as `python -m pipeline.<stage>`.
 **Nothing has been run with a real model.** Every stage runs as a mock, which needs no
 server. The output of a mock run is labelled as such and is never a result.
 
+## The packages
+
+| package | modules | role |
+|---|---|---|
+| `pipeline/core/` | `common`, `client`, `calls` | paths (including where a batch lives), tables, the model client and the call loop. Used by all the others |
+| `pipeline/design/` | `filter_applicants`, `build_runs` | the experiment: the filtered applicants and every prompt. Calls no model |
+| `pipeline/answers/` | `run_models`, `parse_answers`, `merge_batches`, `pilot_report` | the audited model: send the prompts, read the answers, merge shards, check the pilot |
+| `pipeline/judge/` | `build`, `run`, `parse`, `validate`, `lab`, `lab_report` | the judge that codes the reasons, its validation sample and the judge lab |
+| `pipeline/analysis/` | `summarize`, `analyze_main`, `costs`, `make_figures` | tables, confirmatory tests, cost measures and figures |
+| `pipeline/deep_dive/` | `report`, `figures`, `significance_tests` | exploratory tables, figures and tests of the branch `bias-deep-dive` |
+
+Tests are in `tests/<package>/`, one folder per package.
+
 ## The stages, in order
 
 | # | stage | what it does | command |
 |---|---|---|---|
-| 0a | `filter_applicants` | writes the applicants the model may see from the full records and the filter | `python -m pipeline.filter_applicants` |
-| 0 | `build_runs` | puts the prompts together from `experiment/`, checks them and prints the counts. Calls no model | `python -m pipeline.build_runs` |
-| 1 | `run_models` | sends the prompts of one batch to one model and stores the raw answers | `python -m pipeline.run_models --batch pilot1 --model qwen3-32b --block 1 --base-url http://localhost:8000/v1 --allow-real-calls` |
-| 2 | `parse_answers` | reads the answers (score, reason; `reasoning` for the reasoning variant) into one table. A risk-scale answer is also written on the grant scale (`visa_score`) | `python -m pipeline.parse_answers --batch pilot1` |
-| 3 | `judge_build` | hides every nationality word in the reasons and prepares what the judge sees | `python -m pipeline.judge_build --batch pilot1` |
-| 4 | `run_judge` | sends the judge inputs to the judge model and stores the raw answers | `python -m pipeline.run_judge --batch pilot1 --judge olmo-3.1-32b-instruct --base-url http://localhost:8000/v1 --allow-real-calls` |
-| 5 | `judge_parse` | reads the judge's codes and puts them on every answer | `python -m pipeline.judge_parse --batch pilot1 --judge olmo-3.1-32b-instruct` |
-| 6a | `judge_validate sample` | draws the items that the team codes by hand | `python -m pipeline.judge_validate sample --batch pilot1` |
-| P | `pilot_report` | after the pilot: the go / no-go checks of `experiment/analysis_plan.md`, section 5 | `python -m pipeline.pilot_report --batch pilot1` |
-| A | `analyze_main` | the confirmatory tests H1 to H4 for the full run, one model at a time | `python -m pipeline.analyze_main --batch main_qwen3-32b` |
-| 6b | `judge_validate agreement` | measures how well two sets of codes agree | `python -m pipeline.judge_validate agreement --batch pilot1 --human coded.csv --judge olmo-3.1-32b-instruct` |
+| 0a | `filter_applicants` | writes the applicants the model may see from the full records and the filter | `python -m pipeline.design.filter_applicants` |
+| 0 | `build_runs` | puts the prompts together from `experiment/`, checks them and prints the counts. Calls no model | `python -m pipeline.design.build_runs` |
+| 1 | `run_models` | sends the prompts of one batch to one model and stores the raw answers | `python -m pipeline.answers.run_models --batch pilot1 --model qwen3-32b --block 1 --base-url http://localhost:8000/v1 --allow-real-calls` |
+| 2 | `parse_answers` | reads the answers (score, reason; `reasoning` for the reasoning variant) into one table. A risk-scale answer is also written on the grant scale (`visa_score`) | `python -m pipeline.answers.parse_answers --batch pilot1` |
+| 3 | `judge_build` | hides every nationality word in the reasons and prepares what the judge sees | `python -m pipeline.judge.build --batch pilot1` |
+| 4 | `run_judge` | sends the judge inputs to the judge model and stores the raw answers | `python -m pipeline.judge.run --batch pilot1 --judge olmo-3.1-32b-instruct --base-url http://localhost:8000/v1 --allow-real-calls` |
+| 5 | `judge_parse` | reads the judge's codes and puts them on every answer | `python -m pipeline.judge.parse --batch pilot1 --judge olmo-3.1-32b-instruct` |
+| 6a | `judge_validate sample` | draws the items that the team codes by hand | `python -m pipeline.judge.validate sample --batch pilot1` |
+| P | `pilot_report` | after the pilot: the go / no-go checks of `experiment/planning/analysis_plan.md`, section 5 | `python -m pipeline.answers.pilot_report --batch pilot1` |
+| A | `analyze_main` | the confirmatory tests H1 to H4 for the full run, one model at a time | `python -m pipeline.analysis.analyze_main --batch main_qwen3-32b` |
+| 6b | `judge_validate agreement` | measures how well two sets of codes agree | `python -m pipeline.judge.validate agreement --batch pilot1 --human coded.csv --judge olmo-3.1-32b-instruct` |
 
 The commands of stages 1 and 4 are real calls. They are shown as they are used on the
 cluster, where `cluster/run_vllm.sbatch` starts the server and passes `--allow-real-calls`
@@ -44,15 +57,15 @@ This runs every stage on 50 mock answers and takes a few seconds. The batch is c
 with `mock`.
 
 ```
-python -m pipeline.run_models --batch mock_demo --model qwen3-32b --mock --limit 50
-python -m pipeline.parse_answers --batch mock_demo
-python -m pipeline.judge_build --batch mock_demo
-python -m pipeline.run_judge --batch mock_demo --judge olmo-3.1-32b-instruct --mock
-python -m pipeline.judge_parse --batch mock_demo --judge olmo-3.1-32b-instruct
-python -m pipeline.judge_validate sample --batch mock_demo --n 20
-python -m pipeline.run_judge --batch mock_demo --judge gpt-oss-120b --mock
-python -m pipeline.judge_parse --batch mock_demo --judge gpt-oss-120b
-python -m pipeline.judge_validate agreement --batch mock_demo --human data/processed/mock_demo/judge_codes_gpt-oss-120b.csv --judge olmo-3.1-32b-instruct
+python -m pipeline.answers.run_models --batch mock_demo --model qwen3-32b --mock --limit 50
+python -m pipeline.answers.parse_answers --batch mock_demo
+python -m pipeline.judge.build --batch mock_demo
+python -m pipeline.judge.run --batch mock_demo --judge olmo-3.1-32b-instruct --mock
+python -m pipeline.judge.parse --batch mock_demo --judge olmo-3.1-32b-instruct
+python -m pipeline.judge.validate sample --batch mock_demo --n 20
+python -m pipeline.judge.run --batch mock_demo --judge gpt-oss-120b --mock
+python -m pipeline.judge.parse --batch mock_demo --judge gpt-oss-120b
+python -m pipeline.judge.validate agreement --batch mock_demo --human data/processed/mock_demo/judge_codes_gpt-oss-120b.csv --judge olmo-3.1-32b-instruct
 ```
 
 Every command exits with 0. The last two judge commands and the `agreement` command use the
@@ -72,10 +85,10 @@ overwrite an existing sample.
 | stage | reads | writes |
 |---|---|---|
 | `build_runs` | `experiment/` (policy, applicants, countries, prompts) | nothing, or with `--write FILE` all prompts as JSON lines |
-| `run_models` | `build_runs`, `experiment/models.csv`, `experiment/run_settings.csv` | `data/raw/<batch>/answers.jsonl` (appended), `data/raw/<batch>/manifest.json` |
+| `run_models` | `build_runs`, `experiment/config/models.csv`, `experiment/config/run_settings.csv` | `data/raw/<batch>/answers.jsonl` (appended), `data/raw/<batch>/manifest.json` |
 | `parse_answers` | `data/raw/<batch>/answers.jsonl` | `data/processed/<batch>/answers.csv` |
-| `judge_build` | `data/processed/<batch>/answers.csv`, `experiment/judge/` (prompt files, `mask_terms.csv`), `experiment/countries/` | `data/processed/<batch>/judge_items.jsonl`, `judge_links.csv` |
-| `run_judge` | `data/processed/<batch>/judge_items.jsonl`, `experiment/judge/judge_models.csv`, `experiment/run_settings.csv` | `data/raw/<batch>/judge_<alias>.jsonl` (appended), `judge_<alias>_manifest.json` |
+| `judge_build` | `data/processed/<batch>/answers.csv`, `experiment/judge/` (prompt files, `mask_terms.csv`), `experiment/inputs/countries/` | `data/processed/<batch>/judge_items.jsonl`, `judge_links.csv` |
+| `run_judge` | `data/processed/<batch>/judge_items.jsonl`, `experiment/judge/judge_models.csv`, `experiment/config/run_settings.csv` | `data/raw/<batch>/judge_<alias>.jsonl` (appended), `judge_<alias>_manifest.json` |
 | `judge_parse` | `data/raw/<batch>/judge_<alias>.jsonl`, `data/processed/<batch>/answers.csv`, `judge_items.jsonl`, `judge_links.csv` | `data/processed/<batch>/judge_codes_<alias>.csv`, `answers_judged_<alias>.csv` |
 | `judge_validate sample` | `data/processed/<batch>/judge_items.jsonl` | `data/processed/<batch>/validation_sample.csv` |
 | `judge_validate agreement` | the coded file, and `judge_codes_<alias>.csv` or a second coded file | `data/processed/<batch>/validation_agreement_<name>.csv`, and a table on the screen |
@@ -93,7 +106,7 @@ conditions are checked in this order:
 1. `--allow-real-calls` is given. Without it the run stays a mock run. It is given only
    with the team's explicit approval.
 2. The batch name does not start with `mock`.
-3. The `revision` of the model in its table (`experiment/models.csv`, or
+3. The `revision` of the model in its table (`experiment/config/models.csv`, or
    `experiment/judge/judge_models.csv` for the judge) is a 40-character commit hash (40
    lowercase hexadecimal characters). An empty cell, a branch name such as `main` or a short
    hash is refused. All revisions are empty today, so every real run is refused until they

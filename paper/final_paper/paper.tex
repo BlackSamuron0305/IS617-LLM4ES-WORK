@@ -138,8 +138,8 @@ from it. (press) is a press report, (party) a statement by one side of a dispute
         no adequate travel medical insurance; reasonable doubts about the documents, the statements or the intention to leave). Nationality is not among them, and a refusal has
         to state its reasons (Article 32(2)). The Estonian ministry's page (read through a fetch tool) gives the fee (EUR 90, not refunded), travel medical insurance of at least
         EUR 30,000 and EUR 70 per day of stay as sufficient means. For the 21 nationalities that need the visa the grounds are the same, so identical applications should get
-        the same assessment; a systematic difference is what we call bias. Source text: screenshot supplied by Laith (EUR-Lex layout); \texttt{experiment/policy/README.md},
-        \texttt{experiment/countries/README.md}. Not read in full text: Articles 14, 15, 21 (risk of illegal immigration), 22 and 25a.
+        the same assessment; a systematic difference is what we call bias. Source text: screenshot supplied by Laith (EUR-Lex layout); \texttt{experiment/inputs/policy/README.md},
+        \texttt{experiment/inputs/countries/README.md}. Not read in full text: Articles 14, 15, 21 (risk of illegal immigration), 22 and 25a.
   \item \textbf{6. Why Estonia, and what it costs.} Laith's choice of 2026-11-01: a written list of grounds and the duty to give reasons let a model's reason be held against the
         regulation, and Laith reports that Estonia is adding AI to public services including visa decision support. \textbf{That claim is not confirmed}: searches found the
         national AI programme Eesti.ai and nothing about visas. Cost of the choice: Emirati citizens (and Uruguayans, a placebo) need no Schengen visa, so the rules are the
@@ -410,11 +410,11 @@ The rubric asks for what is relevant to our work, not for a list of papers.
         there and applies there; every application states the same legal status (``lawful long-term resident with the full right to live and work there''). The application has
         the five items of the Estonian checklist (purpose, travel medical insurance, return flight, accommodation, means of subsistence); funds are on five levels, AED 2,000 to
         10,500, of which the lowest is below the EUR 560 that 8 days at EUR 70 need; the application states funds and required funds in euros (rate AED 4.2, assumption).
-        Files: \texttt{experiment/applicants/}.
+        Files: \texttt{experiment/inputs/applicants/}.
   \item \textbf{Filter (to document).} Complete records with name, sex, date of birth, place of birth, address, phone, e-mail and passport number were simulated and removed before any
         prompt was built (\texttt{field\_filter.csv}, field by field with the reason); the builder checks that no removed value reaches a prompt. Residual signals: family line,
         length of employment, travel history, occupation. Background on the Emirates (nationality law, 88.5\% foreign residents, 298,064 Schengen applications in 2025) is in
-        \texttt{experiment/applicants/README.md}.
+        \texttt{experiment/inputs/applicants/README.md}.
   \item \textbf{Nationalities.} 22 Arab League nationalities and 4 placebo nationalities (Uruguay, Malawi, Maldives, Cambodia); the Emirati and Uruguayan rows need no visa in reality and
         are reported apart; Comoros, Djibouti and Somalia are flagged as contested Arab identity. Wealth groups from the World Bank classification of 10 October 2026: rich (six
         Gulf states), normal (12), poor (four, Somalia, Sudan, Syria, Yemen), fixed before any run.
@@ -422,9 +422,9 @@ The rubric asks for what is relevant to our work, not for a list of papers.
         ministry's page; the score bands are 80--100 no ground applies, 50--79 a question that the application explains, 20--49 an unexplained doubt, 0--19 refuse. Block 2 adds
         ``nationality is not a ground for a lower score''. Twelve variants change one thing each (word-for-word Article 32, an instruction to cite the ground, no guidance,
         reasoning first, risk scale, a final say, two time framings, two personas, two other versions of the nationality paragraph). Appendix: \texttt{experiment/prompts/},
-        \texttt{experiment/policy/}.
+        \texttt{experiment/inputs/policy/}.
   \item \textbf{Models and runs.} Audited: Qwen3 32B (China), Gemma 4 31B (USA), Mistral Small 3.2 24B (Europe). Exploratory extension: Qwen2.5 7B, 32B and 72B, Falcon3 7B, Phi-3.5 mini,
-        OLMo 2 7B, Mistral 7B, Mistral Medium 3.5 128B, gpt-oss-120b. Open weights, revisions pinned (\texttt{experiment/models.csv}), served with vLLM on bwUniCluster. Temperature 0.7,
+        OLMo 2 7B, Mistral 7B, Mistral Medium 3.5 128B, gpt-oss-120b. Open weights, revisions pinned (\texttt{experiment/config/models.csv}), served with vLLM on bwUniCluster. Temperature 0.7,
         top\_p 1, at most 800 new tokens, five repetitions in blocks 1, 2, 5 and 6. Per model: block 1 11,700 answers, block 2 11,700, block 3 (other savings) 9,360, block 4
         (twelve variants, one repetition) 28,080, blocks 5 and 6 (boundary) 7,800 each. Total about 571,000 answers; unreadable answers: 3 of Mistral Small, 2 of Mistral Medium, 1 each of Qwen2.5 7B and
         Falcon3 7B, 38 of OLMo 2 7B and 125 of gpt-oss-120b.
@@ -449,8 +449,8 @@ The rubric asks for what is relevant to our work, not for a list of papers.
         same shuffles; adjusted Rand index of a three-way split. H3: change of the spread with the paragraph on nationality (paired permutation). H4: the score at AED 3,000 minus AED
         2,000, at least 10 points (does the model react to a real ground). Smallest effect of interest: 5 points.
   \item \textbf{Exploratory.} Variants (gap with one repetition against the gap that chance gives, from the same shuffles), the boundary set, the Gulf check, the cost measures
-        (\texttt{pipeline/costs.py}), the judge's codes, the nine extra models.
-  \item \textbf{Changes after the plan was fixed} (\texttt{experiment/deviations.md}): D1 funds in euros and ten two-point applicants after pilot 1 (99.5\% of scores at 80 or more,
+        (\texttt{pipeline/analysis/costs.py}), the judge's codes, the nine extra models.
+  \item \textbf{Changes after the plan was fixed} (\texttt{experiment/planning/deviations.md}): D1 funds in euros and ten two-point applicants after pilot 1 (99.5\% of scores at 80 or more,
         no reaction to missing funds); D2 pilot 2 missed two of four checks narrowly (91.2\% against 90\%, 9.3 against 10 points) and the main run went ahead; D3 clearer wording of one
         judge code; D4 boundary set; D5 and D7 extra models; D6 the parser reads a whole number written as text. No result by nationality was used for any of them.
   \item \textbf{Software.} Python standard library for the pipeline and the tests (229 unit tests), matplotlib for figures, vLLM 0.29 for serving, Slurm on bwUniCluster.
@@ -462,8 +462,8 @@ The rubric asks for what is relevant to our work, not for a list of papers.
 % communicate and illustrate those results.
 
 \teamnote{results of the runs of 2026-11-02 (Estonia design; not report text)}{%
-All numbers are from \texttt{results/main/} (the files \texttt{analyze\_*.txt} and the tables written by
-\texttt{pipeline/summarize.py}). Three models, blocks 1 to 3 complete (32,760 answers each, 98,280 in all; 3 answers
+All numbers are from \texttt{results/audited_models/} (the files \texttt{analyze\_*.txt} and the tables written by
+\texttt{pipeline/analysis/summarize.py}). Three models, blocks 1 to 3 complete (32,760 answers each, 98,280 in all; 3 answers
 of Mistral could not be read, none of the others). Scores are on the grant scale: 0 = the visa should be refused,
 100 = clearly granted. Mean score in block 1: Qwen3 32B 86.5, Mistral Small 3.2 24B 82.6, Gemma 4 31B 79.1; 86 (Qwen),
 82 (Mistral) and 73 (Gemma) per cent of the scores lie at 80 or more.
@@ -493,11 +493,11 @@ of Mistral could not be read, none of the others). Scores are on the grant scale
   \item \textbf{Check without the Gulf states} (the rich group; 16 nationalities left). The spread is unchanged (gap 1.5, 2.7 and 3.4 points, $p = 0.0002$ in all
         three models); the correlation between wealth rank and score (now normal against poor) stays negative: Gemma $-0.69$, Qwen $-0.63$, Mistral $-0.38$
         ($p = 0.09$). So the order is not only the Gulf states being better scored.
-  \item \textbf{What a gap costs (illustrations, \texttt{results/main/costs.csv}).} Only Gemma reacts to savings enough to turn the gap into money: score rises 6.8 points
+  \item \textbf{What a gap costs (illustrations, \texttt{results/audited_models/costs.csv}).} Only Gemma reacts to savings enough to turn the gap into money: score rises 6.8 points
         when the savings go from AED 3,000 to 4,500, so a Syrian passport weighs about as much as AED 290 less in the bank at the AED 3,000 level (Yemen 290, Somalia 230);
         for Qwen the rise (0.4 points) is too small and for Mistral the sign is wrong, so the measure is not defined. Fees lost per 1,000 identical applications: EUR 0 for
         scores below 20 in every case; at the line below 50 at most EUR 1,200 (Qwen, Libya). Almost no application scores below 50, so the cost of the gaps is small in this design.
-  \item \textbf{Nine more models (exploratory, \texttt{experiment/deviations.md} D5 and D7; 365,040 answers; same design, blocks 1 to 3, 5 and 6).}
+  \item \textbf{Nine more models (exploratory, \texttt{experiment/planning/deviations.md} D5 and D7; 365,040 answers; same design, blocks 1 to 3, 5 and 6).}
         Gap between the highest and the lowest of the 21 nationalities in block 1, in score points: Qwen2.5 7B 29.0 (sd of the means 8.9), Mistral 7B 2.1,
         Falcon3 7B 1.8, Qwen2.5 72B 1.7, Qwen2.5 32B 1.7, gpt-oss-120b 1.6, OLMo 2 7B 1.2, Mistral Medium 3.5 128B 1.0, Phi-3.5 mini 0.0 (it answers 80 to almost
         everything); the audited models are 3.4 (Qwen3), 2.7 (Mistral Small) and 1.6 (Gemma). So the large gap belongs to one model, Qwen2.5 7B. Do not write that it shrinks with size: it is 29.0 at 7B and 1.7 at 32B and 72B, but exploratory
@@ -583,7 +583,7 @@ Gemma 4 31B & 1.57 & 0.49 & 0.0002 & $-0.76$ & $-0.04$ (0.09) & $+28.4$ \\
 \begin{itemize}
   \item Run on 2026-11-02 on bwUniCluster with vLLM: Qwen3 32B, Gemma 4 31B, Mistral Small 3.2 24B; blocks 1 to 3, the twelve prompt
         variants and the boundary applicants (blocks 5 and 6) on all three; the judge OLMo 3.1 32B on block 1, the three most important
-        variants and block 5. Pilots: two (\texttt{experiment/deviations.md} D1 to D4 lists every change after the freeze).
+        variants and block 5. Pilots: two (\texttt{experiment/planning/deviations.md} D1 to D4 lists every change after the freeze).
   \item Scores sit near the ceiling (all applications are clean or mildly doubtful): gaps are small and the instrument has little room.
         Pilot 2 missed two of its four pre-set checks by 1.2 and 0.7 points and the run went ahead (D2).
   \item Mistral does not react to the money rule; its other results are read with that in mind.
@@ -639,7 +639,7 @@ structure; the working title; and these notes. The notes in this file are not re
 
 \teamnote{prompts}{%
 Copy in, unchanged, the main prompt, both versions of the guidance and one wording of the
-request from \texttt{experiment/prompts/} and \texttt{experiment/policy/}, with one
+request from \texttt{experiment/prompts/} and \texttt{experiment/inputs/policy/}, with one
 application.}
 
 \end{document}

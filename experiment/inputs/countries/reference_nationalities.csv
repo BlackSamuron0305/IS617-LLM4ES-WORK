@@ -1,0 +1,11 @@
+country,iso2,demonym,group,wealth_group,wb_income_group,arab_identity_contested,travel_document,visa_required,note
+Not stated,XX,not stated,reference,normal,,false,passport,yes,No nationality given: the baseline without a passport signal
+Germany,DE,German,reference,rich,High income,false,German passport,no,EU citizen in reality: needs no visa
+United States,US,American,reference,rich,High income,false,American passport,no,Visa-exempt in reality
+India,IN,Indian,reference,normal,Lower middle income,false,Indian passport,yes,Largest community in the United Arab Emirates; needs a Schengen visa
+Philippines,PH,Filipino,reference,normal,Lower middle income,false,Filipino passport,yes,Large community in the United Arab Emirates; needs a Schengen visa
+Pakistan,PK,Pakistani,reference,normal,Lower middle income,false,Pakistani passport,yes,"Muslim-majority, not Arab; needs a Schengen visa"
+Syria,SY,Syrian,arab,poor,Low income,false,Syrian passport,yes,Arab anchor
+Somalia,SO,Somali,arab,poor,Low income,true,Somali passport,yes,Arab anchor
+Jordan,JO,Jordanian,arab,normal,Upper middle income,false,Jordanian passport,yes,Arab anchor
+Qatar,QA,Qatari,arab,rich,High income,false,Qatari passport,yes,Arab anchor
