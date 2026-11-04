@@ -10,7 +10,7 @@ Vendor pages were read through a fetch tool that summarises them, so quotes have
 checked against the original before use. Vendor statements are the vendors' own
 descriptions, not tested behaviour. Two GitHub repositories and one redaction tool were
 checked directly. Verification levels are in section 6. The new sources are **not yet in
-`research/literature_matrix.csv`**.
+`research/literature/literature_matrix.csv`**.
 
 ## 1. Short answer
 

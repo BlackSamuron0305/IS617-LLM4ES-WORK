@@ -90,10 +90,10 @@ carried over to the new scenario as `experiment/prompts/variants.csv`.
 **Runs on bwUniCluster (2026-11-02, at Laith's instruction to run to completion).** Pilots 1 and 2
 (Qwen3 32B), then the main run: Qwen3 32B, Gemma 4 31B and Mistral Small 3.2 24B, blocks 1 to 3 (32,760 answers each),
 twelve prompt variants (28,080 each), a boundary set of ten more applicants (blocks 5 and 6, 7,800 each; deviation D4) and
-the judge OLMo 3.1 32B on block 1, three variants and block 5. Everything is in `experiment/deviations.md` (D1 to D4:
+the judge OLMo 3.1 32B on block 1, three variants and block 5. Everything is in `experiment/planning/deviations.md` (D1 to D4:
 required-funds line and ten two-point applicants after pilot 1; go-ahead after pilot 2 missed two checks narrowly; clearer
-judge code; boundary set), the tables in `results/main/`, the figures and the midterm deck in `paper/second_presentation/`.
-Findings (confirmatory tests of `experiment/analysis_plan.md`): the 21 Arab nationalities that need a visa differ by 1.6 to 3.4
+judge code; boundary set), the tables in `results/audited_models/`, the figures and the midterm deck in `paper/second_presentation/`.
+Findings (confirmatory tests of `experiment/planning/analysis_plan.md`): the 21 Arab nationalities that need a visa differ by 1.6 to 3.4
 score points between highest and lowest (permutation p = 0.0002 in all three models, far below the 5 points the plan calls
 worth noting); Syria, Yemen, Sudan, Iraq, Libya and Somalia are lowest in all models; the order rich > normal > poor holds
 (Spearman -0.72, -0.52, -0.76); the paragraph "nationality is not a ground" does not shrink the gaps; no prompt variant
@@ -101,42 +101,50 @@ removes them for Qwen and Gemma; the reasons name the passport in about 0% of ca
 instrument is limited: scores sit near the ceiling, and Mistral ignores the money rule. The slides' wording was drafted by Claude
 at Laith's explicit request (declare AI use); the final report was prepared only as visible `\teamnote` blocks in
 `paper/final_paper/paper.tex` (results, limits, AI declaration). Also done: the check without the Gulf states (spread unchanged; wealth order holds for Gemma and Qwen, weaker for Mistral), the cost measures
-(`pipeline/costs.py`: a Syrian passport weighs about AED 290 of savings for Gemma, undefined for the other two; fees lost about nothing), and a
-validation sample of 200 reasons for the team to code by hand (`experiment/judge/validation/`). Nine more models were run on 2026-11-02 and 2026-11-03 as exploratory extensions (deviations D5 and D7: Qwen2.5 7B, 32B and 72B, Falcon3 7B, Phi-3.5 mini, OLMo 2 7B, Mistral 7B, Mistral Medium 3.5 128B, gpt-oss-120b; 365,040 answers; tables in `results/x2/` and `results/x3/`). The big passport gap (29 points between the highest and the lowest of the 21 nationalities) belongs to Qwen2.5 7B alone and shrinks to 1.7 points at 32B and 72B; all other models show 0 to 3.4 points. For Qwen2.5 7B the reasons raise doubts about money and credibility for 42 per cent of Somali and Syrian applicants against 7 per cent for Qatari and Omani ones, with the same application; the judge does not see this. Not done: that hand coding, the pre-run checks of
+(`pipeline/analysis/costs.py`: a Syrian passport weighs about AED 290 of savings for Gemma, undefined for the other two; fees lost about nothing), and a
+validation sample of 200 reasons for the team to code by hand (`experiment/judge/validation/`). Nine more models were run on 2026-11-02 and 2026-11-03 as exploratory extensions (deviations D5 and D7: Qwen2.5 7B, 32B and 72B, Falcon3 7B, Phi-3.5 mini, OLMo 2 7B, Mistral 7B, Mistral Medium 3.5 128B, gpt-oss-120b; 365,040 answers; tables in `results/extra_models/round_1_small_and_mid/` and `results/extra_models/round_2_large/`). The big passport gap (29 points between the highest and the lowest of the 21 nationalities) belongs to Qwen2.5 7B alone and shrinks to 1.7 points at 32B and 72B; all other models show 0 to 3.4 points. For Qwen2.5 7B the reasons raise doubts about money and credibility for 42 per cent of Somali and Syrian applicants against 7 per cent for Qatari and Omani ones, with the same application; the judge does not see this. Not done: that hand coding, the pre-run checks of
 Articles 21, 22 and 25a. Raw answers are backed up on this PC in `data/raw/` (305 MB, not committed).
 
 **Branch `bias-deep-dive` (2026-11-03, at Laith's request; not merged into `main`).** `main` holds the design that the report and the midterm deck
 describe (tag `final-design-2026-11-03`; all run data are in `data/raw/` as `.jsonl.gz`). The branch adds exploratory work only and leaves every old prompt
 byte-identical (checked by hash): negative applicants (blocks 7, 8), eleven more prompt variants, ablations of the nationality lines, **reference nationalities
 (German, American, Indian, Filipino, Pakistani, not stated) run on Laith's explicit request, which overrides the rule above of 2026-10-10 for this branch only**,
-eight more Qwen models, and a judge lab (`pipeline/judge_lab.py`). Findings and numbers: `experiment/deep_dive/RESULTS.md`. Do not move any of it into the report or
+eight more Qwen models, and a judge lab (`pipeline/judge/lab.py`). Findings and numbers: `experiment/deep_dive/RESULTS.md`. Do not move any of it into the report or
 the deck without being asked.
+
+**Folder restructure (2026-11-04, at Laith's request; branch `restructure`, made from `bias-deep-dive`; not merged).** Every folder was
+regrouped so that it is clear what is where: `experiment/` into `inputs/`, `prompts/{main_prompts,task_wordings}`, `config/`, `planning/`; `pipeline/`
+and `tests/` into packages (`core`, `design`, `answers`, `judge`, `analysis`, `deep_dive`); `data/raw/` into run folders, then model, then batch
+(rule: `BATCH_GROUPS` in `pipeline/core/common.py`; old flat batch folders are still found); `results/` into `audited_models`, `extra_models/*`,
+`deep_dive/*`; `research/literature/`. The map is `docs/REPO_MAP.md`. All 71,112 prompts are byte-identical to before (hash checked) and the 232 tests pass. Path
+strings in `paper/` and in the READMEs were updated mechanically; old design documents and `docs/superpowers/` were left as they were. Commands in the
+sections below that name a module by its old file name (for example `pipeline/build_runs.py`) were rewritten to the new place where they appear.
 
 ## Repository layout
 
 - `experiment/README.md`: overview of the experiment and the run plan. Start here.
-- `experiment/policy/`: the guidance the model is given (`visa_guidance.txt`, a paraphrase
+- `experiment/inputs/policy/`: the guidance the model is given (`visa_guidance.txt`, a paraphrase
   of Article 32(1) of the Visa Code and of the Estonian ministry's page on the Schengen
   visa), its variants (`visa_guidance_risk.txt`, `regulation_text.txt`,
   `regulation_instruction.txt`) and three versions of section 6 on nationality
   (`nationality_rule.txt`, `regulation_rule.txt`, `info_rule.txt`).
-- `experiment/applicants/`: `applicants_full.csv` (20 complete simulated records),
+- `experiment/inputs/applicants/`: `applicants_full.csv` (20 complete simulated records),
   `field_filter.csv` (which fields the model never sees, and why), `applicants.csv` (the
-  filtered result, written by `python -m pipeline.filter_applicants`) and the layout of an
+  filtered result, written by `python -m pipeline.design.filter_applicants`) and the layout of an
   application.
-- `experiment/countries/`: `applicant_nationalities.csv` (26 nationality rows: the 22 Arab
+- `experiment/inputs/countries/`: `applicant_nationalities.csv` (26 nationality rows: the 22 Arab
   League nationalities and 4 placebo nationalities; column `visa_required`) and
   `official_rules.csv` (what the rules for a Schengen visa to Estonia say about each). The
   README explains the yardstick.
 - `experiment/prompts/`: the main prompt, three wordings of the task, and `variants.csv`
   with twelve variants (folders per variant).
-- `experiment/costs/`: the cost measures and `cost_assumptions.csv` (prices and rates with
+- `experiment/inputs/costs/`: the cost measures and `cost_assumptions.csv` (prices and rates with
   sources).
-- `experiment/models.csv`: the three planned models (qwen3-32b, gemma-4-31b-it, mistral-small-3.2-24b-instruct).
-- `experiment/analysis_plan.md` (hypotheses, tests, pilot go / no-go), `experiment/design_review.md` (the referee's view) and `cluster/PILOT.md` (how to run the pilot).
+- `experiment/config/models.csv`: the three planned models (qwen3-32b, gemma-4-31b-it, mistral-small-3.2-24b-instruct).
+- `experiment/planning/analysis_plan.md` (hypotheses, tests, pilot go / no-go), `experiment/planning/design_review.md` (the referee's view) and `cluster/PILOT.md` (how to run the pilot).
 - `experiment/judge/`: the judge that codes the free-text reason of each answer (prompt
   files, `mask_terms.csv`, `judge_models.csv`). Its README is authoritative.
-- `experiment/run_settings.csv`: the sampling settings; all provisional or open.
+- `experiment/config/run_settings.csv`: the sampling settings; all provisional or open.
 - `pipeline/`: the code, one module per stage: `filter_applicants`, `build_runs` (builds and checks the
   prompts, never calls a model), `run_models`, `parse_answers`, `judge_build`,
   `run_judge`, `judge_parse`, `judge_validate`. `pipeline/README.md` has the commands, a
@@ -203,7 +211,7 @@ The three groups are fixed before any run from the World Bank income classificat
 Arabia, United Arab Emirates); normal = upper and lower middle income (Algeria, Comoros,
 Djibouti, Egypt, Iraq, Jordan, Lebanon, Libya, Mauritania, Morocco, Palestine, Tunisia);
 poor = low income (Somalia, Sudan, Syria, Yemen). Column `wealth_group` in
-`experiment/countries/applicant_nationalities.csv`. Do not move a country to another
+`experiment/inputs/countries/applicant_nationalities.csv`. Do not move a country to another
 group after seeing results. Known limits to state: the rich group is exactly the six
 Gulf states, and the four poor countries are all at war or just out of one.
 
@@ -211,7 +219,7 @@ The main contribution under test is **within-Arab heterogeneity**. This is an **
 of model behaviour, never a tool for assessing applicants. All applicants and employers
 are synthetic.
 
-No novelty claim exists for this design. `research/novelty_assessment.md` was written
+No novelty claim exists for this design. `research/literature/novelty_assessment.md` was written
 for hiring. For visa applications only limited searches were done on 2026-10-10
 (`research/visa_scenario/`). Do not state novelty as fact anywhere.
 
@@ -244,10 +252,10 @@ not been confirmed by the team.
 - The application has five items: purpose of the journey, travel medical insurance,
   return flight, accommodation, means of subsistence.
 - **The filter.** The simulated records contain name, sex, date of birth, place of birth,
-  address, phone, e-mail and passport number. `experiment/applicants/field_filter.csv`
-  removes them before any prompt is built; `pipeline/build_runs.py` checks that no removed
+  address, phone, e-mail and passport number. `experiment/inputs/applicants/field_filter.csv`
+  removes them before any prompt is built; `pipeline/design/build_runs.py` checks that no removed
   value reaches a prompt. The paper must document this filter (Laith, 2026-11-01).
-  Residual age and sex signals are listed in `experiment/applicants/README.md`.
+  Residual age and sex signals are listed in `experiment/inputs/applicants/README.md`.
 - Manipulation: the `Nationality:` line and the `Travel document:` line. The 22 Arab League
   nationalities and 4 placebo nationalities (Uruguayan, Malawian, Maldivian, Cambodian).
   No not-stated row.
@@ -263,7 +271,7 @@ not been confirmed by the team.
 - Outcome: `visa_score` 0-100 (0 = the visa should be refused, 100 = clearly granted) and
   a `reason` naming the ground. Never call the score a probability. The direction of the
   scale is an open decision (variant `risk_scale` turns it round).
-- Cost: three measures (`experiment/costs/README.md`): the savings an applicant would need
+- Cost: three measures (`experiment/inputs/costs/README.md`): the savings an applicant would need
   to make up for a passport (main); fees lost per 1,000 identical applications (EUR 90 per
   refusal, a refusal line below 20 and a doubt line below 50); the share of scores that
   send an application to a closer look (20 to 49). All are illustrations of model
@@ -284,13 +292,13 @@ not been confirmed by the team.
 
 ## Compute and models
 
-Open-weight models (`experiment/models.csv`) served with vLLM on bwUniCluster (KIT).
+Open-weight models (`experiment/config/models.csv`) served with vLLM on bwUniCluster (KIT).
 There is no API budget. **Never launch real or paid model calls without explicit
 approval.** The runner in `pipeline/` refuses real calls unless `--allow-real-calls` is
 given and the other conditions hold (a batch name that does not start with `mock`, a
 pinned model revision, no uncommitted change in `experiment/` or `pipeline/`, and the
 model listed by the server); any other runner must do the same. The revisions in
-`experiment/models.csv` and `experiment/judge/judge_models.csv` are empty, so every real
+`experiment/config/models.csv` and `experiment/judge/judge_models.csv` are empty, so every real
 call is refused until they are pinned. `cluster/run_vllm.sbatch` is the only place that
 passes `--allow-real-calls`, and only with `ALLOW_REAL_CALLS=yes`; it has not been run on
 the cluster.
@@ -337,7 +345,7 @@ simulated applicant records, the filter and the sixth judge code, all drafted by
 
 **No fabricated results or citations.** Output of mock or test runs is labelled as
 such and is never reported as a result. Every citation carries a verification level in
-`research/literature_matrix.csv`. Verify against the full text before anything goes
+`research/literature/literature_matrix.csv`. Verify against the full text before anything goes
 in the paper. Legal texts and guidelines were read in single sections only; the matrix
 says which. Company websites and press reports are marked as such. For the sources added
 on 2026-10-10, `abstract` in the matrix also covers pages read only through a
@@ -385,7 +393,7 @@ cost measures come before the first real run; the pilot needs explicit approval.
 the pitch on 13.10. the team has to go through `paper/first_presentation/pitch.pptx`
 and check its numbers (`paper/first_presentation/README.md`). Before any run, check Articles 22 and 25a of the Visa Code for the 21 nationalities, the Estonian
 amount for means (EUR 70 per day), and the checklist of the Estonian mission in the United Arab Emirates
-(`experiment/countries/README.md`). For the judge: the team has to confirm the agreement
+(`experiment/inputs/countries/README.md`). For the judge: the team has to confirm the agreement
 threshold (Cohen's kappa of 0.7 is provisional) and the size of the validation sample,
 and decide whether the optional second judge stays (`experiment/judge/judge_models.csv`; the main judge is OLMo 3.1 32B). The
 validation sample has to be coded by hand before any judge code is used.

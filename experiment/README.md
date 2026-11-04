@@ -7,7 +7,7 @@ of 2026-10-08 is in `research/old_design/bank_2026-10-08/`.
 
 **Status.** Drafted by Claude Code with Laith on 2026-11-01. The other team members have
 not confirmed it. The runs were done on 2026-11-02 (three models, blocks 1 to 6, twelve variants, the judge); results in
-`../results/main/`, changes after the freeze in `deviations.md`, the figures in `../paper/second_presentation/figures/`.
+`../results/audited_models/`, changes after the freeze in `deviations.md`, the figures in `../paper/second_presentation/figures/`.
 
 ## The two questions
 
@@ -49,17 +49,17 @@ Australia.
 
 | folder | content |
 |---|---|
-| `policy/` | the guidance the model is given, the three versions of section 6 on nationality, and the regulation-based variants |
-| `applicants/` | 30 simulated applicants: the full record, the filter that removes name, age, sex and more, and what the model sees |
-| `countries/` | the 26 nationalities an applicant can have, and the official rules for each |
-| `prompts/` | the main prompt, three wordings of the task, and `variants.csv` with the twelve variants |
-| `costs/` | how a difference in the scores is turned into money |
-| `models.csv` | the three planned models |
-| `judge/` | the judge that codes the free-text reason of each answer |
-| `analysis_plan.md`, `design_review.md`, `deviations.md` | the hypotheses and tests, the referee's view of the design, and the log of changes after the freeze |
-| `run_settings.csv` | the sampling settings for the audited models and the judge; each marked provisional or open |
+| `inputs/policy/` | the guidance the model is given, the three versions of section 6 on nationality, and the regulation-based variants |
+| `inputs/applicants/` | the simulated applicants: the full record, the filter that removes name, age, sex and more, and what the model sees |
+| `inputs/countries/` | the nationalities an applicant can have (26 main, plus the reference and conflict sets of the deep dive), and the official rules for each |
+| `inputs/costs/` | how a difference in the scores is turned into money |
+| `prompts/` | `main_prompts/`, `task_wordings/` and `variants.csv` with all variants |
+| `config/` | `models.csv` (the models, with pinned revisions) and `run_settings.csv` (the sampling settings for the audited models and the judge; each marked provisional or open) |
+| `judge/` | the judge that codes the free-text reason of each answer; `lab/` its other versions, `validation/` the sample for hand coding |
+| `planning/` | `analysis_plan.md` (hypotheses and tests), `design_review.md` (the referee's view of the design), `deviations.md` (the log of changes after the freeze) |
+| `deep_dive/` | the exploratory work of the branch `bias-deep-dive`: `README.md`, `RESULTS.md`, `figures/` |
 
-The code is in `pipeline/` (`pipeline/README.md`). `pipeline/build_runs.py` puts the
+The code is in `pipeline/` (`pipeline/README.md`). `pipeline/design/build_runs.py` puts the
 prompts together and checks them; it never calls a model.
 
 **Table conventions.** Tables are UTF-8 CSV files with one thing per row. An empty cell
@@ -98,7 +98,7 @@ history) remain and are stated in `applicants/README.md`.
 
 ## Run plan
 
-`python -m pipeline.build_runs --variants` prints these counts from the files.
+`python -m pipeline.design.build_runs --variants` prints these counts from the files.
 
 | block | what | prompts | repetitions | runs per model |
 |---|---|---|---|---|

@@ -20,8 +20,8 @@
 #   sbatch --export=ALL,STAGE=answers,ALIAS=qwen3-32b,BATCH=pilot1,BLOCKS=1,MODEL_PATH=/path/to/qwen3-32b,ALLOW_REAL_CALLS=yes cluster/run_vllm.sbatch
 #
 # Environment variables:
-#   STAGE             required: answers (pipeline.run_models) or judge (pipeline.run_judge)
-#   ALIAS             required: alias in experiment/models.csv (answers) or
+#   STAGE             required: answers (pipeline.answers.run_models) or judge (pipeline.judge.run)
+#   ALIAS             required: alias in experiment/config/models.csv (answers) or
 #                     experiment/judge/judge_models.csv (judge)
 #   BATCH             required: batch name; must not start with "mock"
 #   MODEL_PATH        required: folder with the model weights on the cluster
@@ -65,7 +65,7 @@ if [ -n "$missing" ]; then
     exit 1
 fi
 case "$STAGE" in
-    answers) TABLE=experiment/models.csv ;;
+    answers) TABLE=experiment/config/models.csv ;;
     judge|judgelab) TABLE=experiment/judge/judge_models.csv ;;
     *) echo "error: STAGE must be answers, judge or judgelab, not '$STAGE'" >&2; exit 1 ;;
 esac
@@ -100,8 +100,8 @@ fi
 # changes, would be refused by the stage anyway; stop here, before the server is loaded.
 MODEL_ID=$("$PYTHON" - "$TABLE" "$ALIAS" <<'PY'
 import sys
-from pipeline.client import COMMIT_HASH
-from pipeline.common import dirty_files, load_models
+from pipeline.core.client import COMMIT_HASH
+from pipeline.core.common import dirty_files, load_models
 
 models = load_models(sys.argv[1])
 if sys.argv[2] not in models:
@@ -125,7 +125,7 @@ if [ "$STAGE" = "answers" ]; then
     if [ -n "${SHARD:-}" ]; then PLAN+=(--shard "$SHARD"); fi
     # Nothing left to do: leave before the server is started (it takes minutes to load a model).
     # This is what makes a chain of identical jobs cheap: the later ones end here.
-    LEFT=$("$PYTHON" -m pipeline.run_models --batch "$BATCH" --model "$ALIAS" "${PLAN[@]}" --remaining) || exit 1
+    LEFT=$("$PYTHON" -m pipeline.answers.run_models --batch "$BATCH" --model "$ALIAS" "${PLAN[@]}" --remaining) || exit 1
     echo "plan: $LEFT"
     case "$LEFT" in *'"remaining": 0'*) echo "nothing left to do for $BATCH"; exit 0 ;; esac
     if [ -n "${LIMIT:-}" ]; then PLAN+=(--limit "$LIMIT"); fi
@@ -195,20 +195,20 @@ echo "server ready after about $waited s"
 
 # 6. Run the stage. This is the only place that passes --allow-real-calls.
 if [ "$STAGE" = "answers" ]; then
-    cmd=("$PYTHON" -m pipeline.run_models --batch "$BATCH" --model "$ALIAS" "${PLAN[@]}")
+    cmd=("$PYTHON" -m pipeline.answers.run_models --batch "$BATCH" --model "$ALIAS" "${PLAN[@]}")
 elif [ "$STAGE" = "judgelab" ]; then
     # Several judge-lab versions on one batch with one server (LAB_VERSIONS, space separated; BATCHES may list more batches).
     status=0
     for lab_batch in ${LAB_BATCHES:-$BATCH}; do
         for version in $LAB_VERSIONS; do
-            "$PYTHON" -m pipeline.judge_lab run --batch "$lab_batch" --version "$version" --judge "$ALIAS" \
+            "$PYTHON" -m pipeline.judge.lab run --batch "$lab_batch" --version "$version" --judge "$ALIAS" \
                 --base-url "http://localhost:$PORT/v1" --allow-real-calls --workers "$WORKERS" || status=$?
         done
     done
     stop_server
     exit "$status"
 else
-    cmd=("$PYTHON" -m pipeline.run_judge --batch "$BATCH" --judge "$ALIAS")
+    cmd=("$PYTHON" -m pipeline.judge.run --batch "$BATCH" --judge "$ALIAS")
     if [ -n "${LIMIT:-}" ]; then cmd+=(--limit "$LIMIT"); fi
 fi
 cmd+=(--base-url "http://localhost:$PORT/v1" --allow-real-calls --workers "$WORKERS")

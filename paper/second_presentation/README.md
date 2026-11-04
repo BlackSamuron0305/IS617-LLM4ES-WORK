@@ -17,6 +17,6 @@ Keep to the allocated time.
 The slides (PowerPoint) go in this folder.
 
 **`midterm.pptx`** was built by Claude Code on 2026-11-02 at Laith's explicit request, wording included
-(`build_midterm.py` builds it from `results/main/` and `figures/`; facts and sources are in the speaker notes). The team
+(`build_midterm.py` builds it from `results/audited_models/` and `figures/`; facts and sources are in the speaker notes). The team
 rewrites the wording or declares the use of AI. Open `midterm.pptx` in PowerPoint to check the layout before presenting; the
 numbers come from the tables of the main run and the judge, which is not validated yet.

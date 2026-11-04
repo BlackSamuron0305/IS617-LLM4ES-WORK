@@ -2,7 +2,7 @@
 
 Written on 2026-10-24. The fixed materials of the judge: a second model that reads the
 short free-text reason of each answer and says what the reason talks about. The code
-that prepares its inputs is `pipeline/judge_build.py`. Nothing has been run with a real
+that prepares its inputs is `pipeline/judge/build.py`. Nothing has been run with a real
 judge model.
 
 | file | what it is |
@@ -14,8 +14,8 @@ judge model.
 
 ## What the stage writes
 
-`python -m pipeline.judge_build --batch NAME` reads `data/processed/NAME/answers.csv`
-(from `pipeline/parse_answers.py`) and writes two files next to it, fresh on every run.
+`python -m pipeline.judge.build --batch NAME` reads `data/processed/NAME/answers.csv`
+(from `pipeline/answers/parse_answers.py`) and writes two files next to it, fresh on every run.
 Answers whose parse status is not `ok`, whose reason is blank, or whose `prompt_matches`
 is not 1 (the experiment files no longer give the prompt that was sent, so the
 application cannot be rebuilt) get no judge input and are counted as skipped.
@@ -57,7 +57,7 @@ the model said it.
 ## The blinding rule
 
 The judge must not know which nationality an answer belongs to, so that it cannot code
-the same sentence differently for different countries. `pipeline/judge_build.py` does
+the same sentence differently for different countries. `pipeline/judge/build.py` does
 this before the judge sees anything:
 
 1. In the reason, every nationality word is replaced by a placeholder: demonyms and
@@ -146,9 +146,9 @@ threshold is provisional until the team confirms it, before the first real run.
   run. Do not change them after seeing results, and do not add a term to
   `mask_terms.csv` because of how the judge codes a particular answer.
 - The marker line `REASON GIVEN BY THE MODEL` in `judge_task.txt` is also used by the
-  mock judge in `pipeline/client.py`. A test checks that the two agree.
+  mock judge in `pipeline/core/client.py`. A test checks that the two agree.
 - `{application}` and `{reason}` each appear exactly once in `judge_task.txt`, and every
-  code of `JUDGE_CODES` in `pipeline/judge_build.py` appears in both prompt files.
+  code of `JUDGE_CODES` in `pipeline/judge/build.py` appears in both prompt files.
   A test checks it.
 - A capital is in `mask_terms.csv` only if it is not an ordinary word. "Malé" is left
   out because "male" is.

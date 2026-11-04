@@ -20,7 +20,7 @@ Things to know when reading them:
   nationalities, of savings in euros or of a fee of AUD 200, the design has moved on:
   `experiment/README.md` and its folders are authoritative. The applicants now live in
   the United Arab Emirates; the sources for that are in
-  `experiment/applicants/README.md` and were not part of these notes.
+  `experiment/inputs/applicants/README.md` and were not part of these notes.
 - The notes also discuss passport strength (Henley Passport Index) and comparisons with
   non-Arab nationalities. Laith took both out of the design: the project is about bias
   among the 22 Arab League nationalities, measured against the official rules. What was
@@ -31,7 +31,7 @@ Things to know when reading them:
 - No claim of novelty is made in any of them. The searches were limited.
 - Data files and scripts used for the notes were in a temporary folder and are not in
   the repository. What the design needs from them is in
-  `experiment/countries/official_rules.csv` and `experiment/costs/cost_assumptions.csv`.
+  `experiment/inputs/countries/official_rules.csv` and `experiment/inputs/costs/cost_assumptions.csv`.
 - Two small tables were added later the same day for the pitch slide on why the setting
   is realistic: `gulf_residents_by_origin_2024.csv` (foreign citizens in the six Gulf
   states by Arab League country of origin, mid-2024; `undesa2024migrantstock`) and

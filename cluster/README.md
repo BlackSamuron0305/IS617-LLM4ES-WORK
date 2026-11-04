@@ -19,7 +19,7 @@ One job runs one stage for one model, on one GPU (partition `gpu_a100_il`, 4 hou
 
 1. Exits with `refusing:` unless `ALLOW_REAL_CALLS=yes`.
 2. Exits if a required variable is missing.
-3. Looks up the model id of `ALIAS` in `experiment/models.csv` (stage `answers`) or
+3. Looks up the model id of `ALIAS` in `experiment/config/models.csv` (stage `answers`) or
    `experiment/judge/judge_models.csv` (stage `judge`). It stops here if the revision of
    the model is not pinned (a 40-character commit hash) or if `experiment/` or
    `pipeline/` has uncommitted changes, because the stage would refuse anyway, and this
@@ -28,7 +28,7 @@ One job runs one stage for one model, on one GPU (partition `gpu_a100_il`, 4 hou
    `logs/vllm-<job>.log`.
 5. Waits until `http://localhost:<port>/v1/models` answers (every 10 seconds, at most 900
    seconds).
-6. Runs `python -m pipeline.run_models` (stage `answers`) or `python -m pipeline.run_judge`
+6. Runs `python -m pipeline.answers.run_models` (stage `answers`) or `python -m pipeline.judge.run`
    (stage `judge`) against the local server.
 7. Stops the server and exits with the exit code of the stage.
 
@@ -40,7 +40,7 @@ requests to those libraries, not a block on the network.
 ## Before the first submission
 
 1. The team has approved the run, for this model and this batch.
-2. The `revision` of the model is pinned in `experiment/models.csv` (answers) or
+2. The `revision` of the model is pinned in `experiment/config/models.csv` (answers) or
    `experiment/judge/judge_models.csv` (judge), and committed. Both columns are empty
    today, so every real run is refused. The pin is the exact version of the model that was
    downloaded: the 40-character commit hash of its Hugging Face repo. A branch name such as
@@ -71,14 +71,14 @@ sbatch --export=ALL,STAGE=judge,ALIAS=olmo-3.1-32b-instruct,BATCH=pilot1,MODEL_P
 | variable | | meaning |
 |---|---|---|
 | `STAGE` | required | `answers` or `judge` |
-| `ALIAS` | required | the alias in `experiment/models.csv` (answers) or `experiment/judge/judge_models.csv` (judge) |
+| `ALIAS` | required | the alias in `experiment/config/models.csv` (answers) or `experiment/judge/judge_models.csv` (judge) |
 | `BATCH` | required | name of the batch; it must not start with `mock` |
 | `MODEL_PATH` | required | folder with the weights on the cluster |
 | `ALLOW_REAL_CALLS` | required | `yes`, only after the team approved this run |
 | `BLOCKS` | optional | stage `answers` only: blocks to run, space-separated, for example `"1 2"`. Without it all three blocks run |
 | `WORKERS` | optional | parallel calls, default 16 |
 | `PORT` | optional | port of the server, default 8000 |
-| `VLLM_ARGS` | optional | extra arguments for `vllm serve`, for example `--max-model-len 8192`. `experiment/models.csv` has a note for Mistral |
+| `VLLM_ARGS` | optional | extra arguments for `vllm serve`, for example `--max-model-len 8192`. `experiment/config/models.csv` has a note for Mistral |
 | `PYTHON` | optional | the python to use, default `python3` |
 
 Run one model and one block at a time, so that a failed batch can be repeated on its own
@@ -89,11 +89,11 @@ model under the same batch name.
 ## Order of the stages
 
 1. `answers` job: `data/raw/<batch>/answers.jsonl`.
-2. `python -m pipeline.parse_answers --batch <batch>` and
-   `python -m pipeline.judge_build --batch <batch>`. No GPU and a few seconds; they can run on
+2. `python -m pipeline.answers.parse_answers --batch <batch>` and
+   `python -m pipeline.judge.build --batch <batch>`. No GPU and a few seconds; they can run on
    the cluster or on a PC after the raw files are copied.
 3. `judge` job: `data/raw/<batch>/judge_<alias>.jsonl`.
-4. `python -m pipeline.judge_parse --batch <batch> --judge <alias>`.
+4. `python -m pipeline.judge.parse --batch <batch> --judge <alias>`.
 5. The hand-coding and the agreement check (`pipeline/README.md`, "Hand-coding the
    validation sample").
 

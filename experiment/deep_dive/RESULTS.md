@@ -1,12 +1,12 @@
 # Results of the deep dive (branch `bias-deep-dive`, 2026-11-03)
 
-Exploratory. Written by Claude Code from `results/dd/` and `results/dd_neg/`. Numbers are score points on the 0 to 100 scale.
+Exploratory. Written by Claude Code from `results/deep_dive/ablations_reference_family/` and `results/deep_dive/negative_applicants/`. Numbers are score points on the 0 to 100 scale.
 Cells have 90 to 450 answers (variants: one repetition, 90 per nationality; reference nationalities: 270). Nothing here is a
 pre-registered test; where a difference is small, treat it as a hint. Plots: `figures/`.
 
 ## 1. Negative applicants: do clear rejections show the passport effect?
 
-Twelve applications, each with one clear ground for refusal (blocks 7 and 8, `results/dd_neg/`).
+Twelve applications, each with one clear ground for refusal (blocks 7 and 8, `results/deep_dive/negative_applicants/`).
 
 - **The models differ in whether they reject these at all.** Mean score of the twelve, all nationalities: Gemma 4 25, Mistral Small 27, gpt-oss 29,
   Mistral Medium 34, Qwen2.5 32B 37, Qwen2.5 7B 41, Qwen2.5 72B 41, Qwen3 32B 49, Mistral 7B 63, Phi-3.5 71, Falcon3 75, OLMo 2 89. For OLMo 2, Falcon3
@@ -100,7 +100,7 @@ Gap of the 21 nationalities in block 1 (all repetitions), Syria's effect, and th
 
 Four versions (v1 the main judge, v1_unmasked the same without the blinding, v2 a codebook that checks the reason against the numbers of the application,
 v3 three quality questions) with three judge models (OLMo 3.1 32B, gpt-oss-120b, Qwen3 32B) on 2,500 answers each of Qwen2.5 7B, Qwen3 32B and Gemma 4
-(`results/dd_judge/`, 171 agreement rows). The hand-coded validation is still missing, so all of this shows agreement between judges, not correctness.
+(`results/deep_dive/judge_lab/`, 171 agreement rows). The hand-coded validation is still missing, so all of this shows agreement between judges, not correctness.
 
 - **The blinding does not change the codes.** The same judge, with and without the nationality: the share of reasons that mention the nationality is 0.48% against 0.44% (OLMo, Qwen2.5 7B), kappa 0.96;
   `doubts_residence` kappa 0.85, `contradicts_application` 1.0. So the finding that the reasons almost never name the passport does not come from the blinding.

@@ -1,26 +1,26 @@
 variant,main_prompt,wordings,guidance,rule,answer_keys,what_it_tests,application,nationality_set,repetitions
-base,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"Blocks 1 to 3: the main measurement (without the rule on nationality), the same with the rule (nationality_rule.txt), and the other savings levels",,,
-regulation_rule,main_prompt.txt,base,visa_guidance.txt,regulation_rule,visa_score;reason,Whether the plain statement from the regulation that nationality is not among the grounds works like the instruction,,,
-info_rule,main_prompt.txt,base,visa_guidance.txt,info_rule,visa_score;reason,Whether the plain fact that the grounds are the same for everyone works like the instruction or the regulation,,,
-regulation_text,main_prompt.txt,base,regulation_text.txt,,visa_score;reason,Direct regulation: section 2 is the word-for-word text of Article 32(1) of the Visa Code instead of the paraphrase,,,
-regulation_instruction,main_prompt.txt,base,regulation_instruction.txt,,visa_score;reason,Direct instruction: the paraphrase plus an order to lower the score only for a ground of Article 32(1) and to name it by its article number,,,
-no_guidance,no_guidance/main_prompt.txt,no_guidance,,,visa_score;reason,Whether the guidance reduces the differences at all; the model relies on its own knowledge of the visa,,,
-reasoning,main_prompt.txt,reasoning,visa_guidance.txt,,reasoning;visa_score;reason,Whether reasoning first changes the differences; the reasoning text is not a faithful account of how the model decided,,,
-risk_scale,main_prompt.txt,risk_scale,visa_guidance_risk.txt,,risk_score;reason,Whether a risk scale (0 = lowest risk) gives the same differences as the grant scale,,,
-decider,decider/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,Whether a final say for the model changes the differences,,,
-time_pressure,time_pressure/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,Whether a backlog framing changes the differences,,,
-time_careful,time_careful/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,Counterpart to time pressure: no pressure and a full assessment,,,
-arab_officer,arab_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,Whether a persona of Arab background changes the differences,,,
-estonian_officer,estonian_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"Counterpart to the Arab officer: does naming any background change the differences, or only an Arab one",,,
-reason_first,main_prompt.txt,reason_first,visa_guidance.txt,,reason;visa_score,Whether writing the reason before the score changes the differences (the reason can then shape the score),,,5
-short_reason,main_prompt.txt,short_reason,visa_guidance.txt,,visa_score;reason,Whether a one-sentence reason changes the differences,,,
-strict_officer,strict_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"A strict, doubt-refusing role",,,5
-lenient_officer,lenient_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"A lenient, benefit-of-the-doubt role",,,5
-security_officer,security_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,A border-security background,,,
-fairness_first,fairness_first/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"A sentence 'same standard, whatever their origin' in the main prompt",,,5
-fairness_last,main_prompt.txt,fairness_last,visa_guidance.txt,,visa_score;reason,The same sentence directly before the answer format,,,5
-home_country_line,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,The application states the home country in a line of its own (the United Arab Emirates): tests whether the model confuses the passport country with the home country,home_country_line,,5
-no_nationality_line,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,The Nationality line is removed; only the Travel document line names the country: which line carries the effect,no_nationality_line,,5
-no_document_line,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,The Travel document line is removed; only the Nationality line names the country,no_document_line,,5
-reference_nationalities,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"Reference nationalities (not stated, German, American, Indian, Filipino, Pakistani) next to four Arab anchors: a baseline outside the 22; exploratory, outside the design of 2026-10-10 (CLAUDE.md), run on Laith's request of 2026-11-03",,reference_nationalities.csv,5
-conflict_nationalities,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"Is the penalty of Qwen2.5 7B about conflict and refugee-linked countries, or about being Arab? Non-Arab conflict countries (Afghanistan, Ukraine, Eritrea, Myanmar) and peaceful ones (Nepal, Vietnam, India), with Arab anchors; groups fixed before the run",,conflict_nationalities.csv,5
+base,main_prompts/base.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,"Blocks 1 to 3: the main measurement (without the rule on nationality), the same with the rule (nationality_rule.txt), and the other savings levels",,,
+regulation_rule,main_prompts/base.txt,task_wordings/base,visa_guidance.txt,regulation_rule,visa_score;reason,Whether the plain statement from the regulation that nationality is not among the grounds works like the instruction,,,
+info_rule,main_prompts/base.txt,task_wordings/base,visa_guidance.txt,info_rule,visa_score;reason,Whether the plain fact that the grounds are the same for everyone works like the instruction or the regulation,,,
+regulation_text,main_prompts/base.txt,task_wordings/base,regulation_text.txt,,visa_score;reason,Direct regulation: section 2 is the word-for-word text of Article 32(1) of the Visa Code instead of the paraphrase,,,
+regulation_instruction,main_prompts/base.txt,task_wordings/base,regulation_instruction.txt,,visa_score;reason,Direct instruction: the paraphrase plus an order to lower the score only for a ground of Article 32(1) and to name it by its article number,,,
+no_guidance,main_prompts/no_guidance.txt,task_wordings/no_guidance,,,visa_score;reason,Whether the guidance reduces the differences at all; the model relies on its own knowledge of the visa,,,
+reasoning,main_prompts/base.txt,task_wordings/reasoning,visa_guidance.txt,,reasoning;visa_score;reason,Whether reasoning first changes the differences; the reasoning text is not a faithful account of how the model decided,,,
+risk_scale,main_prompts/base.txt,task_wordings/risk_scale,visa_guidance_risk.txt,,risk_score;reason,Whether a risk scale (0 = lowest risk) gives the same differences as the grant scale,,,
+decider,main_prompts/decider.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,Whether a final say for the model changes the differences,,,
+time_pressure,main_prompts/time_pressure.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,Whether a backlog framing changes the differences,,,
+time_careful,main_prompts/time_careful.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,Counterpart to time pressure: no pressure and a full assessment,,,
+arab_officer,main_prompts/arab_officer.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,Whether a persona of Arab background changes the differences,,,
+estonian_officer,main_prompts/estonian_officer.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,"Counterpart to the Arab officer: does naming any background change the differences, or only an Arab one",,,
+reason_first,main_prompts/base.txt,task_wordings/reason_first,visa_guidance.txt,,reason;visa_score,Whether writing the reason before the score changes the differences (the reason can then shape the score),,,5
+short_reason,main_prompts/base.txt,task_wordings/short_reason,visa_guidance.txt,,visa_score;reason,Whether a one-sentence reason changes the differences,,,
+strict_officer,main_prompts/strict_officer.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,"A strict, doubt-refusing role",,,5
+lenient_officer,main_prompts/lenient_officer.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,"A lenient, benefit-of-the-doubt role",,,5
+security_officer,main_prompts/security_officer.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,A border-security background,,,
+fairness_first,main_prompts/fairness_first.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,"A sentence 'same standard, whatever their origin' in the main prompt",,,5
+fairness_last,main_prompts/base.txt,task_wordings/fairness_last,visa_guidance.txt,,visa_score;reason,The same sentence directly before the answer format,,,5
+home_country_line,main_prompts/base.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,The application states the home country in a line of its own (the United Arab Emirates): tests whether the model confuses the passport country with the home country,home_country_line,,5
+no_nationality_line,main_prompts/base.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,The Nationality line is removed; only the Travel document line names the country: which line carries the effect,no_nationality_line,,5
+no_document_line,main_prompts/base.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,The Travel document line is removed; only the Nationality line names the country,no_document_line,,5
+reference_nationalities,main_prompts/base.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,"Reference nationalities (not stated, German, American, Indian, Filipino, Pakistani) next to four Arab anchors: a baseline outside the 22; exploratory, outside the design of 2026-10-10 (CLAUDE.md), run on Laith's request of 2026-11-03",,reference_nationalities.csv,5
+conflict_nationalities,main_prompts/base.txt,task_wordings/base,visa_guidance.txt,,visa_score;reason,"Is the penalty of Qwen2.5 7B about conflict and refugee-linked countries, or about being Arab? Non-Arab conflict countries (Afghanistan, Ukraine, Eritrea, Myanmar) and peaceful ones (Nepal, Vietnam, India), with Arab anchors; groups fixed before the run",,conflict_nationalities.csv,5

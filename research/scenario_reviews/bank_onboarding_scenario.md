@@ -9,7 +9,7 @@ Internal research note, **not report text**. It continues
 
 Limits: one round of web search. Company figures are the companies' own statements. Two
 legal texts were read directly (see section 8); the rest comes from summaries. Nothing
-here is in `research/literature_matrix.csv` yet, and no novelty claim is made.
+here is in `research/literature/literature_matrix.csv` yet, and no novelty claim is made.
 
 ## 1. Short answer
 
