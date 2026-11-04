@@ -105,14 +105,14 @@ at Laith's explicit request (declare AI use); the final report was prepared only
 validation sample of 200 reasons for the team to code by hand (`experiment/judge/validation/`). Nine more models were run on 2026-11-02 and 2026-11-03 as exploratory extensions (deviations D5 and D7: Qwen2.5 7B, 32B and 72B, Falcon3 7B, Phi-3.5 mini, OLMo 2 7B, Mistral 7B, Mistral Medium 3.5 128B, gpt-oss-120b; 365,040 answers; tables in `results/extra_models/round_1_small_and_mid/` and `results/extra_models/round_2_large/`). The big passport gap (29 points between the highest and the lowest of the 21 nationalities) belongs to one checkpoint, Qwen2.5 7B, and is not a matter of size (the same family shows 1.7 points at 32B and 72B, 1.0 at 14B and 2.8 to 4.2 at 0.5B to 3B; the last two from the branch `bias-deep-dive`); all other models show 0 to 3.4 points. For Qwen2.5 7B the reasons raise doubts about money and credibility for 42 per cent of Somali and Syrian applicants against 7 per cent for Qatari and Omani ones, with the same application; the judge does not see this. Not done: that hand coding, the pre-run checks of
 Articles 21, 22 and 25a. Raw answers are backed up on this PC in `data/raw/` (305 MB, not committed).
 
-**Branch `bias-deep-dive` (2026-11-03, at Laith's request; not merged into `main`).** `main` holds the design that the report and the midterm deck
-describe (tag `final-design-2026-11-03`; all run data are in `data/raw/` as `.jsonl.gz`). The branch adds exploratory work only and leaves every old prompt
+**Branch `bias-deep-dive` (2026-11-03, at Laith's request; merged into `main` on 2026-11-04 together with the restructure, so `main` now also holds the deep-dive files).** The design that the report and the midterm deck
+describe is tagged `final-design-2026-11-03` (all run data are in `data/raw/` as `.jsonl.gz`). The branch adds exploratory work only and leaves every old prompt
 byte-identical (checked by hash): negative applicants (blocks 7, 8), eleven more prompt variants, ablations of the nationality lines, **reference nationalities
 (German, American, Indian, Filipino, Pakistani, not stated) run on Laith's explicit request, which overrides the rule above of 2026-10-10 for this branch only**,
 eight more Qwen models, and a judge lab (`pipeline/judge/lab.py`). Findings and numbers: `experiment/deep_dive/RESULTS.md`. Do not move any of it into the report or
 the deck without being asked.
 
-**Folder restructure (2026-11-04, at Laith's request; branch `restructure`, made from `bias-deep-dive`; not merged).** Every folder was
+**Folder restructure (2026-11-04, at Laith's request; branch `restructure`, merged into `bias-deep-dive` and `main` on 2026-11-04).** Every folder was
 regrouped so that it is clear what is where: `experiment/` into `inputs/`, `prompts/{main_prompts,task_wordings}`, `config/`, `planning/`; `pipeline/`
 and `tests/` into packages (`core`, `design`, `answers`, `judge`, `analysis`, `deep_dive`); `data/raw/` into run folders, then model, then batch
 (rule: `BATCH_GROUPS` in `pipeline/core/common.py`; old flat batch folders are still found); `results/` into `audited_models`, `extra_models/*`,
