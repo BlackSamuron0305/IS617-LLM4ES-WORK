@@ -12,14 +12,15 @@ time_pressure,time_pressure/main_prompt.txt,base,visa_guidance.txt,,visa_score;r
 time_careful,time_careful/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,Counterpart to time pressure: no pressure and a full assessment,,,
 arab_officer,arab_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,Whether a persona of Arab background changes the differences,,,
 estonian_officer,estonian_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"Counterpart to the Arab officer: does naming any background change the differences, or only an Arab one",,,
-reason_first,main_prompt.txt,reason_first,visa_guidance.txt,,reason;visa_score,Whether writing the reason before the score changes the differences (the reason can then shape the score),,,
+reason_first,main_prompt.txt,reason_first,visa_guidance.txt,,reason;visa_score,Whether writing the reason before the score changes the differences (the reason can then shape the score),,,5
 short_reason,main_prompt.txt,short_reason,visa_guidance.txt,,visa_score;reason,Whether a one-sentence reason changes the differences,,,
-strict_officer,strict_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"A strict, doubt-refusing role",,,
-lenient_officer,lenient_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"A lenient, benefit-of-the-doubt role",,,
+strict_officer,strict_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"A strict, doubt-refusing role",,,5
+lenient_officer,lenient_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"A lenient, benefit-of-the-doubt role",,,5
 security_officer,security_officer/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,A border-security background,,,
-fairness_first,fairness_first/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"A sentence 'same standard, whatever their origin' in the main prompt",,,
-fairness_last,main_prompt.txt,fairness_last,visa_guidance.txt,,visa_score;reason,The same sentence directly before the answer format,,,
-home_country_line,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,The application states the home country in a line of its own (the United Arab Emirates): tests whether the model confuses the passport country with the home country,home_country_line,,
-no_nationality_line,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,The Nationality line is removed; only the Travel document line names the country: which line carries the effect,no_nationality_line,,
-no_document_line,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,The Travel document line is removed; only the Nationality line names the country,no_document_line,,
-reference_nationalities,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"Reference nationalities (not stated, German, American, Indian, Filipino, Pakistani) next to four Arab anchors: a baseline outside the 22; exploratory, outside the design of 2026-10-10 (CLAUDE.md), run on Laith's request of 2026-11-03",,reference_nationalities.csv,3
+fairness_first,fairness_first/main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"A sentence 'same standard, whatever their origin' in the main prompt",,,5
+fairness_last,main_prompt.txt,fairness_last,visa_guidance.txt,,visa_score;reason,The same sentence directly before the answer format,,,5
+home_country_line,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,The application states the home country in a line of its own (the United Arab Emirates): tests whether the model confuses the passport country with the home country,home_country_line,,5
+no_nationality_line,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,The Nationality line is removed; only the Travel document line names the country: which line carries the effect,no_nationality_line,,5
+no_document_line,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,The Travel document line is removed; only the Nationality line names the country,no_document_line,,5
+reference_nationalities,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"Reference nationalities (not stated, German, American, Indian, Filipino, Pakistani) next to four Arab anchors: a baseline outside the 22; exploratory, outside the design of 2026-10-10 (CLAUDE.md), run on Laith's request of 2026-11-03",,reference_nationalities.csv,5
+conflict_nationalities,main_prompt.txt,base,visa_guidance.txt,,visa_score;reason,"Is the penalty of Qwen2.5 7B about conflict and refugee-linked countries, or about being Arab? Non-Arab conflict countries (Afghanistan, Ukraine, Eritrea, Myanmar) and peaceful ones (Nepal, Vietnam, India), with Arab anchors; groups fixed before the run",,conflict_nationalities.csv,5

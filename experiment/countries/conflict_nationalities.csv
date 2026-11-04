@@ -1,0 +1,15 @@
+country,iso2,demonym,group,wealth_group,wb_income_group,arab_identity_contested,travel_document,visa_required,note
+Not stated,XX,not stated,reference,normal,,false,passport,yes,No nationality given
+Germany,DE,German,reference,rich,High income,false,German passport,no,Western reference
+India,IN,Indian,reference,normal,Lower middle income,false,Indian passport,yes,"Peaceful, large community in the UAE"
+Nepal,NP,Nepalese,peaceful,poor,Lower middle income,false,Nepalese passport,yes,"Peaceful, low income, not Arab, not Muslim-majority"
+Vietnam,VN,Vietnamese,peaceful,normal,Lower middle income,false,Vietnamese passport,yes,"Peaceful, not Arab, not Muslim-majority"
+Afghanistan,AF,Afghan,conflict,poor,Low income,false,Afghan passport,yes,"Conflict or refugee-linked, Muslim-majority, not Arab"
+Ukraine,UA,Ukrainian,conflict,normal,Lower middle income,false,Ukrainian passport,yes,"War since 2022, not Arab, not Muslim-majority"
+Eritrea,ER,Eritrean,conflict,poor,Low income,false,Eritrean passport,yes,"Refugee-linked, not Arab"
+Myanmar,MM,Burmese,conflict,poor,Lower middle income,false,Burmese passport,yes,"Conflict-linked, not Arab"
+Venezuela,VE,Venezuelan,crisis,normal,,false,Venezuelan passport,yes,"Crisis and migration, not Arab"
+Syria,SY,Syrian,arab,poor,Low income,false,Syrian passport,yes,"Arab anchor, conflict"
+Somalia,SO,Somali,arab,poor,Low income,true,Somali passport,yes,"Arab anchor, conflict"
+Jordan,JO,Jordanian,arab,normal,Upper middle income,false,Jordanian passport,yes,"Arab anchor, peaceful"
+Qatar,QA,Qatari,arab,rich,High income,false,Qatari passport,yes,"Arab anchor, peaceful"
