@@ -207,8 +207,9 @@ s = slide("Twelve models, one outlier", notes=(
     f"Gap between the highest and the lowest of the 21 nationalities, block 1: Qwen2.5 7B {gap('qwen2.5-7b-instruct'):.1f}, Qwen2.5 32B {gap('qwen2.5-32b-instruct'):.1f}, Qwen2.5 72B {gap('qwen2.5-72b-instruct'):.1f}; Mistral 7B {gap('mistral-7b-instruct-v0.3'):.1f}, Mistral Small {gap('mistral-small-3.2-24b-instruct'):.1f}, Mistral Medium 128B {gap('mistral-medium-3.5'):.1f}; Falcon3 7B {gap('falcon3-7b-instruct'):.1f}, OLMo 2 7B {gap('olmo-2-7b-instruct'):.1f}, gpt-oss-120b {gap('gpt-oss-120b'):.1f}, Gemma 4 {gap('gemma-4-31b-it'):.1f}, Qwen3 32B {gap('qwen3-32b'):.1f}. Phi-3.5 mini answers 80 to almost everything (gap 0.0).\n"
     "Wealth order (Spearman, wealth rank against nationality mean): present in the small models (Falcon3 -0.79, Mistral 7B -0.87, OLMo 2 -0.54, Qwen2.5 7B -0.76) and in the audited ones; absent or weak in the large ones (gpt-oss +0.18, Qwen2.5 72B +0.13, Qwen2.5 32B -0.25, Mistral Medium -0.36, p = 0.054).\n"
     "Money rule (score at AED 3,000 minus AED 2,000): gpt-oss +25.6, Gemma +28.4, Mistral Medium +9.4, Qwen2.5 32B +8.5, Qwen2.5 72B +8.2, Qwen3 +8.8; Falcon3, Mistral 7B, OLMo 2, Phi-3.5 about 0.\n"
+    "Not a size effect: later exploratory runs of the other Qwen2.5 sizes give 2.8 to 4.2 points at 0.5B to 3B and 1.0 at 14B; only the 7B checkpoint is high.\n"
     "Careful: the extra models were not pre-registered as audited models; one outlier is one model, and 7B models are not what a consulate would use."),
-    question="Is the big gap a small-model accident?")
+    question="Is the big gap about size, or one checkpoint?")
 picture(s, FIG / "models.png", 0.6, 1.1, 12.1, 5.4)
 
 # 9c outlier

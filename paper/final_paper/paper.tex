@@ -94,7 +94,7 @@ from it. (press) is a press report, (party) a statement by one side of a dispute
   \item Results (2026-11-03; details in the results note below): among the 21 nationalities that need a visa the highest and the lowest score differ by 1.6 to 3.4
         points in the audited models (permutation test, $p = 0.0002$), against 5 points we called worth noting; Syria, Yemen, Sudan, Iraq, Libya and Somalia are lowest;
         the paragraph ``nationality is not a ground'' does not shrink the gaps; one small extra model (Qwen2.5 7B) shows 29 points and reasons that raise unsupported
-        doubts about money for some passports; the gap falls to 1.7 points at 32B and 72B.
+        doubts about money for some passports; this is one checkpoint, not a matter of size (the same family at 32B and 72B shows 1.7 points; exploratory runs of 14B and the smaller sizes show 1 to 4).
   \item Last sentence: what follows. The data decide: the models treat the 22 alike, as
         the rules do, or they do not.
 \end{itemize}}
@@ -500,8 +500,8 @@ of Mistral could not be read, none of the others). Scores are on the grant scale
   \item \textbf{Nine more models (exploratory, \texttt{experiment/deviations.md} D5 and D7; 365,040 answers; same design, blocks 1 to 3, 5 and 6).}
         Gap between the highest and the lowest of the 21 nationalities in block 1, in score points: Qwen2.5 7B 29.0 (sd of the means 8.9), Mistral 7B 2.1,
         Falcon3 7B 1.8, Qwen2.5 72B 1.7, Qwen2.5 32B 1.7, gpt-oss-120b 1.6, OLMo 2 7B 1.2, Mistral Medium 3.5 128B 1.0, Phi-3.5 mini 0.0 (it answers 80 to almost
-        everything); the audited models are 3.4 (Qwen3), 2.7 (Mistral Small) and 1.6 (Gemma). So the large gap belongs to one small model, and inside the Qwen2.5 family it
-        falls from 29.0 (7B) to 1.7 (32B and 72B). Somalia ($-21$), Syria ($-19$), Iraq ($-13$) are lowest for Qwen2.5 7B and the Gulf states about $+7$; for that model the
+        everything); the audited models are 3.4 (Qwen3), 2.7 (Mistral Small) and 1.6 (Gemma). So the large gap belongs to one model, Qwen2.5 7B. Do not write that it shrinks with size: it is 29.0 at 7B and 1.7 at 32B and 72B, but exploratory
+        runs of the same family give 2.8 to 4.2 at 0.5B to 3B and 1.0 at 14B, so only the 7B checkpoint is high (size is not the explanation). Somalia ($-21$), Syria ($-19$), Iraq ($-13$) are lowest for Qwen2.5 7B and the Gulf states about $+7$; for that model the
         paragraph on nationality \emph{raises} the spread (+6.6 points). The wealth order is negative in the small models (Falcon3 $-0.79$, Mistral 7B $-0.87$, OLMo 2 $-0.54$,
         Qwen2.5 7B $-0.76$) and absent or weak in the large ones (gpt-oss $+0.18$, Qwen2.5 72B $+0.13$, Qwen2.5 32B $-0.25$, Mistral Medium $-0.36$, $p = 0.054$).
         Money rule (score at AED 3,000 minus AED 2,000): gpt-oss $+25.6$, Gemma $+28.4$; Mistral Medium $+9.4$, Qwen2.5 32B $+8.5$, Qwen2.5 72B $+8.2$; about 0 for Falcon3,
