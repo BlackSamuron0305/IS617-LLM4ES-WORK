@@ -23,7 +23,7 @@ class BuildRunsTest(unittest.TestCase):
         self.assertEqual(problems, [])
         variants = load_variants()
         self.assertEqual({r["variant"] for r in runs}, set(variants))
-        self.assertEqual(len(runs), 17472 + sum(len(read_table("countries/" + v["nationality_set"])) * 90 if v["nationality_set"] else 2340 for n, v in variants.items() if n != "base"))
+        self.assertEqual(len(runs), 17472 + sum(len(read_table(EXPERIMENT / "countries" / v["nationality_set"])) * 90 if v["nationality_set"] else 2340 for n, v in variants.items() if n != "base"))
         self.assertEqual(len({r["run_id"] for r in runs}), len(runs))
         self.assertEqual({r["block"] for r in runs if r["variant"] != "base"}, {4})
 
