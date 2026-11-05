@@ -67,8 +67,9 @@ def summarize(batch, data_root, rng):
     if not ok:
         return None
     scores = [r["s"] for r in ok]
-    low = [r["s"] for r in ok if r["savings"] == min(x["savings"] for x in ok)]
-    high = [r["s"] for r in ok if r["savings"] == max(x["savings"] for x in ok)]
+    levels = sorted({int(r["savings"]) for r in ok})  # numbers, not text: "10500" sorts before "2000" as text
+    low = [r["s"] for r in ok if int(r["savings"]) == levels[0]]
+    high = [r["s"] for r in ok if int(r["savings"]) == levels[-1]]
     arab = [r for r in ok if r["group"] == "arab" and r["visa_required"] == "yes"]
     gap = gap_test(arab, rng) if arab else None
     syria = pair_test(ok, selector(SYRIA_OTHERS[1]), selector(SYRIA_OTHERS[2]), rng)

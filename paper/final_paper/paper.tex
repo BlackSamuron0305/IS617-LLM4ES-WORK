@@ -449,11 +449,15 @@ The rubric asks for what is relevant to our work, not for a list of papers.
         same shuffles; adjusted Rand index of a three-way split. H3: change of the spread with the paragraph on nationality (paired permutation). H4: the score at AED 3,000 minus AED
         2,000, at least 10 points (does the model react to a real ground). Smallest effect of interest: 5 points.
   \item \textbf{Exploratory.} Variants (gap with one repetition against the gap that chance gives, from the same shuffles), the boundary set, the Gulf check, the cost measures
-        (\texttt{pipeline/analysis/costs.py}), the judge's codes, the nine extra models.
+        (\texttt{pipeline/analysis/costs.py}), the judge's codes, the nine extra models, and the deep dive of 2026-11-03 to 2026-11-05 (D8): negative applicants, ablations of the
+        nationality and document lines, more prompt variants, reference nationalities, the Qwen family, a judge lab, five repetitions of the key variants, conflict countries,
+        thinking switched on and four other temperatures. Pair tests of two nationalities: the difference is taken inside each application cell and the unit is the applicant
+        $\times$ savings pair (30 pairs), 95\% bootstrap interval, sign-flip p value (\texttt{pipeline/deep\_dive/significance\_tests.py}). Gap tests: label shuffles inside the cells
+        (200 shuffles, so p cannot be below 0.005).
   \item \textbf{Changes after the plan was fixed} (\texttt{experiment/planning/deviations.md}): D1 funds in euros and ten two-point applicants after pilot 1 (99.5\% of scores at 80 or more,
         no reaction to missing funds); D2 pilot 2 missed two of four checks narrowly (91.2\% against 90\%, 9.3 against 10 points) and the main run went ahead; D3 clearer wording of one
         judge code; D4 boundary set; D5 and D7 extra models; D6 the parser reads a whole number written as text. No result by nationality was used for any of them.
-  \item \textbf{Software.} Python standard library for the pipeline and the tests (229 unit tests), matplotlib for figures, vLLM 0.29 for serving, Slurm on bwUniCluster.
+  \item \textbf{Software.} Python standard library for the pipeline and the tests (235 unit tests), matplotlib for figures, vLLM 0.29 for serving, Slurm on bwUniCluster.
 \end{itemize}}
 
 \section{Results}
@@ -462,7 +466,7 @@ The rubric asks for what is relevant to our work, not for a list of papers.
 % communicate and illustrate those results.
 
 \teamnote{results of the runs of 2026-11-02 (Estonia design; not report text)}{%
-All numbers are from \texttt{results/audited_models/} (the files \texttt{analyze\_*.txt} and the tables written by
+All numbers are from \texttt{results/audited\_models/} (the files \texttt{analyze\_*.txt} and the tables written by
 \texttt{pipeline/analysis/summarize.py}). Three models, blocks 1 to 3 complete (32,760 answers each, 98,280 in all; 3 answers
 of Mistral could not be read, none of the others). Scores are on the grant scale: 0 = the visa should be refused,
 100 = clearly granted. Mean score in block 1: Qwen3 32B 86.5, Mistral Small 3.2 24B 82.6, Gemma 4 31B 79.1; 86 (Qwen),
@@ -493,7 +497,7 @@ of Mistral could not be read, none of the others). Scores are on the grant scale
   \item \textbf{Check without the Gulf states} (the rich group; 16 nationalities left). The spread is unchanged (gap 1.5, 2.7 and 3.4 points, $p = 0.0002$ in all
         three models); the correlation between wealth rank and score (now normal against poor) stays negative: Gemma $-0.69$, Qwen $-0.63$, Mistral $-0.38$
         ($p = 0.09$). So the order is not only the Gulf states being better scored.
-  \item \textbf{What a gap costs (illustrations, \texttt{results/audited_models/costs.csv}).} Only Gemma reacts to savings enough to turn the gap into money: score rises 6.8 points
+  \item \textbf{What a gap costs (illustrations, \texttt{results/audited\_models/costs.csv}).} Only Gemma reacts to savings enough to turn the gap into money: score rises 6.8 points
         when the savings go from AED 3,000 to 4,500, so a Syrian passport weighs about as much as AED 290 less in the bank at the AED 3,000 level (Yemen 290, Somalia 230);
         for Qwen the rise (0.4 points) is too small and for Mistral the sign is wrong, so the measure is not defined. Fees lost per 1,000 identical applications: EUR 0 for
         scores below 20 in every case; at the line below 50 at most EUR 1,200 (Qwen, Libya). Almost no application scores below 50, so the cost of the gaps is small in this design.
@@ -533,6 +537,44 @@ Gemma 4 31B & 1.57 & 0.49 & 0.0002 & $-0.76$ & $-0.04$ (0.09) & $+28.4$ \\
 \includegraphics[width=\linewidth]{figures/variants.png}\label{fig:variants}\\
 \includegraphics[width=0.8\linewidth]{figures/models.png}\\
 \includegraphics[width=\linewidth]{figures/nationalities_qwen25.png}
+\end{center}}
+
+\teamnote{deep dive (D8; exploratory; not report text; numbers from \texttt{experiment/deep\_dive/RESULTS.md}, tables in \texttt{results/deep\_dive/})}{%
+Nothing here is pre-registered and none of it replaces an audited table. Gaps are in score points; ``chance'' is the 95th percentile of the gap that label shuffles give.
+\begin{itemize}
+  \item \textbf{Five repetitions of the key variants} (Qwen3 32B, Gemma 4, Mistral Small, Qwen2.5 7B; \texttt{significance\_tests/gaps.csv}). The gap among the 21 is above chance in the base design
+        for all four: 3.4 (chance 1.1), 1.6 (0.5), 2.7 (1.5), 29.0 (3.6). Removing the \texttt{Nationality:} line does not remove it (4.0, 1.7, 2.7, 24.1); a fairness paragraph before the
+        task changes nothing (3.5, 1.6, 2.8, 35.3). Asking for the reason before the score shrinks it for the three audited models (1.3, 0.6, 1.0; Mistral no longer different from chance)
+        and not for Qwen2.5 7B (32.9).
+  \item \textbf{Which line carries the effect (ablations, one repetition).} For Qwen2.5 7B it is the line ``Travel document: Syrian passport'': with only the nationality line the gap falls from 32 to 7;
+        with only the passport line it stays at 24. The word ``passport'' triggers it, not the nationality word. Stating the home country removes about a fifth of it. A lenient role
+        removes most of it (9.5), a strict role makes it larger (40.2). A sentence asking for equal treatment does nothing for any model.
+  \item \textbf{Where does the Qwen2.5 7B gap come from?} Not from size: Qwen2.5 0.5B to 3B show 2.8 to 4.2, 14B 1.0, 32B and 72B 1.7, and 7B 29.0; Qwen2 7B (older) 7.4; Qwen3 4B to 32B 0.9 to 3.4. The penalty is specific to
+        Syria and Somalia (57 and 58 against about 84 for Qatar, Jordan, India, the Philippines and Pakistan; reference nationalities); it is not a penalty on Arabs or Muslims in general.
+  \item \textbf{Reference nationalities (run on the project lead's request; 270 answers per cell).} In Gemma 4 and Mistral Small the German passport scores 3 to 4 points above India, the Philippines and Pakistan
+        and Syria only 1 to 3 below Jordan and Qatar: the difference is at least as much a bonus for a Western passport as a penalty for Syria. ``Not stated'' is lower than most stated nationalities, so it is not
+        a neutral reference. This is a baseline for how a model reads a passport, not a realistic case (Germans do not apply for this visa).
+  \item \textbf{Negative applicants (twelve applications with one clear ground; blocks 7 and 8).} Where the ground is clear the passport adds little for most models (Syria minus the average of the same application:
+        Gemma $+0.1$ against $-1.1$ on normal applications, Qwen3 $-1.1$ against $-2.4$); for Qwen2.5 7B it grows with the weakness of the application (Syria 45 below the Gulf states for the assault conviction).
+        Models differ in whether they refuse these at all: mean score of the twelve is 25 (Gemma 4) to 49 (Qwen3 32B), and 71 to 89 for Phi-3.5, Falcon3 and OLMo 2, for which the baseline is unusable.
+  \item \textbf{Thinking switched on} (block 1, one repetition, 2,340 answers per cell; the audited Qwen3 runs had thinking off, gpt-oss had reasoning effort low;
+        \texttt{thinking\_and\_temperature/thinking.csv}). Qwen3 32B: gap 3.9 with thinking against 4.4 without (chance 3.0 and 2.5), Syria still 2.0 below the other 20 (3.1 without). Qwen3 14B: gap 2.3, at
+        chance level (2.1 without, above chance), Syria no longer different. gpt-oss-120b: no gap above chance with either effort (3.0 low, 3.8 high). Thinking raises the scores by 2.6, 4.7 and 7.9 points
+        and makes the two Qwen3 models react more to money (score at AED 2,000 minus score at AED 10,500: $-14.7$ to $-20.5$ and $-15.4$ to $-21.9$), gpt-oss less ($-53.1$ to $-41.8$). All thinking answers were readable.
+  \item \textbf{Other temperatures} (0.0, 0.3, 1.0, 1.5 against the audited 0.7; \texttt{temperature.csv}). The gap does not depend on the temperature for Qwen3 32B (4.2, 4.1, 3.9, 4.2; 4.4 at 0.7), Gemma 4 (1.7, 1.6, 1.9, 1.8; 1.7) and Qwen2.5 7B
+        (30.3, 30.6, 32.5, 31.0; 32.3): it is not a sampling artefact. Mistral Small is the exception: 0.9 at 0.0 (chance level), 2.2, 3.7 (audited), 4.4, and at 1.5 85\% of its answers cannot be read, so that cell is not used.
+        Part of the Mistral gap is therefore noise that sampling adds. Figure~\ref{fig:thinking}.
+  \item \textbf{Conflict countries} (Afghanistan, Ukraine, Eritrea, Myanmar against Nepal and Vietnam; 6,300 answers per model; \texttt{significance\_tests/pairs.csv}). Afghanistan against Nepal: Qwen3 32B $-4.2$ [$-4.8$, $-3.7$],
+        Gemma 4 $-1.9$, Mistral Small $-2.6$, Qwen2 7B $-2.1$, Qwen2.5 7B $-25.5$, Qwen2.5 14B $-0.2$ (zero). Ukraine against Vietnam: zero or positive ($+0.7$ to $+1.7$) except Qwen2.5 7B ($-4.1$). Syria against the four conflict countries together is lower in
+        five of six models ($-0.9$ to $-8.8$). So the low scores of Syria and Somalia are not only a war effect: a war-affected European country is not scored down, a war-affected poor Muslim-majority one is. The design cannot say which property of a passport does it.
+        Figure~\ref{fig:conflict}.
+  \item \textbf{Judge lab} (four judge versions, three judge models, 2,500 answers each; no hand coding yet, so this is agreement, not correctness). Blinding does not change the codes (mentions nationality 0.48\% against 0.44\%, kappa 0.96).
+        Simple codes agree across judges (kappa 0.88 to 0.96); \texttt{names\_legal\_ground} does not (69, 77 and 97\% yes for the same reasons; kappa 0.09 to 0.19) and must not be reported without hand validation.
+        A stricter code, \texttt{unsupported\_doubt}, finds the Qwen2.5 7B pattern with all three judges (Syria 44 to 61\% against 7 to 11\% for the Gulf states); for the audited models the picture depends on the judge.
+\end{itemize}
+\begin{center}
+\includegraphics[width=\linewidth]{figures/thinking_temperature.png}\label{fig:thinking}\\
+\includegraphics[width=0.8\linewidth]{figures/conflict_countries.png}\label{fig:conflict}
 \end{center}}
 
 \section{Conclusion and Discussion}
@@ -606,6 +648,11 @@ Gemma 4 31B & 1.57 & 0.49 & 0.0002 & $-0.76$ & $-0.04$ (0.09) & $+28.4$ \\
   \item The facts about the Emirates come from an abstract of the nationality law, three
         government web pages and one press report of official figures.
   \item The cost figures are illustrations, not forecasts.
+  \item The deep dive (D8) is exploratory and was not pre-registered. Most of its cells have one repetition (90 to 450 answers per cell); tests on those have wide chance ranges, and the shuffle test cannot give
+        p below 0.005. The reference and conflict nationalities (German, American, Indian, Filipino, Pakistani, Afghan, Ukrainian, Eritrean, Burmese, Nepalese, Vietnamese, Venezuelan) were added at the project lead's request
+        and are a baseline for how a model reads a passport, not realistic applicants; the project is not a comparison of Arab with non-Arab countries.
+  \item The judge lab shows agreement between judges, not correctness; the 200 reasons for hand validation are still uncoded.
+  \item The thinking runs show the thinking of Qwen3 and gpt-oss only; a reasoning text is not a faithful account of why a model scored as it did.
 \end{itemize}}
 
 \section*{Author Contributions}
@@ -623,7 +670,8 @@ models): literature and source search and research notes (\texttt{research/}); t
 codebook; the analysis plan, the pilot and analysis code (\texttt{pipeline/}), the job scripts for the cluster, the runs on bwUniCluster and the
 result tables and figures; the review of the design (\texttt{experiment/design\_review.md}); the first drafts of the proposals (2026-10-04,
 2026-10-08, 2026-10-10); the pitch slides and the midterm slides (\texttt{paper/second\_presentation/}, wording included); repository code and
-structure; the working title; and these notes. The notes in this file are not report text. Keep the list up to date.}
+structure (including the regrouping of all folders on 2026-11-04); the deep dive of 2026-11-03 to 2026-11-05 (design of the extra runs, the cluster jobs, the significance tests, the figures and
+the updated midterm slides and notes of the report); the working title; and these notes. The notes in this file are not report text. Keep the list up to date.}
 
 \section*{Declaration}
 % AI usage policy: a declaration at the end stating that you have written the whole

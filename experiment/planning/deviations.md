@@ -126,3 +126,17 @@ the audited ones?
 before any answer was seen) and Mistral Medium 3.5 128B (already on the cluster). Exploratory, like E2; the audited models stay the three of 2026-11-01.
 
 **What.** The base design unchanged (blocks 1, 2, 3, 5, 6), sharded; two to four GPUs per job for the large ones (tensor parallel).
+
+## D8, 2026-11-03 to 2026-11-05: the deep dive (exploratory; branch `bias-deep-dive`, merged into `main` on 2026-11-04)
+
+**Why.** After the runs of D1 to D7 the project lead asked what else explains the gaps: which line of the application carries them, whether
+negative applicants, other prompts, other nationalities, thinking, the sampling temperature or the judge change the picture.
+
+**What.** Everything is exploratory and none of it replaces the audited design or any audited table. Every old prompt stays byte-identical (hash checked).
+(1) Negative applicants (blocks 7 and 8); eleven more prompt variants; ablations of the nationality and document lines; reference nationalities (German,
+American, Indian, Filipino, Pakistani, not stated; run on the project lead's explicit request, which overrides the rule of 2026-10-10 for this work only);
+eight more Qwen models; a judge lab (`pipeline/judge/lab.py`). (2) Five repetitions of the key variants for four models and a conflict-country set
+(Afghanistan, Ukraine, Eritrea, Myanmar against Nepal and Vietnam, plus Venezuela) for six models. (3) Thinking switched on (Qwen3 32B and 14B; gpt-oss-120b at reasoning
+effort high instead of low) and the temperatures 0.0, 0.3, 1.0 and 1.5 for four models, block 1, one repetition (`--temperature`, `--max-tokens` of `run_models`;
+the parser reads the answer after the last `</think>`). No result by nationality was used to choose any of it; the models and temperatures were fixed before the runs.
+Findings: `experiment/deep_dive/RESULTS.md`; tables: `results/deep_dive/`.

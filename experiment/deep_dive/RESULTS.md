@@ -125,18 +125,18 @@ the gap when the nationality labels are shuffled inside each cell (one repetitio
 
 **Thinking on** (the audited Qwen3 runs had thinking switched off; gpt-oss had reasoning effort low):
 
-| model | setting | mean score | gap (chance) | Syria minus the other 20 | savings effect |
+| model | setting | mean score | gap (chance) | Syria minus the other 20 | savings effect (AED 2,000 minus AED 10,500) |
 |---|---|---|---|---|---|
-| Qwen3 32B | off (audited) | 86.5 | 4.4 (2.5) | -3.1 [-4.4, -2.0] | -0.5 |
-| Qwen3 32B | on | 89.1 | 3.9 (3.0) | -2.0 [-3.2, -0.9] | 0.0 |
-| Qwen3 14B | off | 83.2 | 2.1 (1.4) | -1.1 [-1.7, -0.6] | -0.1 |
-| Qwen3 14B | on | 87.9 | 2.3 (2.4) | -0.3 [-1.1, 0.7] | 0.5 |
-| gpt-oss-120b | low (audited) | 74.6 | 3.0 (3.7) | 0.2 [-1.8, 2.1] | 0.5 |
-| gpt-oss-120b | high | 82.5 | 3.8 (6.9) | 0.6 [-2.0, 3.5] | 0.7 |
+| Qwen3 32B | off (audited) | 86.5 | 4.4 (2.5) | -3.1 [-4.4, -2.0] | -14.7 |
+| Qwen3 32B | on | 89.1 | 3.9 (3.0) | -2.0 [-3.2, -0.9] | -20.5 |
+| Qwen3 14B | off | 83.2 | 2.1 (1.4) | -1.1 [-1.7, -0.6] | -15.4 |
+| Qwen3 14B | on | 87.9 | 2.3 (2.4) | -0.3 [-1.1, 0.7] | -21.9 |
+| gpt-oss-120b | low (audited) | 74.6 | 3.0 (3.7) | 0.2 [-1.8, 2.1] | -53.1 |
+| gpt-oss-120b | high | 82.5 | 3.8 (6.9) | 0.6 [-2.0, 3.5] | -41.8 |
 
 - Thinking raises the scores (by 2.6, 4.7 and 7.9 points) and makes them more spread out. It **does not remove the passport gap in Qwen3 32B** (3.9 against 4.4, still above chance, Syria still 2 points below the others).
   In Qwen3 14B the gap falls to the chance level (p about 0.10) and Syria is no longer different. gpt-oss shows no gap above chance with either setting.
-- The savings effect stays near zero in every cell: thinking does not make the models react to the one level of savings that is below the required funds (the instrument limit of the main run is not a matter of thinking).
+- The savings effect (score at AED 2,000, below the required funds, minus the score at AED 10,500) is clearly negative in every cell: the models do react to the money rule. Thinking makes the two Qwen3 models react more (-14.7 to -20.5 and -15.4 to -21.9) and gpt-oss less (-53.1 to -41.8). Mistral Small (temperature table) reacts hardly at all at any temperature (-1.4 to -4.0), as in the audited run. (An earlier version of this table compared the wrong savings levels, because they were sorted as text; fixed on 2026-11-05.)
 - All thinking answers were readable (0% unreadable); the thinking used about 600 tokens per answer for Qwen3 and about 1,200 for gpt-oss, so the limit of 8,000 tokens was never reached.
 
 **Temperature** (0.0, 0.3, audited 0.7, 1.0, 1.5):

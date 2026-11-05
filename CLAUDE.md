@@ -109,8 +109,9 @@ Articles 21, 22 and 25a. Raw answers are backed up on this PC in `data/raw/` (30
 describe is tagged `final-design-2026-11-03` (all run data are in `data/raw/` as `.jsonl.gz`). The branch adds exploratory work only and leaves every old prompt
 byte-identical (checked by hash): negative applicants (blocks 7, 8), eleven more prompt variants, ablations of the nationality lines, **reference nationalities
 (German, American, Indian, Filipino, Pakistani, not stated) run on Laith's explicit request, which overrides the rule above of 2026-10-10 for this branch only**,
-eight more Qwen models, and a judge lab (`pipeline/judge/lab.py`). Findings and numbers: `experiment/deep_dive/RESULTS.md`. Do not move any of it into the report or
-the deck without being asked.
+eight more Qwen models, and a judge lab (`pipeline/judge/lab.py`). Findings and numbers: `experiment/deep_dive/RESULTS.md`. Laith asked on 2026-11-05 for the deep-dive results (thinking on, temperatures, five repetitions, conflict countries, ablations, reference nationalities, negative applicants, judge lab) to be put into the report
+(visible `	eamnote` bullets and two figures in `paper/final_paper/paper.tex`) and the midterm deck (slides 12 and 13, updated slide 16); they stay marked exploratory (deviation D8). The thinking and temperature runs are in
+`data/raw/07_thinking_and_temperature/` and `results/deep_dive/thinking_and_temperature/`; `run_models` has `--temperature` and `--max-tokens`.
 
 **Folder restructure (2026-11-04, at Laith's request; branch `restructure`, merged into `bias-deep-dive` and `main` on 2026-11-04).** Every folder was
 regrouped so that it is clear what is where: `experiment/` into `inputs/`, `prompts/{main_prompts,task_wordings}`, `config/`, `planning/`; `pipeline/`
