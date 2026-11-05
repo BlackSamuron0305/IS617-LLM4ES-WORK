@@ -41,13 +41,14 @@ Where everything is. The tree shows folders; each folder has a README unless it 
 │   │   ├── 03_audited_boundary_applicants/<model>/<batch>/   blocks 5 and 6
 │   │   ├── 04_audited_prompt_variants/<model>/<batch>/       block 4
 │   │   ├── 05_extra_models/{round_1_small_and_mid,round_2_large}/<model>/<batch>/
-│   │   └── 06_deep_dive/{qwen_family,negative_applicants,new_prompt_variants,five_repetitions,conflict_nationalities}/<model>/<batch>/
+│   │   ├── 06_deep_dive/{qwen_family,negative_applicants,new_prompt_variants,five_repetitions,conflict_nationalities}/<model>/<batch>/
+│   │   └── 07_thinking_and_temperature/{thinking_on,temperature}/<model>/<batch>/
 │   └── processed/                    the same folders as tables (not committed; rebuilt from raw)
 │
 ├── results/                          summary tables, one folder per run (results/README.md)
 │   ├── audited_models/
 │   ├── extra_models/{round_1_small_and_mid,round_2_large}/
-│   └── deep_dive/{ablations_reference_family,negative_applicants,judge_lab,significance_tests}/
+│   └── deep_dive/{ablations_reference_family,negative_applicants,judge_lab,significance_tests,thinking_and_temperature}/
 │
 ├── paper/                            course deliverables, each with its own README
 │   ├── proposal/   first_presentation/   second_presentation/   final_presentation/   final_paper/

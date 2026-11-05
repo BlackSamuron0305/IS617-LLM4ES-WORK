@@ -1,0 +1,37 @@
+model,variant,n,gap,chance_p95,p,lowest,highest
+gemma-4-31b-it,base,9450,1.57,0.51,0.005,Syria,Bahrain
+gemma-4-31b-it,fairness_first,9450,1.55,0.45,0.005,Syria,Bahrain
+gemma-4-31b-it,fairness_last,9450,1.36,0.47,0.005,Syria,Oman
+gemma-4-31b-it,home_country_line,9450,1.39,0.44,0.005,Syria,Bahrain
+gemma-4-31b-it,lenient_officer,9450,0.93,0.44,0.005,Syria,Tunisia
+gemma-4-31b-it,no_document_line,9450,1.57,0.49,0.005,Yemen,Qatar
+gemma-4-31b-it,no_nationality_line,9450,1.66,0.48,0.005,Syria,Oman
+gemma-4-31b-it,reason_first,9450,0.6,0.36,0.005,Syria,Algeria
+gemma-4-31b-it,strict_officer,9450,2.3,0.74,0.005,Syria,Oman
+mistral-small-3.2-24b-instruct,base,9448,2.71,1.52,0.005,Syria,Morocco
+mistral-small-3.2-24b-instruct,fairness_first,9450,2.83,1.52,0.005,Syria,Oman
+mistral-small-3.2-24b-instruct,fairness_last,9450,2.43,1.55,0.005,Syria,Egypt
+mistral-small-3.2-24b-instruct,home_country_line,9450,1.74,1.46,0.005,Djibouti,Palestine
+mistral-small-3.2-24b-instruct,lenient_officer,9449,2.82,1.59,0.005,Iraq,Oman
+mistral-small-3.2-24b-instruct,no_document_line,9450,1.88,1.4,0.005,Djibouti,Morocco
+mistral-small-3.2-24b-instruct,no_nationality_line,9450,2.67,1.46,0.005,Somalia,Oman
+mistral-small-3.2-24b-instruct,reason_first,9441,0.97,1.21,0.4179,Syria,Jordan
+mistral-small-3.2-24b-instruct,strict_officer,9450,3.29,2.53,0.005,Lebanon,Morocco
+qwen2.5-7b-instruct,base,9449,28.95,3.59,0.005,Somalia,Qatar
+qwen2.5-7b-instruct,fairness_first,9450,35.27,3.5,0.005,Syria,Oman
+qwen2.5-7b-instruct,fairness_last,9450,29.84,3.46,0.005,Somalia,Bahrain
+qwen2.5-7b-instruct,home_country_line,9450,24.72,3.2,0.005,Somalia,Qatar
+qwen2.5-7b-instruct,lenient_officer,9450,9.6,1.63,0.005,Syria,Saudi Arabia
+qwen2.5-7b-instruct,no_document_line,9450,7.03,1.64,0.005,Syria,Bahrain
+qwen2.5-7b-instruct,no_nationality_line,9450,24.14,2.75,0.005,Syria,Saudi Arabia
+qwen2.5-7b-instruct,reason_first,9450,32.87,5.13,0.005,Somalia,Qatar
+qwen2.5-7b-instruct,strict_officer,9450,37.07,4.98,0.005,Somalia,Saudi Arabia
+qwen3-32b,base,9450,3.38,1.06,0.005,Syria,Jordan
+qwen3-32b,fairness_first,9450,3.5,1.1,0.005,Yemen,Jordan
+qwen3-32b,fairness_last,9450,4.34,1.15,0.005,Syria,Bahrain
+qwen3-32b,home_country_line,9450,3.72,1.01,0.005,Syria,Jordan
+qwen3-32b,lenient_officer,9450,3.42,0.9,0.005,Syria,Oman
+qwen3-32b,no_document_line,9450,2.79,1.01,0.005,Syria,Jordan
+qwen3-32b,no_nationality_line,9450,3.97,0.97,0.005,Syria,Oman
+qwen3-32b,reason_first,9450,1.28,1.11,0.0149,Syria,Bahrain
+qwen3-32b,strict_officer,9450,3.3,1.45,0.005,Syria,Oman

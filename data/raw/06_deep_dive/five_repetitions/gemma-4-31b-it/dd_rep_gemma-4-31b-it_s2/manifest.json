@@ -1,0 +1,126 @@
+{
+  "batch": "dd_rep_gemma-4-31b-it_s2",
+  "kind": "answers",
+  "model_alias": "gemma-4-31b-it",
+  "model_id": "google/gemma-4-31B-it",
+  "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-04T14:00:01Z",
+      "git_commit": "c612780bd6afe37f6192663d366e156d436e563d",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "no_nationality_line",
+        "no_document_line",
+        "home_country_line",
+        "reason_first",
+        "strict_officer",
+        "lenient_officer",
+        "fairness_first",
+        "fairness_last",
+        "reference_nationalities"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        2,
+        3
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/gemma-4-31b-it",
+      "vllm_args": "",
+      "base_url": "http://localhost:21284/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": null
+    },
+    {
+      "started_utc": "2026-11-04T16:48:59Z",
+      "git_commit": "c612780bd6afe37f6192663d366e156d436e563d",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "no_nationality_line",
+        "no_document_line",
+        "home_country_line",
+        "reason_first",
+        "strict_officer",
+        "lenient_officer",
+        "fairness_first",
+        "fairness_last",
+        "reference_nationalities"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        2,
+        3
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/gemma-4-31b-it",
+      "vllm_args": "",
+      "base_url": "http://localhost:21285/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": null
+    },
+    {
+      "started_utc": "2026-11-04T19:35:11Z",
+      "git_commit": "c612780bd6afe37f6192663d366e156d436e563d",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "no_nationality_line",
+        "no_document_line",
+        "home_country_line",
+        "reason_first",
+        "strict_officer",
+        "lenient_officer",
+        "fairness_first",
+        "fairness_last",
+        "reference_nationalities"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        2,
+        3
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/gemma-4-31b-it",
+      "vllm_args": "",
+      "base_url": "http://localhost:21286/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 32700,
+        "already_done": 23879,
+        "called": 8821,
+        "errors": 0
+      }
+    }
+  ]
+}

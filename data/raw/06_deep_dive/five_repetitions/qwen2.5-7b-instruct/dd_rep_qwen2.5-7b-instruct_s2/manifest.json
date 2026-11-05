@@ -1,0 +1,52 @@
+{
+  "batch": "dd_rep_qwen2.5-7b-instruct_s2",
+  "kind": "answers",
+  "model_alias": "qwen2.5-7b-instruct",
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-04T13:45:04Z",
+      "git_commit": "c612780bd6afe37f6192663d366e156d436e563d",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "no_nationality_line",
+        "no_document_line",
+        "home_country_line",
+        "reason_first",
+        "strict_officer",
+        "lenient_officer",
+        "fairness_first",
+        "fairness_last",
+        "reference_nationalities"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        2,
+        3
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/qwen2.5-7b",
+      "vllm_args": "",
+      "base_url": "http://localhost:21266/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 32700,
+        "already_done": 0,
+        "called": 32700,
+        "errors": 0
+      }
+    }
+  ]
+}

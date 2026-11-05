@@ -35,10 +35,10 @@ COMPARISONS = {
         ("Syria - Qatar", {"c": "Syria"}, {"c": "Qatar"}), ("Somalia - Jordan", {"c": "Somalia"}, {"c": "Jordan"}),
         ("Syria - India", {"c": "Syria"}, {"c": "India"}), ("Pakistan - India", {"c": "Pakistan"}, {"c": "India"})],
     "conflict_nationalities": [
-        ("conflict (4) - peaceful (3)", {"g": "conflict"}, {"g": "peaceful"}), ("Syria - conflict (4)", {"c": "Syria"}, {"g": "conflict"}),
-        ("Syria - peaceful (3)", {"c": "Syria"}, {"g": "peaceful"}), ("Somalia - conflict (4)", {"c": "Somalia"}, {"g": "conflict"}),
+        ("conflict (4) - peaceful (2)", {"g": "conflict"}, {"g": "peaceful"}), ("Syria - conflict (4)", {"c": "Syria"}, {"g": "conflict"}),
+        ("Syria - peaceful (2)", {"c": "Syria"}, {"g": "peaceful"}), ("Somalia - conflict (4)", {"c": "Somalia"}, {"g": "conflict"}),
         ("Syria - Jordan", {"c": "Syria"}, {"c": "Jordan"}), ("Syria - Qatar", {"c": "Syria"}, {"c": "Qatar"}),
-        ("Venezuela - peaceful (3)", {"c": "Venezuela"}, {"g": "peaceful"}), ("Germany - India", {"c": "Germany"}, {"c": "India"}),
+        ("Venezuela - peaceful (2)", {"c": "Venezuela"}, {"g": "peaceful"}), ("Germany - India", {"c": "Germany"}, {"c": "India"}),
         ("Afghanistan - Nepal", {"c": "Afghanistan"}, {"c": "Nepal"}), ("Ukraine - Vietnam", {"c": "Ukraine"}, {"c": "Vietnam"})],
 }
 SYRIA_OTHERS = ("Syria - the other 20", {"c": "Syria"}, {"c": "OTHERS21"})

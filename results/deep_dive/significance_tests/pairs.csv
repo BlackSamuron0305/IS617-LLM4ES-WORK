@@ -1,0 +1,145 @@
+model,variant,comparison,n_pairs,diff,ci_lo,ci_hi,p
+gemma-4-31b-it,base,Syria - the other 20,30,-1.04,-1.6,-0.53,0.0002
+gemma-4-31b-it,conflict_nationalities,conflict (4) - peaceful (2),30,-0.43,-0.7,-0.21,0.0008
+gemma-4-31b-it,conflict_nationalities,Syria - conflict (4),30,-0.94,-1.41,-0.51,0.0002
+gemma-4-31b-it,conflict_nationalities,Syria - peaceful (2),30,-1.37,-2.12,-0.74,0.0002
+gemma-4-31b-it,conflict_nationalities,Somalia - conflict (4),30,-0.64,-1.02,-0.31,0.0002
+gemma-4-31b-it,conflict_nationalities,Syria - Jordan,30,-1.43,-2.21,-0.74,0.0002
+gemma-4-31b-it,conflict_nationalities,Syria - Qatar,30,-1.18,-1.8,-0.61,0.0002
+gemma-4-31b-it,conflict_nationalities,Venezuela - peaceful (2),30,-0.08,-0.37,0.17,0.6155
+gemma-4-31b-it,conflict_nationalities,Germany - India,30,2.99,1.72,4.41,0.0002
+gemma-4-31b-it,conflict_nationalities,Afghanistan - Nepal,30,-1.88,-3.09,-0.87,0.0002
+gemma-4-31b-it,conflict_nationalities,Ukraine - Vietnam,30,0.66,0.24,1.2,0.001
+gemma-4-31b-it,fairness_first,Syria - the other 20,30,-1.05,-1.6,-0.55,0.0002
+gemma-4-31b-it,fairness_last,Syria - the other 20,30,-0.87,-1.42,-0.42,0.0002
+gemma-4-31b-it,home_country_line,Syria - the other 20,30,-0.98,-1.66,-0.39,0.0004
+gemma-4-31b-it,lenient_officer,Syria - the other 20,30,-0.55,-0.94,-0.22,0.0056
+gemma-4-31b-it,no_document_line,Syria - the other 20,30,-0.97,-1.53,-0.49,0.0004
+gemma-4-31b-it,no_nationality_line,Syria - the other 20,30,-1.01,-1.61,-0.52,0.0002
+gemma-4-31b-it,reason_first,Syria - the other 20,30,-0.36,-0.61,-0.13,0.004
+gemma-4-31b-it,reference_nationalities,Germany - India,30,2.98,1.65,4.33,0.0002
+gemma-4-31b-it,reference_nationalities,Germany - Pakistan,30,4.1,2.29,6.04,0.0002
+gemma-4-31b-it,reference_nationalities,United States - India,30,1.26,0.58,2.04,0.0008
+gemma-4-31b-it,reference_nationalities,United States - Philippines,30,1.28,0.62,1.97,0.0002
+gemma-4-31b-it,reference_nationalities,Germany - Not stated,30,3.01,1.71,4.47,0.0002
+gemma-4-31b-it,reference_nationalities,Germany - Syria,30,4.3,2.53,6.23,0.0002
+gemma-4-31b-it,reference_nationalities,Germany - Qatar,30,2.86,1.72,4.17,0.0002
+gemma-4-31b-it,reference_nationalities,Syria - Jordan,30,-1.45,-2.29,-0.72,0.0002
+gemma-4-31b-it,reference_nationalities,Syria - Qatar,30,-1.45,-2.22,-0.75,0.0002
+gemma-4-31b-it,reference_nationalities,Somalia - Jordan,30,-1.25,-1.92,-0.61,0.0008
+gemma-4-31b-it,reference_nationalities,Syria - India,30,-1.32,-2.11,-0.65,0.0004
+gemma-4-31b-it,reference_nationalities,Pakistan - India,30,-1.12,-1.96,-0.44,0.0002
+gemma-4-31b-it,strict_officer,Syria - the other 20,30,-1.42,-2.08,-0.8,0.0002
+mistral-small-3.2-24b-instruct,base,Syria - the other 20,30,-1.63,-2.33,-0.85,0.0004
+mistral-small-3.2-24b-instruct,conflict_nationalities,conflict (4) - peaceful (2),30,0.07,-0.41,0.57,0.7754
+mistral-small-3.2-24b-instruct,conflict_nationalities,Syria - conflict (4),30,-1.84,-2.54,-1.18,0.0002
+mistral-small-3.2-24b-instruct,conflict_nationalities,Syria - peaceful (2),30,-1.77,-2.55,-0.96,0.0004
+mistral-small-3.2-24b-instruct,conflict_nationalities,Somalia - conflict (4),30,0.19,-0.54,0.96,0.6389
+mistral-small-3.2-24b-instruct,conflict_nationalities,Syria - Jordan,30,-2.18,-2.97,-1.34,0.0002
+mistral-small-3.2-24b-instruct,conflict_nationalities,Syria - Qatar,30,-2.2,-3.14,-1.23,0.0002
+mistral-small-3.2-24b-instruct,conflict_nationalities,Venezuela - peaceful (2),30,0.83,0.31,1.39,0.0046
+mistral-small-3.2-24b-instruct,conflict_nationalities,Germany - India,30,4.49,3.23,5.87,0.0002
+mistral-small-3.2-24b-instruct,conflict_nationalities,Afghanistan - Nepal,30,-2.62,-3.78,-1.57,0.0002
+mistral-small-3.2-24b-instruct,conflict_nationalities,Ukraine - Vietnam,30,1.49,0.84,2.17,0.0006
+mistral-small-3.2-24b-instruct,fairness_first,Syria - the other 20,30,-1.68,-2.36,-1.01,0.0002
+mistral-small-3.2-24b-instruct,fairness_last,Syria - the other 20,30,-1.56,-2.09,-1.02,0.0002
+mistral-small-3.2-24b-instruct,home_country_line,Syria - the other 20,30,-0.57,-1.31,0.25,0.1716
+mistral-small-3.2-24b-instruct,lenient_officer,Syria - the other 20,30,-0.96,-1.73,-0.19,0.0178
+mistral-small-3.2-24b-instruct,no_document_line,Syria - the other 20,30,-0.6,-1.24,0.1,0.094
+mistral-small-3.2-24b-instruct,no_nationality_line,Syria - the other 20,30,-1.07,-1.7,-0.43,0.0048
+mistral-small-3.2-24b-instruct,reason_first,Syria - the other 20,30,-0.6,-1.27,-0.02,0.0768
+mistral-small-3.2-24b-instruct,reference_nationalities,Germany - India,30,4.02,2.68,5.7,0.0002
+mistral-small-3.2-24b-instruct,reference_nationalities,Germany - Pakistan,30,4.66,3.33,6.24,0.0002
+mistral-small-3.2-24b-instruct,reference_nationalities,United States - India,30,1.15,0.44,1.91,0.0064
+mistral-small-3.2-24b-instruct,reference_nationalities,United States - Philippines,30,0.23,-0.34,0.93,0.4975
+mistral-small-3.2-24b-instruct,reference_nationalities,Germany - Not stated,30,4.23,2.8,5.79,0.0002
+mistral-small-3.2-24b-instruct,reference_nationalities,Germany - Syria,30,5.95,4.97,7.01,0.0002
+mistral-small-3.2-24b-instruct,reference_nationalities,Germany - Qatar,30,3.28,2.31,4.61,0.0002
+mistral-small-3.2-24b-instruct,reference_nationalities,Syria - Jordan,30,-2.51,-3.13,-1.86,0.0002
+mistral-small-3.2-24b-instruct,reference_nationalities,Syria - Qatar,30,-2.67,-3.77,-1.42,0.0004
+mistral-small-3.2-24b-instruct,reference_nationalities,Somalia - Jordan,30,-1.12,-1.92,-0.2,0.0222
+mistral-small-3.2-24b-instruct,reference_nationalities,Syria - India,30,-1.93,-2.86,-0.71,0.0016
+mistral-small-3.2-24b-instruct,reference_nationalities,Pakistan - India,30,-0.64,-1.36,0.04,0.0918
+mistral-small-3.2-24b-instruct,strict_officer,Syria - the other 20,30,-1.41,-2.51,-0.27,0.021
+qwen2-7b-instruct,conflict_nationalities,conflict (4) - peaceful (2),30,-2.72,-3.61,-1.89,0.0002
+qwen2-7b-instruct,conflict_nationalities,Syria - conflict (4),30,-3.24,-4.53,-1.91,0.0004
+qwen2-7b-instruct,conflict_nationalities,Syria - peaceful (2),30,-5.96,-7.57,-4.45,0.0002
+qwen2-7b-instruct,conflict_nationalities,Somalia - conflict (4),30,-1.07,-2.11,-0.03,0.0564
+qwen2-7b-instruct,conflict_nationalities,Syria - Jordan,30,-6.74,-8.48,-5.04,0.0002
+qwen2-7b-instruct,conflict_nationalities,Syria - Qatar,30,-6.99,-8.86,-5.18,0.0002
+qwen2-7b-instruct,conflict_nationalities,Venezuela - peaceful (2),30,-0.46,-1.85,0.79,0.5171
+qwen2-7b-instruct,conflict_nationalities,Germany - India,30,1.19,0.4,1.94,0.0074
+qwen2-7b-instruct,conflict_nationalities,Afghanistan - Nepal,30,-2.06,-3.36,-0.78,0.0032
+qwen2-7b-instruct,conflict_nationalities,Ukraine - Vietnam,30,1.69,0.69,2.72,0.0026
+qwen2.5-14b-instruct,conflict_nationalities,conflict (4) - peaceful (2),30,0.06,-0.21,0.35,0.6717
+qwen2.5-14b-instruct,conflict_nationalities,Syria - conflict (4),30,-0.12,-0.64,0.32,0.6311
+qwen2.5-14b-instruct,conflict_nationalities,Syria - peaceful (2),30,-0.06,-0.44,0.34,0.759
+qwen2.5-14b-instruct,conflict_nationalities,Somalia - conflict (4),30,-0.19,-0.46,0.09,0.1956
+qwen2.5-14b-instruct,conflict_nationalities,Syria - Jordan,30,-0.01,-0.5,0.49,0.9872
+qwen2.5-14b-instruct,conflict_nationalities,Syria - Qatar,30,0.32,-0.22,0.93,0.2903
+qwen2.5-14b-instruct,conflict_nationalities,Venezuela - peaceful (2),30,0.15,-0.16,0.51,0.4077
+qwen2.5-14b-instruct,conflict_nationalities,Germany - India,30,-0.27,-0.7,0.15,0.2352
+qwen2.5-14b-instruct,conflict_nationalities,Afghanistan - Nepal,30,-0.2,-0.51,0.1,0.2226
+qwen2.5-14b-instruct,conflict_nationalities,Ukraine - Vietnam,30,0.04,-0.39,0.47,0.8838
+qwen2.5-7b-instruct,base,Syria - the other 20,30,-20.11,-22.17,-17.98,0.0002
+qwen2.5-7b-instruct,conflict_nationalities,conflict (4) - peaceful (2),30,-17.58,-19.04,-16.17,0.0002
+qwen2.5-7b-instruct,conflict_nationalities,Syria - conflict (4),30,-8.82,-11.09,-6.5,0.0002
+qwen2.5-7b-instruct,conflict_nationalities,Syria - peaceful (2),30,-26.4,-29.0,-23.92,0.0002
+qwen2.5-7b-instruct,conflict_nationalities,Somalia - conflict (4),30,-8.94,-11.11,-6.65,0.0002
+qwen2.5-7b-instruct,conflict_nationalities,Syria - Jordan,30,-26.48,-29.35,-23.76,0.0002
+qwen2.5-7b-instruct,conflict_nationalities,Syria - Qatar,30,-27.32,-29.98,-24.64,0.0002
+qwen2.5-7b-instruct,conflict_nationalities,Venezuela - peaceful (2),30,-11.92,-13.98,-9.69,0.0002
+qwen2.5-7b-instruct,conflict_nationalities,Germany - India,30,0.66,-0.0,1.27,0.0446
+qwen2.5-7b-instruct,conflict_nationalities,Afghanistan - Nepal,30,-25.49,-28.5,-22.7,0.0002
+qwen2.5-7b-instruct,conflict_nationalities,Ukraine - Vietnam,30,-4.11,-5.61,-2.74,0.0002
+qwen2.5-7b-instruct,fairness_first,Syria - the other 20,30,-29.19,-30.66,-27.67,0.0002
+qwen2.5-7b-instruct,fairness_last,Syria - the other 20,30,-21.73,-24.12,-19.38,0.0002
+qwen2.5-7b-instruct,home_country_line,Syria - the other 20,30,-14.61,-17.04,-12.25,0.0002
+qwen2.5-7b-instruct,lenient_officer,Syria - the other 20,30,-7.44,-8.74,-6.26,0.0002
+qwen2.5-7b-instruct,no_document_line,Syria - the other 20,30,-5.83,-7.36,-4.36,0.0002
+qwen2.5-7b-instruct,no_nationality_line,Syria - the other 20,30,-19.77,-22.37,-17.34,0.0002
+qwen2.5-7b-instruct,reason_first,Syria - the other 20,30,-16.32,-18.42,-14.21,0.0002
+qwen2.5-7b-instruct,reference_nationalities,Germany - India,30,0.52,-0.1,1.11,0.1088
+qwen2.5-7b-instruct,reference_nationalities,Germany - Pakistan,30,2.39,1.62,3.26,0.0002
+qwen2.5-7b-instruct,reference_nationalities,United States - India,30,0.48,0.06,0.87,0.0306
+qwen2.5-7b-instruct,reference_nationalities,United States - Philippines,30,0.86,0.26,1.52,0.0066
+qwen2.5-7b-instruct,reference_nationalities,Germany - Not stated,30,1.43,0.75,2.15,0.0004
+qwen2.5-7b-instruct,reference_nationalities,Germany - Syria,30,26.66,24.53,28.64,0.0002
+qwen2.5-7b-instruct,reference_nationalities,Germany - Qatar,30,0.19,-0.48,0.74,0.6099
+qwen2.5-7b-instruct,reference_nationalities,Syria - Jordan,30,-25.74,-27.84,-23.34,0.0002
+qwen2.5-7b-instruct,reference_nationalities,Syria - Qatar,30,-26.47,-28.68,-24.4,0.0002
+qwen2.5-7b-instruct,reference_nationalities,Somalia - Jordan,30,-26.78,-30.14,-23.42,0.0002
+qwen2.5-7b-instruct,reference_nationalities,Syria - India,30,-26.14,-28.38,-23.65,0.0002
+qwen2.5-7b-instruct,reference_nationalities,Pakistan - India,30,-1.87,-2.9,-0.87,0.0006
+qwen2.5-7b-instruct,strict_officer,Syria - the other 20,30,-22.08,-24.04,-19.96,0.0002
+qwen3-32b,base,Syria - the other 20,30,-2.36,-2.8,-1.97,0.0002
+qwen3-32b,conflict_nationalities,conflict (4) - peaceful (2),30,-1.73,-2.03,-1.43,0.0002
+qwen3-32b,conflict_nationalities,Syria - conflict (4),30,-1.47,-1.84,-1.11,0.0002
+qwen3-32b,conflict_nationalities,Syria - peaceful (2),30,-3.2,-3.7,-2.72,0.0002
+qwen3-32b,conflict_nationalities,Somalia - conflict (4),30,0.29,-0.27,0.78,0.3069
+qwen3-32b,conflict_nationalities,Syria - Jordan,30,-3.47,-4.18,-2.82,0.0002
+qwen3-32b,conflict_nationalities,Syria - Qatar,30,-2.99,-3.53,-2.47,0.0002
+qwen3-32b,conflict_nationalities,Venezuela - peaceful (2),30,-0.96,-1.59,-0.42,0.0014
+qwen3-32b,conflict_nationalities,Germany - India,30,0.45,-0.03,0.93,0.0816
+qwen3-32b,conflict_nationalities,Afghanistan - Nepal,30,-4.24,-4.83,-3.65,0.0002
+qwen3-32b,conflict_nationalities,Ukraine - Vietnam,30,-0.4,-1.09,0.17,0.2587
+qwen3-32b,fairness_first,Syria - the other 20,30,-2.06,-2.32,-1.79,0.0002
+qwen3-32b,fairness_last,Syria - the other 20,30,-3.16,-3.8,-2.57,0.0002
+qwen3-32b,home_country_line,Syria - the other 20,30,-2.69,-3.29,-2.18,0.0002
+qwen3-32b,lenient_officer,Syria - the other 20,30,-2.48,-2.92,-2.06,0.0002
+qwen3-32b,no_document_line,Syria - the other 20,30,-1.78,-2.12,-1.45,0.0002
+qwen3-32b,no_nationality_line,Syria - the other 20,30,-2.79,-3.49,-2.19,0.0002
+qwen3-32b,reason_first,Syria - the other 20,30,-0.8,-1.17,-0.46,0.0006
+qwen3-32b,reference_nationalities,Germany - India,30,0.65,0.12,1.18,0.0214
+qwen3-32b,reference_nationalities,Germany - Pakistan,30,1.01,0.36,1.66,0.003
+qwen3-32b,reference_nationalities,United States - India,30,0.72,0.1,1.29,0.0294
+qwen3-32b,reference_nationalities,United States - Philippines,30,0.37,-0.27,0.96,0.2559
+qwen3-32b,reference_nationalities,Germany - Not stated,30,2.78,2.07,3.67,0.0002
+qwen3-32b,reference_nationalities,Germany - Syria,30,3.99,3.38,4.65,0.0002
+qwen3-32b,reference_nationalities,Germany - Qatar,30,0.63,0.23,1.02,0.0044
+qwen3-32b,reference_nationalities,Syria - Jordan,30,-3.67,-4.64,-2.81,0.0002
+qwen3-32b,reference_nationalities,Syria - Qatar,30,-3.36,-4.15,-2.68,0.0002
+qwen3-32b,reference_nationalities,Somalia - Jordan,30,-1.98,-2.63,-1.4,0.0002
+qwen3-32b,reference_nationalities,Syria - India,30,-3.34,-4.3,-2.46,0.0002
+qwen3-32b,reference_nationalities,Pakistan - India,30,-0.36,-0.93,0.21,0.2452
+qwen3-32b,strict_officer,Syria - the other 20,30,-2.19,-2.69,-1.68,0.0002

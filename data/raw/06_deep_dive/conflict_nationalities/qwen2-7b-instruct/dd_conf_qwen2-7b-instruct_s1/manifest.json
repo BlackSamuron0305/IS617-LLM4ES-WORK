@@ -1,0 +1,44 @@
+{
+  "batch": "dd_conf_qwen2-7b-instruct_s1",
+  "kind": "answers",
+  "model_alias": "qwen2-7b-instruct",
+  "model_id": "Qwen/Qwen2-7B-Instruct",
+  "revision": "f2826a00ceef68f0f2b946d945ecc0477ce4450c",
+  "mock": false,
+  "sessions": [
+    {
+      "started_utc": "2026-11-04T13:32:08Z",
+      "git_commit": "c612780bd6afe37f6192663d366e156d436e563d",
+      "dirty": [],
+      "blocks": [
+        4
+      ],
+      "limit": null,
+      "variants": [
+        "conflict_nationalities"
+      ],
+      "wordings": null,
+      "max_repetitions": null,
+      "shard": [
+        1,
+        2
+      ],
+      "model_path": "/pfs/work9/workspace/scratch/ma_lsandouk-llm/models/qwen2-7b-instruct",
+      "vllm_args": "",
+      "base_url": "http://localhost:21242/v1",
+      "settings": {
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 800,
+        "seed": "per_call",
+        "json_schema": false
+      },
+      "summary": {
+        "planned": 3150,
+        "already_done": 0,
+        "called": 3150,
+        "errors": 0
+      }
+    }
+  ]
+}

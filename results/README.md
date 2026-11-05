@@ -11,7 +11,8 @@ per-answer tables (`data/processed/`) are not.
 | `deep_dive/ablations_reference_family/` | the deep dive (branch `bias-deep-dive`): ablations of the nationality lines, reference nationalities, Qwen family curve, negative applicants | `data/raw/06_deep_dive/*` and the audited main run | `pipeline/deep_dive/report.py` |
 | `deep_dive/negative_applicants/` | negative applicants (blocks 7 and 8) for every model | `data/raw/06_deep_dive/negative_applicants` | `report.py` |
 | `deep_dive/judge_lab/` | agreement between judge versions and judge models, and the codes by nationality group | the `lab_*` files in the batch folders | `pipeline/judge/lab_report.py` |
-| `deep_dive/significance_tests/` | (to come) pair tests and gap tests with five repetitions | `06_deep_dive/five_repetitions`, `conflict_nationalities` | `pipeline/deep_dive/significance_tests.py` |
+| `deep_dive/thinking_and_temperature/` | `thinking.csv`, `temperature.csv`: thinking on against off, and temperatures 0.0 to 1.5 against the audited 0.7 | `data/raw/07_thinking_and_temperature/*` and the audited runs | `pipeline/deep_dive/thinking_temperature.py` |
+| `deep_dive/significance_tests/` | `pairs.csv`, `gaps.csv`: pair tests and gap tests with five repetitions, conflict against peaceful countries | `06_deep_dive/five_repetitions`, `conflict_nationalities` | `pipeline/deep_dive/significance_tests.py` |
 
 Pass the folder as `--name`, for example `--name deep_dive/negative_applicants`. The figures made from these tables are in
 `paper/*/figures/` and `experiment/deep_dive/figures/`.

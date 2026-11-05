@@ -30,6 +30,8 @@ raw/
   06_deep_dive/new_prompt_variants/<model>/dd_var_<model>[_s<k>]/    the eleven new variants
   06_deep_dive/five_repetitions/<model>/dd_rep_<model>[_s<k>]/       key variants with five repetitions
   06_deep_dive/conflict_nationalities/<model>/dd_conf_<model>[_s<k>]/  conflict countries outside the Arab League
+  07_thinking_and_temperature/thinking_on/<model>/tt_think_<model>[_s<k>]/    thinking on / reasoning effort high (block 1, one repetition)
+  07_thinking_and_temperature/temperature/<model>/tt_temp_<model>_t<T>[_s<k>]/ temperatures 0.0, 0.3, 1.0, 1.5 (t00, t03, t10, t15)
 ```
 
 `processed/` has the same folders. Inside one batch folder:

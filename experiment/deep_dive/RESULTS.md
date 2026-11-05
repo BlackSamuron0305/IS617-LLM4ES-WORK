@@ -116,3 +116,68 @@ v3 three quality questions) with three judge models (OLMo 3.1 32B, gpt-oss-120b,
 
 **What follows.** Of the six codes of the main judge, `mentions_nationality` is solid (and says about 0%). The broader codes depend on the judge. If the report wants to show that reasons of the biased model carry
 unsupported doubts, use v2 `unsupported_doubt` and `doubts_return_or_ties` with at least two judges, and say that they have not been checked by hand.
+
+## 7. Thinking on, and other temperatures (2026-11-04; block 1, base, one repetition, 2,340 answers per cell)
+
+Tables: `results/deep_dive/thinking_and_temperature/thinking.csv` and `temperature.csv`; code `pipeline/deep_dive/thinking_temperature.py`; raw data `data/raw/07_thinking_and_temperature/`.
+Each cell is compared with the audited run of the same weights (temperature 0.7, repetition 1 of block 1). Gap = highest minus lowest of the 21 Arab nationalities that need a visa; "chance" = 95th percentile of
+the gap when the nationality labels are shuffled inside each cell (one repetition only, so the chance range is wide; the smallest p value the test can give is 0.005).
+
+**Thinking on** (the audited Qwen3 runs had thinking switched off; gpt-oss had reasoning effort low):
+
+| model | setting | mean score | gap (chance) | Syria minus the other 20 | savings effect |
+|---|---|---|---|---|---|
+| Qwen3 32B | off (audited) | 86.5 | 4.4 (2.5) | -3.1 [-4.4, -2.0] | -0.5 |
+| Qwen3 32B | on | 89.1 | 3.9 (3.0) | -2.0 [-3.2, -0.9] | 0.0 |
+| Qwen3 14B | off | 83.2 | 2.1 (1.4) | -1.1 [-1.7, -0.6] | -0.1 |
+| Qwen3 14B | on | 87.9 | 2.3 (2.4) | -0.3 [-1.1, 0.7] | 0.5 |
+| gpt-oss-120b | low (audited) | 74.6 | 3.0 (3.7) | 0.2 [-1.8, 2.1] | 0.5 |
+| gpt-oss-120b | high | 82.5 | 3.8 (6.9) | 0.6 [-2.0, 3.5] | 0.7 |
+
+- Thinking raises the scores (by 2.6, 4.7 and 7.9 points) and makes them more spread out. It **does not remove the passport gap in Qwen3 32B** (3.9 against 4.4, still above chance, Syria still 2 points below the others).
+  In Qwen3 14B the gap falls to the chance level (p about 0.10) and Syria is no longer different. gpt-oss shows no gap above chance with either setting.
+- The savings effect stays near zero in every cell: thinking does not make the models react to the one level of savings that is below the required funds (the instrument limit of the main run is not a matter of thinking).
+- All thinking answers were readable (0% unreadable); the thinking used about 600 tokens per answer for Qwen3 and about 1,200 for gpt-oss, so the limit of 8,000 tokens was never reached.
+
+**Temperature** (0.0, 0.3, audited 0.7, 1.0, 1.5):
+
+| model | gap at 0.0 / 0.3 / 0.7 / 1.0 / 1.5 | Syria minus others at 0.0 / 0.7 / 1.5 | unreadable at 1.5 |
+|---|---|---|---|
+| Qwen3 32B | 4.2 / 4.1 / 4.4 / 3.9 / 4.2 | -2.9 / -3.1 / -2.5 | 0.2% |
+| Gemma 4 31B | 1.7 / 1.6 / 1.7 / 1.9 / 1.8 | -1.2 / -1.1 / -0.8 | 0% |
+| Mistral Small 3.2 | 0.9 / 2.2 / 3.7 / 4.4 / 5.4 | -0.3 / -2.2 / 2.5 | **85%** |
+| Qwen2.5 7B | 30.3 / 30.6 / 32.3 / 32.5 / 31.0 | -22.5 / -18.2 / -14.2 | 0.4% |
+
+- **The temperature does not make the gap.** For Qwen3 32B, Gemma 4 and Qwen2.5 7B the gap and the Syria difference are the same at greedy decoding (0.0) as at 0.7 or 1.0. The Qwen2.5 7B gap of about 30 points is
+  there at every temperature. So it is not a sampling artefact.
+- **Mistral Small is the exception: its gap grows with the temperature** (0.9 at 0.0, not different from chance, to 4.4 at 1.0). At 1.5 Mistral breaks down (85% of the answers cannot be read), so that cell is not usable.
+  Reading: part of the Mistral gap in the audited run is noise that the sampling adds, not a fixed preference.
+- Scores fall slightly and spread out as the temperature rises, as expected.
+
+## 8. Five repetitions and the conflict countries (2026-11-04; tests in `results/deep_dive/significance_tests/`)
+
+Exploratory. Same applications, only the nationality changes; the unit of every test is the applicant x savings pair (30 pairs), intervals are bootstrap intervals, p values come from sign flips (pairs.csv)
+and from label shuffles (gaps.csv; the smallest p value of the shuffle test is 0.005). Models: Qwen3 32B, Gemma 4 31B, Mistral Small 3.2 and Qwen2.5 7B with five repetitions of the key variants; the conflict
+variant was also run on Qwen2 7B and Qwen2.5 14B. Conflict countries: Afghanistan, Ukraine, Eritrea, Myanmar. Peaceful comparison countries: Nepal, Vietnam (two, not three; India belongs to the reference set). Venezuela (crisis) is a single extra row.
+
+**Is the gap more than chance with five repetitions?** Yes for every model, in the base design: gap between the highest and the lowest of the 21 (chance range in brackets): Qwen3 32B 3.4 (1.1), Gemma 4 1.6 (0.5), Mistral Small 2.7 (1.5),
+Qwen2.5 7B 29.0 (3.6); p = 0.005 in all four. Syria or Somalia is the lowest in all four. Removing the nationality line (the travel document line stays) does not remove it (4.0, 1.7, 2.7, 24.1). A
+fairness paragraph placed first changes nothing (3.5, 1.6, 2.8, 35.3). **Asking for the reason before the score** is the one change that shrinks the gap: 1.3, 0.6, 1.0 (Mistral: no longer different from chance) and, for Qwen2.5 7B, not at all (32.9).
+
+**Conflict countries against peaceful ones** (mean score difference in points, 95% interval; negative = the conflict countries score lower):
+
+| model | conflict (4) - peaceful (2) | Afghanistan - Nepal | Ukraine - Vietnam | Syria - conflict (4) | Syria - Jordan |
+|---|---|---|---|---|---|
+| Qwen3 32B | -1.7 [-2.0, -1.4] | -4.2 [-4.8, -3.7] | -0.4 (n.s.) | -1.5 [-1.8, -1.1] | -3.5 [-4.2, -2.8] |
+| Gemma 4 31B | -0.4 [-0.7, -0.2] | -1.9 [-3.1, -0.9] | +0.7 [0.2, 1.2] | -0.9 [-1.4, -0.5] | -1.4 [-2.2, -0.7] |
+| Mistral Small 3.2 | +0.1 (n.s.) | -2.6 [-3.8, -1.6] | +1.5 [0.8, 2.2] | -1.8 [-2.5, -1.2] | -2.2 [-3.0, -1.3] |
+| Qwen2 7B | -2.7 [-3.6, -1.9] | -2.1 [-3.4, -0.8] | +1.7 [0.7, 2.7] | -3.2 [-4.5, -1.9] | -6.7 [-8.5, -5.0] |
+| Qwen2.5 14B | +0.1 (n.s.) | -0.2 (n.s.) | 0.0 (n.s.) | -0.1 (n.s.) | 0.0 (n.s.) |
+| Qwen2.5 7B | -17.6 [-19.0, -16.2] | -25.5 [-28.5, -22.7] | -4.1 [-5.6, -2.7] | -8.8 [-11.1, -6.5] | -26.5 [-29.4, -23.8] |
+
+- **The low scores of Syria and Somalia are not simply a "country at war" effect.** In five of the six models Syria scores below the four non-Arab conflict countries taken together (by 0.9 to 8.8 points), and Syria falls
+  below Jordan by more than any conflict country falls below the peaceful ones. Somalia is not different from the conflict countries in Qwen3 and Mistral.
+- **Afghanistan is penalised, Ukraine is not.** Afghanistan against Nepal is 2 to 4 points lower in the four models with a gap (25 for Qwen2.5 7B); Ukraine against Vietnam is zero or positive except for Qwen2.5 7B.
+  So the models do not penalise war as such: a war-affected European country is not scored down, a war-affected poor Muslim-majority one is. The design cannot say which of the properties of a passport (religion of the majority, income, refusal rates in
+  the news) does it; it only shows that the pattern reaches beyond the Arab League.
+- Qwen2.5 14B shows nothing (every difference around zero, intervals include zero); the 29-point pattern remains one checkpoint (Qwen2.5 7B), and the older Qwen2 7B shows the same direction on a smaller scale (Syria 6.7 below Jordan).
