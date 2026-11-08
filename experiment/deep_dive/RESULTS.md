@@ -47,7 +47,7 @@ Twelve applications, each with one clear ground for refusal (blocks 7 and 8, `re
 
 - A fairness sentence does nothing, for the strongly biased model as for the others. A lenient role removes most of the Qwen2.5 7B gap, a strict one makes it larger (40): the passport effect grows
   with the search for doubt.
-- Writing the reason before the score cuts the gap by half or more in the three audited models (Qwen3 4.4 to 2.0, Gemma 1.7 to 0.6, Mistral 3.7 to 1.7) and does nothing for Qwen2.5 7B. One repetition: repeat before relying on it.
+- Writing the reason before the score cuts the gap by half or more in the three audited models (Qwen3 4.4 to 2.0, Gemma 1.7 to 0.6, Mistral 3.7 to 1.7) and does nothing for Qwen2.5 7B. One repetition: repeat before relying on it. Note that the mean score also rises when the reason comes first (Qwen3 32B 86 to 94), so part of the smaller gap is the ceiling; five repetitions (section 8) give 1.3, 0.6 and 1.0.
 
 ## 4. A baseline outside the 22 (reference nationalities; 270 answers per cell)
 

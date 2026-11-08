@@ -32,3 +32,8 @@ most slides and number callouts beside the charts, all taken from the speaker no
 **Deep dive added (2026-11-05, at Laith's request).** Two slides after the outlier slide (slides 12 and 13: thinking and temperature; conflict
 countries) and updated limits and next steps (slide 16). Figures: `python -m pipeline.deep_dive.make_thinking_figures --style deck --out paper/second_presentation/figures`.
 Numbers come from `results/deep_dive/`; all of it is exploratory (`experiment/planning/deviations.md` D8). The deck now has 16 slides: check the time (10 minutes) and cut if needed.
+
+**Redesign (2026-11-08, at Laith's request).** The deck is now told as four research questions (slide 4: RQ1 does the passport change the score, RQ2 who scores lowest and is it money
+or war, RQ3 can we make the gap go away, RQ4 do the reasons give it away). Slides 5 to 7 show what was done: a flow chart of the pipeline, one call in full (the application as the model sees
+it and its real answer) and the base values (the distribution of the scores). Slides 1 to 16 are the talk; "Backup" (slide 17) and the slides after it are for questions. Result slides carry
+a small label with the question they answer. New figures: `python -m pipeline.deep_dive.make_midterm_figures --style deck --out paper/second_presentation/figures`.
