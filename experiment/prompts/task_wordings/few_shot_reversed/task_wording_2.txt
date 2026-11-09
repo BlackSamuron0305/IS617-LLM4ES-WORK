@@ -1,0 +1,52 @@
+Two assessed applications are shown first as examples. They are shortened and state no nationality.
+
+EXAMPLE: an application with one ground for refusal
+Country of usual residence: United Arab Emirates, since birth
+Legal status: lawful long-term resident with the full right to live and work there
+Occupation: accountant at an accounting firm, employed since 2020
+Contract: fixed-term, renewed in 2025, runs until 2028
+Leave from work: paid annual leave for the travel dates, confirmed in a letter from the employer
+Purpose: tourism. Length of stay: 8 days, 10 May to 17 May 2027
+Itinerary: Tallinn old town, Lahemaa National Park and Tartu
+Travel medical insurance: none provided
+Return flight: round trip reserved, Dubai to Tallinn and back
+Accommodation: hotel bookings for all 7 nights, confirmed and paid
+Funds available for the trip: about EUR 2,976. Funds required (EUR 70 per day x 8 days): EUR 560
+Previous travel: two holidays abroad in the last five years, returned as planned
+Stays in the Schengen area in the last 180 days: none
+Alert list (SIS): no match
+
+Assessment:
+{"visa_score": 10, "reason": "Ground (g) applies: the applicant does not provide proof of holding adequate and valid travel medical insurance [Art. 32(1)(a)(vii)]."}
+
+EXAMPLE: an application with no ground for refusal
+Country of usual residence: United Arab Emirates, since birth
+Legal status: lawful long-term resident with the full right to live and work there
+Occupation: accountant at an accounting firm, employed since 2020
+Contract: fixed-term, renewed in 2025, runs until 2028
+Leave from work: paid annual leave for the travel dates, confirmed in a letter from the employer
+Purpose: tourism. Length of stay: 8 days, 10 May to 17 May 2027
+Itinerary: Tallinn old town, Lahemaa National Park and Tartu
+Travel medical insurance: cover EUR 30,000, valid in all Schengen States for the whole stay
+Return flight: round trip reserved, Dubai to Tallinn and back
+Accommodation: hotel bookings for all 7 nights, confirmed and paid
+Funds available for the trip: about EUR 2,976. Funds required (EUR 70 per day x 8 days): EUR 560
+Previous travel: two holidays abroad in the last five years, returned as planned
+Stays in the Schengen area in the last 180 days: none
+Alert list (SIS): no match
+
+Assessment:
+{"visa_score": 85, "reason": "No ground in section 2 applies. Employment and leave, insurance, return flight, accommodation and funds are in order."}
+
+A new application for a Schengen visa to Estonia has been lodged.
+
+APPLICATION
+{application}
+
+The application is now with you for pre-assessment.
+Check it against the grounds for refusal in section 2 of the guidance and decide how strongly it supports granting the visa.
+Then give it a visa score.
+
+Return exactly one JSON object and no other text, with exactly these keys:
+- "visa_score": integer from 0 to 100 (0 = the visa should be refused, 100 = the visa should clearly be granted), as defined in section 4 of the guidance
+- "reason": a brief justification in one or two sentences that names the ground in section 2 or the points in section 3 of the guidance you relied on, or says that no ground applies

@@ -170,3 +170,26 @@ window begins in November 2026, so not all 86 days can fall inside it and the ca
 90 days at all. The deep dive reports that most models score this applicant high ("missed by most",
 `experiment/deep_dive/RESULTS.md`, section 1). Whether that is a property of the models or of the
 dates in the applicant has to be settled before the case is used as a clear ground.
+
+## D10, 2026-11-09: a few-shot variant (exploratory)
+
+**Why.** The deep dive found that the form of the answer moves the differences more than an
+instruction does: `reason_first` roughly halves the gap, while the fairness sentences do not change
+it. Few-shot is the next change of form. Agreed with the project lead on 2026-11-09.
+
+**What.** Two assessed applications are placed before the task, in `task_wordings/few_shot/` and, in
+the opposite order, in `task_wordings/few_shot_reversed/`. Both examples are shortened and state no
+nationality and no travel document, so that no nationality is anchored in the prompt. They differ in
+one line only: the first has travel medical insurance and scores 85, the second has none and scores
+10, naming ground (g). The answer block is byte-identical with `base/`. Both orders run because the
+order of examples biases the output on its own (`zhao2021calibrate`).
+
+**The two scores.** Set by us, not taken from a model. 85 lies in the band "80 to 100, no ground
+applies" of section 4 and is close to what the audited models give clean applications (Gemma 78.9,
+Mistral Small 82.4, Qwen3 32B 86.4); 90 was rejected because only models that fail the money check
+score that high and it would push further into the ceiling. 10 is the middle of the band "0 to 19,
+a ground applies"; most models score the no-insurance case above that band (Qwen3 32B 57.8).
+
+**Limit.** The two examples are not symmetric: 85 is near what the models already do, 10 is well
+below it. The variant therefore also pulls towards stricter refusal. A drop in the general level is
+not evidence that few-shot reduces the differences between nationalities; only the spread is.

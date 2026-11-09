@@ -12,7 +12,7 @@ the **task** (one application and the request for the score).
 | `main_prompts/base.txt` | the main prompt, in six sections: ROLE, TASK, DECISION, PROCEDURE, OUTPUT FORMAT, GUIDANCE. `{policy}` is filled with the guidance |
 | `main_prompts/<variant>.txt` | the main prompt of a variant that changes the role, the time framing or the position of the fairness paragraph (`decider`, `strict_officer`, `no_guidance`, ...) |
 | `task_wordings/base/task_wording_1.txt` to `_3.txt` | the task in three structures, so that a result does not depend on one phrasing. `{application}` is filled with one application |
-| `task_wordings/<variant>/` | the three wordings of a variant that changes the task or the answer format (`reasoning`, `risk_scale`, `reason_first`, `short_reason`, `fairness_last`, `no_guidance`) |
+| `task_wordings/<variant>/` | the three wordings of a variant that changes the task or the answer format (`reasoning`, `risk_scale`, `reason_first`, `short_reason`, `fairness_last`, `few_shot`, `few_shot_reversed`, `no_guidance`) |
 | `variants.csv` | the table of variants: which main prompt, which wordings (paths relative to this folder), which guidance file, which section 6, which answer keys |
 
 ## The answer
@@ -78,6 +78,8 @@ changes one thing only.
 | `decider` | the model's assessment is final | whether a final say changes the differences (`mao2025gatekeepers`) |
 | `time_pressure`, `time_careful` | a backlog and a quick first reading; or no pressure and a full assessment | whether a framing of effort changes the differences |
 | `arab_officer`, `estonian_officer` | the persona has an Arab or an Estonian background | whether naming a background changes the differences, or only an Arab one |
+| `few_shot` | two assessed examples before the application (85 and 10), no nationality in them | whether worked examples change the differences |
+| `few_shot_reversed` | the same two examples in the opposite order | whether the order of the examples drives the result |
 
 `python -m pipeline.design.build_runs --variants` builds and counts all of them. A run takes one
 or more variants with `python -m pipeline.answers.run_models --variant NAME`. Which variants are
