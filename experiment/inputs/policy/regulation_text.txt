@@ -10,7 +10,7 @@ Article 32 of Regulation (EC) No 810/2009 (Visa Code), Refusal of a visa:
 (i) presents a travel document which is false, counterfeit or forged;
 (ii) does not provide justification for the purpose and conditions of the intended stay;
 (iii) does not provide proof of sufficient means of subsistence, both for the duration of the intended stay and for the return to his country of origin or residence, or for the transit to a third country into which he is certain to be admitted, or is not in a position to acquire such means lawfully;
-(iv) has already stayed for three months during the current six-month period on the territory of the Member States on the basis of a uniform visa or a visa with limited territorial validity;
+(iv) has already stayed for 90 days during the current 180-day period on the territory of the Member States on the basis of a uniform visa or a visa with limited territorial validity;
 (v) is a person for whom an alert has been issued in the SIS for the purpose of refusing entry;
 (vi) is considered to be a threat to public policy, internal security or public health as defined in Article 2(19) of the Schengen Borders Code or to the international relations of any of the Member States, in particular where an alert has been issued in Member States' national databases for the purpose of refusing entry on the same grounds; or
 (vii) does not provide proof of holding adequate and valid travel medical insurance, where applicable;

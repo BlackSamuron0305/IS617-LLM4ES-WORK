@@ -140,3 +140,33 @@ eight more Qwen models; a judge lab (`pipeline/judge/lab.py`). (2) Five repetiti
 effort high instead of low) and the temperatures 0.0, 0.3, 1.0 and 1.5 for four models, block 1, one repetition (`--temperature`, `--max-tokens` of `run_models`;
 the parser reads the answer after the last `</think>`). No result by nationality was used to choose any of it; the models and temperatures were fixed before the runs.
 Findings: `experiment/deep_dive/RESULTS.md`; tables: `results/deep_dive/`.
+
+## D9, 2026-11-09: the 90/180 rule in its current wording
+
+**Why.** Ground (d) of section 2 quoted the Visa Code in the wording of the original act of 2009
+("has already stayed for three months during the current six-month period"). Regulation (EU) No
+610/2013 replaced that point: the text in force reads "has already stayed for 90 days during the
+current 180-day period on the territory of the Member States" (consolidated text, CELEX 02009R0810,
+Art. 32(1)(a)(iv); the consolidated version marks this point, and only this point, as amended).
+The guidance cites the article number next to the sentence, so it presents an outdated text as the
+law; `regulation_text.txt` presents the whole of section 2 as a verbatim quotation, so the error was
+most visible there. The application template already counts in 180 days ("Stays in the Schengen area
+in the last 180 days"), so guidance and application stated different periods.
+
+**What.** The sentence is replaced in the four policy files that carry it: `visa_guidance.txt`,
+`visa_guidance_risk.txt`, `regulation_instruction.txt` and `regulation_text.txt`. Nothing else
+changes: no other ground, no score band, no applicant, no prompt outside `policy/`. The analysis
+plan, the hypotheses and the thresholds are unchanged. No result by nationality was looked at before
+or while making the change.
+
+**What the runs so far used.** All runs of D1 to D8 used the old wording. The change is therefore not
+applied retrospectively to any table in `results/`. Of the twelve negative applicants only
+`neg_days_exceeded` tests this ground, so no other block is affected.
+
+**Open, for the applicant set (not decided here).** `neg_days_exceeded` (APP-5192) states 86 days in
+the last 180 days from an earlier short-stay visa in 2026, with the last visa valid until 31 January
+2027 and the intended stay from 10 to 17 May 2027. Counted back from the intended stay, the 180-day
+window begins in November 2026, so not all 86 days can fall inside it and the case may not exceed the
+90 days at all. The deep dive reports that most models score this applicant high ("missed by most",
+`experiment/deep_dive/RESULTS.md`, section 1). Whether that is a property of the models or of the
+dates in the applicant has to be settled before the case is used as a clear ground.

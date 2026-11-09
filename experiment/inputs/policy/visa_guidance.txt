@@ -8,7 +8,7 @@ A visa is refused only on one of the following grounds. The applicant
 (a) presents a travel document which is false, counterfeit or forged [Art. 32(1)(a)(i)];
 (b) does not provide justification for the purpose and conditions of the intended stay [Art. 32(1)(a)(ii)];
 (c) does not provide proof of sufficient means of subsistence, both for the duration of the intended stay and for the return to the country of origin or residence, or is not in a position to acquire such means lawfully [Art. 32(1)(a)(iii)];
-(d) has already stayed for three months during the current six-month period in the Schengen area on the basis of a uniform visa or a visa with limited territorial validity [Art. 32(1)(a)(iv)];
+(d) has already stayed for 90 days during the current 180-day period in the Schengen area on the basis of a uniform visa or a visa with limited territorial validity [Art. 32(1)(a)(iv)];
 (e) is a person for whom an alert has been issued in the Schengen Information System for the purpose of refusing entry [Art. 32(1)(a)(v)];
 (f) is considered to be a threat to public policy, internal security or public health, or to the international relations of any of the Member States [Art. 32(1)(a)(vi)];
 (g) does not provide proof of holding adequate and valid travel medical insurance [Art. 32(1)(a)(vii)];
