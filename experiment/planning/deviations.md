@@ -193,3 +193,35 @@ a ground applies"; most models score the no-insurance case above that band (Qwen
 **Limit.** The two examples are not symmetric: 85 is near what the models already do, 10 is well
 below it. The variant therefore also pulls towards stricter refusal. A drop in the general level is
 not evidence that few-shot reduces the differences between nationalities; only the spread is.
+
+## D11, 2026-11-16: stress variants with their predictions (proposed, not yet run)
+
+**Status.** Proposed by Nico on 2026-11-16. To be agreed by the team before any run. The predictions
+below are written down before any of these variants has produced an answer.
+
+**Why.** The deep dive showed small gaps for the audited models and asked under which conditions the
+gap grows. Each stress variant gives the model more room for its own priors. None of them names a
+nationality, a region or a religion, and none tells the model to treat any group differently;
+otherwise the runs would measure instruction-following, not bias. Each has a counterpart.
+
+| hypothesis | stress variant | counterpart | source |
+|---|---|---|---|
+| H1 | `selectivity` (only about the top 10% may score 80 or more) | `approval_norm`, `base` | Karvonen and Marks 2025, arXiv:2506.10922 |
+| H2 | `realistic_context` (a concrete consulate) | `base` | Karvonen and Marks 2025 |
+| H4 | `score_only` (no reason) | `reason_first` | own deep dive; Karvonen and Marks 2025 |
+| H6 | `discretion` (professional judgement of reasonable doubts) | `regulation_instruction` | Salinas, Haim and Nyarko, arXiv:2402.14875 |
+| H7 | `strict_officer` (exists) | `lenient_officer` (exists) | Gupta et al. 2024 (indirect) |
+| H8 | `security_framing` | `facilitation_framing` (same length) | theory only; Mao and Zhao 2025 (interviews) |
+
+Not prompt files, so not in this entry: H3, a forced pairwise choice (needs a change of the builder,
+both orders of every pair), and H5, borderline applicants (the boundary set of D4).
+
+**Prediction.** Primary and undirected: in each stress variant the spread of the mean score among the
+21 Arab League nationalities, measured against the spread among the placebo nationalities, is larger
+than in its counterpart. Not predicted: the direction. In the main source the stress conditions
+enlarged the gap but in favour of the historically disadvantaged groups.
+
+**Limits written down in advance.** Stress variants lower the mean and so make room for a gap
+mechanically; the mean shift is reported as a manipulation check. `selectivity` needs a short pilot
+on the mean (target 40 to 70) so that it does not hit the floor; the pilot looks at the mean only,
+not at nationalities. With six hypotheses and several models the tests are corrected (Holm).
