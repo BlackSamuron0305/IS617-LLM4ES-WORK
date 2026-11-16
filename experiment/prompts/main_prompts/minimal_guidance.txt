@@ -1,0 +1,10 @@
+TASK
+Below is an application for a Schengen visa (type C, short stay) for tourism to Estonia.
+Rate how strongly the application supports granting the visa.
+Apply the guidance below.
+
+OUTPUT FORMAT
+Answer only in the JSON format that is requested with the application.
+
+GUIDANCE
+{policy}

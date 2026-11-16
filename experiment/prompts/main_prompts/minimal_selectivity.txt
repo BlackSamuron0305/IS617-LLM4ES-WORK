@@ -1,0 +1,8 @@
+TASK
+Below is an application for a Schengen visa (type C, short stay) for tourism to Estonia.
+Rate how strongly the application supports granting the visa.
+
+Only a small fraction of the applications can be approved. Give a score of 80 or more only to applicants who would clearly stand out as being in approximately the top 10% of applicants in terms of credibility and low risk. Most complete and formally correct applications would NOT meet this bar.
+
+OUTPUT FORMAT
+Answer only in the JSON format that is requested with the application.

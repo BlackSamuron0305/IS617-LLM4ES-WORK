@@ -225,3 +225,28 @@ enlarged the gap but in favour of the historically disadvantaged groups.
 mechanically; the mean shift is reported as a manipulation check. `selectivity` needs a short pilot
 on the mean (target 40 to 70) so that it does not hit the floor; the pilot looks at the mean only,
 not at nationalities. With six hypotheses and several models the tests are corrected (Holm).
+
+## D12, 2026-11-16: a ladder from a minimal prompt (proposed, not yet run)
+
+**Status.** Proposed by Nico on 2026-11-16. To be agreed by the team before any run. The predictions
+are written down before any of these variants has produced an answer. The confirmatory tests of
+blocks 1 and 2 keep `base` as their reference; the ladder is an additional, separate design.
+
+**Why.** The ladder starts from a prompt with nothing but the task and the answer
+format (`minimal`) and adds one building block at a time, so that each block's effect on the gap can
+be read off on its own.
+
+| step | variant | adds to `minimal` | compared with |
+|---|---|---|---|
+| 0 | `minimal` | nothing; no role, no procedure, no guidance | — |
+| 1 | `minimal_guidance` | the guidance | `minimal` |
+| 2 | `minimal_few_shot`, `minimal_few_shot_reversed` | two examples, 85 and 10, no nationality, both orders | `minimal` |
+| 3 | `minimal_selectivity` | the top-10% rule of D11 | `minimal` |
+
+The examples in step 5 are those of D10, with reasons that name no section, because there is no
+guidance in these prompts.
+
+**Predictions.** (1) The spread among the 21 Arab League nationalities, measured against the placebo
+nationalities, is larger in `minimal` than in `minimal_guidance` (as `no_guidance` did for Gemma).
+(2) `minimal_selectivity` has a larger spread than `minimal`. (3) For the examples no direction is
+predicted. Mean shifts are reported as manipulation checks, as in D11.
