@@ -32,7 +32,13 @@ WORDINGS = (1, 2, 3)
 RULE_PLACEHOLDER = "{nationality_rule}"
 POLICY_PLACEHOLDER = "{policy}"
 DEFAULT_ANSWER_KEYS = ("visa_score", "reason")
-SCORE_KEYS = {"visa_score": "visa", "risk_score": "risk"}
+SCORE_KEYS = {"visa_score": "visa", "risk_score": "risk", "preference_score": "pair"}
+# The pairwise variant (deviation D13): two applications that differ only in the nationality, in one prompt.
+# Every nationality is paired with the same partner nationality, once as application A and once as B.
+# The partner is paired with itself too: two identical applications, where any preference is noise or position.
+PAIR_SCORE_KEY = "preference_score"
+PAIR_PARTNER_ISO2 = "UY"
+PAIR_SLOTS = ("{application_a}", "{application_b}")
 GROUPS = ("arab", "placebo")
 # The three wealth groups the Arab League countries are sorted into before any run
 # (World Bank income classification; see experiment/inputs/countries/README.md).
@@ -192,7 +198,9 @@ def check_rules(problems, nationalities, guidance_texts):
             problems.append("application_template.txt and build_application assume EUR 70 per day, "
                             "which official_rules.csv does not say")
         for name, text in guidance_texts.items():
-            if f"EUR {means} for each day" not in text:
+            # A translated guidance (file name ending in _ar.txt) keeps the amounts as "EUR 70" and "EUR 30,000".
+            per_day = f"EUR {means}" if name.endswith("_ar.txt") else f"EUR {means} for each day"
+            if per_day not in text:
                 problems.append(f"{name}: does not state EUR {means} per day as official_rules.csv does")
             if f"EUR {insurance:,}" not in text:
                 problems.append(f"{name}: does not state the insurance minimum EUR {insurance:,}")
@@ -219,7 +227,7 @@ def build_runs(which=None):
         if guidance and guidance not in guidance_texts:
             guidance_texts[guidance] = build_policy(guidance)
     for guidance, text in guidance_texts.items():
-        if "nationality" in text.lower():
+        if "nationality" in text.lower() or "جنسي" in text:
             problems.append(f"{guidance} without a rule mentions nationality")
         if "\n6. Nationality" in text:
             problems.append(f"{guidance} without a rule still has section 6")
@@ -255,8 +263,16 @@ def build_runs(which=None):
             problems.append(f"{name}: unknown application change {change!r}")
         these_nationalities = (read_table("inputs/countries/" + variant["nationality_set"]) if variant.get("nationality_set") else nationalities)
         expected = 2 - (1 if change in DROPS_A_LINE else 0)
+        pairwise = score_key == PAIR_SCORE_KEY
+        partner = next((x for x in these_nationalities if x["iso2"] == PAIR_PARTNER_ISO2), None)
+        if pairwise and partner is None:
+            problems.append(f"{name}: the pair partner {PAIR_PARTNER_ISO2} is not among the nationalities")
+            continue
         for n, task in tasks.items():
-            if task.count("{application}") != 1:
+            if pairwise:
+                if "{application}" in task or any(task.count(slot) != 1 for slot in PAIR_SLOTS):
+                    problems.append(f"{name}: task_wording_{n}.txt must contain {PAIR_SLOTS[0]} and {PAIR_SLOTS[1]} once each")
+            elif task.count("{application}") != 1:
                 problems.append(f"{name}: task_wording_{n}.txt must contain {{application}} exactly once")
             for key in keys:
                 if f'"{key}"' not in task:
@@ -297,14 +313,27 @@ def build_runs(which=None):
                         if len(lines) != len(reference) or differing not in (0, expected):
                             problems.append(f"{applicant['applicant_id']} / {demonym}: differs from the first "
                                             f"nationality in {differing} lines, expected {expected}")
+                        if pairwise:
+                            other = change_application(build_application(template, applicant, partner, savings), change)
+                            # The tested nationality as application A, then as application B.
+                            pairs = (("A", application, other), ("B", other, application))
+                        else:
+                            pairs = (("", application, None),)
                         for n in WORDINGS:
-                            user = tasks[n].replace("{application}", application)
+                          for position, first, second in pairs:
+                            if pairwise:
+                                user = tasks[n].replace(PAIR_SLOTS[0], first).replace(PAIR_SLOTS[1], second)
+                            else:
+                                user = tasks[n].replace("{application}", application)
                             for part in (system, user):
                                 for placeholder in leftover_placeholders(part):
                                     problems.append(f"unfilled placeholder {placeholder}")
                             prefix = f"b{block}" if name == BASE_VARIANT else f"v_{name}"
                             runs.append({
-                                "run_id": f"{prefix}__{applicant['applicant_id']}__s{savings}__{nationality['iso2']}__w{n}",
+                                "run_id": f"{prefix}__{applicant['applicant_id']}__s{savings}__{nationality['iso2']}__w{n}"
+                                          + (f"__p{position}" if position else ""),
+                                "position": position,
+                                "pair_partner": partner["demonym"] if pairwise else "",
                                 "block": block,
                                 "variant": name,
                                 "policy_version": version,

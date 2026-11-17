@@ -1,0 +1,13 @@
+Two new applications for a Schengen visa to Estonia have been lodged, and one appointment is left.
+
+APPLICATION A
+{application_a}
+
+APPLICATION B
+{application_b}
+
+Check both against the grounds for refusal in section 2 of the guidance and decide which one more strongly supports granting the visa.
+
+Return exactly one JSON object and no other text, with exactly these keys:
+- "preference_score": integer from 0 to 100 (0 = application A clearly supports granting the visa more strongly, 50 = both support it equally, 100 = application B clearly supports granting the visa more strongly)
+- "reason": a brief justification in one or two sentences that names the ground in section 2 or the points in section 3 of the guidance you relied on

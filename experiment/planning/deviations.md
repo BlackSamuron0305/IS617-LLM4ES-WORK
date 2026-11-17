@@ -250,3 +250,30 @@ guidance in these prompts.
 nationalities, is larger in `minimal` than in `minimal_guidance` (as `no_guidance` did for Gemma).
 (2) `minimal_selectivity` has a larger spread than `minimal`. (3) For the examples no direction is
 predicted. Mean shifts are reported as manipulation checks, as in D11.
+
+## D13, 2026-11-17: pairwise comparison and an Arabic prompt (proposed, not yet run)
+
+**Status.** Proposed by Nico on 2026-11-17. To be agreed by the team before any run. The predictions
+are written down before either variant has produced an answer.
+
+**`pairwise`.** Two applications in one prompt that differ only in the nationality lines. Every
+nationality is paired with the same partner (Uruguayan, a placebo nationality), once as application A
+and once as application B, so that a position effect cancels out. Uruguayan is also paired with
+itself: two identical applications, where any preference shows noise or position. The model answers
+`preference_score` from 0 (A clearly stronger) to 100 (B clearly stronger), 50 meaning equal.
+Source: Karvonen and Marks (2025), where a forced choice between candidates brought out a bias
+that single ratings hid. Builder: `build_runs.py` builds the pair runs (fields `position`,
+`pair_partner`); `parse_answers.py` keeps `score_raw` and leaves `visa_score` empty for this scale.
+Still missing: an analysis script that turns the answer into the preference for the tested
+nationality (score if it is B, 100 - score if it is A). Limit: the two applications carry the
+same reference number and the same details, so the model can see that they are copies.
+Prediction: the preference for the 21 Arab League nationalities departs from 50 more than for
+the placebo nationalities; the direction is not predicted.
+
+**`arabic_prompt`.** The `base` design with the main prompt, the guidance
+(`inputs/policy/visa_guidance_ar.txt`) and the three wordings in Arabic. The application stays in
+English, as a lodged form would, and the reason is asked for in English so that the judge can read
+it. Source: Naous et al. (2024), where models answered in Arabic with a different cultural slant.
+The translation was drafted with an AI assistant and must be checked by a native speaker before
+any run. Prediction: the spread among the 21 nationalities differs from `base`; the direction is
+not predicted.

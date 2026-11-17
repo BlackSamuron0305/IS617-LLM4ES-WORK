@@ -105,7 +105,7 @@ def parse_answer(text, error, answer_keys=DEFAULT_ANSWER_KEYS):
         return {**kept, "parse_status": "bad_value"}
     scale = SCORE_KEYS[score_key]
     return {"parse_status": "ok", "score_raw": score, "score_scale": scale,
-            "visa_score": score if scale == "visa" else 100 - score, "reasoning": reasoning, "reason": reason}
+            "visa_score": score if scale == "visa" else "" if scale == "pair" else 100 - score, "reasoning": reasoning, "reason": reason}
 
 
 def parse_batch(batch, data_root):
