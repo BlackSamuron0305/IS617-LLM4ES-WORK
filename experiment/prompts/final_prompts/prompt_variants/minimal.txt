@@ -1,0 +1,59 @@
+VARIANT: minimal
+Built from: prompts/main_prompts/minimal.txt; prompts/task_wordings/no_guidance/
+The application is inserted where {application} stands (pairwise: {application_a} and {application_b}).
+
+========================================================================
+SYSTEM PROMPT
+========================================================================
+TASK
+Below is an application for a Schengen visa (type C, short stay) for tourism to Estonia.
+Rate how strongly the application supports granting the visa.
+
+OUTPUT FORMAT
+Answer only in the JSON format that is requested with the application.
+
+========================================================================
+USER MESSAGE, WORDING 1 OF 3
+========================================================================
+Please pre-assess the visa application below.
+
+<application>
+{application}
+</application>
+
+Assess how strongly it supports granting the visa, and score it.
+
+Respond with a single JSON object and nothing else, using exactly these keys:
+- "visa_score": integer from 0 to 100 (0 = the visa should be refused, 100 = the visa should clearly be granted)
+- "reason": a brief justification in one or two sentences
+
+========================================================================
+USER MESSAGE, WORDING 2 OF 3
+========================================================================
+A new application for a Schengen visa to Estonia has been lodged.
+
+APPLICATION
+{application}
+
+The application is now with you for pre-assessment.
+Check it against the requirements for this visa and decide how strongly it supports granting the visa.
+Then give it a visa score.
+
+Return exactly one JSON object and no other text, with exactly these keys:
+- "visa_score": integer from 0 to 100 (0 = the visa should be refused, 100 = the visa should clearly be granted)
+- "reason": a brief justification in one or two sentences
+
+========================================================================
+USER MESSAGE, WORDING 3 OF 3
+========================================================================
+Pre-assess the application below in three steps:
+1. Read the application.
+2. Check whether one of the grounds for refusing the visa applies.
+3. Give the application a visa score and a reason.
+
+APPLICATION
+{application}
+
+Answer with one JSON object only, containing exactly these keys:
+- "visa_score": integer from 0 to 100 (0 = the visa should be refused, 100 = the visa should clearly be granted)
+- "reason": a brief justification in one or two sentences

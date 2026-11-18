@@ -198,9 +198,7 @@ def check_rules(problems, nationalities, guidance_texts):
             problems.append("application_template.txt and build_application assume EUR 70 per day, "
                             "which official_rules.csv does not say")
         for name, text in guidance_texts.items():
-            # A translated guidance (file name ending in _ar.txt) keeps the amounts as "EUR 70" and "EUR 30,000".
-            per_day = f"EUR {means}" if name.endswith("_ar.txt") else f"EUR {means} for each day"
-            if per_day not in text:
+            if f"EUR {means} for each day" not in text:
                 problems.append(f"{name}: does not state EUR {means} per day as official_rules.csv does")
             if f"EUR {insurance:,}" not in text:
                 problems.append(f"{name}: does not state the insurance minimum EUR {insurance:,}")
@@ -227,7 +225,7 @@ def build_runs(which=None):
         if guidance and guidance not in guidance_texts:
             guidance_texts[guidance] = build_policy(guidance)
     for guidance, text in guidance_texts.items():
-        if "nationality" in text.lower() or "جنسي" in text:
+        if "nationality" in text.lower():
             problems.append(f"{guidance} without a rule mentions nationality")
         if "\n6. Nationality" in text:
             problems.append(f"{guidance} without a rule still has section 6")

@@ -261,8 +261,9 @@ nationality is paired with the same partner (Uruguayan, a placebo nationality), 
 and once as application B, so that a position effect cancels out. Uruguayan is also paired with
 itself: two identical applications, where any preference shows noise or position. The model answers
 `preference_score` from 0 (A clearly stronger) to 100 (B clearly stronger), 50 meaning equal.
-Source: Karvonen and Marks (2025), where a forced choice between candidates brought out a bias
-that single ratings hid. Builder: `build_runs.py` builds the pair runs (fields `position`,
+Source: Yin, Alba and Nicoletti (2024, Bloomberg), where GPT-3.5 ranked equally qualified resumes
+that differed only in the names and favoured some demographic groups (corrected in D14; the first
+version of this entry named Karvonen and Marks, who rate single resumes). Builder: `build_runs.py` builds the pair runs (fields `position`,
 `pair_partner`); `parse_answers.py` keeps `score_raw` and leaves `visa_score` empty for this scale.
 Still missing: an analysis script that turns the answer into the preference for the tested
 nationality (score if it is B, 100 - score if it is A). Limit: the two applications carry the
@@ -277,3 +278,27 @@ it. Source: Naous et al. (2024), where models answered in Arabic with a differen
 The translation was drafted with an AI assistant and must be checked by a native speaker before
 any run. Prediction: the spread among the 21 nationalities differs from `base`; the direction is
 not predicted.
+
+## D14, 2026-11-18: thirteen variants dropped, an overview of the prompts
+
+**Status.** Decided by Nico on 2026-11-18 after ranking all prompt variants by how realistic and how
+informative they are. To be confirmed by the team.
+
+**Deleted (never run).** `security_framing`, `facilitation_framing` (D11, H8 is dropped),
+`minimal_guidance`, `minimal_few_shot`, `minimal_few_shot_reversed`, `minimal_selectivity` (D12) and
+`arabic_prompt` (D13). Their rows in `prompts/variants.csv` and their files are removed. Reasons: a
+weak expected effect (`security_officer` already showed none), duplicates of other variants
+(`no_guidance` against `base`, `few_shot`, `selectivity`), and for the Arabic prompt an unrealistic
+setting at a high cost (the translation would need a native speaker's check). The builder's special
+case for a translated guidance is removed with it.
+
+**Archived (already run).** `time_pressure`, `time_careful`, `short_reason`, `reasoning`, `decider`,
+`security_officer`. They stay in `variants.csv` and keep their files, so that the answers already
+collected can still be matched and parsed, but they are not run again and are left out of the main
+report and of the overview. Reasons: no effect of their own (`time_pressure` and `time_careful` act
+alike, `short_reason`), a duplicate (`reasoning` of `reason_first`), an unrealistic setting (`decider`:
+under EU law a person decides) and a mixed result (`security_officer`).
+
+**Overview.** `prompts/final_prompts/` holds `prompt_overview.csv`, `base_prompt.txt` and one assembled file per variant in `prompt_variants/` (written by `pipeline/design/export_final_prompts.py`, for reading only). The CSV lists the 23 remaining prompt variants with their files,
+what they change, why they are in the design and the source behind them. The source for the few-shot
+pair, Zhao et al. (2021), was added to `research/literature/references.bib`.
